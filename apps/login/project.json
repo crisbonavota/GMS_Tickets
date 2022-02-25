@@ -18,7 +18,7 @@
         "assets": ["apps/login/src/favicon.ico", "apps/login/src/assets"],
         "styles": [],
         "scripts": [],
-        "webpackConfig": "@nrwl/react/plugins/webpack"
+        "webpackConfig": "webpack.config.js"
       },
       "configurations": {
         "production": {

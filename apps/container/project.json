@@ -45,7 +45,7 @@
       "executor": "@nrwl/web:dev-server",
       "options": {
         "buildTarget": "container:build",
-        "hmr": true
+        "hmr": false
       },
       "configurations": {
         "production": {

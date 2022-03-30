@@ -1,7 +1,7 @@
 {
-  "npmScope": "gms-2022",
+  "npmScope": "gms-micro",
   "affected": {
-    "defaultBase": "main"
+    "defaultBase": "master"
   },
   "cli": {
     "defaultCollection": "@nrwl/react"
@@ -32,18 +32,17 @@
   "generators": {
     "@nrwl/react": {
       "application": {
-        "style": "styled-components",
+        "style": "css",
         "linter": "eslint",
         "babel": true
       },
       "component": {
-        "style": "styled-components"
+        "style": "css"
       },
       "library": {
-        "style": "styled-components",
+        "style": "css",
         "linter": "eslint"
       }
     }
-  },
-  "defaultProject": "container"
+  }
 }

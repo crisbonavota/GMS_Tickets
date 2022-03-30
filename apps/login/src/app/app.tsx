@@ -1,15 +1,11 @@
-import styled from 'styled-components';
+import { Box, Button } from "@chakra-ui/react";
 
-const StyledApp = styled.div`
-  // Your style here
-`;
-
-export function App() {
-  return (
-    <StyledApp>
-      Login App
-    </StyledApp>
-  );
+const App = () => {
+    return (
+        <Box w={'100vw'}>
+            <Button colorScheme={'red'}>Login now</Button>
+        </Box>
+    );
 }
 
 export default App;

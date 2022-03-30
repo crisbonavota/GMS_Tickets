@@ -1,5 +1,4 @@
 {
-  "implicitDependencies": ["login", "timetrack"],
   "root": "apps/container",
   "sourceRoot": "apps/container/src",
   "projectType": "application",
@@ -20,9 +19,9 @@
           "apps/container/src/favicon.ico",
           "apps/container/src/assets"
         ],
-        "styles": [],
+        "styles": ["apps/container/src/styles.css"],
         "scripts": [],
-        "webpackConfig": "webpack.config.js"
+        "webpackConfig": "@nrwl/react/plugins/webpack"
       },
       "configurations": {
         "production": {

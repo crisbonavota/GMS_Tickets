@@ -16,7 +16,7 @@
         "polyfills": "apps/login/src/polyfills.ts",
         "tsConfig": "apps/login/tsconfig.app.json",
         "assets": ["apps/login/src/favicon.ico", "apps/login/src/assets"],
-        "styles": [],
+        "styles": ["apps/login/src/styles.css"],
         "scripts": [],
         "webpackConfig": "webpack.config.js"
       },

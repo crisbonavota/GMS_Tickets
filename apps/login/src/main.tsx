@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app/app';
+import { ChakraProvider } from '@chakra-ui/react';
 
 declare global {
   interface Window {
@@ -10,11 +11,7 @@ declare global {
 }
 
 window.renderLogin = (containerId) => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById(containerId)
+  ReactDOM.render(<ChakraProvider><App /></ChakraProvider>, document.getElementById(containerId)
   );
 };
 

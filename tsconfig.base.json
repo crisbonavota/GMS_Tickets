@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@gms-micro/api-filters": ["libs/api-filters/src/index.ts"],
             "@gms-micro/assets": ["libs/assets/src/index.ts"],
             "@gms-micro/auth-methods": ["libs/auth-methods/src/index.ts"],
             "@gms-micro/auth-types": ["libs/auth-types/src/index.ts"],

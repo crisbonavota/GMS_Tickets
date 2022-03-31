@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAuthHeader } from '@gms-micro/auth-methods';
-import { HStack, Select, Center, VStack, chakra, FormLabel, Text, Heading, Button, Skeleton } from '@chakra-ui/react';
+import { HStack, Select, Center, VStack, chakra, FormLabel, Text, Heading, Button, Skeleton, Stack } from '@chakra-ui/react';
 import { useQuery, UseQueryResult } from 'react-query';
 import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport, downloadFile, generateExcelFileURL } from './api';
 import { AxiosResponse } from 'axios';
@@ -67,9 +67,25 @@ export function App() {
 
     return (
         <Center w={'full'} minH={'100vh'} bgColor={'whitesmoke'}>
-            <VStack w={'75%'} spacing={5}>
-                <HStack w={'full'} justifyContent={'center'} alignItems={'flex-start'} spacing={5} h={'full'}>
-                    <VStack alignItems={'flex-start'} w={'50%'} h={'full'}>
+            <VStack
+                w={{ base: 'full', md: '75%' }}
+                spacing={5}
+                px={{ base: 5, md: 0 }}
+            >
+                <Stack
+                    w={'full'}
+                    justifyContent={'center'}
+                    alignItems={'flex-start'}
+                    h={'full'}
+                    flexDir={{ base: 'column', md: 'row' }}
+                >
+                    <VStack 
+                        alignItems={'flex-start'} 
+                        w={{ base: '100%', md: '50%' }} 
+                        h={'full'} 
+                        me={{ base: 0, md: 5 }}
+                        mb={{ base: 5, md: 0 }}
+                    >
                         <SelectItem query={usersQuery} placeholder={'Employee'} value={user} setter={setUser} nameField={'fullName'} />
                         <SelectItem query={businessUnitsQuery} placeholder={'Business Unit'} value={businessUnit} setter={setBusinessUnit} nameField={'name'} />
                         <SelectItem query={projectsQuery} placeholder={'Project'} value={project} setter={setProject} nameField={'name'} />
@@ -96,7 +112,7 @@ export function App() {
                         />
                     </VStack>
                     <SidePanel query={timetrackItemsQuery} />
-                </HStack>
+                </Stack>
                 <Button onClick={onExport} disabled={timetrackItemsQuery.isLoading} colorScheme={'green'} w={'full'}>Export</Button>
                 {timetrackItemsQuery.isLoading && <Text>You can use the filters even if it's loading</Text>}
             </VStack>
@@ -145,7 +161,7 @@ interface SidePanelProps {
 const SidePanel = ({ query }: SidePanelProps) => {
     return (
         <>
-            <VStack alignItems={'flex-start'} spacing={5} w={'50%'} h={'full'}>
+            <VStack alignItems={'flex-start'} spacing={5} w={{ base: '100%', md: '50%' }} h={'full'}>
                 {query.isSuccess &&
                     <>
                         <HStack>

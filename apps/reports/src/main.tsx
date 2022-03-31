@@ -1,7 +1,6 @@
 import ReactDOM from 'react-dom';
 import App from './app/app';
 import { StrictMode } from 'react';
-import { BrowserRouter } from 'react-router-dom';
 
 declare global {
     interface Window {
@@ -12,9 +11,7 @@ declare global {
 
 export const mainComponent =
     <StrictMode>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
+        <App />
     </StrictMode>;
 
 window.renderReports = (containerId) => {

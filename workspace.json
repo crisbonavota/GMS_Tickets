@@ -2,6 +2,7 @@
     "version": 2,
     "projects": {
         "assets": "libs/assets",
+        "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
         "container": "apps/container",
         "container-e2e": "apps/container-e2e",

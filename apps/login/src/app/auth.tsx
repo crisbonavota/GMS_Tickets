@@ -1,15 +1,9 @@
 import axios from 'axios';
 import { environment } from '../environments/environment';
+import { ApplicationUserPublic } from '@gms-micro/auth-types';
 interface Token {
     token: string,
     expiresIn: number
-}
-
-export interface ApplicationUserPublic {
-    id: string,
-    email: string,
-    fullName: string,
-    image: string
 }
 
 export interface AuthResponse {

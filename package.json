@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "concurrently \"nx run container:serve\" \"nx run login:serve --port=3001\"",
+    "start": "concurrently \"nx run container:serve\" \"nx run login:serve --port=3001\" \"nx run reports:serve --port=3002\"",
     "build": "nx build",
     "test": "nx run-many --all --target=test --parallel"
   },
@@ -19,6 +19,7 @@
     "core-js": "^3.6.5",
     "dotenv": "^16.0.0",
     "framer-motion": "^6.2.8",
+    "query-string": "^7.1.1",
     "react": "17.0.2",
     "react-auth-kit": "^2.0.5",
     "react-dom": "17.0.2",

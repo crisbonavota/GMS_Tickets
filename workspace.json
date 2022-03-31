@@ -1,11 +1,14 @@
 {
-  "version": 2,
-  "projects": {
-    "assets": "libs/assets",
-    "container": "apps/container",
-    "container-e2e": "apps/container-e2e",
-    "login": "apps/login",
-    "login-e2e": "apps/login-e2e",
-    "theme-chakra-ui": "libs/theme-chakra-ui"
-  }
+    "version": 2,
+    "projects": {
+        "assets": "libs/assets",
+        "auth-types": "libs/auth-types",
+        "container": "apps/container",
+        "container-e2e": "apps/container-e2e",
+        "login": "apps/login",
+        "login-e2e": "apps/login-e2e",
+        "reports": "apps/reports",
+        "reports-e2e": "apps/reports-e2e",
+        "theme-chakra-ui": "libs/theme-chakra-ui"
+    }
 }

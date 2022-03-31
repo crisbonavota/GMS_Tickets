@@ -1,14 +1,16 @@
+import { RequireAuth } from "react-auth-kit";
 import { Route, Routes } from "react-router-dom"
 import { environment } from "../environments/environment";
 import MicroFrontend from "./MicroFrontend"
 
-const loginHost = environment.loginHost;
-const Login = () => <MicroFrontend name="Login" host={loginHost} />
+const Login = () => <MicroFrontend name="Login" host={environment.loginHost} />
+const Reports = () => <MicroFrontend name="Reports" host={environment.reportsHost} />
 
 const App = () => {
     return (
         <Routes>
             <Route path="/sign-in" element={<Login />} />
+            <Route path="/reports" element={<Reports />} />
         </Routes>
     )
 }

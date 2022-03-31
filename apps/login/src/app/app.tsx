@@ -1,4 +1,4 @@
-import { Box, Text, VStack, Image, Heading, Center, Button } from '@chakra-ui/react';
+import { Box, Text, VStack, Image, Heading, Center, Button, toast, useToast } from '@chakra-ui/react';
 import LoginBackground from '../assets/images/login-background.png';
 import { Tonic3Logo } from '@gms-micro/assets';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
@@ -6,24 +6,56 @@ import { RiGoogleLine } from 'react-icons/ri';
 import { environment } from '../environments/environment';
 import { useState } from 'react';
 import { signInWithExternalProvider } from './auth';
+import { useAuthHeader, useAuthUser, useIsAuthenticated, useSignIn, useSignOut } from 'react-auth-kit';
+import queryString from 'query-string';
+import { ApplicationUserPublic } from '@gms-micro/auth-types';
+
+const redirectWithData = (authHeader: string, authState: ApplicationUserPublic) => {
+    const queries = queryString.parse(window.location.search); // .search contains everything in the URL after the ?
+
+    // TODO: create custom no-redirect page or determine where to redirect if no redirect is specified
+    const redirect = queries['redirect'] || 'no-redirect'; // if redirect is not set, redirects to a custom no-redirect page
+    window.location.href = `${window.location.origin}/${redirect}?header=${authHeader}&user=${JSON.stringify(authState)}`;
+}
 
 const App = () => {
     const googleClientId = environment.googleClientId;
     const [loading, setLoading] = useState(false);
+    const signIn = useSignIn();
+    const getAuthHeader = useAuthHeader();
+    const getAuthState = useAuthUser();
+    const getAuthenticated = useIsAuthenticated();
+    const toast = useToast();
+
+    if (getAuthenticated()) redirectWithData(getAuthHeader(), getAuthState() as ApplicationUserPublic);
 
     const onSuccess = async (response: GoogleLoginResponse) => {
         setLoading(true);
+
+        // This response comes from the Google OAuth client
         const googleAuthResponse = response.getAuthResponse();
         try {
+            // This response comes from our API, that takes the google token and returns a JWT
             const apiResponse = await signInWithExternalProvider("google", googleAuthResponse.id_token);
+            signIn({
+                token: apiResponse.data.authToken.token,
+                expiresIn: apiResponse.data.authToken.expiresIn,
+                tokenType: apiResponse.data.tokenType,
+                authState: apiResponse.data.authState,
+                /*refreshToken: apiResponse.data.refreshToken.token,
+                refreshTokenExpireIn: apiResponse.data.refreshToken.expiresIn*/
+            });
+            window.location.reload();
         }
         catch (err) {
-            console.log(err);
+            onFailure(err);
         }
+        setLoading(false);
     }
 
     const onFailure = (e: any) => {
         console.log(e);
+        toast({ title: "Error signing in, try again later", description: e?.message, status: "error"});
     }
 
     return (

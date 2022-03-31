@@ -1,0 +1,23 @@
+{
+    "root": "libs/auth-types",
+    "sourceRoot": "libs/auth-types/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/auth-types/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/auth-types"],
+            "options": {
+                "jestConfig": "libs/auth-types/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

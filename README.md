@@ -35,6 +35,7 @@ However, being a micro-frontend architecture with a main router app (see `contai
 
 To run multiple applications: `concurrently "nx run container:serve"  "nx run app-1:serve --port=3001"  "nx run app-2:serve --port=3002"`
 > Make sure to scape the " if you paste this code on an npm script
+> `npm i -g concurrently`
 
 
 And you'll have a routing system on the previously mentioned `container` app: 
@@ -75,6 +76,6 @@ Run `nx graph` to see a diagram of the dependencies of the project
 
 ## Authentication in Micro-Frontend architecture
 
-Our `login` app handles the auth API connections, and since services can't share their current state, every app that you create that needs the JWT token / Authenticated user data must redirect to /sign-in sending `redirect=appRoute` as an URL query parameter (`?redirect=myapp`). Then, the sign-in component will handle the JWT token retrieval from cookies o generation from API, and will redirect to the caller route (`appRoute`) sending as URL query parameters the authentication header + authenticated user (`?header=authHeader&user=authUser`) so the original app that asked for the auth data can retrieve it from the URL.
+Our `login` app handles the auth API connections, and since services can't share their current state, every app that you create that needs the JWT token / Authenticated user data must redirect to /sign-in sending `redirect=appRoute` as an URL query parameter (`?redirect=myapp`). Then, the sign-in component will handle the JWT token retrieval from cookies or generation from API, and will redirect to the caller route (`appRoute`) sending as URL query parameters the authentication header + authenticated user (`?header=authHeader&user=authUser`) so the original app that asked for the auth data can retrieve it from the URL.
 
 We use `react-auth-kit` to handle the auth token expiration and persist the sign-in between sessions (cookies)

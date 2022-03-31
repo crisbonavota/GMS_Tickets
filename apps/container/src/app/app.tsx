@@ -1,4 +1,3 @@
-import { RequireAuth } from "react-auth-kit";
 import { Route, Routes } from "react-router-dom"
 import { environment } from "../environments/environment";
 import MicroFrontend from "./MicroFrontend"

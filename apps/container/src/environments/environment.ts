@@ -3,5 +3,5 @@
 
 export const environment = {
   production: false,
-  loginHost: 'http://localhost:3001'
+  loginHost: "http://localhost:3001"
 };

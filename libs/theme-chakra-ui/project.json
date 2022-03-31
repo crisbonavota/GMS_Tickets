@@ -1,0 +1,23 @@
+{
+  "root": "libs/theme-chakra-ui",
+  "sourceRoot": "libs/theme-chakra-ui/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/theme-chakra-ui/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/theme-chakra-ui"],
+      "options": {
+        "jestConfig": "libs/theme-chakra-ui/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

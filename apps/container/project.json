@@ -19,7 +19,6 @@
           "apps/container/src/favicon.ico",
           "apps/container/src/assets"
         ],
-        "styles": ["apps/container/src/styles.css"],
         "scripts": [],
         "webpackConfig": "@nrwl/react/plugins/webpack"
       },
@@ -43,7 +42,7 @@
     "serve": {
       "executor": "@nrwl/web:dev-server",
       "options": {
-        "buildTarget": "container:build",
+        "buildTarget": "container:build:development",
         "hmr": false
       },
       "configurations": {

@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom"
+import { environment } from "../environments/environment";
 import MicroFrontend from "./MicroFrontend"
 
-const loginHost = process.env['loginHost'] || 'http://localhost:3001';
+const loginHost = environment.loginHost;
 const Login = () => <MicroFrontend name="Login" host={loginHost} />
 
 const App = () => {

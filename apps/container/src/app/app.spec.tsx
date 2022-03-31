@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
-
 import { BrowserRouter } from 'react-router-dom';
 
 import App from './app';
 
+// This component, being only a placeholder for the routing, probably won't get much testing.
 describe('App', () => {
   it('should render successfully', () => {
     const { baseElement } = render(
@@ -13,15 +13,5 @@ describe('App', () => {
     );
 
     expect(baseElement).toBeTruthy();
-  });
-
-  it('should have a greeting as the title', () => {
-    const { getByText } = render(
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    );
-
-    expect(getByText(/Welcome container/gi)).toBeTruthy();
   });
 });

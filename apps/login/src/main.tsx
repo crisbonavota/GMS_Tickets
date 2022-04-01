@@ -28,8 +28,7 @@ export const mainComponent =
     </StrictMode>;
 
 window.renderLogin = (containerId) => {
-    ReactDOM.render(mainComponent, document.getElementById(containerId)
-    );
+    ReactDOM.render(mainComponent, document.getElementById(containerId));
 };
 
 window.unmountLogin = (containerId) => {

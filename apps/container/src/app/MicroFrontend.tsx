@@ -20,9 +20,8 @@ const MicroFrontend = ({ name, host }: Props) => {
         }
 
         const renderRemoteJS = async () => {
-            const manifest = await fetch(`${host}/asset-manifest.json`).then((res) =>
-                res.json()
-            );
+            const response = await fetch(`${host}/asset-manifest.json`);
+            const manifest =  await response.json();
 
             const script = document.createElement('script');
             script.id = scriptId;

@@ -96,11 +96,11 @@ export function App() {
     );
 
     return (
-        <Center w={'full'} minH={'100vh'} bgColor={'whitesmoke'}>
+        <Center w={'full'} minH={'92vh'}>
             <VStack
                 w={{ base: 'full', md: '75%' }}
                 spacing={5}
-                px={{ base: 5, md: 0 }}
+                p={{ base: 5, md: 0 }}
             >
                 <Stack
                     w={'full'}
@@ -211,10 +211,6 @@ const SidePanel = ({ query }: SidePanelProps) => {
                             <Heading>{query.data.headers['x-total-count']}</Heading>
                             <Text>total items with current filters</Text>
                         </HStack>
-                        <HStack>
-                            <Heading>{query.data.headers['total-hours']}</Heading>
-                            <Text>total hours with current filters</Text>
-                        </HStack>
                         {parseInt(query.data.headers['x-total-count']) > 25000 &&
                             <Text fontSize={'sm'}>We limit the rows of the export to 25k to ensure reasonable waiting times</Text>}
                         <HStack>
@@ -224,6 +220,10 @@ const SidePanel = ({ query }: SidePanelProps) => {
                                     ? 25000 : parseInt(query.data.headers['x-total-count'])}
                             </Heading>
                             <Text>items exported with current filters</Text>
+                        </HStack>
+                        <HStack>
+                            <Heading>{query.data.headers['total-hours']}</Heading>
+                            <Text>hours exported with current filters</Text>
                         </HStack>
                         <HStack>
                             <Heading>{query.data.headers['total-users']}</Heading>

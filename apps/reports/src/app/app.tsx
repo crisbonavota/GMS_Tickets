@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { getAuthHeader } from '@gms-micro/auth-methods';
-import { HStack, Select, Center, VStack, chakra, FormLabel, Text, Heading, Button, Skeleton, Stack } from '@chakra-ui/react';
+import { HStack, Select, Center, VStack, chakra, FormLabel, Text, Heading, Button, Skeleton, Stack, useBoolean } from '@chakra-ui/react';
 import { useQuery, UseQueryResult } from 'react-query';
 import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport, downloadFile, generateExcelFileURL } from './api';
 import { AxiosResponse } from 'axios';
@@ -12,9 +12,31 @@ export function App() {
     const [project, setProject] = useState<number>();
     const [proposal, setProposal] = useState<number>();
     const [account, setAccount] = useState<number>();
+    const [exportLoading, setExportLoading] = useBoolean();
+    
+    /* Dates inputs can't change between controlled-uncontrolled state so i have to avoid using undefined and manually convert
+        them to undefined if they're an empty string before sending them as filter value */
+    const [from, setFrom] = useState<string>("");
+    const [to, setTo] = useState<string>("");
 
     const onExport = () => {
+        setExportLoading.toggle();
         timetrackItemsQuery.isSuccess && downloadFile(generateExcelFileURL(timetrackItemsQuery.data?.data), `gms_report_${new Date(Date.now()).toISOString()}.xlsx`);
+        setExportLoading.toggle();
+    }
+
+    const onFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFrom(e.target.value);
+        if (to && Date.parse(to) < Date.parse(e.target.value)) {
+            setTo("");
+        }
+    }
+
+    const onToChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTo(e.target.value);
+        if (from && Date.parse(from) > Date.parse(e.target.value)) {
+            setFrom("");
+        }
     }
 
     useEffect(() => {
@@ -38,7 +60,7 @@ export function App() {
         getAccounts(authHeader), { retry: 2, retryDelay: 500 });
 
     const timetrackItemsQuery = useQuery(
-        ['timetrackItems', user, businessUnit, project, proposal, account],
+        ['timetrackItems', user, businessUnit, project, proposal, account, from, to],
         () => getTimetrackItemsReport(
             authHeader,
             [
@@ -62,6 +84,14 @@ export function App() {
                     field: 'project.proposal.accountId',
                     value: account
                 },
+                {
+                    field: 'date_sml',
+                    value: to !== "" ? to : undefined
+                },
+                {
+                    field: 'date_bgr',
+                    value: from !== "" ? from : undefined
+                }
             ])
     );
 
@@ -100,6 +130,8 @@ export function App() {
                             placeholder='Date start'
                             bgColor={'white'}
                             type={'date'}
+                            value={from}
+                            onChange={onFromChange}
                         />
                         <FormLabel>To</FormLabel>
                         <chakra.input
@@ -109,12 +141,23 @@ export function App() {
                             placeholder='Date start'
                             bgColor={'white'}
                             type={'date'}
+                            value={to}
+                            onChange={onToChange}
                         />
                     </VStack>
                     <SidePanel query={timetrackItemsQuery} />
                 </Stack>
-                <Button onClick={onExport} disabled={timetrackItemsQuery.isLoading} colorScheme={'green'} w={'full'}>Export</Button>
-                {timetrackItemsQuery.isLoading && <Text>You can use the filters even if it's loading</Text>}
+                <Button 
+                    onClick={onExport} 
+                    isLoading={exportLoading} 
+                    disabled={timetrackItemsQuery.isLoading 
+                        || timetrackItemsQuery.isError 
+                        || (timetrackItemsQuery.isSuccess && timetrackItemsQuery.data.headers['x-total-count'] === '0')} 
+                    colorScheme={'green'} w={'full'}
+                >
+                    Export
+                </Button>
+                {timetrackItemsQuery.isLoading && <Text>You can use the filters even if the results are loading</Text>}
             </VStack>
         </Center>
     );

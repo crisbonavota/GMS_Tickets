@@ -13,7 +13,7 @@ export function App() {
     const [proposal, setProposal] = useState<number>();
     const [account, setAccount] = useState<number>();
     const [exportLoading, setExportLoading] = useBoolean();
-    
+
     /* Dates inputs can't change between controlled-uncontrolled state so i have to avoid using undefined and manually convert
         them to undefined if they're an empty string before sending them as filter value */
     const [from, setFrom] = useState<string>("");
@@ -109,10 +109,10 @@ export function App() {
                     h={'full'}
                     flexDir={{ base: 'column', md: 'row' }}
                 >
-                    <VStack 
-                        alignItems={'flex-start'} 
-                        w={{ base: '100%', md: '50%' }} 
-                        h={'full'} 
+                    <VStack
+                        alignItems={'flex-start'}
+                        w={{ base: '100%', md: '50%' }}
+                        h={'full'}
                         me={{ base: 0, md: 5 }}
                         mb={{ base: 5, md: 0 }}
                     >
@@ -147,12 +147,12 @@ export function App() {
                     </VStack>
                     <SidePanel query={timetrackItemsQuery} />
                 </Stack>
-                <Button 
-                    onClick={onExport} 
-                    isLoading={exportLoading} 
-                    disabled={timetrackItemsQuery.isLoading 
-                        || timetrackItemsQuery.isError 
-                        || (timetrackItemsQuery.isSuccess && timetrackItemsQuery.data.headers['x-total-count'] === '0')} 
+                <Button
+                    onClick={onExport}
+                    isLoading={exportLoading}
+                    disabled={timetrackItemsQuery.isLoading
+                        || timetrackItemsQuery.isError
+                        || (timetrackItemsQuery.isSuccess && timetrackItemsQuery.data.headers['x-total-count'] === '0')}
                     colorScheme={'green'} w={'full'}
                 >
                     Export
@@ -209,24 +209,32 @@ const SidePanel = ({ query }: SidePanelProps) => {
                     <>
                         <HStack>
                             <Heading>{query.data.headers['x-total-count']}</Heading>
-                            <Text>items with current filters</Text>
+                            <Text>total items with current filters</Text>
                         </HStack>
                         <HStack>
                             <Heading>{query.data.headers['total-hours']}</Heading>
-                            <Text>hours with current filters</Text>
+                            <Text>total hours with current filters</Text>
                         </HStack>
+                        {parseInt(query.data.headers['x-total-count']) > 25000 &&
+                            <Text fontSize={'sm'}>We limit the rows of the export to 25k to ensure reasonable waiting times</Text>}
                         <HStack>
                             <Heading>
                                 {/* Capping the export to 25000 rows */}
                                 {parseInt(query.data.headers['x-total-count']) > 25000
                                     ? 25000 : parseInt(query.data.headers['x-total-count'])}
                             </Heading>
-                            <Text>rows exported with current filters</Text>
+                            <Text>items exported with current filters</Text>
                         </HStack>
-                        {parseInt(query.data.headers['x-total-count']) > 25000 &&
-                            <Text fontSize={'sm'}>We limit the rows of the export to 25k to ensure reasonable waiting times</Text>}
+                        <HStack>
+                            <Heading>{query.data.headers['total-users']}</Heading>
+                            <Text>users exported with current filters</Text>
+                        </HStack>
+                        <HStack>
+                            <Heading>{query.data.headers['total-business-units']}</Heading>
+                            <Text>business units exported with current filters</Text>
+                        </HStack>
                     </>}
-                {query.isLoading && [...Array(3)].map((v, i) => <Skeleton key={i} h={'50px'} w={'full'} />)}
+                {query.isLoading && [...Array(5)].map((v, i) => <Skeleton key={i} h={'50px'} w={'full'} />)}
             </VStack>
         </>
     )

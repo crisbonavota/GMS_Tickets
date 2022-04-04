@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Center, VStack, chakra, FormLabel, Text, Button, Stack, useBoolean } from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { Center, VStack, chakra, FormLabel, Text, Button, Stack, useBoolean, Input } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport, downloadFile, generateExcelFileURL } from './api';
 import SelectItemsDropdown, { SelectItem } from './select-item/select-item';
 import SidePanel from './side-panel/side-panel';
 
 export const App = ({ authHeader }: { authHeader: string }) => {
+    const [generalSearch, setGeneralSearch] = useState("");
+    const [refetchAux, setRefetchAux] = useState(0);
     const [users, setUsers] = useState<SelectItem[]>([]);
     const [businessUnits, setBusinessUnits] = useState<SelectItem[]>([]);
     const [projects, setProjects] = useState<SelectItem[]>([]);
@@ -38,6 +40,17 @@ export const App = ({ authHeader }: { authHeader: string }) => {
         }
     }
 
+    const onGeneralSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGeneralSearch(e.target.value);
+    }
+
+    // Workaround for waiting 1500ms after user finished typing in the general searchbar for the search to be triggered
+    useEffect(() => {
+        // I use refetch aux for triggering the refetch with the new filters because the refetch function (query.refetch()) can only be called on top level
+        const timeOutId = setTimeout(() => setRefetchAux(refetchAux + 1), 1500);
+        return () => clearTimeout(timeOutId);
+    }, [generalSearch])
+
     const usersQuery = useQuery(['users', authHeader], () =>
         getLegacyUsers(authHeader), { retry: 2, retryDelay: 500 });
 
@@ -54,7 +67,7 @@ export const App = ({ authHeader }: { authHeader: string }) => {
         getAccounts(authHeader), { retry: 2, retryDelay: 500 });
 
     const timetrackItemsQuery = useQuery(
-        ['timetrackItems', users, businessUnits, projects, proposals, accounts, from, to],
+        ['timetrackItems', users, businessUnits, projects, proposals, accounts, from, to, refetchAux],
         () => getTimetrackItemsReport(
             authHeader,
             [
@@ -86,6 +99,12 @@ export const App = ({ authHeader }: { authHeader: string }) => {
                     field: 'date_bgr',
                     value: from !== "" ? from : undefined
                 }
+            ], 
+            [
+                {
+                    name: 'generalSearch',
+                    value: generalSearch
+                }
             ])
     );
 
@@ -111,6 +130,7 @@ export const App = ({ authHeader }: { authHeader: string }) => {
                         mb={{ base: 5, md: 0 }}
                         spacing={3}
                     >
+                        <Input bgColor={'white'} value={generalSearch} onChange={onGeneralSearchChange} placeholder={'General search'} />
                         <SelectItemsDropdown
                             query={usersQuery}
                             placeholder={'Employee'}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { environment } from '../environments/environment';
-import { FilterItem, insertSort, insertStandardFilters, Sort } from '@gms-micro/api-filters';
+import { FilterItem, insertSort, insertStandardFilters, Sort, insertCustomFilters, CustomFilter } from '@gms-micro/api-filters';
 
 const client = axios.create({ baseURL: environment.apiUrl })
 
@@ -62,9 +62,10 @@ export const getAccounts = async (authHeader:string) => {
     return await client.get<Array<Account>>('/accounts', { headers: { Authorization: authHeader } });
 }
 
-export const getTimetrackItemsReport = async (authHeader:string, standardFilters: FilterItem[], sort?: Sort) => {
+export const getTimetrackItemsReport = async (authHeader:string, standardFilters: FilterItem[], customFilters: CustomFilter[] , sort?: Sort) => {
     let params:{ [key: string]: string } = {};
     insertStandardFilters(params, standardFilters);
+    insertCustomFilters(params, customFilters);
     insertSort(params, sort);
     return await client.get<string>('/timetrack/report', { headers: { Authorization: authHeader }, params });
 }

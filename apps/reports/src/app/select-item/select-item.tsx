@@ -62,6 +62,7 @@ const SelectItemsDropdown = ({ placeholder, setter, query, values, nameField }: 
                         disabled={query.isLoading || query.isError}
                         onChange={onSelectChange}
                         value={""} // This way the select always shows the placeholder, required because we're using it to fill an array, not selecting a single item
+                        cursor="pointer"
                     >
                         {processSearchInput(query.data.data, nameField, searchInput).map(e =>
                             <option key={e.id} value={e.id} data-name={e[nameField]}>

@@ -39,7 +39,11 @@ const SelectItemsDropdown = ({ placeholder, setter, query, values, nameField }: 
     return (
         <>
             <LabelsChips values={values} setter={setter} />
-            {query.isLoading && <Skeleton h={'40px'} w={'full'} />}
+            {query.isLoading && 
+                <HStack w={'full'}>
+                    <Skeleton h={'40px'} w={'40px'} />
+                    <Skeleton h={'40px'} w={'full'} />
+                </HStack>}
             {query.isSuccess && query.data &&
                 <HStack w={'full'}>
                     <IconButton

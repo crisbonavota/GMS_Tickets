@@ -5,6 +5,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { getTheme } from '@gms-micro/theme-chakra-ui';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { getAuthHeader } from '@gms-micro/auth-methods';
 
 declare global {
     interface Window {
@@ -14,12 +15,13 @@ declare global {
 }
 
 const queryClient = new QueryClient();
+const authHeader = getAuthHeader('reports');
 
 export const mainComponent =
     <StrictMode>
         <ChakraProvider theme={getTheme()}>
             <QueryClientProvider client={queryClient}>
-                <App />
+                {authHeader && <App authHeader={authHeader} />}
                 <ReactQueryDevtools initialIsOpen={false} />
             </QueryClientProvider>
         </ChakraProvider>

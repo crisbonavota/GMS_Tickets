@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { getAuthHeader } from '@gms-micro/auth-methods';
-import { HStack, Select, Center, VStack, chakra, FormLabel, Text, Heading, Button, Skeleton, Stack, useBoolean } from '@chakra-ui/react';
-import { useQuery, UseQueryResult } from 'react-query';
+import { useState } from 'react';
+import { Center, VStack, chakra, FormLabel, Text, Button, Stack, useBoolean } from '@chakra-ui/react';
+import { useQuery } from 'react-query';
 import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport, downloadFile, generateExcelFileURL } from './api';
-import { AxiosResponse } from 'axios';
+import SelectItemsDropdown, { SelectItem } from './select-item/select-item';
+import SidePanel from './side-panel/side-panel';
 
-export function App() {
-    const [authHeader, setAuthHeader] = useState("");
-    const [user, setUser] = useState<number>();
-    const [businessUnit, setBusinessUnit] = useState<number>();
-    const [project, setProject] = useState<number>();
-    const [proposal, setProposal] = useState<number>();
-    const [account, setAccount] = useState<number>();
+export const App = ({ authHeader }: { authHeader: string }) => {
+    const [users, setUsers] = useState<SelectItem[]>([]);
+    const [businessUnits, setBusinessUnits] = useState<SelectItem[]>([]);
+    const [projects, setProjects] = useState<SelectItem[]>([]);
+    const [proposals, setProposals] = useState<SelectItem[]>([]);
+    const [accounts, setAccounts] = useState<SelectItem[]>([]);
     const [exportLoading, setExportLoading] = useBoolean();
 
     /* Dates inputs can't change between controlled-uncontrolled state so i have to avoid using undefined and manually convert
@@ -39,50 +38,45 @@ export function App() {
         }
     }
 
-    useEffect(() => {
-        const queryAuthHeader = getAuthHeader('reports');
-        setAuthHeader(queryAuthHeader);
-    }, []);
-
-    const usersQuery = useQuery(['users'], () =>
+    const usersQuery = useQuery(['users', authHeader], () =>
         getLegacyUsers(authHeader), { retry: 2, retryDelay: 500 });
 
-    const businessUnitsQuery = useQuery(['businessUnits'], () =>
+    const businessUnitsQuery = useQuery(['businessUnits', authHeader], () =>
         getBusinessUnits(authHeader), { retry: 2, retryDelay: 500 });
 
-    const projectsQuery = useQuery(['projects'], () =>
+    const projectsQuery = useQuery(['projects', authHeader], () =>
         getProjects(authHeader), { retry: 2, retryDelay: 500 });
 
-    const proposalsQuery = useQuery(['proposals'], () =>
+    const proposalsQuery = useQuery(['proposals', authHeader], () =>
         getProposals(authHeader), { retry: 2, retryDelay: 500 });
 
-    const accountsQuery = useQuery(['accounts'], () =>
+    const accountsQuery = useQuery(['accounts', authHeader], () =>
         getAccounts(authHeader), { retry: 2, retryDelay: 500 });
 
     const timetrackItemsQuery = useQuery(
-        ['timetrackItems', user, businessUnit, project, proposal, account, from, to],
+        ['timetrackItems', users, businessUnits, projects, proposals, accounts, from, to],
         () => getTimetrackItemsReport(
             authHeader,
             [
                 {
-                    field: 'userId',
-                    value: user
+                    field: 'userId_OR',
+                    value: selectItemToFilterValues(users)
                 },
                 {
-                    field: 'user.businessUnitId',
-                    value: businessUnit
+                    field: 'user.businessUnitId_OR',
+                    value: selectItemToFilterValues(businessUnits)
                 },
                 {
-                    field: 'projectId',
-                    value: project
+                    field: 'projectId_OR',
+                    value: selectItemToFilterValues(projects)
                 },
                 {
-                    field: 'project.proposalId',
-                    value: proposal
+                    field: 'project.proposalId_OR',
+                    value: selectItemToFilterValues(proposals)
                 },
                 {
-                    field: 'project.proposal.accountId',
-                    value: account
+                    field: 'project.proposal.accountId_OR',
+                    value: selectItemToFilterValues(accounts)
                 },
                 {
                     field: 'date_sml',
@@ -115,12 +109,43 @@ export function App() {
                         h={'full'}
                         me={{ base: 0, md: 5 }}
                         mb={{ base: 5, md: 0 }}
+                        spacing={3}
                     >
-                        <SelectItem query={usersQuery} placeholder={'Employee'} value={user} setter={setUser} nameField={'fullName'} />
-                        <SelectItem query={businessUnitsQuery} placeholder={'Business Unit'} value={businessUnit} setter={setBusinessUnit} nameField={'name'} />
-                        <SelectItem query={projectsQuery} placeholder={'Project'} value={project} setter={setProject} nameField={'name'} />
-                        <SelectItem query={proposalsQuery} placeholder={'Proposal'} value={proposal} setter={setProposal} nameField={'name'} />
-                        <SelectItem query={accountsQuery} placeholder={'Account'} value={account} setter={setAccount} nameField={'name'} />
+                        <SelectItemsDropdown
+                            query={usersQuery}
+                            placeholder={'Employee'}
+                            values={users}
+                            setter={setUsers}
+                            nameField={'fullName'}
+                        />
+                        <SelectItemsDropdown
+                            query={businessUnitsQuery}
+                            placeholder={'Business Unit'}
+                            values={businessUnits}
+                            setter={setBusinessUnits}
+                            nameField={'name'}
+                        />
+                        <SelectItemsDropdown
+                            query={projectsQuery}
+                            placeholder={'Project'}
+                            values={projects}
+                            setter={setProjects}
+                            nameField={'name'}
+                        />
+                        <SelectItemsDropdown
+                            query={proposalsQuery}
+                            placeholder={'Proposal'}
+                            values={proposals}
+                            setter={setProposals}
+                            nameField={'name'}
+                        />
+                        <SelectItemsDropdown
+                            query={accountsQuery}
+                            placeholder={'Account'}
+                            values={accounts}
+                            setter={setAccounts}
+                            nameField={'name'}
+                        />
 
                         <FormLabel>From</FormLabel>
                         <chakra.input
@@ -163,81 +188,12 @@ export function App() {
     );
 }
 
-interface SelectItemProps {
-    placeholder: string,
-    value?: number,
-    setter: (value?: number) => void,
-    query: UseQueryResult<AxiosResponse<any[], any>, unknown>,
-    nameField: string
-}
-
-const SelectItem = ({ placeholder, setter, query, value, nameField }: SelectItemProps) => {
-    const onSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, setter: (value?: number) => void) => {
-        if (e.target.value) setter(parseInt(e.target.value));
-        else setter(undefined);
-    }
-
-    return (
-        <>
-            {query.isLoading && <Skeleton h={'40px'} w={'full'} />}
-            {query.isSuccess && query.data &&
-                <Select
-                    placeholder={placeholder}
-                    bgColor={'white'}
-                    disabled={query.isLoading || query.isError}
-                    value={value}
-                    onChange={(e) => onSelectChange(e, setter)}
-                >
-                    {query.data.data.map(e =>
-                        <option key={e.id} value={e.id}>
-                            {e[nameField]}
-                        </option>)}
-                </Select>}
-        </>
-    )
-}
-
-interface SidePanelProps {
-    query: UseQueryResult<AxiosResponse<string, any>, unknown>
-}
-
-const SidePanel = ({ query }: SidePanelProps) => {
-    return (
-        <>
-            <VStack alignItems={'flex-start'} spacing={5} w={{ base: '100%', md: '50%' }} h={'full'}>
-                {query.isSuccess &&
-                    <>
-                        <HStack>
-                            <Heading>{query.data.headers['x-total-count']}</Heading>
-                            <Text>total items with current filters</Text>
-                        </HStack>
-                        {parseInt(query.data.headers['x-total-count']) > 25000 &&
-                            <Text fontSize={'sm'}>We limit the rows of the export to 25k to ensure reasonable waiting times</Text>}
-                        <HStack>
-                            <Heading>
-                                {/* Capping the export to 25000 rows */}
-                                {parseInt(query.data.headers['x-total-count']) > 25000
-                                    ? 25000 : parseInt(query.data.headers['x-total-count'])}
-                            </Heading>
-                            <Text>items exported with current filters</Text>
-                        </HStack>
-                        <HStack>
-                            <Heading>{query.data.headers['total-hours']}</Heading>
-                            <Text>hours exported with current filters</Text>
-                        </HStack>
-                        <HStack>
-                            <Heading>{query.data.headers['total-users']}</Heading>
-                            <Text>users exported with current filters</Text>
-                        </HStack>
-                        <HStack>
-                            <Heading>{query.data.headers['total-business-units']}</Heading>
-                            <Text>business units exported with current filters</Text>
-                        </HStack>
-                    </>}
-                {query.isLoading && [...Array(5)].map((v, i) => <Skeleton key={i} h={'50px'} w={'full'} />)}
-            </VStack>
-        </>
-    )
+const selectItemToFilterValues = (items: SelectItem[]) => {
+    const values = items.map(item => item.id);
+    // The lib that processes the filters before sending them to the API needs empty filters to be undefined
+    if (values.length === 0) return undefined; 
+    console.log(values);
+    return values.toString();
 }
 
 export default App;

@@ -1,5 +1,5 @@
 stages:
-  - test
+  #- test
   - build-src
   - update-images
   - docker-compose-up
@@ -20,8 +20,8 @@ variables:
 # Note that environment variables can be set in several places
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 
-include:
-  - template: Security/SAST.gitlab-ci.yml
+#include:
+#  - template: Security/SAST.gitlab-ci.yml
 
 #sast:
 #  stage: test
@@ -29,7 +29,6 @@ include:
 #    - docker-gms-dev
 
 gms:
-
   stage: build-src
   tags:
     - docker-gms-dev

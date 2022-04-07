@@ -1,6 +1,6 @@
 FROM node:17.4
 ARG PORT=80
-ARG PUBLIC_URL="https://gms.devw3americas.com"
+ARG PUBLIC_URL
 
 ENV PORT=$PORT
 ENV PUBLIC_URL=$PUBLIC_URL

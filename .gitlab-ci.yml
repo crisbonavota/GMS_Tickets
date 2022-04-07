@@ -1,5 +1,5 @@
 stages:
-  #- test
+  - test
   - build-src
   - update-images
   - docker-compose-up
@@ -23,10 +23,10 @@ variables:
 include:
   - template: Security/SAST.gitlab-ci.yml
 
-sast:
-  stage: test
-  tags:
-    - docker-gms-dev
+#sast:
+#  stage: test
+#  tags:
+#    - docker-gms-dev
 
 gms:
 

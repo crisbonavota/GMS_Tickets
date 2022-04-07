@@ -37,9 +37,7 @@ gms:
     - node --version    
     - npm install
     #- npm run test
-    - nx build container --configuration=production
-    - nx build login --configuration=production
-    - nx build reports --configuration=production
+    - npm run build
   artifacts:
     paths:
     - build

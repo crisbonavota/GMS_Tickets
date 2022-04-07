@@ -12,7 +12,7 @@ WORKDIR /usr/src/app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install app dependencies
-COPY build ./build
+COPY dist ./dist
 COPY package-server.json ./package.json
 RUN npm install --silent
 

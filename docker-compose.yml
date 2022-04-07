@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  gms:
+    image: gms-img
+    build:
+      context: ./
+      dockerfile: dockerfile
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+    restart: unless-stopped
+
+networks:
+  default:
+    name: ${NETWORK}

@@ -1,5 +1,5 @@
 stages:
-  - test
+  #- test
   - build-src
   - update-images
   - docker-compose-up

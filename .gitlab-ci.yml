@@ -40,7 +40,7 @@ gms:
     - npm run build
   artifacts:
     paths:
-    - build
+    - dist
     expire_in: 1 week
   rules:
     - if: '$CI_COMMIT_BRANCH == "develop"'

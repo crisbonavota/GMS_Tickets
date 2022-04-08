@@ -28,11 +28,11 @@ mainServer.get(`${basePath}*`, (req, res) => {
 });
 
 loginServer.get(`${basePath}*`, (req, res) => {
-    res.sendFile(`${__dirname}/dist/apps/login/index.html`);
+    res.sendFile(`${__dirname}/dist/apps/login/asset-manifest.json`);
 });
 
 reportsServer.get(`${basePath}*`, (req, res) => {
-    res.sendFile(`${__dirname}/dist/apps/reports/index.html`);
+    res.sendFile(`${__dirname}/dist/apps/reports/asset-manifest.json`);
 });
 
 // eslint-disable-next-line no-undef

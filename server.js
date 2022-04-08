@@ -36,7 +36,7 @@ reportsServer.get(`${basePath}*`, (req, res) => {
 });
 
 // eslint-disable-next-line no-undef
-const mainPort = process.env.PORT ? process.env.PORT : 4200;
+const mainPort = process.env.PORT ? process.env.PORT : 3000;
 const loginPort = 3001;
 const reportsPort = 3002;
 

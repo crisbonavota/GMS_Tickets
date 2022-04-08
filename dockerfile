@@ -20,4 +20,6 @@ RUN npm install --silent
 COPY server.js ./
 
 EXPOSE $PORT
+EXPOSE 3001
+EXPOSE 3002
 CMD [ "node", "server.js" ]

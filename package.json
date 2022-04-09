@@ -5,8 +5,7 @@
   "scripts": {
     "start": "concurrently \"nx run container:serve\" \"nx run login:serve --port=3001\" \"nx run reports:serve --port=3002\"",
     "build": "nx run-many --all --target=build --parallel",
-    "test": "nx run-many --all --target=test --parallel",
-    "serve-builds": "concurrently \"serve -l 4200 -s dist/apps/container\" \"serve -l 3001 -s dist/apps/login\" \"serve -l 3002 -s dist/apps/reports\""
+    "test": "nx run-many --all --target=test --parallel"
   },
   "private": true,
   "dependencies": {

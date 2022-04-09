@@ -1,11 +1,10 @@
 import { Box, VStack } from '@chakra-ui/react';
 import { Route, Routes, useLocation } from "react-router-dom"
-import { environment } from "../environments/environment";
 import MicroFrontend from "./MicroFrontend"
 import Navbar from "./navbar/navbar";
 
-const Login = () => <MicroFrontend name="Login" host={environment.loginHost} />
-const Reports = () => <MicroFrontend name="Reports" host={environment.reportsHost} />
+const Login = () => <MicroFrontend name="Login" />
+const Reports = () => <MicroFrontend name="Reports" />
 
 const App = () => {
     const location = useLocation();

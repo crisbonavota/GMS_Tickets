@@ -2,10 +2,9 @@ import { useEffect } from 'react';
 
 interface Props {
     name: string;
-    host: string;
 }
 
-const MicroFrontend = ({ name, host }: Props) => {
+const MicroFrontend = ({ name }: Props) => {
     useEffect(() => {
         const scriptId = `micro-frontend-script-${name}`;
 
@@ -20,13 +19,13 @@ const MicroFrontend = ({ name, host }: Props) => {
         }
 
         const renderRemoteJS = async () => {
-            const response = await fetch(`${host}/asset-manifest.json`);
+            const response = await fetch(`/${name.toLowerCase()}-app/asset-manifest.json`);
             const manifest =  await response.json();
 
             const script = document.createElement('script');
             script.id = scriptId;
             script.crossOrigin = '';
-            script.src = `${host}${manifest.files['main.js']}`;
+            script.src = `/${name.toLowerCase()}-app/${manifest.files['main.js']}`;
             script.onload = () => {
                 renderMicroFrontend();
             };
@@ -39,7 +38,7 @@ const MicroFrontend = ({ name, host }: Props) => {
             (window as any)[`unmount${name}`] &&
                 (window as any)[`unmount${name}`](`${name}-container`);
         };
-    }, [name, host]);
+    }, [name]);
 
     return <main id={`${name}-container`} />;
 };

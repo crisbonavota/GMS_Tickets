@@ -2,7 +2,5 @@
 // When building for production, this file is replaced with `environment.prod.ts`.
 
 export const environment = {
-  production: false,
-  loginHost: "http://localhost:3001",
-  reportsHost: "http://localhost:3002",
+  production: false
 };

@@ -23,4 +23,3 @@ server.get(`${basePath}*`, (req, res) => {
 
 const mainPort = process.env.PORT ? process.env.PORT : 3000;
 server.listen(mainPort, () => console.log(`Example app listening on port ${mainPort}`));
-console.log(process.env.APPS.split(','));

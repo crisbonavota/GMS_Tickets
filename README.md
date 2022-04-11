@@ -15,6 +15,8 @@ To maintain the micro-frontend structure, you must create an application (indepe
 
 Run `nx g @nrwl/react:app my-app` to generate an application.
 
+Take advantage of the @gms-micro/microfront-utils library to render the application as a microfrontend (don't forget to add it to the container app.tsx).
+
 > You can also combine frameworks, as Angular, Vue, etc.
 
 ## Generate a library
@@ -56,10 +58,7 @@ Look up in the repo the differences between the entrypoints (`main.tsx`) of the 
 > The container app renders multiple apps and a common app only render itselfs
 
 ## Build
-
-Run `nx build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-In this micro-frontend architecture, building the `container` app is enough
+// TODO: fill this section
 
 ## Running unit tests
 

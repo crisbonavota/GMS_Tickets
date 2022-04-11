@@ -7,6 +7,7 @@
         "auth-types": "libs/auth-types",
         "container": "apps/container",
         "login": "apps/login",
+        "microfront-utils": "libs/microfront-utils",
         "reports": "apps/reports",
         "theme-chakra-ui": "libs/theme-chakra-ui"
     }

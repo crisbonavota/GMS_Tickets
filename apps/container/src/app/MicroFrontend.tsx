@@ -6,12 +6,14 @@ interface Props {
 }
 
 const MicroFrontend = ({ name }: Props) => {
+    const standarizedName = name.toLowerCase();
+
     useEffect(() => {
-        const scriptId = `micro-frontend-script-${name}`;
+        const scriptId = `micro-frontend-script-${standarizedName}`;
 
         const renderMicroFrontend = () => {
             // history?
-            (window as any)[`render${name}`](`${name}-container`);
+            (window as any)[`render${standarizedName}`](`${standarizedName}-container`);
         };
 
         if (document.getElementById(scriptId)) {
@@ -28,8 +30,8 @@ const MicroFrontend = ({ name }: Props) => {
 
         const renderRemoteJS = async () => {
             const basePath = environment.production 
-                ? `/${name.toLowerCase()}-app` // Prod: the server serves the static files from <appname>-app/
-                : `${environment[`${name.toLocaleLowerCase()}Host`]}`; // Dev: the server serves the static files from <appHost>/
+                ? `/${standarizedName}-app` // Prod: the server serves the static files from <appname>-app/
+                : `${environment[`${standarizedName}Host`]}`; // Dev: the server serves the static files from <appHost>/
 
             const response = await fetch(`${basePath}/asset-manifest.json`);
             const manifest =  await response.json();
@@ -47,12 +49,12 @@ const MicroFrontend = ({ name }: Props) => {
         renderRemoteJS();
 
         return () => {
-            (window as any)[`unmount${name}`] &&
-                (window as any)[`unmount${name}`](`${name}-container`);
+            (window as any)[`unmount${standarizedName}`] &&
+                (window as any)[`unmount${standarizedName}`](`${standarizedName}-container`);
         };
     }, [name]);
 
-    return <main id={`${name}-container`} />;
+    return <main id={`${standarizedName}-container`} />;
 };
 
 export default MicroFrontend;

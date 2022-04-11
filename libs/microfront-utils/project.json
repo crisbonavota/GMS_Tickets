@@ -1,0 +1,25 @@
+{
+    "root": "libs/microfront-utils",
+    "sourceRoot": "libs/microfront-utils/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": [
+                    "libs/microfront-utils/**/*.{ts,tsx,js,jsx}"
+                ]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/microfront-utils"],
+            "options": {
+                "jestConfig": "libs/microfront-utils/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

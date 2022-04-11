@@ -4,8 +4,8 @@ import MicroFrontend from "./MicroFrontend"
 import Navbar from "./navbar/navbar";
 import NotFound from './not-found/not-found';
 
-const Login = () => <MicroFrontend name="Login" />
-const Reports = () => <MicroFrontend name="Reports" />
+const Login = () => <MicroFrontend name="login" />
+const Reports = () => <MicroFrontend name="reports" />
 
 const App = () => {
     const location = useLocation();

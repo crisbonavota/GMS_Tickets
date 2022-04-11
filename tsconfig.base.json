@@ -19,6 +19,9 @@
             "@gms-micro/assets": ["libs/assets/src/index.ts"],
             "@gms-micro/auth-methods": ["libs/auth-methods/src/index.ts"],
             "@gms-micro/auth-types": ["libs/auth-types/src/index.ts"],
+            "@gms-micro/microfront-utils": [
+                "libs/microfront-utils/src/index.ts"
+            ],
             "@gms-micro/theme-chakra-ui": ["libs/theme-chakra-ui/src/index.ts"]
         }
     },

@@ -22,5 +22,5 @@ RUN npm install --silent
 # add app
 COPY server.js ./
 
-EXPOSE $PORT-3001-3002
+EXPOSE $PORT
 CMD [ "node", "server.js" ]

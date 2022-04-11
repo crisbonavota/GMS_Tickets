@@ -2,10 +2,11 @@ import { useEffect } from 'react';
 import { environment } from '../environments/environment';
 
 interface Props {
-    name: string;
+    name: string,
+    port: number
 }
 
-const MicroFrontend = ({ name }: Props) => {
+const MicroFrontend = ({ name, port }: Props) => {
     const standarizedName = name.toLowerCase();
 
     useEffect(() => {
@@ -31,7 +32,7 @@ const MicroFrontend = ({ name }: Props) => {
         const renderRemoteJS = async () => {
             const basePath = environment.production 
                 ? `/${standarizedName}-app` // Prod: the server serves the static files from <appname>-app/
-                : `${environment[`${standarizedName}Host`]}`; // Dev: the server serves the static files from <appHost>/
+                : `${window.location.protocol}//${window.location.hostname}:${port}`; // Dev: the server serves the static files from localhost:<port>
 
             const response = await fetch(`${basePath}/asset-manifest.json`);
             const manifest =  await response.json();

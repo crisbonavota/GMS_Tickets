@@ -3,6 +3,5 @@
 
 export const environment: {[key: string]: string | boolean} = {
     production: false,
-    loginHost: 'http://localhost:3001',
-    reportsHost: 'http://localhost:3002'
+    apps: 'login,reports'
 };

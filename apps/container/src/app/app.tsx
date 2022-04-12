@@ -21,7 +21,7 @@ const App = () => {
 }
 
 const generateMicrofrontRoutes = () => {
-    const microfrontNames = environment.apps ? (environment.apps as string).split(',') : [];
+    const microfrontNames = environment.apps ? (environment.apps as string).replace(/ /g, '').split(',') : [];
     const initialPort = 3001;
     const microfronts = microfrontNames.map((name, index) => <MicroFrontend key={name} name={name} port={initialPort + index} />);
     

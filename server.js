@@ -11,7 +11,7 @@ server.use(express.json());
 server.use(cors());
 
 const basePath = process.env.PUBLIC_URL ? process.env.PUBLIC_URL : '';
-const apps = process.env.APPS ? process.env.APPS.split(',') : [];
+const apps = process.env.APPS ? process.env.APPS.replace(/ /g, '').split(',') : [];
 server.use(`${basePath}/`, express.static(`${__dirname}/dist/apps/container`));
 
 // Serve each app static files under /<appName>-app

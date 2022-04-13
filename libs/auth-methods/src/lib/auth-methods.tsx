@@ -24,7 +24,7 @@ const getAuthInfo: (source: string) => LocalAuthInfo | null = (source: string) =
 
     return { 
         authHeader: queryAuthHeader.toString(), 
-        authUser: queryAuthUser.toString() as unknown as ApplicationUserPrivate
+        authUser: JSON.parse(queryAuthUser.toString()) as ApplicationUserPrivate
     }
 }
 

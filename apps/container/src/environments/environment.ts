@@ -3,5 +3,5 @@
 
 export const environment: {[key: string]: string | boolean} = {
     production: false,
-    apps: 'login,reports'
+    apps: 'login,reports,home'
 };

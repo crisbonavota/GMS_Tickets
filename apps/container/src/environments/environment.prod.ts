@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apps: 'login,reports'
+  apps: 'login,reports,home'
 };

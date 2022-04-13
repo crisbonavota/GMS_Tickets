@@ -1,4 +1,4 @@
-import { Box, Text, VStack, Image, Heading, Center, Button, useToast } from '@chakra-ui/react';
+import { Box, Text, Image, Heading, VStack, Button, useToast, Center } from '@chakra-ui/react';
 import LoginBackground from '../assets/images/login-background.png';
 import { Tonic3Logo } from '@gms-micro/assets';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';

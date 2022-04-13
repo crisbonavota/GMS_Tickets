@@ -1,17 +1,6 @@
 import axios from 'axios';
 import { environment } from '../environments/environment';
-import { ApplicationUserPublic } from '@gms-micro/auth-types';
-interface Token {
-    token: string,
-    expiresIn: number
-}
-
-export interface AuthResponse {
-    authToken: Token,
-    refreshToken: Token,
-    tokenType: string,
-    authState: ApplicationUserPublic
-}
+import { AuthResponse } from '@gms-micro/auth-types';
 
 const client = axios.create({
     'baseURL': `${environment.apiUrl}/users`

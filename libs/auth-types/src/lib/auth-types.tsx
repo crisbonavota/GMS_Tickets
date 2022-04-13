@@ -5,7 +5,7 @@ export interface ApplicationUserPublic {
     image: string
 }
 
-export interface ApplicationUserPrivate {
+export interface ApplicationUserPrivate extends ApplicationUserPublic {
     roles: Array<string>
 }
 

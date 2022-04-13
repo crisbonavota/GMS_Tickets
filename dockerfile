@@ -6,7 +6,7 @@ ENV PORT=$PORT
 ENV PUBLIC_URL=$PUBLIC_URL
 
 # Specify which micro apps will be served
-ENV APPS=REPORTS,LOGIN
+ENV APPS=REPORTS,LOGIN,HOME
 
 # Create app directory
 WORKDIR /usr/src/app

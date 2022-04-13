@@ -6,6 +6,7 @@
         "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
         "container": "apps/container",
+        "home": "apps/home",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
         "reports": "apps/reports",

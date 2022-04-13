@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "license": "MIT",
     "scripts": {
-        "start": "concurrently \"nx run container:serve --port 3000\" \"nx run login:serve --port=3001\" \"nx run reports:serve --port=3002\"",
+        "start": "concurrently \"nx run container:serve --port 3000\" \"nx run login:serve --port=3001\" \"nx run reports:serve --port=3002\" \"nx run home:serve --port=3003\"",
         "build": "nx run-many --all --target=build --parallel",
         "test": "nx run-many --all --target=test --parallel"
     },

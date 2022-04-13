@@ -13,8 +13,7 @@ import { ApplicationUserPublic } from '@gms-micro/auth-types';
 const redirectWithData = (authHeader: string, authState: ApplicationUserPublic) => {
     const queries = queryString.parse(window.location.search); // .search contains everything in the URL after the ?
 
-    // TODO: create custom no-redirect page or determine where to redirect if no redirect is specified
-    const redirect = queries['redirect'] || 'no-redirect'; // if redirect is not set, redirects to a custom no-redirect page
+    const redirect = queries['redirect'] || ''; // if redirect is not set, redirects to home page (/)
     window.location.href = `${window.location.origin}/${redirect}?header=${authHeader}&user=${JSON.stringify(authState)}`;
 }
 
@@ -47,15 +46,16 @@ const App = () => {
             });
             window.location.reload();
         }
-        catch (err) {
-            onFailure(err);
+        catch (err: any) {
+            console.log(err);
+            toast({ title: "Error signing in, try again later", description: err?.message, status: "error"});
         }
         setLoading(false);
     }
 
     const onFailure = (e: any) => {
         console.log(e);
-        toast({ title: "Error signing in, try again later", description: e?.message, status: "error"});
+        toast({ title: "Can't connect to Google for signing in, try again later", description: e?.message, status: "error"});
     }
 
     return (

@@ -1,9 +1,8 @@
 import { CustomFilter, FilterItem, insertCustomFilters, insertPagination, insertSort, insertStandardFilters, Sort } from '@gms-micro/api-filters';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import axios from 'axios';
-import { environment } from './environments/environment';
 
-const client = axios.create({ baseURL: `${environment.apiUrl}/updates` });
+const client = axios.create({ baseURL: `${process.env['NX_API_URL']}/updates` });
 
 interface UpdateType {
     id: number,

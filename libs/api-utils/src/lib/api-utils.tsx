@@ -1,9 +1,8 @@
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import axios from 'axios';
-import { environment } from '../environments/environment';
 
 export const getLegacyUsers = async (authHeader:string) => {
-    const client = axios.create({ baseURL: environment.apiUrl });
+    const client = axios.create({ baseURL: process.env['NX_API_URL'] });
     return await client.get<Array<LegacyUserPublic>>('/users/legacy', { headers: { Authorization: authHeader } });
 }
 

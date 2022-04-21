@@ -1,0 +1,40 @@
+{
+    "apps": {
+        "home": {
+            "name": "home",
+            "path": "/",
+            "dev-port": 3001,
+            "serve-on": {
+                "production": true,
+                "development": true
+            }
+        },
+        "login": {
+            "name": "login",
+            "path": "/sign-in",
+            "dev-port": 3002,
+            "serve-on": {
+                "production": true,
+                "development": true
+            }
+        },
+        "reports": {
+            "name": "reports",
+            "path": "/reports",
+            "dev-port": 3003,
+            "serve-on": {
+                "production": true,
+                "development": true
+            }
+        },
+        "hr-updates": {
+            "name": "hr-updates",
+            "path": "/hr-updates",
+            "dev-port": 3004,
+            "serve-on": {
+                "production": true,
+                "development": true
+            }
+        }
+    }
+}

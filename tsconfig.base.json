@@ -20,6 +20,7 @@
             "@gms-micro/assets": ["libs/assets/src/index.ts"],
             "@gms-micro/auth-methods": ["libs/auth-methods/src/index.ts"],
             "@gms-micro/auth-types": ["libs/auth-types/src/index.ts"],
+            "@gms-micro/deploy-configs": ["libs/deploy-configs/src/index.ts"],
             "@gms-micro/microfront-utils": [
                 "libs/microfront-utils/src/index.ts"
             ],

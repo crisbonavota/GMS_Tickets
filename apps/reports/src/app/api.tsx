@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { environment } from '../environments/environment';
 import { FilterItem, insertSort, insertStandardFilters, Sort, insertCustomFilters, CustomFilter } from '@gms-micro/api-filters';
 import { LegacyUserPublic } from 'libs/auth-types/src/lib/auth-types';
 
-const client = axios.create({ baseURL: environment.apiUrl })
+const client = axios.create({ baseURL: process.env['NX_API_URL'] })
 
 interface BusinessUnit {
     id: number,

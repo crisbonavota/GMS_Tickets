@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { environment } from '../environments/environment';
 import { AuthResponse } from '@gms-micro/auth-types';
 
 const client = axios.create({
-    'baseURL': `${environment.apiUrl}/users`
+    'baseURL': `${process.env['NX_API_URL']}/users`
 })
 
 export const signInWithExternalProvider = (provider: string, token: string) => {

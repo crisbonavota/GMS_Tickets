@@ -1,7 +1,7 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // When building for production, this file is replaced with `environment.prod.ts`.
 
-export const environment: {[key: string]: string | boolean} = {
+export const environment = {
     production: false,
-    apps: 'login,reports,home,hr-updates'
+    apiUrl: "https://localhost:7230/api"
 };

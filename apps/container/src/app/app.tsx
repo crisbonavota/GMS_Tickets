@@ -26,7 +26,11 @@ const generateMicrofrontRoutes = () => {
     const microfronts = microfrontNames.map((name, index) => <MicroFrontend key={name} name={name} port={initialPort + index} />);
     
     // By default we use the app name as route, but you can change this by adding an element to this array
-    const customPaths = [{ app: 'login', route: '/sign-in' }, { app: 'home', route: '/' }];
+    const customPaths = [
+        { app: 'login', route: '/sign-in' }, 
+        { app: 'home', route: '/' }, 
+        { app: 'hr-updates', route: '/hr/updates' },
+    ];
 
     return microfronts.map((microfront) =>
         <Route

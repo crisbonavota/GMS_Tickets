@@ -1,15 +1,9 @@
 import axios from 'axios';
 import { environment } from '../environments/environment';
 import { FilterItem, insertSort, insertStandardFilters, Sort, insertCustomFilters, CustomFilter } from '@gms-micro/api-filters';
+import { LegacyUserPublic } from 'libs/auth-types/src/lib/auth-types';
 
 const client = axios.create({ baseURL: environment.apiUrl })
-
-interface LegacyUserPublic {
-    id: number,
-    email: string,
-    fullName: string,
-    fileNumber: number
-}
 
 interface BusinessUnit {
     id: number,
@@ -42,10 +36,6 @@ export interface TimetrackItem {
     date: string
 }
 
-export const getLegacyUsers = async (authHeader:string) => {
-    return await client.get<Array<LegacyUserPublic>>('/users/legacy', { headers: { Authorization: authHeader } });
-}
-
 export const getBusinessUnits = async (authHeader:string) => {
     return await client.get<Array<BusinessUnit>>('/businessUnits', { headers: { Authorization: authHeader } });
 }
@@ -68,17 +58,4 @@ export const getTimetrackItemsReport = async (authHeader:string, standardFilters
     insertCustomFilters(params, customFilters);
     insertSort(params, sort);
     return await client.get<string>('/timetrack/report', { headers: { Authorization: authHeader }, params });
-}
-
-export const downloadFile = (url:string, fileName:string) => {
-    var download = document.createElement('a');
-    download.href = url;
-    download.download = fileName;
-    document.body.appendChild(download);
-    download.click();
-    document.body.removeChild(download);
-}
-
-export const generateExcelFileURL = (data:string) => {
-    return `data:application/vnd.ms-excel;base64,${encodeURIComponent(data)}`;
 }

@@ -1,4 +1,4 @@
-import { VStack, Heading, Text, HStack, Link } from '@chakra-ui/react';
+import { VStack, Heading, Text, HStack, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
 import { ApplicationUserPrivate } from '@gms-micro/auth-types'
 
 const App = ({ authUser }: { authUser: ApplicationUserPrivate }) => {
@@ -9,7 +9,9 @@ const App = ({ authUser }: { authUser: ApplicationUserPrivate }) => {
                 <Text fontSize={'3xl'}>YOUR MODULES</Text>
             </HStack>
             {!authUser.roles.length && <Text fontSize={'2xl'}>You don't have any modules yet, please contact your administrator</Text>}
-            {authUser.roles.length && authUser.roles.map((role) => roleToLink(role))}
+            <Breadcrumb>
+                {authUser.roles.length && authUser.roles.map((role) => roleToLink(role))}
+            </Breadcrumb>
         </VStack>
     )
 }
@@ -18,14 +20,24 @@ const roleToLink = (role: string) => {
     let name = "";
     let href = "";
     switch (role) {
-        case 'timetrackReporter':
-            name = "Timetrack Reports";
+        case 'tt-reports':
+            name = "Timetrack - Reports";
             href = "/reports";
             break;
+        case 'hr-updates':
+            name = "Human Resources - Updates";
+            href = "hr/updates";
+            break;
         default:
-            return <></>;
+            name = role;
+            href= `/${role}`;
+            break;
     }
-    return <Link fontSize={'xl'} color={'blue'} key={role} href={href}>{name}</Link>
+    return (
+        <BreadcrumbItem>
+            <BreadcrumbLink fontSize={'xl'} color={'blue'} key={role} href={href}>{name}</BreadcrumbLink>
+        </BreadcrumbItem>
+    );
 }
 
 export default App

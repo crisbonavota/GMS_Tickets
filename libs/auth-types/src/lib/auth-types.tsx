@@ -20,3 +20,10 @@ export interface AuthResponse {
     tokenType: string,
     authState: ApplicationUserPrivate
 }
+
+export interface LegacyUserPublic {
+    id: number,
+    email: string,
+    fullName: string,
+    fileNumber: number
+}

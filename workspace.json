@@ -2,11 +2,13 @@
     "version": 2,
     "projects": {
         "api-filters": "libs/api-filters",
+        "api-utils": "libs/api-utils",
         "assets": "libs/assets",
         "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
         "container": "apps/container",
         "home": "apps/home",
+        "hr-updates": "apps/hr-updates",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
         "reports": "apps/reports",

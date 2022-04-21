@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { VStack, chakra, FormLabel, Text, Button, Stack, useBoolean, Input, Center } from '@chakra-ui/react';
+import { VStack, chakra, FormLabel, Text, Button, Stack, Input, Center } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
-import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport, downloadFile, generateExcelFileURL } from './api';
+import { getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport } from './api';
 import SelectItemsDropdown, { SelectItem } from './select-item/select-item';
 import SidePanel from './side-panel/side-panel';
+import { downloadFile, generateExcelFileURL, getLegacyUsers } from '@gms-micro/api-utils';
 
 export const App = ({ authHeader }: { authHeader: string }) => {
     const [generalSearch, setGeneralSearch] = useState("");
@@ -13,7 +14,6 @@ export const App = ({ authHeader }: { authHeader: string }) => {
     const [projects, setProjects] = useState<SelectItem[]>([]);
     const [proposals, setProposals] = useState<SelectItem[]>([]);
     const [accounts, setAccounts] = useState<SelectItem[]>([]);
-    const [exportLoading, setExportLoading] = useBoolean();
 
     /* Dates inputs can't change between controlled-uncontrolled state so i have to avoid using undefined and manually convert
         them to undefined if they're an empty string before sending them as filter value */
@@ -21,9 +21,7 @@ export const App = ({ authHeader }: { authHeader: string }) => {
     const [to, setTo] = useState<string>("");
 
     const onExport = () => {
-        setExportLoading.toggle();
-        timetrackItemsQuery.isSuccess && downloadFile(generateExcelFileURL(timetrackItemsQuery.data?.data), `gms_report_${new Date(Date.now()).toISOString()}.xlsx`);
-        setExportLoading.toggle();
+        timetrackItemsQuery.isSuccess && downloadFile(generateExcelFileURL(timetrackItemsQuery.data?.data), `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`);
     }
 
     const onFromChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -194,10 +192,8 @@ export const App = ({ authHeader }: { authHeader: string }) => {
                 </Stack>
                 <Button
                     onClick={onExport}
-                    isLoading={exportLoading}
-                    disabled={timetrackItemsQuery.isLoading
-                        || timetrackItemsQuery.isError
-                        || (timetrackItemsQuery.isSuccess && timetrackItemsQuery.data.headers['x-total-count'] === '0')}
+                    isLoading={timetrackItemsQuery.isLoading}
+                    disabled={timetrackItemsQuery.isError || (timetrackItemsQuery.isSuccess && timetrackItemsQuery.data.headers['x-total-count'] === '0')}
                     colorScheme={'green'} w={'full'}
                 >
                     Export

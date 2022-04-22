@@ -28,6 +28,7 @@ const generateMicrofrontRoutes = () => {
     
     return apps.map((app) =>
         <Route
+            // @ts-ignore
             key={app.name}
             path={app.path}
             element={<MicroFrontend name={app.name} port={app.devPort} />}

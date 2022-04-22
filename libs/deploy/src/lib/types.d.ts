@@ -9,7 +9,9 @@ export interface App {
     serveOn: {
         production: boolean,
         development: boolean
-    }
+    },
+    allowedRoles?: Array<string>,
+    label: string
 }
 
 export as namespace Config;

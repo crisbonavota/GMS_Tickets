@@ -1,4 +1,5 @@
 import { VStack, Heading, Text, HStack, Breadcrumb, BreadcrumbItem, BreadcrumbLink } from '@chakra-ui/react';
+import { config } from '@gms-micro/deploy';
 import { ApplicationUserPrivate } from '@gms-micro/auth-types'
 
 const App = ({ authUser }: { authUser: ApplicationUserPrivate }) => {
@@ -10,32 +11,27 @@ const App = ({ authUser }: { authUser: ApplicationUserPrivate }) => {
             </HStack>
             {!authUser.roles.length && <Text fontSize={'2xl'}>You don't have any modules yet, please contact your administrator</Text>}
             <Breadcrumb>
-                {authUser.roles.length && authUser.roles.map((role) => roleToLink(role))}
+                {authUser.roles.length && generateBreadcrumbs(authUser.roles)}
             </Breadcrumb>
         </VStack>
     )
 }
 
-const roleToLink = (role: string) => {
-    let name = "";
-    let href = "";
-    switch (role) {
-        case 'tt-reports':
-            name = "Timetrack - Reports";
-            href = "/reports";
-            break;
-        case 'hr-updates':
-            name = "Human Resources - Updates";
-            href = "hr/updates";
-            break;
-        default:
-            name = role;
-            href= `/${role}`;
-            break;
-    }
-    return (
+const generateBreadcrumbs = (roles: string[]) => {
+    // Get apps the apps accessible by the user roles
+    let apps = config.apps
+        .filter(app => app.allowedRoles?.some(role => roles.includes(role)));
+
+    return apps.map(app =>
         <BreadcrumbItem>
-            <BreadcrumbLink fontSize={'xl'} color={'blue'} key={role} href={href}>{name}</BreadcrumbLink>
+            <BreadcrumbLink
+                fontSize={'xl'}
+                color={'blue'}
+                key={app.name}
+                href={app.path}
+            >
+                {app.label}
+            </BreadcrumbLink>
         </BreadcrumbItem>
     );
 }

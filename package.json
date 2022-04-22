@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "license": "MIT",
     "scripts": {
-        "start": "node --experimental-json-modules ./servers/dev/start-dev.js",
+        "start-dev": "node --experimental-json-modules ./servers/dev/run-dev.js",
+        "start-prod": "sh ./servers/prod/run-prod.sh",
         "build": "nx run-many --all --target=build --parallel",
         "test": "nx run-many --all --target=test --parallel"
     },

@@ -7,7 +7,8 @@
             "serveOn": {
                 "production": true,
                 "development": true
-            }
+            },
+            "label": "Home"
         },
         {
             "name": "login",
@@ -16,7 +17,8 @@
             "serveOn": {
                 "production": true,
                 "development": true
-            }
+            },
+            "label": "Sign in"
         },
         {
             "name": "reports",
@@ -25,7 +27,9 @@
             "serveOn": {
                 "production": true,
                 "development": true
-            }
+            },
+            "allowedRoles": ["tt-reports"],
+            "label": "Timetrack - Reports"
         },
         {
             "name": "hr-updates",
@@ -34,7 +38,9 @@
             "serveOn": {
                 "production": true,
                 "development": true
-            }
+            },
+            "allowedRoles": ["hr-updates"],
+            "label": "Human Resources - Updates"
         }
     ]
 }

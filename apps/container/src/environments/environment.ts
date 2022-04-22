@@ -2,6 +2,5 @@
 // When building for production, this file is replaced with `environment.prod.ts`.
 
 export const environment: {[key: string]: string | boolean} = {
-    production: false,
-    apps: 'login,reports,home,hr-updates'
+    production: false
 };

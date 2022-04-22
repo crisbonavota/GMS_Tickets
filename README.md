@@ -103,25 +103,7 @@ export const mainComponent =
 generateReactMicrofrontEntrypoint('myapp', mainComponent);
 ```
 
-
-Once those things are properly configured, we can access the `environment` file of the `container` app and add the app name to the `apps` variable, that will have this format `apps="app1,app2,yourapp"` and your app will be accessible from `yourdomain/yourappname`
-> Don't forget to also app the app to the environment.prod file, that will be used in production build.
-
-If you wan't to use a custom path for your app, instead of the name. you can access the `app.tsx` of the `container` app (`apps/container/src/app/app.tsx`) and add an element to the `customPaths` array that will have this format:
-```
-const customPaths = [
-	{
-		app: 'app1',
-		route: '/pathForApp1'
-	}
-]
-```
-
-This will automatically change the route of the app that matches the app name.
-
-**Take a look at the *development server* section for your app to be served on development**
-
-**Take a look at the *production server* section for your app to be served on production**
+**Take a look at the *deploy configuration* section for your app to be served on development**
 
 ## Development server
 
@@ -163,7 +145,7 @@ Requirements:
 
  An express/helmet production server is already setted up, (`server.js` ) we just have to run it:
   - `nx run-many --all --target=build --parallel` // Create the production release of the apps
-  - `docker build -t gms-img` // Create the docker image through the dockerfile
+  - `docker build -t gms-img .` // Create the docker image through the dockerfile
   - `docker run -dp 3000:80 --name gms-front gms-img` // Start a container running on your localhost (on the 3000 port but you can change it at will)
 
 You can access to the production app through the 3000 port of your localhost.

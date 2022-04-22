@@ -7,7 +7,7 @@
         "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
         "container": "apps/container",
-        "deploy-configs": "libs/deploy-configs",
+        "deploy": "libs/deploy",
         "home": "apps/home",
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",

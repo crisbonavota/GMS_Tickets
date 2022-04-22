@@ -1,7 +1,7 @@
 {
-  "name": "icore-frontend-webapp",
+  "name": "gms-2022-microfront-server",
   "version": "1.0.0",
-  "description": "Device Mangement Server application",
+  "description": "GMS 2022 Server application",
   "main": "server.js",
   "dependencies": {
     "cors": "^2.8.5",
@@ -16,6 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "homepage": "/dcl-admin/ui/",
-  "author": "Avery Dennison PSD Engineering",
-  "license": "ISC"
+  "author": "Tonic3",
+  "license": "ISC",
+  "type": "module"
 }

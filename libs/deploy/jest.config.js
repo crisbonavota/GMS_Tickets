@@ -1,9 +1,9 @@
 module.exports = {
-    displayName: 'deploy-configs',
+    displayName: 'deploy',
     preset: '../../jest.preset.js',
     transform: {
         '^.+\\.[tj]sx?$': 'babel-jest',
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-    coverageDirectory: '../../coverage/libs/deploy-configs',
+    coverageDirectory: '../../coverage/libs/deploy',
 };

@@ -1,6 +1,6 @@
 {
-    "root": "libs/deploy-configs",
-    "sourceRoot": "libs/deploy-configs/src",
+    "root": "libs/deploy",
+    "sourceRoot": "libs/deploy/src",
     "projectType": "library",
     "tags": [],
     "targets": {
@@ -8,14 +8,14 @@
             "executor": "@nrwl/linter:eslint",
             "outputs": ["{options.outputFile}"],
             "options": {
-                "lintFilePatterns": ["libs/deploy-configs/**/*.{ts,tsx,js,jsx}"]
+                "lintFilePatterns": ["libs/deploy/**/*.{ts,tsx,js,jsx}"]
             }
         },
         "test": {
             "executor": "@nrwl/jest:jest",
-            "outputs": ["coverage/libs/deploy-configs"],
+            "outputs": ["coverage/libs/deploy"],
             "options": {
-                "jestConfig": "libs/deploy-configs/jest.config.js",
+                "jestConfig": "libs/deploy/jest.config.js",
                 "passWithNoTests": true
             }
         }

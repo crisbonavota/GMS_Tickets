@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import MicroFrontend from "./MicroFrontend"
 import Navbar from "./navbar/navbar";
 import NotFound from './not-found/not-found';
+import { config } from '@gms-micro/deploy';
 
 const App = () => {
     const location = useLocation();
@@ -21,25 +22,15 @@ const App = () => {
 }
 
 const generateMicrofrontRoutes = () => {
-    const microfrontNames = environment.apps ? (environment.apps as string).replace(/ /g, '').split(',') : [];
-    const initialPort = 3001;
-    const microfronts = microfrontNames.map((name, index) => <MicroFrontend key={name} name={name} port={initialPort + index} />);
+    const apps = environment.production 
+        ? config.apps.filter(app => app.serveOn.production) 
+        : config.apps.filter(app => app.serveOn.development);
     
-    // By default we use the app name as route, but you can change this by adding an element to this array
-    const customPaths = [
-        { app: 'login', route: '/sign-in' }, 
-        { app: 'home', route: '/' }, 
-        { app: 'hr-updates', route: '/hr/updates' },
-    ];
-
-    return microfronts.map((microfront) =>
+    return apps.map((app) =>
         <Route
-            key={microfront.key}
-            // If the customPaths has an element with the same app name, we use the route from that element
-            path={customPaths.some(cPath => cPath.app === microfront.props['name'])
-                ? customPaths.find(cPath => cPath.app === microfront.props['name'])?.route
-                : `/${microfront.props['name']}`}
-            element={microfront}
+            key={app.name}
+            path={app.path}
+            element={<MicroFrontend name={app.name} port={app.devPort} />}
         />);
 }
 

@@ -3,12 +3,13 @@
     "version": "0.0.0",
     "license": "MIT",
     "scripts": {
-        "start": "concurrently \"nx run container:serve --port 3000\" \"nx run login:serve --port=3001\" \"nx run reports:serve --port=3002\" \"nx run home:serve --port=3003\" \"nx run hr-updates:serve --port=3004\"",
+        "start": "node --experimental-json-modules ./servers/dev/start-dev.js",
         "build": "nx run-many --all --target=build --parallel",
         "test": "nx run-many --all --target=test --parallel"
     },
     "private": true,
     "dependencies": {
+        "@babel/plugin-syntax-import-assertions": "^7.16.7",
         "@chakra-ui/react": "^1.8.7",
         "@emotion/react": "^11.8.2",
         "@emotion/styled": "^11.8.1",
@@ -61,6 +62,7 @@
         "eslint-plugin-react": "7.29.3",
         "eslint-plugin-react-hooks": "4.3.0",
         "jest": "27.2.3",
+        "json-loader": "^0.5.7",
         "nx": "^13.9.5",
         "prettier": "^2.5.1",
         "react-test-renderer": "17.0.2",

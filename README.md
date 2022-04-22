@@ -16,6 +16,29 @@ npx create-nx-workspace@latest gms-micro
 
 ````
 
+## Development server
+
+Requirements: 
+- `node v17.4.x`
+- `npm v8.3.x`
+- `nx v13.9.x` (`npm i -G nx@13.9.5`)
+
+`npm run start-dev` to start the development server on port 3000.
+ 
+## Production server
+
+Requirements: 
+- `node v17.4.x`
+- `npm v8.3.x`
+- `nx v13.9.x` (`npm i -G nx@13.9.5`)
+- `docker CLI (v18 or higher)`
+- *recommended* `docker desktop 4.x.x`
+
+`npm run start-prod` to start the production server on port 3000.
+> Make sure to have docker running on the background.
+
+*Sometimes an error message appears on console when running this script. This is normal (common bug on the **nx build** command) and can be fixed by running it again*.
+
 ## Generate an application
 
 To maintain the micro-frontend structure, you must create an application (independent web-app) per service.
@@ -100,57 +123,41 @@ export const mainComponent =
 		<App />
 	</StrictMode>;
 
-generateReactMicrofrontEntrypoint('myapp', mainComponent);
+generateReactMicrofrontEntrypoint('myappname', mainComponent);
 ```
 
-**Take a look at the *deploy configuration* section for your app to be served on development**
+Finally, we must add the micro-app to the deploy configuration. You can find it on `libs/deploy/src/lib/deploy.json` and will have this format:
 
-## Development server
+```
+{
+    "apps": [
+        {
+            "name": "myappname",
+            "path": "/myapppath",
+            "devPort": 30XX, 
+            "serveOn": {
+                "production": false,
+                "development": true
+            },
+            "allowedRoles": ["myapprole"], // 
+            "label": "My App"
+        },
+        ...
+    ]
+}
+```
 
-Requirements: 
-- `node v17.4.x`
-- `npm v8.3.x`
-- `concurrently - any version`  (`npm i -G concurrently`)
-- `nx v13.9.x` (`npm i -G nx@13.9.5`)
+- pame: the name of the micro-app **make sure that it's unique and that matches the assigned name on the entrypoint generation (see line 126 of this file)**.
+  
+- path: the route used by react-router-dom to generate the *Route* element.
+  
+- devPort: the port used by the development server to serve the micro-app to the main routing system **Can't be 3000 and can't overlap other ports**.
+  
+- serveOn: booleans that determine if your app will be served on production and on development.
+  
+- allowedRoles: if your app access role-protected endpoints on the API (therefore not any user can use it), you have to specify the role name/s that can access it so the `home` app can detect which apps the authenticated user can access through the roles on the JWT token.
 
-If you want to run an application invidually, you can just serve it with `nx run my-app:serve --port=1234` and the app will run on your port.
- 
-However, if you want to run the `container` app with the full routing system, you have to run them simultaneously on different ports (being the `container` app the port 3000) and the `container` app will take care of rendering them under the same host.
-
-`concurrently "nx run container:serve --port:3000" "nx run app-1:serve --port=3001" "nx run app-2:serve --port=3002"`
-> Make sure to scape the " if you paste this code on an npm script
-> `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run app-1:serve --port=3001\"  \"nx run app-2:serve --port=3002\""`
-
-**For an app to work on the development server, it has to meet this requirements:**
-- The app name is present on the `apps` environmental variable of the `container` app (`apps/container/environments/environment.ts`)
-- The app is present on the `start` script/command and the port is explicitly specified as the previous app port + 1.
-- The  position of the app on the `start` script command is the same that the position of the app name on the `apps` environmental variable:
->  ✓ Works
-> `apps = "login,reports,home"`
->  `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run login:serve --port=3001\"  \"nx run reports:serve --port=3002\" \"nx run home --port=3003\""`
-
->  X Doesn't work
->  `apps = "login,reports,home"`
->  `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run reports:serve --port=3001\"  \"nx run login:serve --port=3002\" \"nx run home --port=3003\""`
-> Both `login` and `reports` won't work properly because the `container` is looking for `login` on port 3001 and `reports` on port 3002 (this is because of the order that they're presented on the `apps` variable) but the server is serving `login` on 3002 and `reports` on 3001.
- 
-## Production server
-
-Requirements: 
-- `node v17.4.x`
-- `npm v8.3.x`
-- `nx v13.9.x` (`npm i -G nx@13.9.5`)
-- `docker CLI (v18 or higher)`
-- *recommended* `docker desktop 4.x.x`
-
- An express/helmet production server is already setted up, (`server.js` ) we just have to run it:
-  - `nx run-many --all --target=build --parallel` // Create the production release of the apps
-  - `docker build -t gms-img .` // Create the docker image through the dockerfile
-  - `docker run -dp 3000:80 --name gms-front gms-img` // Start a container running on your localhost (on the 3000 port but you can change it at will)
-
-You can access to the production app through the 3000 port of your localhost.
-
-**For an app to work on the production server, it has to be set on the APPS environmental variable of the `dockerfile`**, that has this format: `ENV APPS=APP1,APP2,YOURAPP`.
+- label: app name displayed to the user in links, navbar, etc.
 
 ## Running unit tests
 

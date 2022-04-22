@@ -25,6 +25,7 @@
                 "libs/microfront-utils/src/index.ts"
             ],
             "@gms-micro/react-hooks": ["libs/react-hooks/src/index.ts"],
+            "@gms-micro/table-utils": ["libs/table-utils/src/index.ts"],
             "@gms-micro/theme-chakra-ui": ["libs/theme-chakra-ui/src/index.ts"]
         }
     },

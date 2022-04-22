@@ -108,25 +108,7 @@ First, we must use our custom webpack configuration so the building process will
 },
 ```
 
-After this, we must modify the entrypoint of the app to avoid rendering it to the DOM automatically and rendering it at the `container` app command. We have a lib already setted up to do this for your, all you have to do is calling the lib function for your framework and passing the main component and app name as argument.
-> By default, the entrypoint is `main`, located on the `src` folder of the app (`myapp/src/main`)
-
-#### Example in React:
-
-```
-import App from './app/app';
-import { StrictMode } from  'react';
-import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
-
-export const mainComponent = 
-	<StrictMode>
-		<App />
-	</StrictMode>;
-
-generateReactMicrofrontEntrypoint('myappname', mainComponent);
-```
-
-Finally, we must add the micro-app to the deploy configuration. You can find it on `libs/deploy/src/lib/deploy.json` and will have this format:
+Then, we must add the micro-app to the deploy configuration. You can find it on `libs/deploy/src/lib/deploy.json` and will have this format:
 
 ```
 {
@@ -147,7 +129,7 @@ Finally, we must add the micro-app to the deploy configuration. You can find it 
 }
 ```
 
-- pame: the name of the micro-app **make sure that it's unique and that matches the assigned name on the entrypoint generation (see line 126 of this file)**.
+- name: the name of the micro-app **make sure that it's unique**.
   
 - path: the route used by react-router-dom to generate the *Route* element.
   
@@ -158,6 +140,30 @@ Finally, we must add the micro-app to the deploy configuration. You can find it 
 - allowedRoles: if your app access role-protected endpoints on the API (therefore not any user can use it), you have to specify the role name/s that can access it so the `home` app can detect which apps the authenticated user can access through the roles on the JWT token.
 
 - label: app name displayed to the user in links, navbar, etc.
+  
+
+Finally, we must modify the entrypoint of the app to avoid rendering it to the DOM automatically and rendering it at the `container` app command. We have a lib already setted up to do this for your, all you have to do is calling the lib function for your framework and passing the main component and app name as argument.
+> By default, the entrypoint is `main`, located on the `src` folder of the app (`myapp/src/main`)
+
+#### Example in React:
+
+```
+import App from './app/app';
+import { StrictMode } from  'react';
+import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
+import { config } from '@gms-micro/deploy';
+
+const app = config.apps.find(app => app.name === 'myappname'); // Name you assigned on deploy.json
+
+if (app) {
+    const mainComponent = 
+        <StrictMode>
+            <App />
+        </StrictMode>;
+
+    generateReactMicrofrontEntrypoint(app.name, mainComponent);
+}
+```
 
 ## Running unit tests
 
@@ -189,19 +195,23 @@ On your app entrypoint (refer to the ***Integrate an application to the main rou
 
 ```
 import App from './app/app';
-import { StrictMode } from  'react';
-import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
-import { getAuthHeader } from  '@gms-micro/auth-methods';
+import { StrictMode } from 'react';
+import { getAuthHeader } from '@gms-micro/auth-methods';
+import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
+import { config } from '@gms-micro/deploy';
 
-const  authHeader = getAuthHeader('reports');
+const app = config.apps.find(app => app.name === 'myappname');
 
-export const mainComponent = 
-	<StrictMode>
-		// Your App has to be configured to receive this info as prop
-		{authHeader && <App  authHeader={authHeader}  />}
-	</StrictMode>;
+if (app) {
+    const authHeader = getAuthHeader(app.path);
 
-generateReactMicrofrontEntrypoint('myapp', mainComponent);
+    const mainComponent =
+        <StrictMode>
+            {authHeader && <App authHeader={authHeader} />}
+        </StrictMode>;
+
+    generateReactMicrofrontEntrypoint(app.name, mainComponent);
+}
 ```
 
 Calling the library methods will handle the redirection to the sign in page and the posterior removal of the query parameters from the URL.

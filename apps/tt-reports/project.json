@@ -1,0 +1,68 @@
+{
+    "root": "apps/tt-reports",
+    "sourceRoot": "apps/tt-reports/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/web:webpack",
+            "outputs": ["{options.outputPath}"],
+            "defaultConfiguration": "production",
+            "options": {
+                "compiler": "babel",
+                "outputPath": "dist/apps/tt-reports",
+                "index": "apps/tt-reports/src/index.html",
+                "baseHref": "/",
+                "main": "apps/tt-reports/src/main.tsx",
+                "polyfills": "apps/tt-reports/src/polyfills.ts",
+                "tsConfig": "apps/tt-reports/tsconfig.app.json",
+                "scripts": [],
+                "webpackConfig": "webpack.config.js"
+            },
+            "configurations": {
+                "production": {
+                    "fileReplacements": [
+                        {
+                            "replace": "apps/tt-reports/src/environments/environment.ts",
+                            "with": "apps/tt-reports/src/environments/environment.prod.ts"
+                        }
+                    ],
+                    "optimization": true,
+                    "outputHashing": "all",
+                    "sourceMap": false,
+                    "namedChunks": false,
+                    "extractLicenses": true,
+                    "vendorChunk": false
+                }
+            }
+        },
+        "serve": {
+            "executor": "@nrwl/web:dev-server",
+            "options": {
+                "buildTarget": "tt-reports:build:development",
+                "hmr": true
+            },
+            "configurations": {
+                "production": {
+                    "buildTarget": "tt-reports:build:production",
+                    "hmr": false
+                }
+            }
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["apps/tt-reports/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/apps/tt-reports"],
+            "options": {
+                "jestConfig": "apps/tt-reports/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

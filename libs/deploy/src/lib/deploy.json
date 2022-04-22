@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "home",
-            "path": "/",
+            "path": "",
             "devPort": 3001,
             "serveOn": {
                 "production": true,
@@ -12,7 +12,7 @@
         },
         {
             "name": "login",
-            "path": "/sign-in",
+            "path": "sign-in",
             "devPort": 3002,
             "serveOn": {
                 "production": true,
@@ -21,8 +21,8 @@
             "label": "Sign in"
         },
         {
-            "name": "reports",
-            "path": "/reports",
+            "name": "tt-reports",
+            "path": "timetrack/reports",
             "devPort": 3003,
             "serveOn": {
                 "production": true,
@@ -33,7 +33,7 @@
         },
         {
             "name": "hr-updates",
-            "path": "/hr/updates",
+            "path": "human-resources/updates",
             "devPort": 3004,
             "serveOn": {
                 "production": true,

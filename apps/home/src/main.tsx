@@ -5,16 +5,22 @@ import { getTheme } from '@gms-micro/theme-chakra-ui';
 import { getAuthUser } from '@gms-micro/auth-methods';
 import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
 import { BrowserRouter } from 'react-router-dom';
+import { config } from '@gms-micro/deploy';
 
-const authUser = getAuthUser('');
+const app = config.apps.find(app => app.name === "home");
 
-export const mainComponent =
-    <StrictMode>
-        <ChakraProvider theme={getTheme()}>
-            <BrowserRouter>
-                {authUser && <App authUser={authUser} />}
-            </BrowserRouter>
-        </ChakraProvider>
-    </StrictMode>;
+if (app) {
+    const authUser = getAuthUser(app.path);
 
-generateReactMicrofrontEntrypoint('home', mainComponent);
+    const mainComponent =
+        <StrictMode>
+            <ChakraProvider theme={getTheme()}>
+                <BrowserRouter>
+                    {authUser && <App authUser={authUser} />}
+                </BrowserRouter>
+            </ChakraProvider>
+        </StrictMode>;
+
+    generateReactMicrofrontEntrypoint(app.name, mainComponent);
+}
+

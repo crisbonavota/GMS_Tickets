@@ -13,7 +13,8 @@
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
         "react-hooks": "libs/react-hooks",
-        "reports": "apps/reports",
-        "theme-chakra-ui": "libs/theme-chakra-ui"
+        "table-utils": "libs/table-utils",
+        "theme-chakra-ui": "libs/theme-chakra-ui",
+        "tt-reports": "apps/tt-reports"
     }
 }

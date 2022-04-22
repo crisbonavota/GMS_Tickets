@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { VStack, chakra, FormLabel, Text, Button, Stack, Input, Center } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getBusinessUnits, getProjects, getProposals, getAccounts, getTimetrackItemsReport } from './api';
 import SelectItemsDropdown, { SelectItem } from './select-item/select-item';
 import SidePanel from './side-panel/side-panel';
 import { downloadFile, generateExcelFileURL, getLegacyUsers } from '@gms-micro/api-utils';
+import { useDidMountEffect } from '@gms-micro/react-hooks';
 
 export const App = ({ authHeader }: { authHeader: string }) => {
     const [generalSearch, setGeneralSearch] = useState("");
@@ -43,11 +44,12 @@ export const App = ({ authHeader }: { authHeader: string }) => {
     }
 
     // Workaround for waiting 1500ms after user finished typing in the general searchbar for the search to be triggered
-    useEffect(() => {
-        // I use refetch aux for triggering the refetch with the new filters because the refetch function (query.refetch()) can only be called on top level
+    useDidMountEffect(() => {
+        // Instead of passing generalSearch directly to the query filter, we use an aux that's triggered after 1500 ms
+        // This is to avoid refetching the query when the user is typing in the general searchbar
         const timeOutId = setTimeout(() => setRefetchAux(refetchAux + 1), 1500);
         return () => clearTimeout(timeOutId);
-    }, [generalSearch])
+    }, [generalSearch]);
 
     const usersQuery = useQuery(['users', authHeader], () =>
         getLegacyUsers(authHeader), { retry: 2, retryDelay: 500 });
@@ -103,7 +105,7 @@ export const App = ({ authHeader }: { authHeader: string }) => {
                     name: 'generalSearch',
                     value: generalSearch
                 }
-            ])
+            ]), { staleTime: Infinity }
     );
 
     return (

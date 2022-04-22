@@ -12,6 +12,7 @@
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
+        "react-hooks": "libs/react-hooks",
         "reports": "apps/reports",
         "theme-chakra-ui": "libs/theme-chakra-ui"
     }

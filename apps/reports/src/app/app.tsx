@@ -17,7 +17,7 @@ export const App = ({ authHeader }: { authHeader: string }) => {
 
     /* Dates inputs can't change between controlled-uncontrolled state so i have to avoid using undefined and manually convert
         them to undefined if they're an empty string before sending them as filter value */
-    const [from, setFrom] = useState<string>(addMonths(new Date(Date.now()), -6)); // Default filter to 6 months ago
+    const [from, setFrom] = useState<string>(addMonths(new Date(Date.now()), -1)); // Default filter to 1 month ago
     const [to, setTo] = useState<string>("");
 
     const onExport = () => {

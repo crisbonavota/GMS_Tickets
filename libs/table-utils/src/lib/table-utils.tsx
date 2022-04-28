@@ -2,8 +2,9 @@ import { chakra, HStack, IconButton, Select, Text, VStack } from '@chakra-ui/rea
 import { useMemo } from 'react';
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
-import { getLegacyUsers } from '@gms-micro/api-utils';
 import { useQuery } from 'react-query';
+import { getResourceList } from '../../../api-utils/src/lib/api-utils';
+import { LegacyUserPublic } from '../../../auth-types/src/lib/auth-types';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number,
@@ -118,7 +119,7 @@ export interface TableLegacyUserFilterWithChakraProps {
 }
 
 export const TableSingleLegacyUserFilterWithChakra = ({ authHeader , legacyUser, setLegacyUser, isLoading}: TableLegacyUserFilterWithChakraProps) => {
-    const query = useQuery(['employees'], () => getLegacyUsers(authHeader));
+    const query = useQuery(['employees'], () => getResourceList<LegacyUserPublic>("users/legacy", authHeader));
     return (
         <VStack alignItems={'flex-start'} w={'15rem'}>
             <Text fontSize={'sm'}>Employee</Text>

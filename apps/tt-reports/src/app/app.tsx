@@ -4,11 +4,12 @@ import { useQuery } from 'react-query'
 import { getTimetrackItems, getTimetrackItemsReport } from './api';
 import TableComponent from './table/table';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra } from '@gms-micro/table-utils';
-import { getLegacyUsers, getBusinessUnits, getProjects, getProposals, getAccounts, downloadFile, generateExcelFileURL } from '@gms-micro/api-utils';
+import { Account, BusinessUnit, downloadFile, generateExcelFileURL, Project, Proposal, getResourceList } from '@gms-micro/api-utils';
 import SelectFilters from './select-filters/select-filters';
 import { SelectItem } from './select-item/select-item';
 import { useDidMountEffect } from '@gms-micro/react-hooks';
 import ExportStats from './export-stats/export-stats';
+import { LegacyUserPublic } from '@gms-micro/auth-types';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -80,19 +81,19 @@ const App = ({ authHeader }: { authHeader: string }) => {
     );
 
     const usersQuery = useQuery(['users', authHeader], () =>
-        getLegacyUsers(authHeader), { retry: 2, retryDelay: 500 });
+        getResourceList<LegacyUserPublic>("users/legacy", authHeader));
 
     const businessUnitsQuery = useQuery(['businessUnits', authHeader], () =>
-        getBusinessUnits(authHeader), { retry: 2, retryDelay: 500 });
+        getResourceList<BusinessUnit>("businessUnits", authHeader));
 
     const projectsQuery = useQuery(['projects', authHeader], () =>
-        getProjects(authHeader), { retry: 2, retryDelay: 500 });
+        getResourceList<Project>("projects", authHeader));
 
     const proposalsQuery = useQuery(['proposals', authHeader], () =>
-        getProposals(authHeader), { retry: 2, retryDelay: 500 });
+        getResourceList<Proposal>("proposals", authHeader));
 
     const accountsQuery = useQuery(['accounts', authHeader], () =>
-        getAccounts(authHeader), { retry: 2, retryDelay: 500 });
+        getResourceList<Account>("accounts", authHeader));
 
     return (
         <VStack w={'full'} maxW={'full'} p={5}>

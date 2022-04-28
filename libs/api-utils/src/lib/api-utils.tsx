@@ -1,51 +1,44 @@
-import { LegacyUserPublic } from '@gms-micro/auth-types';
 import axios from 'axios';
-
-export interface BusinessUnit {
-    id: number,
-    name: string
-}
-
-export interface Account {
-    id: number,
-    name: string
-}
-
-export interface Proposal {
-    id: number,
-    name: string,
-    account: Account
-}
-
-export interface Project {
-    id: number,
-    name: string,
-    proposal: Proposal
-}
+import { CustomFilter, FilterItem, insertCustomFilters, insertPagination, insertSort, insertStandardFilters, Sort } from '@gms-micro/api-filters';
 
 const client = axios.create({ baseURL: process.env['NX_API_URL'] });
 
-export const getLegacyUsers = async (authHeader:string) => {
-    return await client.get<Array<LegacyUserPublic>>('/users/legacy', { headers: { Authorization: authHeader } });
+export const getResourceList = async <T,>(resource: string, authHeader: string) => {
+    return await client.get<Array<T>>(resource, { headers: { Authorization: authHeader } });
 }
 
-export const getBusinessUnits = async (authHeader:string) => {
-    return await client.get<Array<BusinessUnit>>('/businessUnits', { headers: { Authorization: authHeader } });
+export const getResourceListFilteredAndPaginated = async <T,>(
+    resource: string,
+    authHeader: string,
+    standardFilters?: FilterItem[],
+    customFilters?: CustomFilter[],
+    sort?: Sort,
+    currentPage?: number,
+    perPage?: number
+) => {
+    let params: { [key: string]: string } = {};
+    standardFilters && insertStandardFilters(params, standardFilters);
+    customFilters && insertCustomFilters(params, customFilters);
+    sort && insertSort(params, sort);
+    insertPagination(params, currentPage, perPage);
+    return await client.get<Array<T>>(`/${resource}`, { headers: { Authorization: authHeader }, params });
 }
 
-export const getProjects = async (authHeader:string) => {
-    return await client.get<Array<Project>>('/projects', { headers: { Authorization: authHeader } });
+export const getReportFiltered = async (
+    resource: string,
+    authHeader: string,
+    standardFilters?: FilterItem[],
+    customFilters?: CustomFilter[],
+    sort?: Sort,
+) => {
+    let params: { [key: string]: string } = {};
+    standardFilters && insertStandardFilters(params, standardFilters);
+    customFilters && insertCustomFilters(params, customFilters);
+    sort && insertSort(params, sort);
+    return await client.get<string>(`/${resource}`, { headers: { Authorization: authHeader }, params });
 }
 
-export const getProposals = async (authHeader:string) => {
-    return await client.get<Array<Proposal>>('/proposals', { headers: { Authorization: authHeader } });
-}
-
-export const getAccounts = async (authHeader:string) => {
-    return await client.get<Array<Account>>('/accounts', { headers: { Authorization: authHeader } });
-}
-
-export const downloadFile = (url:string, fileName:string) => {
+export const downloadFile = (url: string, fileName: string) => {
     var download = document.createElement('a');
     download.href = url;
     download.download = fileName;
@@ -54,6 +47,6 @@ export const downloadFile = (url:string, fileName:string) => {
     document.body.removeChild(download);
 }
 
-export const generateExcelFileURL = (data:string) => {
+export const generateExcelFileURL = (data: string) => {
     return `data:application/vnd.ms-excel;base64,${encodeURIComponent(data)}`;
 }

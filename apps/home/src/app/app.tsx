@@ -23,7 +23,7 @@ const generateBreadcrumbs = (roles: string[]) => {
         .filter(app => app.allowedRoles?.some(role => roles.includes(role)));
 
     return apps.map(app =>
-        <BreadcrumbItem>
+        <BreadcrumbItem key={app.name}>
             <BreadcrumbLink
                 fontSize={'xl'}
                 color={'blue'}

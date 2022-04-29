@@ -41,5 +41,7 @@ export const insertPagination = (params: { [key: string]: string }, pageIndex?: 
 }
 
 export const insertSort = (params: { [key: string]: string }, sort?:Sort) => {
-    params['sort'] = JSON.stringify(sort);
+    if (!sort) return;
+    params['sort.Field'] = sort.field;
+    params['sort.IsAscending'] = sort.isAscending.toString();
 }

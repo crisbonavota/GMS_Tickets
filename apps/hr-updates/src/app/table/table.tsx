@@ -1,6 +1,6 @@
 import { Thead, Tr, Th, Tbody, Td, Table, Box, Text } from '@chakra-ui/react';
+import { Update } from '@gms-micro/api-utils';
 import { useTable, Cell } from 'react-table';
-import { Update } from '../../api';
 
 const columns = [
     { Header: 'Employee', accessor: 'legacyUser.fullName' },

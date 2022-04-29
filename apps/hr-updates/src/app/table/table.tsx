@@ -1,6 +1,7 @@
-import { Thead, Tr, Th, Tbody, Td, Table, Box, Text } from '@chakra-ui/react';
+import { Thead, Tr, Th, Tbody, Td, Table, Box, Text, HStack } from '@chakra-ui/react';
 import { Update } from '@gms-micro/api-utils';
 import { useTable, Cell } from 'react-table';
+import EditModal from '../edit-modal/edit-modal';
 
 const columns = [
     { Header: 'Employee', accessor: 'legacyUser.fullName' },
@@ -13,14 +14,15 @@ const columns = [
     { Header: 'Date Telegram', accessor: 'dateTelegram' },
     //{ Header: 'Week Day', accessor: 'weekDay' },
     { Header: 'New Date', accessor: 'newDate' },
-    { Header: 'Notes', accessor: 'note' },
+    { Header: 'Notes', accessor: 'notes' },
 ];
 
 interface TableProps {
-    tableData: Array<Update>
+    tableData: Array<Update>,
+    authHeader: string
 }
 
-export const TableComponent = ({ tableData }: TableProps) => {
+export const TableComponent = ({ tableData, authHeader }: TableProps) => {
     // @ts-ignore
     const tableInstance = useTable({ columns, data: tableData });
 
@@ -58,6 +60,11 @@ export const TableComponent = ({ tableData }: TableProps) => {
                                         </Td>
                                     )
                                 })}
+                                <Td>
+                                    <HStack h={'full'} px={2}>
+                                        <EditModal update={row.original} authHeader={authHeader} />
+                                    </HStack>
+                                </Td>
                             </Tr>
                         )
                     })}

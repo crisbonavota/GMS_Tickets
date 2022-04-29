@@ -79,7 +79,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                     </VStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}
-                {updatesQuery.isSuccess && <TableComponent tableData={updatesQuery.data.data} />}
+                {updatesQuery.isSuccess && <TableComponent authHeader={authHeader} tableData={updatesQuery.data.data} />}
                 {updatesQuery.isError && <Text>There was an error generating the table, try again later</Text>}
                 <TablePaginationWithChakra
                     isLoading={updatesQuery.isLoading}

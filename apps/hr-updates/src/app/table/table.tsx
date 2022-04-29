@@ -73,7 +73,7 @@ const renderTableCell = (cell: Cell<Update | any>) => {
         case 'Date Telegram':
         case 'New Date':
         case 'End Date':
-            return cell.value ? new Date(cell.value).toLocaleDateString() : '';
+            return (cell.value && cell.value !== "0001-01-01T00:00:00") ? new Date(cell.value).toLocaleDateString() : '';
 
         case 'Amount':
             return cell.value ? <Text fontStyle={'italic'}>hidden</Text> : '';

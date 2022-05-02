@@ -4,12 +4,13 @@ import { useQuery } from 'react-query'
 import { getTimetrackItems, getTimetrackItemsReport } from './api';
 import TableComponent from './table/table';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra } from '@gms-micro/table-utils';
-import { Account, BusinessUnit, downloadFile, generateExcelFileURL, Project, Proposal, getResourceList } from '@gms-micro/api-utils';
+import { Account, BusinessUnit, Project, Proposal, getResourceList } from '@gms-micro/api-utils';
 import SelectFilters from './select-filters/select-filters';
 import { SelectItem } from './select-item/select-item';
 import { useDidMountEffect } from '@gms-micro/react-hooks';
 import ExportStats from './export-stats/export-stats';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
+import { generateExcelFileURL, downloadFile } from '@gms-micro/files-utils';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);

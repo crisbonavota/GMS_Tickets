@@ -24,6 +24,7 @@ import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { useMemo } from 'react';
+import { KeyValuePair } from '../../../../../libs/api-utils/src/lib/api-types';
 
 const formSchema = Yup.object().shape({
     legacyUserId: Yup.number().required("Required"),
@@ -40,8 +41,8 @@ export function EditModal({ update, authHeader }: EditModalProps) {
     const [open, setOpen] = useBoolean();
     const employeesQuery = useQuery(['editEmployee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
     const updateTypesQuery = useQuery(['editUpdateType'], () => getResourceList<UpdateType>('updates/types', authHeader));
-
-    const initialValues = useMemo(() => ({
+    
+    const initialValues: KeyValuePair = useMemo(() => ({
         legacyUserId: update.legacyUser.id,
         updateTypeId: update.updateType.id,
         date: new Date(update.date).toISOString().split("T")[0], // The date is before the T (format ISO 8601)
@@ -61,7 +62,7 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                             initialValues={initialValues}
                             onSubmit={async (values, { setSubmitting }) => {
                                 await patchResource(
-                                    getUpdateResourceFromType(values['updateTypeId']),
+                                    getUpdateResourceFromType(values.updateTypeId),
                                     update.id,
                                     authHeader,
                                     initialValues,

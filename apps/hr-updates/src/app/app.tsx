@@ -1,5 +1,6 @@
 import { Flex, Heading, IconButton, VStack, Wrap, Text } from '@chakra-ui/react';
-import { downloadFile, generateExcelFileURL, getReportFiltered, getResourceListFilteredAndPaginated, Update } from '@gms-micro/api-utils';
+import { getReportFiltered, getResourceListFilteredAndPaginated, Update } from '@gms-micro/api-utils';
+import { downloadFile, generateExcelFileURL } from '@gms-micro/files-utils';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra, TableSingleLegacyUserFilterWithChakra } from '@gms-micro/table-utils';
 import { useState, useEffect } from 'react';
 import TableComponent from './table/table';

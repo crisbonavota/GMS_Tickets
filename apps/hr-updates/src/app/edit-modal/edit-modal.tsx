@@ -1,6 +1,7 @@
 import {
     Button,
     FormControl,
+    FormErrorMessage,
     FormLabel,
     IconButton,
     Input,
@@ -16,11 +17,19 @@ import {
     useBoolean,
     VStack
 } from '@chakra-ui/react';
-import { Update, getResourceList, UpdateType } from '@gms-micro/api-utils';
+import { Update, getResourceList, UpdateType, patchResource, getUpdateResourceFromType } from '@gms-micro/api-utils';
 import { MdModeEditOutline } from 'react-icons/md';
-import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { useMemo } from 'react';
+
+const formSchema = Yup.object().shape({
+    legacyUserId: Yup.number().required("Required"),
+    updateTypeId: Yup.number().required("Required"),
+    date: Yup.date().required("Required"),
+});
 
 export interface EditModalProps {
     update: Update,
@@ -28,18 +37,16 @@ export interface EditModalProps {
 }
 
 export function EditModal({ update, authHeader }: EditModalProps) {
-    const originalUpdate = update;
     const [open, setOpen] = useBoolean();
-    const [employee, setEmployee] = useState(update.legacyUser.id);
-    const [updateType, setUpdateType] = useState(update.updateType.id);
-    const [notes, setNotes] = useState(update.notes);
-    const [date, setDate] = useState(update.date.split('T')[0]); // before T we have the date, after the time
     const employeesQuery = useQuery(['editEmployee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
     const updateTypesQuery = useQuery(['editUpdateType'], () => getResourceList<UpdateType>('updates/types', authHeader));
 
-    const onSubmit = () => {
-        // verifications and submission goes here
-    };
+    const initialValues = useMemo(() => ({
+        legacyUserId: update.legacyUser.id,
+        updateTypeId: update.updateType.id,
+        date: new Date(update.date).toISOString().split("T")[0], // The date is before the T (format ISO 8601)
+        notes: update.notes
+    }), [update]);
 
     return (
         <>
@@ -50,37 +57,66 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                     <ModalHeader>Edit update</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody w={'full'}>
-                        <VStack>
-                            <FormControl>
-                                <FormLabel>Employee</FormLabel>
-                                <Select value={employee} onChange={e => setEmployee(parseInt(e.target.value))}>
-                                    {employeesQuery.isSuccess && 
-                                        employeesQuery.data.data.map(e => <option key={e.id} value={e.id}>{e.fullName}</option>)}
-                                </Select>
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Update Type</FormLabel>
-                                <Select value={updateType} onChange={e => setUpdateType(parseInt(e.target.value))}>
-                                    {updateTypesQuery.isSuccess && 
-                                        updateTypesQuery.data.data.map(e => <option key={e.id} value={e.id}>{e.caption}</option>)}
-                                </Select>
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Date</FormLabel>
-                                <Input type="date" value={date} onChange={e => setDate(e.target.value)} />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel>Notes</FormLabel>
-                                <Textarea value={notes} onChange={e => setNotes(e.target.value)} />
-                            </FormControl>
-                        </VStack>
+                        <Formik
+                            initialValues={initialValues}
+                            onSubmit={async (values, { setSubmitting }) => {
+                                await patchResource(
+                                    getUpdateResourceFromType(values['updateTypeId']),
+                                    update.id,
+                                    authHeader,
+                                    initialValues,
+                                    values
+                                );
+
+                                setSubmitting(false);
+                                setOpen.off();
+                            }}
+                            validationSchema={formSchema}
+                        >
+                            {({ isSubmitting, errors, handleSubmit }) => (
+                                <Form onSubmit={handleSubmit}>
+                                    <VStack spacing={4}>
+                                        <FormControl isInvalid={errors.legacyUserId !== undefined}>
+                                            <FormLabel htmlFor={"legacyUserId"}>Employee</FormLabel>
+                                            <Field id="legacyUserId" name="legacyUserId" as={Select} >
+                                                {employeesQuery.data?.data?.map(employee =>
+                                                    <option key={employee.id} value={employee.id}>{employee.fullName}</option>)}
+                                            </Field>
+                                            <ErrorMessage name='legacyUserId' component={FormErrorMessage} />
+                                        </FormControl>
+
+                                        <FormControl isInvalid={errors.updateTypeId !== undefined}>
+                                            <FormLabel htmlFor='updateTypeId'>Update Type</FormLabel>
+                                            <Field id="updateTypeId" name="updateTypeId" as={Select} >
+                                                {updateTypesQuery.data?.data?.map(type =>
+                                                    <option key={type.id} value={type.id}>{type.caption}</option>)}
+                                            </Field>
+                                            <ErrorMessage name='updateTypeId' component={FormErrorMessage} />
+                                        </FormControl>
+
+                                        <FormControl isInvalid={errors.date !== undefined}>
+                                            <FormLabel htmlFor="date">Date</FormLabel>
+                                            <Field as={Input} type="date" id={"date"} name="date" />
+                                            <ErrorMessage name='date' component={FormErrorMessage} />
+                                        </FormControl>
+
+                                        <FormControl isInvalid={errors.notes !== undefined}>
+                                            <FormLabel htmlFor='notes'>Notes</FormLabel>
+                                            <Field as={Textarea} id={"notes"} name="notes" />
+                                            <ErrorMessage name='notes' component={FormErrorMessage} />
+                                        </FormControl>
+
+                                        <ModalFooter w={'full'}>
+                                            <Button colorScheme='green' mr={3} type={"submit"} isLoading={isSubmitting}>
+                                                Save
+                                            </Button>
+                                            <Button variant='ghost' onClick={setOpen.off}>Cancel</Button>
+                                        </ModalFooter>
+                                    </VStack>
+                                </Form>
+                            )}
+                        </Formik>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button colorScheme='green' mr={3} onClick={onSubmit} disabled={date === ""}>
-                            Save
-                        </Button>
-                        <Button variant='ghost' onClick={setOpen.off}>Cancel</Button>
-                    </ModalFooter>
                 </ModalContent>
             </Modal>
         </>

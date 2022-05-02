@@ -8,6 +8,7 @@
         "auth-types": "libs/auth-types",
         "container": "apps/container",
         "deploy": "libs/deploy",
+        "files-utils": "libs/files-utils",
         "home": "apps/home",
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",

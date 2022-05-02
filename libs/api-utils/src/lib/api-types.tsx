@@ -38,15 +38,21 @@ export interface Update {
     legacyUser: LegacyUserPublic,
     updateType: UpdateType,
     date: string,
-    endDate: string,
-    amount: number,
-    amountCurrency: Currency,
-    motive: string,
-    dateTelegram: Date,
-    weekDay: number,
-    newDate: string,
-    notes: string,
-    followUp: string,
-    active: boolean,
-    data: string
+    endDate?: string,
+    amount?: number,
+    amountCurrency?: Currency,
+    dateTelegram?: Date,
+    weekDay?: number,
+    newDate?: string,
+    notes?: string,
+}
+
+export interface KeyValuePair {
+    [key: string]: any
+}
+
+export interface PatchDocumentItem {
+    op: string,
+    path: string,
+    value: any
 }

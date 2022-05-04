@@ -1,6 +1,7 @@
-import { Thead, Tr, Th, Tbody, Td, Table, Box, Text, HStack } from '@chakra-ui/react';
+import { Thead, Tr, Th, Tbody, Td, Table, Box, HStack } from '@chakra-ui/react';
 import { Update } from '@gms-micro/api-utils';
 import { useTable, Cell } from 'react-table';
+import DeleteModal from '../delete-modal/delete-modal';
 import EditModal from '../edit-modal/edit-modal';
 
 const columns = [
@@ -10,9 +11,8 @@ const columns = [
     { Header: 'End Date', accessor: 'endDate' },
     { Header: 'Amount', accessor: 'amount' },
     { Header: 'Currency', accessor: 'amountCurrency.code' },
-    { Header: 'Motive', accessor: 'motive' },
     { Header: 'Date Telegram', accessor: 'dateTelegram' },
-    //{ Header: 'Week Day', accessor: 'weekDay' },
+    { Header: 'Report Number', accessor: 'reportNumber' },
     { Header: 'New Date', accessor: 'newDate' },
     { Header: 'Notes', accessor: 'notes' },
 ];
@@ -63,6 +63,7 @@ export const TableComponent = ({ tableData, authHeader }: TableProps) => {
                                 <Td>
                                     <HStack h={'full'} px={2}>
                                         <EditModal update={row.original} authHeader={authHeader} />
+                                        <DeleteModal update={row.original} authHeader={authHeader} />
                                     </HStack>
                                 </Td>
                             </Tr>
@@ -83,7 +84,10 @@ const renderTableCell = (cell: Cell<Update | any>) => {
             return (cell.value && cell.value !== "0001-01-01T00:00:00") ? new Date(cell.value).toLocaleDateString() : '';
 
         case 'Amount':
-            return cell.value ? <Text fontStyle={'italic'}>hidden</Text> : '';
+            return cell.value ? `$${cell.value}` : '';
+
+        case 'Report Number':
+            return cell.value ? cell.value : '';
 
         default:
             return cell.render('Cell')

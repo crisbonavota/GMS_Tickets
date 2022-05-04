@@ -29,8 +29,7 @@ export interface UpdateType {
 
 export interface Currency {
     id: number,
-    code: string,
-    active: boolean
+    code: string
 }
 
 export interface Update {
@@ -44,6 +43,7 @@ export interface Update {
     dateTelegram?: Date,
     weekDay?: number,
     newDate?: string,
+    reportNumber?: number
     notes?: string,
 }
 

@@ -1,10 +1,6 @@
 import {
     Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
     IconButton,
-    Input,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -12,25 +8,19 @@ import {
     ModalFooter,
     ModalHeader,
     ModalOverlay,
-    Select,
-    Textarea,
     useBoolean,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
-import { Update, getResourceList, UpdateType, patchResource, getUpdateResourceFromType } from '@gms-micro/api-utils';
+import { Update, patchResource, getUpdateResourceFromType, KeyValuePair } from '@gms-micro/api-utils';
 import { MdModeEditOutline } from 'react-icons/md';
-import { useQuery } from 'react-query';
-import { LegacyUserPublic } from '@gms-micro/auth-types';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { useMemo } from 'react';
-import { KeyValuePair } from '../../../../../libs/api-utils/src/lib/api-types';
-
-const formSchema = Yup.object().shape({
-    legacyUserId: Yup.number().required("Required"),
-    updateTypeId: Yup.number().required("Required"),
-    date: Yup.date().required("Required"),
-});
+import { useQueryClient } from 'react-query';
+import { Form, Formik } from 'formik';
+import { useState, useEffect } from 'react';
+import FormCommonFields from '../form-common-fields/form-common-fields';
+import FormConditionalFields from '../form-conditional-fields/form-conditional-fields';
+import { renderCommonValues } from '../form-common-fields/form-common-fields';
+import { renderConditionalValues } from '../form-conditional-fields/form-conditional-fields';
+import { generateDinamicYupSchema } from '../helpers';
 
 export interface EditModalProps {
     update: Update,
@@ -39,15 +29,13 @@ export interface EditModalProps {
 
 export function EditModal({ update, authHeader }: EditModalProps) {
     const [open, setOpen] = useBoolean();
-    const employeesQuery = useQuery(['editEmployee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
-    const updateTypesQuery = useQuery(['editUpdateType'], () => getResourceList<UpdateType>('updates/types', authHeader));
-    
-    const initialValues: KeyValuePair = useMemo(() => ({
-        legacyUserId: update.legacyUser.id,
-        updateTypeId: update.updateType.id,
-        date: new Date(update.date).toISOString().split("T")[0], // The date is before the T (format ISO 8601)
-        notes: update.notes
-    }), [update]);
+    const queryClient = useQueryClient();
+    const [initialValues, setInitialValues] = useState<KeyValuePair>({});
+
+    useEffect(() => {
+        setInitialValues(renderCommonValues(initialValues, update));
+        setInitialValues(renderConditionalValues(initialValues, update));
+    }, []);
 
     return (
         <>
@@ -62,53 +50,31 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                             initialValues={initialValues}
                             onSubmit={async (values, { setSubmitting }) => {
                                 await patchResource(
-                                    getUpdateResourceFromType(values.updateTypeId),
+                                    getUpdateResourceFromType(update.updateType.id),
                                     update.id,
                                     authHeader,
                                     initialValues,
                                     values
                                 );
-
                                 setSubmitting(false);
                                 setOpen.off();
+                                queryClient.resetQueries(['updates']);
+                                queryClient.resetQueries(['updatesReport']);
                             }}
-                            validationSchema={formSchema}
+                            validationSchema={generateDinamicYupSchema(update.updateType.id)}
                         >
                             {({ isSubmitting, errors, handleSubmit }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <VStack spacing={4}>
-                                        <FormControl isInvalid={errors.legacyUserId !== undefined}>
-                                            <FormLabel htmlFor={"legacyUserId"}>Employee</FormLabel>
-                                            <Field id="legacyUserId" name="legacyUserId" as={Select} >
-                                                {employeesQuery.data?.data?.map(employee =>
-                                                    <option key={employee.id} value={employee.id}>{employee.fullName}</option>)}
-                                            </Field>
-                                            <ErrorMessage name='legacyUserId' component={FormErrorMessage} />
-                                        </FormControl>
-
-                                        <FormControl isInvalid={errors.updateTypeId !== undefined}>
-                                            <FormLabel htmlFor='updateTypeId'>Update Type</FormLabel>
-                                            <Field id="updateTypeId" name="updateTypeId" as={Select} >
-                                                {updateTypesQuery.data?.data?.map(type =>
-                                                    <option key={type.id} value={type.id}>{type.caption}</option>)}
-                                            </Field>
-                                            <ErrorMessage name='updateTypeId' component={FormErrorMessage} />
-                                        </FormControl>
-
-                                        <FormControl isInvalid={errors.date !== undefined}>
-                                            <FormLabel htmlFor="date">Date</FormLabel>
-                                            <Field as={Input} type="date" id={"date"} name="date" />
-                                            <ErrorMessage name='date' component={FormErrorMessage} />
-                                        </FormControl>
-
-                                        <FormControl isInvalid={errors.notes !== undefined}>
-                                            <FormLabel htmlFor='notes'>Notes</FormLabel>
-                                            <Field as={Textarea} id={"notes"} name="notes" />
-                                            <ErrorMessage name='notes' component={FormErrorMessage} />
-                                        </FormControl>
-
+                                        <FormCommonFields authHeader={authHeader} errors={errors} updateType={update.updateType} />
+                                        <FormConditionalFields errors={errors} updateType={update.updateType} />
                                         <ModalFooter w={'full'}>
-                                            <Button colorScheme='green' mr={3} type={"submit"} isLoading={isSubmitting}>
+                                            <Button 
+                                                colorScheme='green' 
+                                                mr={3} 
+                                                type={"submit"} 
+                                                isLoading={isSubmitting} 
+                                            >
                                                 Save
                                             </Button>
                                             <Button variant='ghost' onClick={setOpen.off}>Cancel</Button>
@@ -121,7 +87,6 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                 </ModalContent>
             </Modal>
         </>
-
     );
 }
 

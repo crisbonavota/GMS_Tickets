@@ -1,16 +1,13 @@
-import { Flex, Heading, IconButton, VStack, Wrap, Text } from '@chakra-ui/react';
-import { getReportFiltered, getResourceListFilteredAndPaginated, Update } from '@gms-micro/api-utils';
-import { downloadFile, generateExcelFileURL } from '@gms-micro/files-utils';
+import { Flex, Heading, VStack, Wrap, Text, HStack } from '@chakra-ui/react';
+import { getResourceListFilteredAndPaginated, Update } from '@gms-micro/api-utils';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra, TableSingleLegacyUserFilterWithChakra } from '@gms-micro/table-utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import TableComponent from './table/table';
 import UpdateTypeFilter from './update-type-filter/update-type-filter';
 import { useQuery } from 'react-query';
-import { FaFileExport } from 'react-icons/fa';
-
-const onExport = (isSuccess: boolean, base64?: string) => {
-    isSuccess && base64 && downloadFile(generateExcelFileURL(base64), `gms_updates_report_${new Date(Date.now()).toISOString()}.xlsx`);
-}
+import CreateModal from './create-modal/create-modal';
+import { FilterItem } from '@gms-micro/api-filters';
+import ExportButton from './export-button/export-button';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -24,17 +21,23 @@ const App = ({ authHeader }: { authHeader: string }) => {
         setCurrentPage(0);
     }, [from, to, updateType, legacyUser]);
 
-    const updatesQueriesFilters = [
+    const updatesQueriesFilters: FilterItem[] = useMemo(() => [
         { field: 'date_bgr', value: from !== "" ? from : undefined },
         { field: 'endDate_sml', value: to !== "" ? to : undefined },
         { field: 'updateTypeId', value: updateType !== "" ? updateType : undefined },
         { field: 'legacyUserId', value: legacyUser !== "" ? legacyUser : undefined }
-    ];
+    ], [from, to, legacyUser, updateType]);
 
-    const updatesQueriesSort = { field: "date", isAscending: false };
+    const updatesQueriesSort = useMemo(() => {
+        return {
+            field: "date",
+            isAscending: false
+        }
+    }, [from, to, legacyUser, updateType]);
 
     const updatesQuery = useQuery(
-        ['updates', currentPage, from, to, updateType, legacyUser],
+        // as any so concat don't complay about an array with different data types
+        (['updates'] as any).concat(updatesQueriesFilters.map(f => f.value)),
         () => getResourceListFilteredAndPaginated<Update>(
             "updates",
             authHeader,
@@ -42,17 +45,6 @@ const App = ({ authHeader }: { authHeader: string }) => {
             [],
             updatesQueriesSort,
             currentPage
-        )
-    );
-
-    const reportQuery = useQuery(
-        ['updatesReport', from, to, updateType, legacyUser],
-        () => getReportFiltered(
-            "updates/report",
-            authHeader,
-            updatesQueriesFilters,
-            [],
-            updatesQueriesSort
         )
     );
 
@@ -66,18 +58,10 @@ const App = ({ authHeader }: { authHeader: string }) => {
                         <UpdateTypeFilter authHeader={authHeader} updateType={updateType} setUpdateType={setUpdateType} isLoading={updatesQuery.isLoading} />
                         <TableDatesFilterWithChakra isLoading={updatesQuery.isLoading} from={from} to={to} setFrom={setFrom} setTo={setTo} />
                     </Wrap>
-                    <VStack mb={{ base: 3, md: 0 }}>
-                        <Text fontSize={'sm'}>Export</Text>
-                        <IconButton
-                            icon={<FaFileExport />}
-                            size={'lg'}
-                            aria-label="Export"
-                            colorScheme={'green'}
-                            isLoading={reportQuery.isLoading}
-                            disabled={reportQuery.isError}
-                            onClick={() => onExport(reportQuery.isSuccess, reportQuery.data?.data)}
-                        />
-                    </VStack>
+                    <HStack mb={{ base: 3, md: 0 }} spacing={5}>
+                        <ExportButton authHeader={authHeader} sort={updatesQueriesSort} filters={updatesQueriesFilters} />
+                        <CreateModal />
+                    </HStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}
                 {updatesQuery.isSuccess && <TableComponent authHeader={authHeader} tableData={updatesQuery.data.data} />}

@@ -42,7 +42,7 @@ export const generateDinamicYupSchema = (updateTypeId: number, isCreation: boole
         }
     };
 
-    if (updateTypesIds.periodUpdateTypes.includes(updateTypeId)) {
+    if (updateTypesIds.periodUpdateTypes.includes(updateTypeId) || updateTypesIds.workAccidentUpdateTypes.includes(updateTypeId)) {
         schema.properties.endDate = {
             type: "string",
             format: "date",

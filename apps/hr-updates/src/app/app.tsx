@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import CreateModal from './create-modal/create-modal';
 import { FilterItem } from '@gms-micro/api-filters';
 import ExportButton from './export-button/export-button';
+import CreateSelectUpdateType from './create-select-update-type/create-select-update-type';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -60,7 +61,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                     </Wrap>
                     <HStack mb={{ base: 3, md: 0 }} spacing={5}>
                         <ExportButton authHeader={authHeader} sort={updatesQueriesSort} filters={updatesQueriesFilters} />
-                        <CreateModal />
+                        <CreateSelectUpdateType authHeader={authHeader} />
                     </HStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}

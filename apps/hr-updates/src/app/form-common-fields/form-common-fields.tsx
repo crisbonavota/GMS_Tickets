@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Select, FormErrorMessage, Input, Heading, Textarea } from '@chakra-ui/react';
-import { getResourceList, KeyValuePair, Update, UpdateType } from '@gms-micro/api-utils';
+import { getResourceList, KeyValuePair, UpdateType } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { Field, ErrorMessage, FormikErrors } from 'formik';
 import { useQuery } from 'react-query';
@@ -11,7 +11,7 @@ interface FormCommonFieldsProps {
 }
 
 const FormCommonFields = ({ authHeader, errors, updateType }: FormCommonFieldsProps) => {
-    const employeesQuery = useQuery(['editEmployee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
+    const employeesQuery = useQuery(['employee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
 
     return (
         <>
@@ -42,14 +42,6 @@ const FormCommonFields = ({ authHeader, errors, updateType }: FormCommonFieldsPr
             </FormControl>
         </>
     )
-}
-
-export const renderCommonValues = (initialValues: KeyValuePair, update: Update) => {
-    initialValues.legacyUserId = update.legacyUser.id;
-    initialValues.date = new Date(update.date).toISOString().split("T")[0]; // The date is before the T (format ISO 8601)
-    initialValues.notes = update.notes;
-
-    return initialValues;
 }
 
 export default FormCommonFields;

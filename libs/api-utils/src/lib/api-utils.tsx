@@ -55,6 +55,10 @@ export const deleteResource = async (resource: string, id: number, authHeader: s
     return await client.delete(`/${resource}/${id}`, { headers: { Authorization: authHeader } });
 }
 
+export const postResource = async (resource: string, authHeader: string, data: KeyValuePair) => {
+    return await client.post(`/${resource}`, data, { headers: { Authorization: authHeader } });
+}
+
 export const updateTypesIds = {
     basicUpdateTypes: [15, 19],
     periodUpdateTypes: [1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 23, 24, 25, 26, 27, 28, 29],

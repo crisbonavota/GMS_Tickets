@@ -47,6 +47,20 @@ export interface Update {
     notes?: string,
 }
 
+export interface UpdateCreation {
+    legacyUserId: number,
+    updateTypeId: number,
+    date: string,
+    endDate?: string,
+    amount?: number,
+    amountCurrencyId?: number,
+    dateTelegram?: Date,
+    weekDay?: number,
+    newDate?: string,
+    reportNumber?: number
+    notes?: string,
+}
+
 export interface KeyValuePair {
     [key: string]: any
 }

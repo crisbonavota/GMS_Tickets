@@ -11,15 +11,13 @@ import {
     useBoolean,
     VStack,
 } from '@chakra-ui/react';
-import { Update, patchResource, getUpdateResourceFromType, KeyValuePair } from '@gms-micro/api-utils';
+import { Update, patchResource, getUpdateResourceFromType, KeyValuePair, updateTypesIds } from '@gms-micro/api-utils';
 import { MdModeEditOutline } from 'react-icons/md';
 import { useQueryClient } from 'react-query';
 import { Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import FormCommonFields from '../form-common-fields/form-common-fields';
 import FormConditionalFields from '../form-conditional-fields/form-conditional-fields';
-import { renderCommonValues } from '../form-common-fields/form-common-fields';
-import { renderConditionalValues } from '../form-conditional-fields/form-conditional-fields';
 import { generateDinamicYupSchema } from '../helpers';
 
 export interface EditModalProps {
@@ -33,8 +31,7 @@ export function EditModal({ update, authHeader }: EditModalProps) {
     const [initialValues, setInitialValues] = useState<KeyValuePair>({});
 
     useEffect(() => {
-        setInitialValues(renderCommonValues(initialValues, update));
-        setInitialValues(renderConditionalValues(initialValues, update));
+        setInitialValues(renderInitialValues(initialValues, update));
     }, []);
 
     return (
@@ -67,19 +64,19 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                                 <Form onSubmit={handleSubmit}>
                                     <VStack spacing={4}>
                                         <FormCommonFields authHeader={authHeader} errors={errors} updateType={update.updateType} />
-                                        <FormConditionalFields errors={errors} updateType={update.updateType} />
-                                        <ModalFooter w={'full'}>
-                                            <Button 
-                                                colorScheme='green' 
-                                                mr={3} 
-                                                type={"submit"} 
-                                                isLoading={isSubmitting} 
-                                            >
-                                                Save
-                                            </Button>
-                                            <Button variant='ghost' onClick={setOpen.off}>Cancel</Button>
-                                        </ModalFooter>
+                                        <FormConditionalFields errors={errors} updateTypeId={update.updateType.id} />
                                     </VStack>
+                                    <ModalFooter w={'full'}>
+                                        <Button
+                                            colorScheme='green'
+                                            mr={3}
+                                            type={"submit"}
+                                            isLoading={isSubmitting}
+                                        >
+                                            Save
+                                        </Button>
+                                        <Button variant='ghost' onClick={setOpen.off}>Cancel</Button>
+                                    </ModalFooter>
                                 </Form>
                             )}
                         </Formik>
@@ -88,6 +85,33 @@ export function EditModal({ update, authHeader }: EditModalProps) {
             </Modal>
         </>
     );
+}
+
+const renderInitialValues = (initialValues: KeyValuePair, update: Update) => {
+    initialValues.legacyUserId = update.legacyUser.id;
+    initialValues.date = update.date.split("T")[0]; // The date is before the T (format ISO 8601)
+    initialValues.notes = update.notes ? update.notes : "";
+
+    if (updateTypesIds.periodUpdateTypes.includes(update.updateType.id))
+        initialValues.endDate = update.endDate ? new Date(update.endDate).toISOString().split("T")[0] : "";
+
+    if (updateTypesIds.dateChangeUpdateTypes.includes(update.updateType.id))
+        initialValues.newDate = update.newDate ? new Date(update.newDate).toISOString().split("T")[0] : "";
+
+    if (updateTypesIds.monetaryUpdateTypes.includes(update.updateType.id)) {
+        initialValues.amount = update.amount;
+        initialValues.amountCurrencyId = update.amountCurrency?.id;
+    }
+
+    if (updateTypesIds.resignationUpdateTypes.includes(update.updateType.id))
+        initialValues.dateTelegram = update.dateTelegram;
+
+    if (updateTypesIds.workAccidentUpdateTypes.includes(update.updateType.id)) {
+        initialValues.reportNumber = update.reportNumber;
+        initialValues.endDate = update.endDate ? new Date(update.endDate).toISOString().split("T")[0] : "";
+    }
+
+    return initialValues;
 }
 
 export default EditModal;

@@ -1,6 +1,6 @@
 import { Thead, Tr, Th, Tbody, Td, Table, Box } from '@chakra-ui/react';
 import { useTable, Cell } from 'react-table';
-import { TimetrackItem } from '../api';
+import { TimetrackItem } from '@gms-micro/api-utils';
 
 const columns = [
     { Header: 'File number', accessor: 'legacyUser.fileNumber' },

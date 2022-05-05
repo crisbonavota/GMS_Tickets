@@ -1,10 +1,9 @@
 import { Heading, VStack, Text, Input, Button } from '@chakra-ui/react';
 import { useEffect, useState, useMemo } from 'react';
 import { useQuery } from 'react-query'
-import { getTimetrackItems, getTimetrackItemsReport } from './api';
 import TableComponent from './table/table';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra } from '@gms-micro/table-utils';
-import { Account, BusinessUnit, Project, Proposal, getResourceList } from '@gms-micro/api-utils';
+import { Account, BusinessUnit, Project, Proposal, getResourceList, getResourceListFilteredAndPaginated, getReportFiltered, TimetrackItem } from '@gms-micro/api-utils';
 import SelectFilters from './select-filters/select-filters';
 import { SelectItem } from './select-item/select-item';
 import { useDidMountEffect } from '@gms-micro/react-hooks';
@@ -49,7 +48,8 @@ const App = ({ authHeader }: { authHeader: string }) => {
 
     const timetrackQuery = useQuery(
         ['timetrack', currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
-        () => getTimetrackItems(
+        () => getResourceListFilteredAndPaginated<TimetrackItem>(
+            "timetrack",
             authHeader,
             [
                 { field: 'date_bgr', value: from !== "" ? from : undefined },
@@ -67,7 +67,8 @@ const App = ({ authHeader }: { authHeader: string }) => {
 
     const reportQuery = useQuery(
         ['timetrackReport', from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
-        () => getTimetrackItemsReport(
+        () => getReportFiltered(
+            "timetrack/reports",
             authHeader,
             [
                 { field: 'date_bgr', value: from !== "" ? from : undefined },

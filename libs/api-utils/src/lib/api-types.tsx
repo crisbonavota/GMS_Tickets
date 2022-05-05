@@ -70,3 +70,12 @@ export interface PatchDocumentItem {
     path: string,
     value: any
 }
+
+export interface TimetrackItem {
+    id: number,
+    project: Project,
+    legacyUser: LegacyUserPublic,
+    task: string,
+    hours: number,
+    date: string
+}

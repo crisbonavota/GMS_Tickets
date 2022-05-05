@@ -9,12 +9,14 @@ import { SelectItem } from './select-item/select-item';
 import { useDidMountEffect } from '@gms-micro/react-hooks';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import ExportModule from './export-module/export-module';
+import { Sort } from '@gms-micro/api-filters';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [from, setFrom] = useState<string>(addMonths(new Date(Date.now()), -1)); // Default filter to 1 month ago
     const [to, setTo] = useState<string>("");
     const [users, setUsers] = useState<SelectItem[]>([]);
+    const [sort, setSort] = useState<Sort>({ field: "date", isAscending: false });
     const [businessUnits, setBusinessUnits] = useState<SelectItem[]>([]);
     const [projects, setProjects] = useState<SelectItem[]>([]);
     const [proposals, setProposals] = useState<SelectItem[]>([]);
@@ -30,7 +32,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
     // Go to first page if any filter changes
     useEffect(() => {
         setCurrentPage(0);
-    }, [from, to, refetchAux, users, businessUnits, projects, proposals, accounts]);
+    }, [from, to, refetchAux, users, businessUnits, projects, proposals, accounts, sort]);
 
     // Workaround for waiting 1500ms after user finished typing in the general searchbar for the search to be triggered
     useDidMountEffect(() => {
@@ -53,8 +55,8 @@ const App = ({ authHeader }: { authHeader: string }) => {
     const customFilters = useMemo(() => [{ name: 'generalSearch', value: generalSearch }], [generalSearch]);
 
     const refetchTriggers = useMemo(() =>
-        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
-        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts]);
+        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts, sort],
+        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts, sort]);
 
     const timetrackQuery = useQuery(
         ['timetrack', refetchTriggers],
@@ -63,7 +65,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
             authHeader,
             filters,
             customFilters,
-            undefined,
+            sort,
             currentPage)
     );
 
@@ -107,7 +109,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                     <ExportModule authHeader={authHeader} filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
                 </VStack>
                 {timetrackQuery.isLoading && <Text>Loading...</Text>}
-                {timetrackQuery.isSuccess && <TableComponent tableData={timetrackQuery.data.data} />}
+                {timetrackQuery.isSuccess && <TableComponent tableData={timetrackQuery.data.data} sort={sort} setSort={setSort} />}
                 {timetrackQuery.isError && <Text>There was an error generating the table, try again later</Text>}
                 <TablePaginationWithChakra
                     isLoading={timetrackQuery.isLoading}

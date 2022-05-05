@@ -1,19 +1,14 @@
-import { Heading, VStack, Text, Input, Button } from '@chakra-ui/react';
+import { Heading, VStack, Text, Input } from '@chakra-ui/react';
 import { useEffect, useState, useMemo } from 'react';
 import { useQuery } from 'react-query'
 import TableComponent from './table/table';
 import { TableDatesFilterWithChakra, TablePaginationWithChakra } from '@gms-micro/table-utils';
-import { Account, BusinessUnit, Project, Proposal, getResourceList, getResourceListFilteredAndPaginated, getReportFiltered, TimetrackItem } from '@gms-micro/api-utils';
+import { Account, BusinessUnit, Project, Proposal, getResourceList, getResourceListFilteredAndPaginated, TimetrackItem } from '@gms-micro/api-utils';
 import SelectFilters from './select-filters/select-filters';
 import { SelectItem } from './select-item/select-item';
 import { useDidMountEffect } from '@gms-micro/react-hooks';
-import ExportStats from './export-stats/export-stats';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
-import { generateExcelFileURL, downloadFile } from '@gms-micro/files-utils';
-
-const onExport = (base64?: string) => {
-    base64 && downloadFile(generateExcelFileURL(base64), `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`);
-};
+import ExportModule from './export-module/export-module';
 
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -55,24 +50,21 @@ const App = ({ authHeader }: { authHeader: string }) => {
         { field: 'project.proposal.accountId_OR', value: selectItemToFilterValues(accounts) }
     ], [from, to, refetchAux, users, businessUnits, projects, proposals, accounts]);
 
+    const customFilters = useMemo(() => [{ name: 'generalSearch', value: generalSearch }], [generalSearch]);
+
+    const refetchTriggers = useMemo(() =>
+        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
+        [currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts]);
+
     const timetrackQuery = useQuery(
-        ['timetrack', currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
+        ['timetrack', refetchTriggers],
         () => getResourceListFilteredAndPaginated<TimetrackItem>(
             "timetrack",
             authHeader,
             filters,
-            [{ name: 'generalSearch', value: generalSearch }],
+            customFilters,
             undefined,
             currentPage)
-    );
-
-    const reportQuery = useQuery(
-        ['timetrackReport', from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
-        () => getReportFiltered(
-            "timetrack/reports",
-            authHeader,
-            filters,
-            [{ name: 'generalSearch', value: generalSearch }])
     );
 
     const usersQuery = useQuery(['users', authHeader], () =>
@@ -112,16 +104,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                             { query: accountsQuery, placeholder: 'Account', nameField: 'name', values: accounts, setter: setAccounts }
                         ]}
                     />
-                    <ExportStats query={reportQuery} />
-                    <Button
-                        colorScheme={'green'}
-                        w={'full'}
-                        isLoading={reportQuery.isLoading}
-                        disabled={reportQuery.isError}
-                        onClick={() => onExport(reportQuery.data?.data)}
-                    >
-                        Export
-                    </Button>
+                    <ExportModule authHeader={authHeader} filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
                 </VStack>
                 {timetrackQuery.isLoading && <Text>Loading...</Text>}
                 {timetrackQuery.isSuccess && <TableComponent tableData={timetrackQuery.data.data} />}

@@ -11,6 +11,10 @@ import ExportStats from './export-stats/export-stats';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { generateExcelFileURL, downloadFile } from '@gms-micro/files-utils';
 
+const onExport = (base64?: string) => {
+    base64 && downloadFile(generateExcelFileURL(base64), `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`);
+};
+
 const App = ({ authHeader }: { authHeader: string }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [from, setFrom] = useState<string>(addMonths(new Date(Date.now()), -1)); // Default filter to 1 month ago
@@ -28,11 +32,6 @@ const App = ({ authHeader }: { authHeader: string }) => {
             setGeneralSearch(e.target.value);
         }, []);
 
-    const onExport = () => {
-        reportQuery.isSuccess
-            && downloadFile(generateExcelFileURL(reportQuery.data.data), `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`);
-    };
-
     // Go to first page if any filter changes
     useEffect(() => {
         setCurrentPage(0);
@@ -46,20 +45,22 @@ const App = ({ authHeader }: { authHeader: string }) => {
         return () => clearTimeout(timeOutId);
     }, [generalSearch]);
 
+    const filters = useMemo(() => [
+        { field: 'date_bgr', value: from !== "" ? from : undefined },
+        { field: 'date_sml', value: to !== "" ? to : undefined },
+        { field: 'legacyUserId_OR', value: selectItemToFilterValues(users) },
+        { field: 'legacyUser.businessUnitId_OR', value: selectItemToFilterValues(businessUnits) },
+        { field: 'projectId_OR', value: selectItemToFilterValues(projects) },
+        { field: 'project.proposalId_OR', value: selectItemToFilterValues(proposals) },
+        { field: 'project.proposal.accountId_OR', value: selectItemToFilterValues(accounts) }
+    ], [from, to, refetchAux, users, businessUnits, projects, proposals, accounts]);
+
     const timetrackQuery = useQuery(
         ['timetrack', currentPage, from, to, refetchAux, users, businessUnits, projects, proposals, accounts],
         () => getResourceListFilteredAndPaginated<TimetrackItem>(
             "timetrack",
             authHeader,
-            [
-                { field: 'date_bgr', value: from !== "" ? from : undefined },
-                { field: 'date_sml', value: to !== "" ? to : undefined },
-                { field: 'legacyUserId_OR', value: selectItemToFilterValues(users) },
-                { field: 'legacyUser.businessUnitId_OR', value: selectItemToFilterValues(businessUnits) },
-                { field: 'projectId_OR', value: selectItemToFilterValues(projects) },
-                { field: 'project.proposalId_OR', value: selectItemToFilterValues(proposals) },
-                { field: 'project.proposal.accountId_OR', value: selectItemToFilterValues(accounts) }
-            ],
+            filters,
             [{ name: 'generalSearch', value: generalSearch }],
             undefined,
             currentPage)
@@ -70,15 +71,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
         () => getReportFiltered(
             "timetrack/reports",
             authHeader,
-            [
-                { field: 'date_bgr', value: from !== "" ? from : undefined },
-                { field: 'date_sml', value: to !== "" ? to : undefined },
-                { field: 'legacyUserId_OR', value: selectItemToFilterValues(users) },
-                { field: 'legacyUser.businessUnitId_OR', value: selectItemToFilterValues(businessUnits) },
-                { field: 'projectId_OR', value: selectItemToFilterValues(projects) },
-                { field: 'project.proposalId_OR', value: selectItemToFilterValues(proposals) },
-                { field: 'project.proposal.accountId_OR', value: selectItemToFilterValues(accounts) }
-            ],
+            filters,
             [{ name: 'generalSearch', value: generalSearch }])
     );
 
@@ -125,7 +118,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                         w={'full'}
                         isLoading={reportQuery.isLoading}
                         disabled={reportQuery.isError}
-                        onClick={onExport}
+                        onClick={() => onExport(reportQuery.data?.data)}
                     >
                         Export
                     </Button>

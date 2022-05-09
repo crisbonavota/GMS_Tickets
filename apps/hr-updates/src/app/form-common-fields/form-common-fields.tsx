@@ -11,7 +11,7 @@ interface FormCommonFieldsProps {
 }
 
 const FormCommonFields = ({ authHeader, errors, updateType }: FormCommonFieldsProps) => {
-    const employeesQuery = useQuery(['employee'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
+    const employeesQuery = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
 
     return (
         <>

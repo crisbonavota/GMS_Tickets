@@ -119,7 +119,7 @@ export interface TableLegacyUserFilterWithChakraProps {
 }
 
 export const TableSingleLegacyUserFilterWithChakra = ({ authHeader , legacyUser, setLegacyUser, isLoading}: TableLegacyUserFilterWithChakraProps) => {
-    const query = useQuery(['employees'], () => getResourceList<LegacyUserPublic>("users/legacy", authHeader));
+    const query = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>("users/legacy", authHeader));
     return (
         <VStack alignItems={'flex-start'} w={'15rem'}>
             <Text fontSize={'sm'}>Employee</Text>

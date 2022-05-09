@@ -26,12 +26,12 @@ include:
 sast:
   stage: test
   tags:
-    - docker-gms-dev
+    - gms-new
 
 gms:
   stage: build-src
   tags:
-    - docker-gms-dev
+    - gms-new
   image: node:$NODE_VERSION
   script:
     - node --version    

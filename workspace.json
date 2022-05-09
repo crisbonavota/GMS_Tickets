@@ -10,6 +10,7 @@
         "deploy": "libs/deploy",
         "files-utils": "libs/files-utils",
         "home": "apps/home",
+        "hr-employees": "apps/hr-employees",
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",

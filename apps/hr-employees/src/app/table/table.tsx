@@ -20,7 +20,7 @@ const TABLE_DATA = [
     { header: "Salary currency", accessor: "salaryCurrency.code" },
     { header: "Medical coverage", accessor: "medicalCoverage.name" },
     { header: "Country", accessor: "country.name" },
-    { header: "Active", accessor: "active" },
+    { header: "Active", accessor: "active" }
 ]
 
 const columns = TABLE_DATA.map(column => {

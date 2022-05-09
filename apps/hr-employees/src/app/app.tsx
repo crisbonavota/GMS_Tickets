@@ -18,7 +18,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
         [],
         [],
         sort,
-        undefined
+        currentPage
     ));
 
     return (

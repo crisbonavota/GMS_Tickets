@@ -79,3 +79,63 @@ export interface TimetrackItem {
     hours: number,
     date: string
 }
+
+export interface Position {
+    id: number,
+    name: string
+}
+
+export interface Country {
+    id: number,
+    name: string,
+    code: string
+}
+
+export interface Contact {
+    relation: string,
+    name: string,
+    phone: string
+}
+
+export interface MedicalCoverage {
+    id: number,
+    name: string
+}
+
+export interface City {
+    id: number,
+    name: string
+}
+
+export interface Address {
+    street: string,
+    number: string,
+    floor: string,
+    department: string
+}
+
+export interface Employee {
+    fileNumber: number,
+    legacyUser: LegacyUserPublic,
+    afipId: string,
+    entryDate: string,
+    position: Position,
+    avatar: string,
+    firstName: string,
+    lastName: string,
+    gender: boolean,
+    birthDate: string,
+    birthCountry: Country,
+    childs: number,
+    maritalStatus: string,
+    email: string,
+    contact: Array<Contact>,
+    homePhone: string,
+    mobilePhone: string,
+    salaryCurrency: Currency,
+    medicalCoverage: MedicalCoverage,
+    address: Address,
+    city: City,
+    country: Country,
+    active: boolean
+}

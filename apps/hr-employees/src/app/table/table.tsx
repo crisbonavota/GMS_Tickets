@@ -1,6 +1,8 @@
-import { Thead, Tr, Th, Tbody, Td, Table, Box, Text } from '@chakra-ui/react';
+import { Thead, Tr, Th, Tbody, Td, Table, Box, Text, HStack, Icon } from '@chakra-ui/react';
+import { Sort } from '@gms-micro/api-filters';
 import { Employee } from '@gms-micro/api-utils';
 import { useTable, Cell } from 'react-table';
+import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 
 const TABLE_DATA = [
     { header: "File number", accessor: "fileNumber" },
@@ -28,12 +30,18 @@ const columns = TABLE_DATA.map(column => {
     }
 });
 
-interface TableProps {
-    tableData: Array<Employee>,
-    authHeader: string
+const onHeaderClick = (id: string, sort: Sort, setSort: (sort: Sort) => void) => {
+    const isAlreadySorted = sort.field === id;
+    setSort({ field: id, isAscending: isAlreadySorted ? !sort.isAscending : true });
 }
 
-export const TableComponent = ({ tableData, authHeader }: TableProps) => {
+interface TableProps {
+    tableData: Array<Employee>,
+    sort: Sort,
+    setSort: (sort: Sort) => void
+}
+
+export const TableComponent = ({ tableData, sort, setSort }: TableProps) => {
     // @ts-ignore
     const tableInstance = useTable({ columns, data: tableData });
 
@@ -53,7 +61,13 @@ export const TableComponent = ({ tableData, authHeader }: TableProps) => {
                         <Tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => (
                                 <Th {...column.getHeaderProps()}>
-                                    {column.render('Header')}
+                                    {<HStack cursor={'pointer'} w={'fit-content'} onClick={() => onHeaderClick(column.id, sort, setSort)}>
+                                        <Text>{column.render('Header')}</Text>
+                                        {sort.field === column.id &&
+                                            (sort.isAscending ?
+                                                <Icon fontWeight={'bold'} as={BsChevronUp} /> :
+                                                <Icon fontWeight={'bold'} as={BsChevronDown} />)}
+                                    </HStack>}
                                 </Th>
                             ))}
                         </Tr>

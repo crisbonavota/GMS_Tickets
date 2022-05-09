@@ -11,7 +11,6 @@ type CreateSelectUpdateTypeProps = {
 const CreateSelectUpdateType = ({ authHeader }: CreateSelectUpdateTypeProps) => {
     const updateTypesQuery = useQuery(['updateTypes'], () => getResourceList<UpdateType>('updates/types', authHeader));
 
-    if (updateTypesQuery.isLoading) return <Text>Loading...</Text>
     if (updateTypesQuery.isError) return <Text>Error: {JSON.stringify(updateTypesQuery.error)}</Text>
 
     return (
@@ -19,11 +18,11 @@ const CreateSelectUpdateType = ({ authHeader }: CreateSelectUpdateTypeProps) => 
             <VStack>
                 <Text fontSize={'sm'}>Create</Text>
                 <MenuButton>
-                    <IconButton size={'lg'} icon={<VscNewFile />} aria-label="Create" colorScheme={'green'} />
+                    <IconButton isLoading={updateTypesQuery.isLoading} size={'lg'} icon={<VscNewFile />} aria-label="Create" colorScheme={'green'} />
                 </MenuButton>
             </VStack>
             <MenuList maxH={'50vh'} overflowY={'auto'}>
-                {updateTypesQuery.data?.data.map((type) => <CreateModal authHeader={authHeader} updateType={type} key={type.id} />)}
+                {updateTypesQuery.isSuccess && updateTypesQuery.data.data.map((type) => <CreateModal authHeader={authHeader} updateType={type} key={type.id} />)}
             </MenuList>
         </Menu>
     )

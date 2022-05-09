@@ -1,8 +1,8 @@
-import { useBoolean, VStack, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, MenuItem } from '@chakra-ui/react';
+import { useBoolean, VStack, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, MenuItem, useToast } from '@chakra-ui/react';
 import { KeyValuePair, UpdateType, updateTypesIds, postResource, getUpdateResourceFromType } from '@gms-micro/api-utils';
 import { Formik, Form } from 'formik';
 import { useEffect, useState } from 'react';
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import FormCommonFields from '../form-common-fields/form-common-fields';
 import FormConditionalFields from '../form-conditional-fields/form-conditional-fields';
 import { generateDinamicYupSchema } from '../helpers';
@@ -16,10 +16,30 @@ const CreateModal = ({ authHeader, updateType }: CreateModalProps) => {
     const [open, setOpen] = useBoolean();
     const queryClient = useQueryClient();
     const [initialValues, setInitialValues] = useState<KeyValuePair>({});
+    const toast = useToast();
 
     useEffect(() => {
         setInitialValues(renderInitialValues(initialValues, updateType));
     }, []);
+
+    const createUpdateMutation = useMutation(async (values: KeyValuePair) => await postResource(
+        getUpdateResourceFromType(updateType.id),
+        authHeader,
+        values,
+    ), {
+        onMutate: async () => {
+            await queryClient.cancelQueries(['updates']);
+            await queryClient.cancelQueries(['updatesReport']);
+        },
+        onSuccess: () => {
+            queryClient.resetQueries(['updates']);
+            queryClient.resetQueries(['updatesReport']);
+            toast({ title: "Element created", status: "success" });
+        },
+        onError: (err: any) => {
+            toast({ title: "Error creating the element, try again later", description: err.message || err, status: "error" });
+        }
+    });
 
     return (
         <>
@@ -33,11 +53,9 @@ const CreateModal = ({ authHeader, updateType }: CreateModalProps) => {
                         <Formik
                             initialValues={initialValues}
                             onSubmit={async (values, { setSubmitting }) => {
-                                await postResource(getUpdateResourceFromType(updateType.id), authHeader, values);
+                                await createUpdateMutation.mutateAsync(values);
                                 setSubmitting(false);
                                 setOpen.off();
-                                queryClient.resetQueries(['updates']);
-                                queryClient.resetQueries(['updatesReport']);
                             }}
                             validationSchema={generateDinamicYupSchema(updateType.id, true)}
                         >

@@ -1,21 +1,10 @@
-import { Button, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useBoolean } from '@chakra-ui/react';
+import { Button, Heading, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useBoolean, useToast } from '@chakra-ui/react';
 import { deleteResource, getUpdateResourceFromType, Update } from '@gms-micro/api-utils';
 import { AiFillDelete } from 'react-icons/ai';
-import { useQueryClient, QueryClient } from 'react-query';
+import { useQueryClient, useMutation } from 'react-query';
+import { useMemo } from 'react';
 
-const onDelete = async (authHeader: string, update: Update, toggleLoading: () => void, queryClient: QueryClient) => {
-    toggleLoading();
-    try {
-        await deleteResource(getUpdateResourceFromType(update.updateType.id), update.id, authHeader);
-    }
-    catch (err) {
-        console.log(err);
-        window.alert("Error deleting your update, try again later");
-    }
-    toggleLoading();
-    queryClient.resetQueries(['updates']);
-    queryClient.resetQueries(['updatesReport']);
-}
+
 
 interface DeleteModalProps {
     authHeader: string,
@@ -26,6 +15,35 @@ const DeleteModal = ({ authHeader, update }: DeleteModalProps) => {
     const [open, setOpen] = useBoolean();
     const [loading, setLoading] = useBoolean();
     const queryClient = useQueryClient();
+    const toast = useToast();
+
+    const deleteUpdateMutation = useMutation(async () => await deleteResource(
+        getUpdateResourceFromType(update.updateType.id),
+        update.id,
+        authHeader,
+    ), {
+        onMutate: async () => {
+            await queryClient.cancelQueries(['updates']);
+            await queryClient.cancelQueries(['updatesReport']);
+        },
+        onSuccess: () => {
+            queryClient.resetQueries(['updates']);
+            queryClient.resetQueries(['updatesReport']);
+            toast({ title: "Element deleted", status: "success" });
+        },
+        onError: (err: any) => {
+            toast({ title: "Error deleting the element, try again later", description: err.message || err, status: "error" });
+        }
+    });
+
+    const onDelete = useMemo(() => async () => {
+        setLoading.on();
+        await deleteUpdateMutation.mutateAsync();
+        queryClient.resetQueries(['updates']);
+        queryClient.resetQueries(['updatesReport']);
+        setOpen.off();
+        setLoading.off();
+    }, [update]);
 
     return (
         <>
@@ -44,7 +62,7 @@ const DeleteModal = ({ authHeader, update }: DeleteModalProps) => {
                             mr={3}
                             type={"submit"}
                             isLoading={loading}
-                            onClick={() => onDelete(authHeader, update, setLoading.toggle, queryClient)}
+                            onClick={onDelete}
                         >
                             Delete
                         </Button>

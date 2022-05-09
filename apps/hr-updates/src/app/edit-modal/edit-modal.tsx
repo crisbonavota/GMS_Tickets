@@ -9,11 +9,12 @@ import {
     ModalHeader,
     ModalOverlay,
     useBoolean,
+    useToast,
     VStack,
 } from '@chakra-ui/react';
 import { Update, patchResource, getUpdateResourceFromType, KeyValuePair, updateTypesIds } from '@gms-micro/api-utils';
 import { MdModeEditOutline } from 'react-icons/md';
-import { useQueryClient } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { Form, Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import FormCommonFields from '../form-common-fields/form-common-fields';
@@ -29,6 +30,28 @@ export function EditModal({ update, authHeader }: EditModalProps) {
     const [open, setOpen] = useBoolean();
     const queryClient = useQueryClient();
     const [initialValues, setInitialValues] = useState<KeyValuePair>({});
+    const toast = useToast();
+
+    const editUpdateMutation = useMutation(async (newValues: KeyValuePair) => await patchResource(
+        getUpdateResourceFromType(update.updateType.id),
+        update.id,
+        authHeader,
+        initialValues,
+        newValues
+    ), {
+        onMutate: async () => {
+            await queryClient.cancelQueries(['updates']);
+            await queryClient.cancelQueries(['updatesReport']);
+        },
+        onSuccess: () => {
+            queryClient.resetQueries(['updates']);
+            queryClient.resetQueries(['updatesReport']);
+            toast({ title: "Element updated", status: "success" });
+        },
+        onError: (err: any) => {
+            toast({ title: "Error updating the element, try again later", description: err.message || err, status: "error" });
+        }
+    });
 
     useEffect(() => {
         setInitialValues(renderInitialValues(initialValues, update));
@@ -46,17 +69,9 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                         <Formik
                             initialValues={initialValues}
                             onSubmit={async (values, { setSubmitting }) => {
-                                await patchResource(
-                                    getUpdateResourceFromType(update.updateType.id),
-                                    update.id,
-                                    authHeader,
-                                    initialValues,
-                                    values
-                                );
+                                await editUpdateMutation.mutateAsync(values);
                                 setSubmitting(false);
                                 setOpen.off();
-                                queryClient.resetQueries(['updates']);
-                                queryClient.resetQueries(['updatesReport']);
                             }}
                             validationSchema={generateDinamicYupSchema(update.updateType.id)}
                         >

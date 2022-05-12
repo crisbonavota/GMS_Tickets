@@ -71,11 +71,18 @@ export interface PatchDocumentItem {
     value: any
 }
 
+export interface TaskType {
+    id: number,
+    name: string,
+    code: string
+}
+
 export interface TimetrackItem {
     id: number,
     project: Project,
     legacyUser: LegacyUserPublic,
     task: string,
+    tasktype: TaskType,
     hours: number,
     date: string
 }

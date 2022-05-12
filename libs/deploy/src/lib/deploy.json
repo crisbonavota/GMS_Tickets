@@ -32,9 +32,20 @@
             "label": "Timetrack - Reports"
         },
         {
+            "name": "tt-load",
+            "path": "timetrack/load",
+            "devPort": 3004,
+            "serveOn": {
+                "production": true,
+                "development": true
+            },
+            "allowedRoles": ["tt-load"],
+            "label": "Timetrack - Load Hours"
+        },
+        {
             "name": "hr-updates",
             "path": "human-resources/updates",
-            "devPort": 3004,
+            "devPort": 3005,
             "serveOn": {
                 "production": true,
                 "development": false
@@ -45,10 +56,10 @@
         {
             "name": "hr-employees",
             "path": "human-resources/employees",
-            "devPort": 3005,
+            "devPort": 3006,
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["hr-employees"],
             "label": "Human Resources - Employees"

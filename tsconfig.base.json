@@ -20,6 +20,9 @@
             "@gms-micro/assets": ["libs/assets/src/index.ts"],
             "@gms-micro/auth-methods": ["libs/auth-methods/src/index.ts"],
             "@gms-micro/auth-types": ["libs/auth-types/src/index.ts"],
+            "@gms-micro/chakra-react-select-styles": [
+                "libs/chakra-react-select-styles/src/index.ts"
+            ],
             "@gms-micro/deploy": ["libs/deploy/src/index.ts"],
             "@gms-micro/files-utils": ["libs/files-utils/src/index.ts"],
             "@gms-micro/microfront-utils": [

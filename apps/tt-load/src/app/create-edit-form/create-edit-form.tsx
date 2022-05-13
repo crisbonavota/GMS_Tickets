@@ -76,6 +76,8 @@ const CreateEditForm = ({
                 setSubmitting.off();
                 toast({ title: `${type === "create" ? "Hours submitted" : "Entry updated"}`, status: "success" });
                 queryClient.resetQueries('owned-daily');
+                queryClient.resetQueries('owned-weekly');
+                queryClient.resetQueries('owned-custom');
             },
             onError: (err: any) => {
                 setSubmitting.off();

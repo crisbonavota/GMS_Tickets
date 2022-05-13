@@ -1,11 +1,12 @@
 import { Center, Stack } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
+import moment from 'moment';
 import { useMemo, useState } from 'react';
 import CreateEditForm from './create-edit-form/create-edit-form';
 import TableComponent from './table/table';
 
 const App = ({ authHeader }: { authHeader: string }) => {
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [date, setDate] = useState(moment().format("YYYY-MM-DD"));
     const [hours, setHours] = useState<string>("");
     const [taskType, setTaskType] = useState<number>();
     const [task, setTask] = useState('');

@@ -69,7 +69,7 @@ const Loading = () => {
 export const dateShiftToISOString = (dateShift: number, start: boolean) => {
     var date = start ? moment().startOf('week') : moment().endOf('week');
     // + 1 because moment.js considers the week starting at sundays
-    return date.add(dateShift * 7 + (start ? 1 : 0), 'days').toISOString().split('T')[0]
+    return date.add(dateShift * 7 + (start ? 1 : 0), 'days').format('YYYY-MM-DD');
 }
 
 export default WeeklyTab

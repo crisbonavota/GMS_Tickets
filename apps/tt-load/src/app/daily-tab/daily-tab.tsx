@@ -19,10 +19,11 @@ const DailyTab = ({ authHeader, selected, onEdit }: Props) => {
     const itemsQuery = useQuery(['owned-daily', dateShift], () => getResourceListFilteredAndPaginated<TimetrackItem>(
         "timetrack/owned",
         authHeader,
-        [{ field: "date", value: moment().add(dateShift, 'days').toISOString().split('T')[0] }],
+        [{ field: "date", value: moment().add(dateShift, 'days').format("YYYY-MM-DD") }],
     ));
 
     useEffect(() => {
+        console.log(displayDate.toISOString());
         setDisplayDate(moment().add(dateShift, 'days'));
     }, [dateShift]);
 

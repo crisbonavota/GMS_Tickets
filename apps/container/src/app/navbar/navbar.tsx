@@ -17,8 +17,8 @@ export function Navbar() {
 
     return (
         <Box w={'full'} h={'8vh'} bgColor={'black'} mb={0}>
-            <HStack w={'full'} h={'full'} py={2} ps={10} justifyContent={'space-evenly'} alignItems={'center'} spacing={5}>
-                <HStack h={'full'}>
+            <HStack w={'full'} h={'full'} py={2} ps={10} justifyContent={'space-evenly'} alignItems={'center'}>
+                <HStack h={'full'} spacing={5}>
                     <Link href={'/'} h={'full'}>
                         <Image src={Tonic3Logo} alt={"Tonic3"} h={'full'} />
                     </Link>

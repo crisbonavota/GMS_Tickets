@@ -2,7 +2,8 @@ export const chakraSelectStyle = {
     control: (provided: any, state: any) => ({
         ...provided,
         borderColor: 'lightgray',
-        borderWidth: 1
+        borderWidth: 1,
+        backgroundColor: 'white'
     }),
     dropdownIndicator: (provided: any) => ({
         ...provided,

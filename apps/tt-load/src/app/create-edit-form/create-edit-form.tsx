@@ -3,9 +3,9 @@ import { postResource, putResource } from '@gms-micro/api-utils';
 import { useMutation, useQueryClient } from 'react-query';
 import DateInput from '../date-input/date-input';
 import HoursInput from '../hours-input/hours-input';
-import QuerySelect from '../query-select/query-select';
 import TaskInput from '../task-input/task-input';
 import DeleteEntry from '../delete-entry/delete-entry';
+import { QuerySelect } from '@gms-micro/query-utils';
 
 type Props = {
     authHeader: string,

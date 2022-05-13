@@ -3,8 +3,8 @@ import { useMemo } from 'react';
 import { GrFormPrevious, GrFormNext } from "react-icons/gr";
 import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import { useQuery } from 'react-query';
-import { getResourceList } from '../../../api-utils/src/lib/api-utils';
-import { LegacyUserPublic } from '../../../auth-types/src/lib/auth-types';
+import { getResourceList } from '@gms-micro/api-utils';
+import { LegacyUserPublic } from '@gms-micro/auth-types';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number,

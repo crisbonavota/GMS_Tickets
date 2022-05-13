@@ -5,16 +5,7 @@ import { useQuery } from 'react-query';
 import { Select } from 'chakra-react-select';
 import { useState, useMemo, useEffect } from 'react';
 
-const getOptions = (data: any[], valueOption: string, labelOption: string) => {
-    return data.map(item => {
-        return {
-            value: (item as any)[valueOption],
-            label: (item as any)[labelOption]
-        }
-    });
-}
-
-type Props = {
+type QuerySelectProps = {
     authHeader: string,
     resource: string,
     labelOption?: string,
@@ -24,9 +15,19 @@ type Props = {
     setValue: (value?: any) => void
 }
 
-const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption = "id", title, value, setValue }: Props) => {
+/// This function returns a dropdown based on ChakraUI + React-Select, the values of the dropdown come from the resource endpoint
+export const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption = "id", title, value, setValue }: QuerySelectProps) => {
     const query = useQuery([resource], () => getResourceList(resource, authHeader));
     const [internalValue, setInternalValue] = useState<{ label: string, value: any } | null>(null);
+
+    const getOptions = useMemo(() => (data: any[]) => {
+        return data.map(item => {
+            return {
+                value: (item as any)[valueOption],
+                label: (item as any)[labelOption]
+            }
+        });
+    }, []);
 
     const onChange = useMemo(() => (element: any) => {
         setInternalValue(element);
@@ -37,7 +38,7 @@ const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption =
     useEffect(() => {
         if (!value) return setInternalValue(null);
         if (query.isSuccess) {
-            const element = getOptions(query.data.data, valueOption, labelOption).find(item => item.value === value);
+            const element = getOptions(query.data.data).find(item => item.value === value);
             element && setInternalValue(element);
         }
     }, [value])
@@ -50,7 +51,7 @@ const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption =
                 {query.isSuccess &&
                     <Select
                         size='md'
-                        options={getOptions(query.data.data, valueOption, labelOption)}
+                        options={getOptions(query.data.data)}
                         chakraStyles={chakraSelectStyle}
                         value={internalValue}
                         onChange={onChange}
@@ -59,5 +60,3 @@ const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption =
         </VStack>
     )
 }
-
-export default QuerySelect

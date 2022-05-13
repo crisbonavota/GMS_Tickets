@@ -21,8 +21,8 @@ import WeeklyTab from '../weekly-tab/weekly-tab';
 import { IconButton, HStack, Divider } from '@chakra-ui/react';
 import { AiOutlineControl } from 'react-icons/ai';
 import DatesFilters from '../dates-filters/dates-filters';
-import QuerySelect from '../query-select/query-select';
 import CustomTab from '../custom-tab/custom-tab';
+import { QuerySelect } from '@gms-micro/query-utils';
 
 type Props = {
     authHeader: string,

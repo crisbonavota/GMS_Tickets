@@ -26,7 +26,7 @@
             "devPort": 3003,
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["tt-reports"],
             "label": "Timetrack - Reports"
@@ -48,7 +48,7 @@
             "devPort": 3005,
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["hr-updates"],
             "label": "Human Resources - Updates"
@@ -59,7 +59,7 @@
             "devPort": 3006,
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["hr-employees"],
             "label": "Human Resources - Employees"

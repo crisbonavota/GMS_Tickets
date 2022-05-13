@@ -1,10 +1,10 @@
 import { render } from '@testing-library/react';
 
-import QuerySelect from './query-select';
+import QueryUtils from './query-utils';
 
-describe('QuerySelect', () => {
+describe('QueryUtils', () => {
     it('should render successfully', () => {
-        const { baseElement } = render(<QuerySelect />);
+        const { baseElement } = render(<QueryUtils />);
         expect(baseElement).toBeTruthy();
     });
 });

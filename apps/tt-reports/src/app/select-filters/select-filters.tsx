@@ -1,38 +1,76 @@
-import { Flex } from '@chakra-ui/react';
-import { AxiosResponse } from 'axios';
-import { UseQueryResult } from 'react-query';
-import SelectItemsDropdown, { SelectItem } from '../select-item/select-item';
+import { Box, Skeleton, Stack } from '@chakra-ui/react';
+import { getResourceList } from '@gms-micro/api-utils';
+import { MultiValue, Select } from 'chakra-react-select';
+import { useMemo } from 'react';
+import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
+import { useQuery } from 'react-query';
 
-interface SelectFilterQuery {
-    query: UseQueryResult<AxiosResponse<any[], any>, unknown>,
-    values: SelectItem[],
-    setter: (values: SelectItem[]) => void,
-    nameField: string,
-    placeholder: string
+interface DropdownItem {
+    title: string;
+    resource: string;
+    labelOption: string;
+    valueOption: string;
+    values: number[];
+    setValue: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
-export interface SelectFiltersProps {
-    selectItems: SelectFilterQuery[]
+interface SelectFiltersProps {
+    authHeader: string,
+    dropdownsData: Array<DropdownItem>
 }
 
-export function SelectFilters({ selectItems }: SelectFiltersProps) {
+export function SelectFilters({ authHeader, dropdownsData }: SelectFiltersProps) {
     return (
-        <Flex
+        <Stack
             alignItems={'flex-start'}
-            h={'full'}
             flexDir={{ base: 'column', md: 'row' }}
+            w={'full'}
+            direction={{ base: 'column', md: 'row' }}
         >
-            {selectItems.map((item, index) =>
-                <SelectItemsDropdown
-                    query={item.query}
-                    placeholder={item.placeholder}
-                    values={item.values}
-                    setter={item.setter}
-                    nameField={item.nameField}
-                    key={index}
-                />)}
-        </Flex>
+            {dropdownsData.map((dd, i) => <SelectFiltersItem dropdownItem={dd} authHeader={authHeader} key={i} />)}
+        </Stack>
     );
+}
+
+interface SelectFiltersItemProps {
+    dropdownItem: DropdownItem,
+    authHeader: string
+}
+
+const SelectFiltersItem = ({ dropdownItem, authHeader }: SelectFiltersItemProps) => {
+    const query = useQuery([dropdownItem.resource], () => getResourceList(dropdownItem.resource, authHeader));
+
+    const getOptions = useMemo(() => (data: any[]) => {
+        return data.map(item => {
+            return {
+                value: item[dropdownItem.valueOption],
+                label: item[dropdownItem.labelOption]
+            }
+        });
+    }, []);
+
+    const onChange = useMemo(() => (selected: MultiValue<{ value: any, label: any }>) => {
+        const values = selected.map(s => s.value);
+        dropdownItem.setValue(values);
+    }, []);
+
+    return (
+        <>
+            {query.isLoading && <Skeleton w={'full'} h={'2.4rem'} />}
+            <Box w={'full'}>
+                {query.isSuccess &&
+                    <Select
+                        size='md'
+                        options={getOptions(query.data.data)}
+                        chakraStyles={chakraSelectStyle}
+                        isMulti
+                        placeholder={dropdownItem.title}
+                        onChange={onChange}
+                    />}
+            </Box>
+        </>
+    )
+
 }
 
 export default SelectFilters;

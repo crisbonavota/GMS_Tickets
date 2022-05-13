@@ -59,6 +59,7 @@ const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) =>
             bgColor={'#F0F0EF'}
             borderRadius={{ base: 0, md: 10 }}
             h={'60vh'}
+            position={'relative'}
         >
             <Tabs maxH={'60vh'} index={tabIndex} onChange={handleTabsChange}>
                 <TabList

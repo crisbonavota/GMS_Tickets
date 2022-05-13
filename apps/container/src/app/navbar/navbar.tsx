@@ -27,7 +27,7 @@ export function Navbar() {
                         <Heading fontSize={'2xl'} color={'white'}>{currentApp?.label}</Heading>
                     </VStack>
                 </HStack>
-                <IconButton isLoading={loading} ms={'auto'} colorScheme={'orange'} icon={<VscSignOut size={20} />} onClick={onClick} aria-label="sign-out" />
+                <IconButton size={'lg'} isLoading={loading} ms={'auto'} colorScheme={'orange'} icon={<VscSignOut size={25} />} onClick={onClick} aria-label="sign-out" />
             </HStack>
         </Box>
     );

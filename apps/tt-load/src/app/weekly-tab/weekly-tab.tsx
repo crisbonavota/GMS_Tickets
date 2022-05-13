@@ -24,6 +24,10 @@ const WeeklyTab = ({ authHeader, selected, onEdit }: Props) => {
             { field: "date_bgr", value: dateShiftToISOString(dateShift, true) },
             { field: "date_sml", value: dateShiftToISOString(dateShift, false) },
         ],
+        [],
+        undefined,
+        0,
+        100
     ));
 
     useEffect(() => {

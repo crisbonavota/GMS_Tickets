@@ -20,6 +20,10 @@ const DailyTab = ({ authHeader, selected, onEdit }: Props) => {
         "timetrack/owned",
         authHeader,
         [{ field: "date", value: moment().add(dateShift, 'days').format("YYYY-MM-DD") }],
+        [],
+        undefined,
+        0,
+        100
     ));
 
     useEffect(() => {

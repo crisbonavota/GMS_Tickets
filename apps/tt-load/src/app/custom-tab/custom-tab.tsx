@@ -39,7 +39,7 @@ const CustomTab = ({ authHeader, from, to, selected, onEdit, project, clearFilte
             {itemsQuery.isLoading && <Loading />}
             {itemsQuery.isSuccess &&
                 <>
-                    <VStack w={'full'} spacing={0} maxH={'full'} overflowY={'auto'}>
+                    <VStack w={'full'} spacing={0} maxH={{ base: '35vh', md: '40vh' }} overflowY={'auto'}>
                         {itemsQuery.data.data.map((item, index) =>
                             <HStack
                                 justify={'space-between'}
@@ -57,7 +57,10 @@ const CustomTab = ({ authHeader, from, to, selected, onEdit, project, clearFilte
                                         <Text>{item.task}</Text>
                                     </VStack>
                                 </HStack>
-                                <Heading fontSize={'sm'}>{item.hours}h</Heading>
+                                <VStack alignItems={'flex-end'}>
+                                    <Heading fontSize={'sm'}>{item.hours}h</Heading>
+                                    <Text fontSize={'xs'}>{moment(item.date).format(navigator.language.includes('en') ? 'YYYY-MM-DD' : 'DD/MM/YYYY')}</Text>
+                                </VStack>
                             </HStack>
 
                         )}

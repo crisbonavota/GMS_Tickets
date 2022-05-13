@@ -11,7 +11,7 @@ type Props = {
 
 const WeeklyTabAccordion = ({ items, selected, onEdit }: Props) => {
     return (
-        <Accordion allowToggle w={'full'} bgColor={'white'} maxH={{ base: '30vh', md: '40vh'}} overflowY={'auto'}>
+        <Accordion allowToggle w={'full'} bgColor={'white'} maxH={{ base: '35vh', md: '40vh' }} overflowY={'auto'}>
             {items.map((item, index) =>
                 <AccordionItem key={index}>
                     <h2>

@@ -46,7 +46,7 @@ const DailyTab = ({ authHeader, selected, onEdit }: Props) => {
                 </HStack>
                 <Icon as={GrNext} cursor={'pointer'} onClick={() => setDateShift(dateShift + 1)} />
             </HStack>
-            <VStack w={'full'} spacing={'0'} maxH={'full'} overflowY={'auto'}>
+            <VStack w={'full'} spacing={'0'} maxH={{ base: '35vh', md: '40vh' }} overflowY={'auto'}>
                 {itemsQuery.isLoading && <Loading />}
                 {itemsQuery.isSuccess &&
                     <>

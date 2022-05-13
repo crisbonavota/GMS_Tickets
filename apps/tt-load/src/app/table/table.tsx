@@ -58,9 +58,9 @@ const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) =>
             p={5}
             bgColor={'#F0F0EF'}
             borderRadius={{ base: 0, md: 10 }}
-            position={'relative'}
+            h={'60vh'}
         >
-            <Tabs h={'full'} index={tabIndex} onChange={handleTabsChange}>
+            <Tabs maxH={'60vh'} index={tabIndex} onChange={handleTabsChange}>
                 <TabList
                     bgColor={'white'}
                     w={'fit-content'}
@@ -74,8 +74,8 @@ const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) =>
                     <Tab>Weekly</Tab>
                     <Tab>Custom</Tab>
                 </TabList>
-                <TabPanels h={'50vh'}>
-                    <TabPanel h={'full'}>
+                <TabPanels>
+                    <TabPanel>
                         <DailyTab
                             authHeader={authHeader}
                             selected={selected}

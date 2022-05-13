@@ -7,20 +7,21 @@ import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
 import { BrowserRouter } from 'react-router-dom';
 import { config } from '@gms-micro/deploy';
 
-const app = config.apps.find(app => app.name === "home");
+const name = "home";
+const app = config.apps.find(app => app.name === name);
 
-if (app) {
-    const authUser = getAuthUser(app.path);
+if (!app) throw new Error(`App ${name} not found in config`);
 
-    const mainComponent =
-        <StrictMode>
-            <ChakraProvider theme={getTheme()}>
-                <BrowserRouter>
-                    {authUser && <App authUser={authUser} />}
-                </BrowserRouter>
-            </ChakraProvider>
-        </StrictMode>;
+const authUser = getAuthUser(app.path);
 
-    generateReactMicrofrontEntrypoint(app.name, mainComponent);
-}
+const mainComponent =
+    <StrictMode>
+        <ChakraProvider theme={getTheme()}>
+            <BrowserRouter>
+                {authUser && <App authUser={authUser} />}
+            </BrowserRouter>
+        </ChakraProvider>
+    </StrictMode>;
+
+generateReactMicrofrontEntrypoint(app.name, mainComponent);
 

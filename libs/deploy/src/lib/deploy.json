@@ -29,7 +29,10 @@
                 "development": true
             },
             "allowedRoles": ["tt-reports"],
-            "label": "Timetrack - Reports"
+            "module": "Timetrack",
+            "label": "Reports",
+            "description": "Generate reports about users TimeTrack loaded hours",
+            "image": "ttReports"
         },
         {
             "name": "tt-load",
@@ -40,7 +43,9 @@
                 "development": true
             },
             "allowedRoles": ["tt-load"],
-            "label": "Timetrack - Load Hours"
+            "module": "Timetrack",
+            "label": "Load Hours",
+            "description": "Manage your loaded hours on the TimeTrack system"
         },
         {
             "name": "hr-updates",
@@ -51,7 +56,10 @@
                 "development": true
             },
             "allowedRoles": ["hr-updates"],
-            "label": "Human Resources - Updates"
+            "module": "Human Resources",
+            "label": "Updates",
+            "description": "Create, see, edit, delete, and export employees updates",
+            "image": "hrUpdates"
         },
         {
             "name": "hr-employees",
@@ -62,7 +70,10 @@
                 "development": true
             },
             "allowedRoles": ["hr-employees"],
-            "label": "Human Resources - Employees"
+            "module": "Human Resources",
+            "label": "Employees",
+            "description": "See a list of employees and their details",
+            "image": "hrEmployees"
         }
     ]
 }

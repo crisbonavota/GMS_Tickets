@@ -11,7 +11,10 @@ export interface App {
         development: boolean
     },
     allowedRoles?: Array<string>,
-    label: string
+    module?: string,
+    label: string,
+    description?: string,
+    image?: string
 }
 
 export as namespace Config;

@@ -48,14 +48,15 @@ const App = () => {
         }
         catch (err: any) {
             console.log(err);
-            toast({ title: "Error signing in, try again later", description: err?.message, status: "error"});
+            setLoading(false);
+            toast({ title: "Error signing in, try again later", description: err.message || err, status: "error"});
         }
         setLoading(false);
     }
 
-    const onFailure = (e: any) => {
-        console.log(e);
-        toast({ title: "Can't connect to Google for signing in, try again later", description: e?.message, status: "error"});
+    const onFailure = (err: any) => {
+        console.log(err);
+        toast({ title: "Can't connect to Google for signing in, try again later", description: err.message || JSON.stringify(err), status: "error"});
     }
 
     return (

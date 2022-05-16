@@ -95,7 +95,7 @@ const EditModal = ({ employee }: Props) => {
                                 <Form onSubmit={handleSubmit}>
                                     <VStack spacing={4}>
                                         <FormControl isInvalid={errors.fileNumber !== undefined}>
-                                            <FormLabel htmlFor={"fileNumber"}>Employee</FormLabel>
+                                            <FormLabel htmlFor={"fileNumber"}>File number</FormLabel>
                                             <Field as={Input} type="number" id={"fileNumber"} name="fileNumber" />
                                             <ErrorMessage name='fileNumber' component={FormErrorMessage} />
                                         </FormControl>

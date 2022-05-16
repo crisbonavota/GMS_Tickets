@@ -122,6 +122,7 @@ export interface Address {
 }
 
 export interface Employee {
+    id: number,
     fileNumber: number,
     legacyUser: LegacyUserPublic,
     afipId: string,

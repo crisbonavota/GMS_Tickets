@@ -3,22 +3,17 @@ import { Sort } from '@gms-micro/api-filters';
 import { Employee } from '@gms-micro/api-utils';
 import { useTable, Cell } from 'react-table';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
+import EditModal from '../edit-modal/edit-modal';
 
 const TABLE_DATA = [
     { header: "File number", accessor: "fileNumber" },
     { header: "Name", accessor: "legacyUser.fullName" },
     { header: "CUIT", accessor: "afipId" },
-    { header: "Entry date", accessor: "entryDate" },
     { header: "Position", accessor: "position.name" },
-    { header: "Gender", accessor: "gender" },
     { header: "Birth date", accessor: "birthDate" },
-    { header: "Birth country", accessor: "birthCountry.name" },
-    { header: "Childs", accessor: "childs" },
     { header: "Email", accessor: "email" },
-    { header: "Home phone", accessor: "homePhone" },
     { header: "Mobile phone", accessor: "mobilePhone" },
     { header: "Salary currency", accessor: "salaryCurrency.code" },
-    { header: "Medical coverage", accessor: "medicalCoverage.name" },
     { header: "Country", accessor: "country.name" },
     { header: "Active", accessor: "active" }
 ]
@@ -85,6 +80,9 @@ export const TableComponent = ({ tableData, sort, setSort }: TableProps) => {
                                         </Td>
                                     )
                                 })}
+                                <Td>
+                                    <EditModal employee={row.original} />
+                                </Td>
                             </Tr>
                         )
                     })}

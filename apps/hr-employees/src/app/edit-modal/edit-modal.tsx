@@ -79,7 +79,7 @@ const EditModal = ({ employee }: Props) => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>{employee.firstName} {employee.lastName}</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody w={'full'}>
                         <Formik

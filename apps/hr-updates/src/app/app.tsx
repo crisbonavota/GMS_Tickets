@@ -11,6 +11,7 @@ import CreateSelectUpdateType from './create-select-update-type/create-select-up
 import MonthFilter from './month-filter/month-filter';
 import YearFilter from './year-filter/year-filter';
 import { useAuthHeader } from 'react-auth-kit';
+import ImportButton from './import-button/import-button';
 
 const App = () => {
     const [currentPage, setCurrentPage] = useState(0);
@@ -73,6 +74,7 @@ const App = () => {
                     <HStack mb={{ base: 3, md: 0 }} spacing={5}>
                         <ExportButton sort={updatesQueriesSort} filters={filters} customFilters={customFilters} refetchTriggers={refetchTriggers} />
                         <CreateSelectUpdateType />
+                        <ImportButton />
                     </HStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}

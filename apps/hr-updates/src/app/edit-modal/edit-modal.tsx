@@ -20,22 +20,23 @@ import { useState, useEffect } from 'react';
 import FormCommonFields from '../form-common-fields/form-common-fields';
 import FormConditionalFields from '../form-conditional-fields/form-conditional-fields';
 import { generateDinamicYupSchema } from '../helpers';
+import { useAuthHeader } from 'react-auth-kit';
 
 export interface EditModalProps {
     update: Update,
-    authHeader: string,
 }
 
-export function EditModal({ update, authHeader }: EditModalProps) {
+export function EditModal({ update }: EditModalProps) {
     const [open, setOpen] = useBoolean();
     const queryClient = useQueryClient();
     const [initialValues, setInitialValues] = useState<KeyValuePair>({});
     const toast = useToast();
+    const getAuthHeader = useAuthHeader();
 
     const editUpdateMutation = useMutation(async (newValues: KeyValuePair) => await patchResource(
         getUpdateResourceFromType(update.updateType.id),
         update.id,
-        authHeader,
+        getAuthHeader(),
         initialValues,
         newValues
     ), {
@@ -78,7 +79,7 @@ export function EditModal({ update, authHeader }: EditModalProps) {
                             {({ isSubmitting, errors, handleSubmit }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <VStack spacing={4}>
-                                        <FormCommonFields authHeader={authHeader} errors={errors} updateType={update.updateType} />
+                                        <FormCommonFields errors={errors} updateType={update.updateType} />
                                         <FormConditionalFields errors={errors} updateTypeId={update.updateType.id} />
                                     </VStack>
                                     <ModalFooter w={'full'}>

@@ -2,16 +2,17 @@ import { FormControl, FormLabel, Select, FormErrorMessage, Input, Heading, Texta
 import { getResourceList, KeyValuePair, UpdateType } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { Field, ErrorMessage, FormikErrors } from 'formik';
+import { useAuthHeader } from 'react-auth-kit';
 import { useQuery } from 'react-query';
 
 interface FormCommonFieldsProps {
-    authHeader: string,
     errors: FormikErrors<KeyValuePair>,
     updateType: UpdateType
 }
 
-const FormCommonFields = ({ authHeader, errors, updateType }: FormCommonFieldsProps) => {
-    const employeesQuery = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>('users/legacy', authHeader));
+const FormCommonFields = ({ errors, updateType }: FormCommonFieldsProps) => {
+    const getAuthHeader = useAuthHeader();
+    const employeesQuery = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>('users/legacy', getAuthHeader()));
 
     return (
         <>

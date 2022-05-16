@@ -15,23 +15,24 @@ import {
 } from '@chakra-ui/react';
 import { deleteResource } from '@gms-micro/api-utils';
 import { useRef } from 'react';
+import { useAuthHeader } from 'react-auth-kit';
 import { BsTrash } from 'react-icons/bs'
 import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
-    authHeader: string,
     selected: number,
     resetForm: () => void
 }
 
-const DeleteEntry = ({ authHeader, selected, resetForm }: Props) => {
+const DeleteEntry = ({ selected, resetForm }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useBoolean();
     const cancelRef = useRef<any>();
     const toast = useToast();
     const queryClient = useQueryClient();
+    const getAuthHeader = useAuthHeader();
 
-    const deleteMutation = useMutation(() => deleteResource("timetrack", selected, authHeader), {
+    const deleteMutation = useMutation(() => deleteResource("timetrack", selected, getAuthHeader()), {
         onMutate: () => {
             setLoading.on();
         },

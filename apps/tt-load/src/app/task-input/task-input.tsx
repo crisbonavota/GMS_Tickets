@@ -1,17 +1,18 @@
 import { VStack, Heading, Input, Skeleton } from '@chakra-ui/react'
 import { getResourceList } from '@gms-micro/api-utils'
+import { useAuthHeader } from 'react-auth-kit'
 import { useQuery } from 'react-query'
 
 type Props = {
-    authHeader: string,
     projectId?: number,
     task: string,
     setTask: (task: string) => void
 }
 
-const TaskInput = ({ authHeader, projectId, task, setTask }: Props) => {
+const TaskInput = ({ projectId, task, setTask }: Props) => {
+    const getAuthHeader = useAuthHeader();
     const tasksQuery = projectId ?
-        useQuery([`projects/${projectId}/tasks`], () => getResourceList<string>(`projects/${projectId}/tasks`, authHeader)) :
+        useQuery([`projects/${projectId}/tasks`], () => getResourceList<string>(`projects/${projectId}/tasks`, getAuthHeader())) :
         null;
 
     return (

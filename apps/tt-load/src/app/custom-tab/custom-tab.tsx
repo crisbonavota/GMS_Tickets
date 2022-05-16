@@ -5,9 +5,9 @@ import { MdModeEditOutline } from 'react-icons/md';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 import { TablePaginationWithChakra } from '@gms-micro/table-utils';
+import { useAuthHeader } from 'react-auth-kit';
 
 type Props = {
-    authHeader: string,
     from: string,
     to: string,
     selected: number | null,
@@ -16,12 +16,13 @@ type Props = {
     clearFilters: () => void
 }
 
-const CustomTab = ({ authHeader, from, to, selected, onEdit, project, clearFilters }: Props) => {
+const CustomTab = ({ from, to, selected, onEdit, project, clearFilters }: Props) => {
     const [currentPage, setCurrentPage] = useState(0);
+    const getAuthHeader = useAuthHeader();
 
     const itemsQuery = useQuery(['owned-custom', from, to, currentPage, project], () => getResourceListFilteredAndPaginated<TimetrackItem>(
         "timetrack/owned",
-        authHeader,
+        getAuthHeader(),
         [
             { field: "date_bgr", value: from !== "" ? moment(from).toISOString().split('T')[0] : undefined },
             { field: "date_sml", value: to !== "" ? moment(to).toISOString().split('T')[0] : undefined },

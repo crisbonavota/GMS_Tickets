@@ -19,10 +19,9 @@ const columns = [
 
 interface TableProps {
     tableData: Array<Update>,
-    authHeader: string
 }
 
-export const TableComponent = ({ tableData, authHeader }: TableProps) => {
+export const TableComponent = ({ tableData }: TableProps) => {
     // @ts-ignore
     const tableInstance = useTable({ columns, data: tableData });
 
@@ -62,8 +61,8 @@ export const TableComponent = ({ tableData, authHeader }: TableProps) => {
                                 })}
                                 <Td>
                                     <HStack h={'full'} px={2}>
-                                        <EditModal update={row.original} authHeader={authHeader} />
-                                        <DeleteModal update={row.original} authHeader={authHeader} />
+                                        <EditModal update={row.original}/>
+                                        <DeleteModal update={row.original} />
                                     </HStack>
                                 </Td>
                             </Tr>

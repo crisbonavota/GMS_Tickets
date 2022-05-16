@@ -2,21 +2,22 @@ import { useBoolean, VStack, Button, Modal, ModalBody, ModalCloseButton, ModalCo
 import { KeyValuePair, UpdateType, updateTypesIds, postResource, getUpdateResourceFromType } from '@gms-micro/api-utils';
 import { Formik, Form } from 'formik';
 import { useEffect, useState } from 'react';
+import { useAuthHeader } from 'react-auth-kit';
 import { useMutation, useQueryClient } from 'react-query';
 import FormCommonFields from '../form-common-fields/form-common-fields';
 import FormConditionalFields from '../form-conditional-fields/form-conditional-fields';
 import { generateDinamicYupSchema } from '../helpers';
 
 type CreateModalProps = {
-    authHeader: string,
     updateType: UpdateType
 }
 
-const CreateModal = ({ authHeader, updateType }: CreateModalProps) => {
+const CreateModal = ({ updateType }: CreateModalProps) => {
     const [open, setOpen] = useBoolean();
     const queryClient = useQueryClient();
     const [initialValues, setInitialValues] = useState<KeyValuePair>({});
     const toast = useToast();
+    const getAuthHeader = useAuthHeader();
 
     useEffect(() => {
         setInitialValues(renderInitialValues(initialValues, updateType));
@@ -24,7 +25,7 @@ const CreateModal = ({ authHeader, updateType }: CreateModalProps) => {
 
     const createUpdateMutation = useMutation(async (values: KeyValuePair) => await postResource(
         getUpdateResourceFromType(updateType.id),
-        authHeader,
+        getAuthHeader(),
         values,
     ), {
         onMutate: async () => {
@@ -62,7 +63,7 @@ const CreateModal = ({ authHeader, updateType }: CreateModalProps) => {
                             {({ errors, handleSubmit, isSubmitting }) => (
                                 <Form onSubmit={handleSubmit}>
                                     <VStack spacing={4}>
-                                        <FormCommonFields authHeader={authHeader} errors={errors} updateType={updateType} />
+                                        <FormCommonFields errors={errors} updateType={updateType} />
                                         <FormConditionalFields errors={errors} updateTypeId={updateType.id} />
                                         <ModalFooter w={'full'}>
                                             <Button

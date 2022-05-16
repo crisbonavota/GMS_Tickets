@@ -2,16 +2,17 @@ import { Select, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { UpdateType } from '@gms-micro/api-utils';
 import { useQuery } from 'react-query';
 import { getResourceList } from '@gms-micro/api-utils';
+import { useAuthHeader } from 'react-auth-kit';
 
 export interface UpdateTypeFilterProps {
-    authHeader: string,
     updateType: string,
     setUpdateType: (updateType: string) => void,
     isLoading: boolean
 }
 
-export const UpdateTypeFilter = ({ authHeader, setUpdateType, isLoading }: UpdateTypeFilterProps) => {
-    const query = useQuery(['updateTypes'], () => getResourceList<UpdateType>("updates/types", authHeader));
+export const UpdateTypeFilter = ({ setUpdateType, isLoading }: UpdateTypeFilterProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery(['updateTypes'], () => getResourceList<UpdateType>("updates/types", getAuthHeader()));
     return (
         <VStack alignItems={'flex-start'} w={'10rem'}>
             <Text fontSize={'sm'}>Update type</Text>

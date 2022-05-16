@@ -5,20 +5,21 @@ import { useQuery } from 'react-query';
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import moment from 'moment';
 import { MdModeEditOutline } from 'react-icons/md';
+import { useAuthHeader } from 'react-auth-kit';
 
 type Props = {
-    authHeader: string,
     selected: number | null,
     onEdit: (item: TimetrackItem) => void
 }
 
-const DailyTab = ({ authHeader, selected, onEdit }: Props) => {
+const DailyTab = ({selected, onEdit }: Props) => {
+    const getAuthHeader = useAuthHeader();
     const [dateShift, setDateShift] = useState(0);
     const [displayDate, setDisplayDate] = useState(moment().add(dateShift, 'days'));
 
     const itemsQuery = useQuery(['owned-daily', dateShift], () => getResourceListFilteredAndPaginated<TimetrackItem>(
         "timetrack/owned",
-        authHeader,
+        getAuthHeader(),
         [{ field: "date", value: moment().add(dateShift, 'days').format("YYYY-MM-DD") }],
         [],
         undefined,

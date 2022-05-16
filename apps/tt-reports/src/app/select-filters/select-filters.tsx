@@ -4,6 +4,7 @@ import { MultiValue, Select } from 'chakra-react-select';
 import { useMemo } from 'react';
 import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
 import { useQuery } from 'react-query';
+import { useAuthHeader } from 'react-auth-kit';
 
 interface DropdownItem {
     title: string;
@@ -15,11 +16,10 @@ interface DropdownItem {
 }
 
 interface SelectFiltersProps {
-    authHeader: string,
     dropdownsData: Array<DropdownItem>
 }
 
-export function SelectFilters({ authHeader, dropdownsData }: SelectFiltersProps) {
+export function SelectFilters({dropdownsData }: SelectFiltersProps) {
     return (
         <Stack
             alignItems={'flex-start'}
@@ -27,18 +27,18 @@ export function SelectFilters({ authHeader, dropdownsData }: SelectFiltersProps)
             w={'full'}
             direction={{ base: 'column', md: 'row' }}
         >
-            {dropdownsData.map((dd, i) => <SelectFiltersItem dropdownItem={dd} authHeader={authHeader} key={i} />)}
+            {dropdownsData.map((dd, i) => <SelectFiltersItem dropdownItem={dd} key={i} />)}
         </Stack>
     );
 }
 
 interface SelectFiltersItemProps {
     dropdownItem: DropdownItem,
-    authHeader: string
 }
 
-const SelectFiltersItem = ({ dropdownItem, authHeader }: SelectFiltersItemProps) => {
-    const query = useQuery([dropdownItem.resource], () => getResourceList(dropdownItem.resource, authHeader));
+const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery([dropdownItem.resource], () => getResourceList(dropdownItem.resource, getAuthHeader()));
 
     const getOptions = useMemo(() => (data: any[]) => {
         return data.map(item => {

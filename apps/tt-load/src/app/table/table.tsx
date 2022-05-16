@@ -25,18 +25,16 @@ import CustomTab from '../custom-tab/custom-tab';
 import { QuerySelect } from '@gms-micro/query-utils';
 
 type Props = {
-    authHeader: string,
     selected: number | null,
     resetForm: () => void,
     fillForm: (item: TimetrackItem) => void
 }
 
-const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) => {
+const TableComponent = ({ selected, fillForm, resetForm }: Props) => {
     const [tabIndex, setTabIndex] = useState(0);
     const [from, setFrom] = useState("");
     const [to, setTo] = useState("");
     const [projectFilter, setProjectFilter] = useState<number>();
-
     const onEdit = useMemo(() => (item: TimetrackItem) => {
         if (item.id === selected) resetForm();
         else fillForm(item);
@@ -78,16 +76,15 @@ const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) =>
                 <TabPanels>
                     <TabPanel>
                         <DailyTab
-                            authHeader={authHeader}
                             selected={selected}
                             onEdit={onEdit}
                         />
                     </TabPanel>
                     <TabPanel>
-                        <WeeklyTab authHeader={authHeader} selected={selected} onEdit={onEdit} />
+                        <WeeklyTab selected={selected} onEdit={onEdit} />
                     </TabPanel>
                     <TabPanel>
-                        <CustomTab authHeader={authHeader} from={from} to={to} selected={selected} onEdit={onEdit} project={projectFilter} clearFilters={clearFilters} />
+                        <CustomTab from={from} to={to} selected={selected} onEdit={onEdit} project={projectFilter} clearFilters={clearFilters} />
                     </TabPanel>
                 </TabPanels>
             </Tabs>
@@ -108,7 +105,7 @@ const TableComponent = ({ authHeader, selected, fillForm, resetForm }: Props) =>
                                     <Divider borderColor={'orangered'} />
                                 </HStack>
                                 <Box w={'full'}>
-                                    <QuerySelect authHeader={authHeader} resource={'projects/member'} title={"Project"} value={projectFilter} setValue={setProjectFilter} />
+                                    <QuerySelect resource={'projects/member'} title={"Project"} value={projectFilter} setValue={setProjectFilter} />
                                 </Box>
                             </VStack>
                         </PopoverBody>

@@ -2,24 +2,25 @@ import { Heading, HStack, Icon, Skeleton, VStack, Text, Stack } from "@chakra-ui
 import { getResourceListFilteredAndPaginated, TimetrackItem } from "@gms-micro/api-utils";
 import moment from "moment";
 import { useState, useEffect } from 'react';
+import { useAuthHeader } from "react-auth-kit";
 import { GrPrevious, GrNext } from "react-icons/gr"
 import { useQuery } from "react-query";
 import WeeklyTabAccordion from "../weekly-tab-accordion/weekly-tab-accordion";
 
 type Props = {
-    authHeader: string,
     selected: number | null,
     onEdit: (item: TimetrackItem) => void
 }
 
-const WeeklyTab = ({ authHeader, selected, onEdit }: Props) => {
+const WeeklyTab = ({selected, onEdit }: Props) => {
     const [fromDate, setFromDate] = useState(moment().startOf('week').add(1, "day"));
     const [toDate, setToDate] = useState(moment().endOf('week').add(1, "day"));
     const [dateShift, setDateShift] = useState(0);
+    const getAuthHeader = useAuthHeader();
 
     const itemsQuery = useQuery(['owned-weekly', dateShift], () => getResourceListFilteredAndPaginated<Array<TimetrackItem>>(
         "timetrack/owned/grouped",
-        authHeader,
+        getAuthHeader(),
         [
             { field: "date_bgr", value: dateShiftToISOString(dateShift, true) },
             { field: "date_sml", value: dateShiftToISOString(dateShift, false) },

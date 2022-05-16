@@ -75,9 +75,9 @@ const App = () => {
                         onChange={onFullNameSearch}
                         placeholder={'Search by employee'}
                     />
-                <PositionFilter authHeader={getAuthHeader()} position={position} setPosition={setPosition} isLoading={employeesQuery.isLoading} />
+                <PositionFilter position={position} setPosition={setPosition} isLoading={employeesQuery.isLoading} />
                 <AfipIdInput afipId={afipId} setAfipId={setAfipId} />
-                <CountryFilter authHeader={getAuthHeader()} country={birthCountry} setCountry={setBirthCountry} isLoading={employeesQuery.isLoading}/> 
+                <CountryFilter country={birthCountry} setCountry={setBirthCountry} isLoading={employeesQuery.isLoading}/> 
                 <FileNumberInput fileNumber={fileNumber} setFileNumber={setFileNumber}/>
                     </Wrap>
                 </Flex>

@@ -2,18 +2,19 @@ import { Select, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getResourceList } from '@gms-micro/api-utils';
 import { Country } from '../../../../../libs/api-utils/src/lib/api-types';
+import { useAuthHeader } from 'react-auth-kit';
 
 
 export interface CountryFilterProps{
-    authHeader: string,
     country: string,
     setCountry: (country: string) => void,
     isLoading: boolean
 }
 
 
-export const CountryFilter = ({ authHeader, setCountry, isLoading }: CountryFilterProps) => {
-    const query = useQuery(['countries'], () => getResourceList<Country>("employees/countries", authHeader));
+export const CountryFilter = ({ setCountry, isLoading }: CountryFilterProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery(['countries'], () => getResourceList<Country>("employees/countries", getAuthHeader()));
     return (
         <VStack alignItems={'flex-start'} w={'10rem'}>
             <Text fontSize={'sm'}>Country</Text>

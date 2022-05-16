@@ -1,19 +1,20 @@
 import { Select, Skeleton, Text, VStack } from '@chakra-ui/react';
 import { useQuery } from 'react-query';
 import { getResourceList } from '@gms-micro/api-utils';
-import { Position } from '../../../../../libs/api-utils/src/lib/api-types';
+import { Position } from '@gms-micro/api-utils';
+import { useAuthHeader } from 'react-auth-kit';
 
 
 export interface PositionFilterProps{
-    authHeader: string,
     position: string,
     setPosition: (position: string) => void,
     isLoading: boolean
 }
 
 
-export const PositionFilter = ({ authHeader, setPosition, isLoading }: PositionFilterProps) => {
-    const query = useQuery(['positions'], () => getResourceList<Position>("employees/positions", authHeader));
+export const PositionFilter = ({ setPosition, isLoading }: PositionFilterProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery(['positions'], () => getResourceList<Position>("employees/positions", getAuthHeader()));
     return (
         <VStack alignItems={'flex-start'} w={'10rem'}>
             <Text fontSize={'sm'}>Position</Text>

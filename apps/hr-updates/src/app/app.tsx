@@ -10,14 +10,16 @@ import ExportButton from './export-button/export-button';
 import CreateSelectUpdateType from './create-select-update-type/create-select-update-type';
 import MonthFilter from './month-filter/month-filter';
 import YearFilter from './year-filter/year-filter';
+import { useAuthHeader } from 'react-auth-kit';
 
-const App = ({ authHeader }: { authHeader: string }) => {
+const App = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [updateType, setUpdateType] = useState<string>("");
     const [legacyUser, setLegacyUser] = useState<string>("");
     // index starts at 1 on the backend
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [year, setYear] = useState(new Date().getFullYear());
+    const getAuthHeader = useAuthHeader();
 
     // Go to first page if any filter changes
     useEffect(() => {
@@ -49,7 +51,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
         ['updates', refetchTriggers],
         () => getResourceListFilteredAndPaginated<Update>(
             "updates",
-            authHeader,
+            getAuthHeader(),
             filters,
             customFilters,
             updatesQueriesSort,
@@ -63,19 +65,19 @@ const App = ({ authHeader }: { authHeader: string }) => {
                 <Heading fontSize={'2xl'}>Employees updates</Heading>
                 <Flex justifyContent={'space-between'} alignItems={'flex-start'} w={'full'} flexDir={{ base: 'column-reverse', md: 'row' }}>
                     <Wrap w={'full'} spacing={5} justifyContent={'flex-start'} alignItems={'flex-end'}>
-                        <TableSingleLegacyUserFilterWithChakra authHeader={authHeader} legacyUser={legacyUser} setLegacyUser={setLegacyUser} isLoading={updatesQuery.isLoading} />
-                        <UpdateTypeFilter authHeader={authHeader} updateType={updateType} setUpdateType={setUpdateType} isLoading={updatesQuery.isLoading} />
+                        <TableSingleLegacyUserFilterWithChakra authHeader={getAuthHeader()} legacyUser={legacyUser} setLegacyUser={setLegacyUser} isLoading={updatesQuery.isLoading} />
+                        <UpdateTypeFilter authHeader={getAuthHeader()} updateType={updateType} setUpdateType={setUpdateType} isLoading={updatesQuery.isLoading} />
                         <MonthFilter month={month} setMonth={setMonth} />
                         <YearFilter year={year} setYear={setYear} />
                     </Wrap>
                     <HStack mb={{ base: 3, md: 0 }} spacing={5}>
-                        <ExportButton authHeader={authHeader} sort={updatesQueriesSort} filters={filters} customFilters={customFilters} refetchTriggers={refetchTriggers} />
-                        <CreateSelectUpdateType authHeader={authHeader} />
+                        <ExportButton authHeader={getAuthHeader()} sort={updatesQueriesSort} filters={filters} customFilters={customFilters} refetchTriggers={refetchTriggers} />
+                        <CreateSelectUpdateType authHeader={getAuthHeader()} />
                     </HStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}
                 {updatesQuery.isError && <Text>There was an error generating the table, try again later</Text>}
-                {updatesQuery.isSuccess && <TableComponent authHeader={authHeader} tableData={updatesQuery.data.data} />}
+                {updatesQuery.isSuccess && <TableComponent authHeader={getAuthHeader()} tableData={updatesQuery.data.data} />}
                 <TablePaginationWithChakra
                     isLoading={updatesQuery.isLoading}
                     currentPage={currentPage}

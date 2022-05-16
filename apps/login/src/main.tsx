@@ -3,7 +3,7 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { getTheme } from '@gms-micro/theme-chakra-ui';
 import { StrictMode } from 'react';
 import { AuthProvider } from 'react-auth-kit';
-import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
+import { generateReactMicrofrontEntrypoint, WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
 import { config } from '@gms-micro/deploy';
 
 const name = "login";
@@ -12,16 +12,11 @@ if (!app) throw new Error(`App ${name} not found in config`);
 
 const mainComponent =
     <StrictMode>
-        <AuthProvider
-            authType={navigator.cookieEnabled ? 'cookie' : 'localstorage'}
-            authName={'_auth'}
-            cookieDomain={window.location.hostname}
-            cookieSecure={window.location.protocol === "https:"}
-        >
-            <ChakraProvider theme={getTheme()}>
+        <WithAuthProvider>
+            <WithChakraProvider>
                 <App />
-            </ChakraProvider>
-        </AuthProvider>
+            </WithChakraProvider>
+        </WithAuthProvider>
     </StrictMode>;
 
 generateReactMicrofrontEntrypoint(app.name, mainComponent);

@@ -18,7 +18,6 @@
             "@gms-micro/api-filters": ["libs/api-filters/src/index.ts"],
             "@gms-micro/api-utils": ["libs/api-utils/src/index.ts"],
             "@gms-micro/assets": ["libs/assets/src/index.ts"],
-            "@gms-micro/auth-methods": ["libs/auth-methods/src/index.ts"],
             "@gms-micro/auth-types": ["libs/auth-types/src/index.ts"],
             "@gms-micro/chakra-react-select-styles": [
                 "libs/chakra-react-select-styles/src/index.ts"

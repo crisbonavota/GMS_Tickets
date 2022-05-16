@@ -1,28 +1,27 @@
 import App from './app/app';
 import { StrictMode } from 'react';
-import { ChakraProvider } from '@chakra-ui/react';
-import { getTheme } from '@gms-micro/theme-chakra-ui';
-import { getAuthHeader } from '@gms-micro/auth-methods';
-import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
+import { generateReactMicrofrontEntrypoint, WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { config } from '@gms-micro/deploy';
 import { environment } from './environments/environment';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
+const name = 'hr-updates';
 const app = config.apps.find(app => app.name === 'hr-updates');
-if (app) {
-    const queryClient = new QueryClient();
-    const authHeader = getAuthHeader(app.path);
+if (!app) throw (new Error(`App ${name} not found`));
 
-    const mainComponent =
-        <StrictMode>
-            <ChakraProvider theme={getTheme()}>
+const queryClient = new QueryClient();
+
+const mainComponent =
+    <StrictMode>
+        <WithAuthProvider>
+            <WithChakraProvider>
                 <QueryClientProvider client={queryClient}>
-                    {authHeader && <App authHeader={authHeader} />}
+                    <App />
                     {!environment.production && <ReactQueryDevtools />}
                 </QueryClientProvider>
-            </ChakraProvider>
-        </StrictMode>;
+            </WithChakraProvider>
+        </WithAuthProvider>
+    </StrictMode>;
 
-    generateReactMicrofrontEntrypoint(app.name, mainComponent);
-}
+generateReactMicrofrontEntrypoint(app.name, mainComponent);

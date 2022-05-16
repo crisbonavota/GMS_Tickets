@@ -5,6 +5,7 @@ import MicroFrontend from "./MicroFrontend"
 import Navbar from "./navbar/navbar";
 import NotFound from './not-found/not-found';
 import { config } from '@gms-micro/deploy';
+import { RequireAuth } from 'react-auth-kit';
 
 const App = () => {
     const location = useLocation();
@@ -22,16 +23,21 @@ const App = () => {
 }
 
 const generateMicrofrontRoutes = () => {
-    const apps = environment.production 
-        ? config.apps.filter(app => app.serveOn.production) 
+    const apps = environment.production
+        ? config.apps.filter(app => app.serveOn.production)
         : config.apps.filter(app => app.serveOn.development);
-    
+
     return apps.map((app) =>
         <Route
             // @ts-ignore
             key={app.name}
             path={app.path}
-            element={<MicroFrontend name={app.name} port={app.devPort} />}
+            element={app.requireAuth ?
+                <RequireAuth loginPath={`/sign-in?redirect=${app.path}`}>
+                    <MicroFrontend name={app.name} port={app.devPort} />
+                </RequireAuth>
+                : <MicroFrontend name={app.name} port={app.devPort} />
+            }
         />);
 }
 

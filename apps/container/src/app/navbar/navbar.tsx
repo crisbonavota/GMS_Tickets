@@ -1,14 +1,15 @@
 import { Box, Image, Link, Text, HStack, Heading, VStack, Button, IconButton, useBoolean } from '@chakra-ui/react';
 import { Tonic3Logo } from '@gms-micro/assets';
 import { config } from '@gms-micro/deploy';
-import { signOut } from '@gms-micro/auth-methods';
 import { VscSignOut } from 'react-icons/vsc';
 import { useMemo } from 'react';
+import { useSignOut } from 'react-auth-kit';
 
 
 export function Navbar() {
     const [loading, setLoading] = useBoolean();
     const currentApp = config.apps.find(app => app.path === window.location.pathname.substring(1));
+    const signOut = useSignOut();
 
     const onClick = useMemo(() => () => {
         setLoading.on();

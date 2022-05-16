@@ -9,8 +9,9 @@ import { useDidMountEffect } from '@gms-micro/react-hooks';
 import ExportModule from './export-module/export-module';
 import { Sort } from '@gms-micro/api-filters';
 import moment from 'moment';
+import { useAuthHeader } from 'react-auth-kit';
 
-const App = ({ authHeader }: { authHeader: string }) => {
+const App = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [from, setFrom] = useState<string>(moment().add(-1, "days").format("YYYY-MM-DD")); // Default filter to 1 month ago
     const [to, setTo] = useState<string>("");
@@ -22,6 +23,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
     const [accounts, setAccounts] = useState<Array<number>>([]);
     const [generalSearch, setGeneralSearch] = useState("");
     const [refetchAux, setRefetchAux] = useState(0);
+    const getAuthHeader = useAuthHeader();
 
     const onGeneralSearchChange = useMemo(() =>
         (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +63,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
         ['timetrack', refetchTriggers],
         () => getResourceListFilteredAndPaginated<TimetrackItem>(
             "timetrack",
-            authHeader,
+            getAuthHeader(),
             filters,
             customFilters,
             sort,
@@ -82,7 +84,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                         placeholder={'General search'}
                     />
                     <SelectFilters
-                        authHeader={authHeader}
+                        authHeader={getAuthHeader()}
                         dropdownsData={[
                             { labelOption: 'fullName', valueOption: 'id', values: users, setValue: setUsers, title: "Employee", resource: 'users/legacy' },
                             { labelOption: 'name', valueOption: 'id', values: businessUnits, setValue: setBusinessUnits, title: "Business Unit", resource: 'businessUnits' },
@@ -91,7 +93,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
                             { labelOption: 'name', valueOption: 'id', values: accounts, setValue: setAccounts, title: "Account", resource: 'accounts' }
                         ]}
                     />
-                    <ExportModule authHeader={authHeader} filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
+                    <ExportModule authHeader={getAuthHeader()} filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
                 </VStack>
                 {timetrackQuery.isLoading && <Text>Loading...</Text>}
                 {timetrackQuery.isSuccess && <TableComponent tableData={timetrackQuery.data.data} sort={sort} setSort={setSort} />}

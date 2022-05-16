@@ -8,7 +8,8 @@
                 "production": true,
                 "development": true
             },
-            "label": "Home"
+            "label": "Home",
+            "requireAuth": true
         },
         {
             "name": "login",
@@ -18,7 +19,8 @@
                 "production": true,
                 "development": true
             },
-            "label": "Sign in"
+            "label": "Sign in",
+            "requireAuth": false
         },
         {
             "name": "tt-reports",
@@ -32,7 +34,8 @@
             "module": "Timetrack",
             "label": "Reports",
             "description": "Generate reports about users TimeTrack loaded hours",
-            "image": "ttReports"
+            "image": "ttReports",
+            "requireAuth": true
         },
         {
             "name": "tt-load",
@@ -45,7 +48,8 @@
             "allowedRoles": ["tt-load"],
             "module": "Timetrack",
             "label": "Load Hours",
-            "description": "Manage your loaded hours on the TimeTrack system"
+            "description": "Manage your loaded hours on the TimeTrack system",
+            "requireAuth": true
         },
         {
             "name": "hr-updates",
@@ -59,7 +63,8 @@
             "module": "Human Resources",
             "label": "Updates",
             "description": "Create, see, edit, delete, and export employees updates",
-            "image": "hrUpdates"
+            "image": "hrUpdates",
+            "requireAuth": true
         },
         {
             "name": "hr-employees",
@@ -73,7 +78,8 @@
             "module": "Human Resources",
             "label": "Employees",
             "description": "See a list of employees and their details",
-            "image": "hrEmployees"
+            "image": "hrEmployees",
+            "requireAuth": true
         }
     ]
 }

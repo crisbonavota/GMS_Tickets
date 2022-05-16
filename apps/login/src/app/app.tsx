@@ -6,27 +6,18 @@ import { RiGoogleLine } from 'react-icons/ri';
 import { environment } from '../environments/environment';
 import { useState } from 'react';
 import { signInWithExternalProvider } from './auth';
-import { useAuthHeader, useAuthUser, useIsAuthenticated, useSignIn } from 'react-auth-kit';
+import { useIsAuthenticated, useSignIn } from 'react-auth-kit';
 import queryString from 'query-string';
-import { ApplicationUserPublic } from '@gms-micro/auth-types';
-
-const redirectWithData = (authHeader: string, authState: ApplicationUserPublic) => {
-    const queries = queryString.parse(window.location.search); // .search contains everything in the URL after the ?
-
-    const redirect = queries['redirect'] || ''; // if redirect is not set, redirects to home page (/)
-    window.location.href = `${window.location.origin}/${redirect}?header=${authHeader}&user=${JSON.stringify(authState)}`;
-}
 
 const App = () => {
     const googleClientId = environment.googleClientId;
     const [loading, setLoading] = useState(false);
     const signIn = useSignIn();
-    const getAuthHeader = useAuthHeader();
-    const getAuthState = useAuthUser();
     const getAuthenticated = useIsAuthenticated();
     const toast = useToast();
+    const queries = queryString.parse(window.location.search);
 
-    if (getAuthenticated()) redirectWithData(getAuthHeader(), getAuthState() as ApplicationUserPublic);
+    if (getAuthenticated()) window.location.href = `${window.location.origin}/${queries['redirect'] || ''}`;
 
     const onSuccess = async (response: GoogleLoginResponse) => {
         setLoading(true);

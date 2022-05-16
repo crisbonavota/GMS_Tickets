@@ -4,8 +4,11 @@ import { ApplicationUserPrivate } from '@gms-micro/auth-types'
 import moment from 'moment';
 import { DeployAssets } from '@gms-micro/assets';
 import { environment } from '../environments/environment';
+import { useAuthUser } from 'react-auth-kit';
 
-const App = ({ authUser }: { authUser: ApplicationUserPrivate }) => {
+const App = () => {
+    const authUser = useAuthUser()() as ApplicationUserPrivate;
+
     return (
         <VStack w={'full'} minH={'92vh'} justifyContent={'center'} spacing={10}>
             <Heading color={'orangered'} fontSize={'6xl'}>GMS {moment().get("year")}</Heading>

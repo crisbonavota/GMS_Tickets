@@ -14,7 +14,8 @@ export interface App {
     module?: string,
     label: string,
     description?: string,
-    image?: string
+    image?: string,
+    requireAuth: boolean
 }
 
 export as namespace Config;

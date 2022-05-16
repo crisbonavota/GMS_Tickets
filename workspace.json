@@ -4,7 +4,6 @@
         "api-filters": "libs/api-filters",
         "api-utils": "libs/api-utils",
         "assets": "libs/assets",
-        "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
         "chakra-react-select-styles": "libs/chakra-react-select-styles",
         "container": "apps/container",

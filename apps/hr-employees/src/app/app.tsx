@@ -11,8 +11,9 @@ import AfipIdInput from "./afip-id-filter/afip-id-filter";
 import CountryFilter from "./country-filter/country-filter";
 import FileNumberInput from "./file-number-filter/file-number-filter";
 import { useDidMountEffect } from '@gms-micro/react-hooks';
+import { useAuthHeader } from 'react-auth-kit';
 
-const App = ({ authHeader }: { authHeader: string }) => {
+const App = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const [position, setPosition] = useState<string>("");
     const [afipId, setAfipId] = useState<string>("");
@@ -21,6 +22,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
     const [fullName, setfullName] = useState("");
     const [refetchAux, setRefetchAux] = useState(0);
     const [sort, setSort] = useState<Sort>({ field: 'legacyUser.fullName', isAscending: true });
+    const getAuthHeader = useAuthHeader();
 
     const onFullNameSearch = useMemo(() =>
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,7 +55,7 @@ const App = ({ authHeader }: { authHeader: string }) => {
 
     const employeesQuery = useQuery(['employees', refetchTriggers], () => getResourceListFilteredAndPaginated<Employee>(
         "employees",
-        authHeader,
+        getAuthHeader(),
         filters,
         customFilters,
         sort,
@@ -73,9 +75,9 @@ const App = ({ authHeader }: { authHeader: string }) => {
                         onChange={onFullNameSearch}
                         placeholder={'Search by employee'}
                     />
-                <PositionFilter authHeader={authHeader} position={position} setPosition={setPosition} isLoading={employeesQuery.isLoading} />
+                <PositionFilter authHeader={getAuthHeader()} position={position} setPosition={setPosition} isLoading={employeesQuery.isLoading} />
                 <AfipIdInput afipId={afipId} setAfipId={setAfipId} />
-                <CountryFilter authHeader={authHeader} country={birthCountry} setCountry={setBirthCountry} isLoading={employeesQuery.isLoading}/> 
+                <CountryFilter authHeader={getAuthHeader()} country={birthCountry} setCountry={setBirthCountry} isLoading={employeesQuery.isLoading}/> 
                 <FileNumberInput fileNumber={fileNumber} setFileNumber={setFileNumber}/>
                     </Wrap>
                 </Flex>

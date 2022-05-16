@@ -114,15 +114,19 @@ Then, we must add the micro-app to the deploy configuration. You can find it on 
 {
     "apps": [
         {
-            "name": "myappname",
-            "path": "/myapppath",
-            "devPort": 30XX, 
+            "name": "tt-reports",
+            "path": "timetrack/reports",
+            "devPort": 3003,
             "serveOn": {
-                "production": false,
+                "production": true,
                 "development": true
             },
-            "allowedRoles": ["myapprole"], // 
-            "label": "My App"
+            "allowedRoles": ["tt-reports"],
+            "module": "Timetrack",
+            "label": "Reports",
+            "description": "Generate reports about users TimeTrack loaded hours",
+            "image": "ttReports",
+            "requireAuth": true
         },
         ...
     ]
@@ -139,30 +143,43 @@ Then, we must add the micro-app to the deploy configuration. You can find it on 
   
 - allowedRoles: if your app access role-protected endpoints on the API (therefore not any user can use it), you have to specify the role name/s that can access it so the `home` app can detect which apps the authenticated user can access through the roles on the JWT token.
 
+- module: parent module of the app, used for generating cards on home app
+
 - label: app name displayed to the user in links, navbar, etc.
+
+- description: app description displayed on the app card
+
+- image: app image displayed on the app card
+
+- requireAuth: makes the route of the app private so you have to be logged in
   
 
 Finally, we must modify the entrypoint of the app to avoid rendering it to the DOM automatically and rendering it at the `container` app command. We have a lib already setted up to do this for your, all you have to do is calling the lib function for your framework and passing the main component and app name as argument.
 > By default, the entrypoint is `main`, located on the `src` folder of the app (`myapp/src/main`)
 
-#### Example in React:
+#### Example in React ChakraUI app that requires auth:
 
 ```
 import App from './app/app';
-import { StrictMode } from  'react';
-import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
+import { StrictMode } from 'react';
+import { generateReactMicrofrontEntrypoint, WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
+import { environment } from './environments/environment';
 import { config } from '@gms-micro/deploy';
 
-const app = config.apps.find(app => app.name === 'myappname'); // Name you assigned on deploy.json
+const name = 'tt-load';
+const app = config.apps.find(app => app.name === name);
+if (!app) throw (new Error(`App ${name} not found`));
 
-if (app) {
-    const mainComponent = 
-        <StrictMode>
-            <App />
-        </StrictMode>;
+const mainComponent =
+    <StrictMode>
+        <WithAuthProvider>
+            <WithChakraProvider>
+                <App />
+            </WithChakraProvider>
+        </WithAuthProvider>
+    </StrictMode>;
 
-    generateReactMicrofrontEntrypoint(app.name, mainComponent);
-}
+generateReactMicrofrontEntrypoint(app.name, mainComponent);
 ```
 
 ## Running unit tests
@@ -179,39 +196,5 @@ Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cy
   
 Run `nx graph` to see a diagram of the dependencies of the project
 
-## Authentication logic in Micro-Frontend architecture
-  
-Our `login` app handles the auth API connections, and since services can't share their current state, every app that you create that needs the JWT token / Authenticated user data must redirect to /sign-in sending `redirect=appRoute` as an URL query parameter (`?redirect=myapp`). Then, the sign-in component will handle the JWT token retrieval from cookies or generation from API, and will redirect to the caller route (`appRoute`) sending as URL query parameters the authentication header + authenticated user (`?header=authHeader&user=authUser`) so the original app that asked for the auth data can retrieve it from the URL. 
-
-We use `react-auth-kit` to handle the auth token expiration and persist the sign-in between sessions (cookies)
-
-## How to integrate authentication on your app
-
-There's a handy library already integrated in the workspace to get the auth data (JWT token + authenticated user info)
-
-On your app entrypoint (refer to the ***Integrate an application to the main routing system*** section if you don't know what this is), just call the `getAuthHeader` method from `@gms-micro/auth-methods`.
-
-#### Example in React
-
-```
-import App from './app/app';
-import { StrictMode } from 'react';
-import { getAuthHeader } from '@gms-micro/auth-methods';
-import { generateReactMicrofrontEntrypoint } from '@gms-micro/microfront-utils';
-import { config } from '@gms-micro/deploy';
-
-const app = config.apps.find(app => app.name === 'myappname');
-
-if (app) {
-    const authHeader = getAuthHeader(app.path);
-
-    const mainComponent =
-        <StrictMode>
-            {authHeader && <App authHeader={authHeader} />}
-        </StrictMode>;
-
-    generateReactMicrofrontEntrypoint(app.name, mainComponent);
-}
-```
-
-Calling the library methods will handle the redirection to the sign in page and the posterior removal of the query parameters from the URL.
+## About auth
+If your app requires auth, you can use the `WithAuthProvider` component to provide the auth context to your app (see previous example); then you can use in the app the provider hooks by `react-auth-kit` to get auth data.

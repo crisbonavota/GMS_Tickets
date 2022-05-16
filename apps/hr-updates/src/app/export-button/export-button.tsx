@@ -2,6 +2,7 @@ import { VStack, IconButton, Text } from '@chakra-ui/react'
 import { CustomFilter, FilterItem, Sort } from '@gms-micro/api-filters';
 import { getReportFiltered } from '@gms-micro/api-utils';
 import { downloadFile, generateExcelFileURL } from '@gms-micro/files-utils';
+import { useAuthHeader } from 'react-auth-kit';
 import { FaFileExport } from 'react-icons/fa'
 import { useQuery } from 'react-query';
 
@@ -11,18 +12,18 @@ const onExport = (isSuccess: boolean, base64?: string) => {
 
 export interface ExportButtonProps {
     filters: FilterItem[],
-    authHeader: string,
     sort: Sort,
     customFilters: CustomFilter[],
     refetchTriggers: any[]
 }
 
-const ExportButton = ({ filters, authHeader, sort, refetchTriggers, customFilters }: ExportButtonProps) => {
+const ExportButton = ({ filters, sort, refetchTriggers, customFilters }: ExportButtonProps) => {
+    const getAuthHeader = useAuthHeader();
     const reportQuery = useQuery(
         ['updatesReport', refetchTriggers],
         () => getReportFiltered(
             "updates/report",
-            authHeader,
+            getAuthHeader(),
             filters,
             customFilters,
             sort

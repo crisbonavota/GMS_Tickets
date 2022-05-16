@@ -2,7 +2,6 @@ import { Center, Stack } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
-import { useAuthHeader } from 'react-auth-kit';
 import CreateEditForm from './create-edit-form/create-edit-form';
 import TableComponent from './table/table';
 
@@ -14,7 +13,6 @@ const App = () => {
     const [project, setProject] = useState<number>();
     const [type, setType] = useState<'create' | 'edit'>('create');
     const [selected, setSelected] = useState<number | null>(null);
-    const getAuthHeader = useAuthHeader();
 
     const resetForm = useMemo(() => () => {
         setSelected(null);
@@ -50,13 +48,11 @@ const App = () => {
                     setTaskType={setTaskType}
                     setTask={setTask}
                     setProject={setProject}
-                    authHeader={getAuthHeader()}
                     type={type}
                     selected={selected}
                     resetForm={resetForm}
                 />
                 <TableComponent 
-                    authHeader={getAuthHeader()} 
                     selected={selected}
                     resetForm={resetForm}
                     fillForm={fillForm}

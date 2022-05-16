@@ -6,9 +6,9 @@ import HoursInput from '../hours-input/hours-input';
 import TaskInput from '../task-input/task-input';
 import DeleteEntry from '../delete-entry/delete-entry';
 import { QuerySelect } from '@gms-micro/query-utils';
+import { useAuthHeader } from 'react-auth-kit';
 
 type Props = {
-    authHeader: string,
     date: string,
     hours: string,
     taskType?: number,
@@ -25,7 +25,6 @@ type Props = {
 }
 
 const CreateEditForm = ({
-    authHeader,
     date, 
     hours, 
     taskType, 
@@ -43,12 +42,13 @@ const CreateEditForm = ({
     const toast = useToast();
     const [submitting, setSubmitting] = useBoolean(false);
     const queryClient = useQueryClient();
+    const getAuthHeader = useAuthHeader();
 
     const mutation = useMutation(
         type === 'create' ?
             () => postResource(
                 "timetrack",
-                authHeader,
+                getAuthHeader(),
                 {
                     'date': date,
                     'hours': hoursMinutesToHours(hours),
@@ -60,7 +60,7 @@ const CreateEditForm = ({
                 "timetrack",
                 // the 0 won't ever be sent because if the type is edit, selected has a value
                 selected ? selected : 0,
-                authHeader,
+                getAuthHeader(),
                 {
                     'date': date,
                     'hours': hoursMinutesToHours(hours),
@@ -101,20 +101,20 @@ const CreateEditForm = ({
                     <DateInput date={date} setDate={setDate} />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <QuerySelect authHeader={authHeader} resource={'projects/member'} title={"Project"} value={project} setValue={setProject} />
+                    <QuerySelect resource={'projects/member'} title={"Project"} value={project} setValue={setProject} />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <QuerySelect authHeader={authHeader} resource={'timetrack/tasks/types'} title={"Task type"} labelOption="code" value={taskType} setValue={setTaskType} />
+                    <QuerySelect resource={'timetrack/tasks/types'} title={"Task type"} labelOption="code" value={taskType} setValue={setTaskType} />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <TaskInput authHeader={authHeader} projectId={project} task={task} setTask={setTask} />
+                    <TaskInput projectId={project} task={task} setTask={setTask} />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <HoursInput hours={hours} setHours={setHours} />
                 </GridItem>
                 {type === "edit" && selected &&
                     <GridItem colSpan={1} mt={'auto'}>
-                        <DeleteEntry authHeader={authHeader} selected={selected} resetForm={resetForm} />
+                        <DeleteEntry selected={selected} resetForm={resetForm} />
                     </GridItem>}
                 <GridItem colSpan={2}>
                     <Button

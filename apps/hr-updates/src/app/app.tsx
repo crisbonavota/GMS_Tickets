@@ -65,19 +65,19 @@ const App = () => {
                 <Heading fontSize={'2xl'}>Employees updates</Heading>
                 <Flex justifyContent={'space-between'} alignItems={'flex-start'} w={'full'} flexDir={{ base: 'column-reverse', md: 'row' }}>
                     <Wrap w={'full'} spacing={5} justifyContent={'flex-start'} alignItems={'flex-end'}>
-                        <TableSingleLegacyUserFilterWithChakra authHeader={getAuthHeader()} legacyUser={legacyUser} setLegacyUser={setLegacyUser} isLoading={updatesQuery.isLoading} />
-                        <UpdateTypeFilter authHeader={getAuthHeader()} updateType={updateType} setUpdateType={setUpdateType} isLoading={updatesQuery.isLoading} />
+                        <TableSingleLegacyUserFilterWithChakra legacyUser={legacyUser} setLegacyUser={setLegacyUser} isLoading={updatesQuery.isLoading} />
+                        <UpdateTypeFilter updateType={updateType} setUpdateType={setUpdateType} isLoading={updatesQuery.isLoading} />
                         <MonthFilter month={month} setMonth={setMonth} />
                         <YearFilter year={year} setYear={setYear} />
                     </Wrap>
                     <HStack mb={{ base: 3, md: 0 }} spacing={5}>
-                        <ExportButton authHeader={getAuthHeader()} sort={updatesQueriesSort} filters={filters} customFilters={customFilters} refetchTriggers={refetchTriggers} />
-                        <CreateSelectUpdateType authHeader={getAuthHeader()} />
+                        <ExportButton sort={updatesQueriesSort} filters={filters} customFilters={customFilters} refetchTriggers={refetchTriggers} />
+                        <CreateSelectUpdateType />
                     </HStack>
                 </Flex>
                 {updatesQuery.isLoading && <Text>Loading...</Text>}
                 {updatesQuery.isError && <Text>There was an error generating the table, try again later</Text>}
-                {updatesQuery.isSuccess && <TableComponent authHeader={getAuthHeader()} tableData={updatesQuery.data.data} />}
+                {updatesQuery.isSuccess && <TableComponent tableData={updatesQuery.data.data} />}
                 <TablePaginationWithChakra
                     isLoading={updatesQuery.isLoading}
                     currentPage={currentPage}

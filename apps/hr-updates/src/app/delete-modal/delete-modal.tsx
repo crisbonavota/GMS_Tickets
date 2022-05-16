@@ -3,24 +3,25 @@ import { deleteResource, getUpdateResourceFromType, Update } from '@gms-micro/ap
 import { AiFillDelete } from 'react-icons/ai';
 import { useQueryClient, useMutation } from 'react-query';
 import { useMemo } from 'react';
+import { useAuthHeader } from 'react-auth-kit';
 
 
 
 interface DeleteModalProps {
-    authHeader: string,
     update: Update
 }
 
-const DeleteModal = ({ authHeader, update }: DeleteModalProps) => {
+const DeleteModal = ({ update }: DeleteModalProps) => {
     const [open, setOpen] = useBoolean();
     const [loading, setLoading] = useBoolean();
     const queryClient = useQueryClient();
     const toast = useToast();
+    const getAuthHeader = useAuthHeader();
 
     const deleteUpdateMutation = useMutation(async () => await deleteResource(
         getUpdateResourceFromType(update.updateType.id),
         update.id,
-        authHeader,
+        getAuthHeader(),
     ), {
         onMutate: async () => {
             await queryClient.cancelQueries(['updates']);

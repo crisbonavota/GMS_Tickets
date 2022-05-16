@@ -84,7 +84,6 @@ const App = () => {
                         placeholder={'General search'}
                     />
                     <SelectFilters
-                        authHeader={getAuthHeader()}
                         dropdownsData={[
                             { labelOption: 'fullName', valueOption: 'id', values: users, setValue: setUsers, title: "Employee", resource: 'users/legacy' },
                             { labelOption: 'name', valueOption: 'id', values: businessUnits, setValue: setBusinessUnits, title: "Business Unit", resource: 'businessUnits' },
@@ -93,7 +92,7 @@ const App = () => {
                             { labelOption: 'name', valueOption: 'id', values: accounts, setValue: setAccounts, title: "Account", resource: 'accounts' }
                         ]}
                     />
-                    <ExportModule authHeader={getAuthHeader()} filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
+                    <ExportModule filters={filters} customFilters={customFilters} refetch={refetchTriggers} />
                 </VStack>
                 {timetrackQuery.isLoading && <Text>Loading...</Text>}
                 {timetrackQuery.isSuccess && <TableComponent tableData={timetrackQuery.data.data} sort={sort} setSort={setSort} />}

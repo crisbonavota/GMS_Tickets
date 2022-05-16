@@ -5,6 +5,7 @@ import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
 import { useQuery } from 'react-query';
 import { getResourceList } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
+import { useAuthHeader } from 'react-auth-kit';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number,
@@ -112,14 +113,14 @@ export const TableDatesFilterWithChakra = ({ from, to, setFrom, setTo, isLoading
 }
 
 export interface TableLegacyUserFilterWithChakraProps {
-    authHeader: string,
     legacyUser: string,
     setLegacyUser: (legacyUser: string) => void,
     isLoading: boolean
 }
 
-export const TableSingleLegacyUserFilterWithChakra = ({ authHeader , legacyUser, setLegacyUser, isLoading}: TableLegacyUserFilterWithChakraProps) => {
-    const query = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>("users/legacy", authHeader));
+export const TableSingleLegacyUserFilterWithChakra = ({ legacyUser, setLegacyUser, isLoading}: TableLegacyUserFilterWithChakraProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>("users/legacy", getAuthHeader()));
     return (
         <VStack alignItems={'flex-start'} w={'15rem'}>
             <Text fontSize={'sm'}>Employee</Text>

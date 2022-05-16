@@ -4,9 +4,9 @@ import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
 import { useQuery } from 'react-query';
 import { Select } from 'chakra-react-select';
 import { useState, useMemo, useEffect } from 'react';
+import { useAuthHeader } from 'react-auth-kit';
 
 type QuerySelectProps = {
-    authHeader: string,
     resource: string,
     labelOption?: string,
     valueOption?: string,
@@ -16,8 +16,9 @@ type QuerySelectProps = {
 }
 
 /// This function returns a dropdown based on ChakraUI + React-Select, the values of the dropdown come from the resource endpoint
-export const QuerySelect = ({ authHeader, resource, labelOption = "name", valueOption = "id", title, value, setValue }: QuerySelectProps) => {
-    const query = useQuery([resource], () => getResourceList(resource, authHeader));
+export const QuerySelect = ({resource, labelOption = "name", valueOption = "id", title, value, setValue }: QuerySelectProps) => {
+    const getAuthHeader = useAuthHeader();
+    const query = useQuery([resource], () => getResourceList(resource, getAuthHeader()));
     const [internalValue, setInternalValue] = useState<{ label: string, value: any } | null>(null);
 
     const getOptions = useMemo(() => (data: any[]) => {

@@ -13,7 +13,7 @@ export interface ImportPreviewEditProps {
 }
 
 export function ImportPreviewEdit({ update, updateIndex, updates, setUpdates, validation }: ImportPreviewEditProps) {
-    const [fileNumber, setFileNumber] = useState<number | undefined>(update.filenumber);
+    const [filenumber, setFileNumber] = useState<number | undefined>(update.filenumber);
     const [date, setDate] = useState(update.date ? moment(update.date, "DD/MM/yyyy").format('YYYY-MM-DD') : '');
     const [currency, setCurrency] = useState<string | undefined>(update.currency);
     const [amount, setAmount] = useState<number | undefined>(update.amount);
@@ -27,18 +27,18 @@ export function ImportPreviewEdit({ update, updateIndex, updates, setUpdates, va
 
     const onSave = useMemo(() => {
         return () => {
-            const updatedUpdate = { ...update, fileNumber, date: moment(date).format("DD/MM/YYYY"), currency, amount }
+            const updatedUpdate = { ...update, filenumber, date: moment(date).format("DD/MM/YYYY"), currency, amount }
             const updatedUpdates = [...updates]
             updatedUpdates[updateIndex] = updatedUpdate
             setUpdates(updatedUpdates)
         }
-    }, [updates, fileNumber, date, currency, amount, updateIndex]);
+    }, [updates, filenumber, date, currency, amount, updateIndex]);
 
     return (
         <VStack alignItems={'flex-start'}>
             <Text>Update #{updateIndex + 1}</Text>
             <HStack w={'full'} justifyContent={'space-evenly'} p={2}>
-                <Input type={'number'} value={fileNumber} onChange={e => setFileNumber(parseInt(e.target.value))} />
+                <Input type={'number'} value={filenumber} onChange={e => setFileNumber(parseInt(e.target.value))} />
                 <Input type={'date'} value={date} onChange={e => setDate(e.target.value)} />
                 <Input type={'text'} value={currency} onChange={e => setCurrency(e.target.value)} />
                 <Input type={'number'} value={amount} onChange={e => setAmount(parseFloat(e.target.value))} />

@@ -21,6 +21,12 @@ const ImportFormatView = () => {
                         <Td>100.00</Td>
                     </Tr>
                     <Tr>
+                        <Td>12345</Td>
+                        <Td>10-05-2022</Td>
+                        <Td>ARS</Td>
+                        <Td>100,00</Td>
+                    </Tr>
+                    <Tr>
                         <Td>...</Td>
                         <Td>...</Td>
                         <Td>...</Td>

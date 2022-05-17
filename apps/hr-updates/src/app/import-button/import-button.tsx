@@ -1,28 +1,28 @@
-import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Input, useToast, Box, Center, chakra } from '@chakra-ui/react';
+import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast, chakra } from '@chakra-ui/react';
 import { BiImport } from 'react-icons/bi';
 import { useState } from 'react';
 import { parse } from 'papaparse';
 import BulkCheck from '../bulk-check/bulk-check';
+import { useAuthHeader } from 'react-auth-kit';
 
 export interface ImportRow {
-    currency: string,
-    date: string,
-    fileNumber: number,
-    value: number
+    currency?: string,
+    date?: string,
+    fileNumber?: number,
+    amount?: number
 }
 
 export function ImportButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [rows, setRows] = useState<ImportRow[]>([]);
     const toast = useToast();
+    const getAuthHeader = useAuthHeader();
 
     const changeHandler = (event: any) => {
         parse<ImportRow>(event.target.files[0], {
             header: true,
             skipEmptyLines: true,
-            complete: results => {
-                setRows(results.data);
-            },
+            complete: results => setRows(results.data),
             error: (error) => {
                 toast({ title: "Error parsing the file, try again", description: error.message, status: "error" });
                 console.log(error);
@@ -39,12 +39,14 @@ export function ImportButton() {
 
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent>
+                <ModalContent maxW={'fit-content'}>
                     <ModalHeader>Upload file</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <chakra.input type="file" accept='.csv' onChange={changeHandler} justifyContent={'center'} />
-                        {rows.length && <BulkCheck />}
+                        <VStack spacing={5} alignItems={'flex-start'}>
+                            <chakra.input type="file" accept='.csv' onChange={changeHandler} justifyContent={'center'} />
+                            {rows.length && <BulkCheck items={rows} setRows={setRows} />}
+                        </VStack>
                     </ModalBody>
                     <ModalFooter>
                         <Button colorScheme='blue' mr={3} disabled={!rows.length}>

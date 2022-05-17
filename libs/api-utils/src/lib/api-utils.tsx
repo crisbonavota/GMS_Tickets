@@ -4,6 +4,10 @@ import { PatchDocumentItem, KeyValuePair, Currency } from './api-types';
 
 const client = axios.create({ baseURL: process.env['NX_API_URL'] });
 
+export const getResource = async <T,>(resource: string, authHeader: string) => {
+    return await client.get<T>(resource, { headers: { Authorization: authHeader } });
+}
+
 export const getResourceList = async <T,>(resource: string, authHeader: string) => {
     return await client.get<Array<T>>(resource, { headers: { Authorization: authHeader } });
 }

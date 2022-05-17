@@ -2,10 +2,9 @@ import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, M
 import { BiImport } from 'react-icons/bi';
 import { useState } from 'react';
 import { parse } from 'papaparse';
-import BulkCheck from '../bulk-check/bulk-check';
-import { useAuthHeader } from 'react-auth-kit';
+import ImportPreview from '../import-preview/import-preview';
 
-export interface ImportRow {
+export interface ImportUpdate {
     currency?: string,
     date?: string,
     fileNumber?: number,
@@ -14,15 +13,15 @@ export interface ImportRow {
 
 export function ImportButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [rows, setRows] = useState<ImportRow[]>([]);
+    const [updates, setUpdates] = useState<ImportUpdate[]>([]);
+    const [valid, setValid] = useState(false);
     const toast = useToast();
-    const getAuthHeader = useAuthHeader();
 
     const changeHandler = (event: any) => {
-        parse<ImportRow>(event.target.files[0], {
+        parse<ImportUpdate>(event.target.files[0], {
             header: true,
             skipEmptyLines: true,
-            complete: results => setRows(results.data),
+            complete: results => setUpdates(results.data),
             error: (error) => {
                 toast({ title: "Error parsing the file, try again", description: error.message, status: "error" });
                 console.log(error);
@@ -45,11 +44,11 @@ export function ImportButton() {
                     <ModalBody>
                         <VStack spacing={5} alignItems={'flex-start'}>
                             <chakra.input type="file" accept='.csv' onChange={changeHandler} justifyContent={'center'} />
-                            {rows.length && <BulkCheck items={rows} setRows={setRows} />}
+                            {updates.length && <ImportPreview updates={updates} setUpdates={setUpdates} setValid={setValid} />}
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} disabled={!rows.length}>
+                        <Button colorScheme='blue' mr={3} disabled={!updates.length || !valid}>
                             Upload
                         </Button>
                         <Button variant='ghost' onClick={onClose}>Cancel</Button>

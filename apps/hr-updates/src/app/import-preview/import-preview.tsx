@@ -12,7 +12,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 const columns = [
     { Header: 'Update #', accessor: 'index' },
-    { Header: 'File number', accessor: 'fileNumber' },
+    { Header: 'File number', accessor: 'filenumber' },
     { Header: 'Employee', accessor: '' },
     { Header: 'Date', accessor: 'date' },
     { Header: 'Currency', accessor: 'currency' },
@@ -101,7 +101,7 @@ export function ImportPreview({ updates, setUpdates, setValid }: Props) {
                                             if (cell.column.Header === "Employee") return (
                                                 <Td key={cell.column.id}>
                                                     {employeesQuery.data.data.find(e =>
-                                                        e.fileNumber.toString() === cell.row.original.fileNumber?.toString())?.legacyUser.fullName}
+                                                        e.fileNumber.toString() === cell.row.original.filenumber?.toString())?.legacyUser.fullName}
                                                 </Td>
                                             )
 
@@ -149,7 +149,7 @@ export function ImportPreview({ updates, setUpdates, setValid }: Props) {
 }
 
 const validateRow = (update: ImportUpdate, employees: Employee[]) => {
-    const employee = employees.find(e => e.fileNumber.toString() === update.fileNumber?.toString());
+    const employee = employees.find(e => e.fileNumber.toString() === update.filenumber?.toString());
     const currency = getCurrencies().find(c => c.code === update.currency);
     const errors: string[] = [];
 

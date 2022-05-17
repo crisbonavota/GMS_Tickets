@@ -1,17 +1,18 @@
 import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast, chakra, useBoolean } from '@chakra-ui/react';
 import { BiImport } from 'react-icons/bi';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { parse } from 'papaparse';
 import ImportPreview from '../import-preview/import-preview';
 import { useMutation, useQueryClient } from 'react-query';
 import { postResource } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import moment from 'moment';
+import ImportFormatView from '../import-format-view/import-format-view';
 
 export interface ImportUpdate {
     currency?: string,
     date?: string,
-    fileNumber?: number,
+    filenumber?: number,
     amount?: number
 }
 
@@ -28,6 +29,8 @@ export function ImportButton() {
         parse<ImportUpdate>(event.target.files[0], {
             header: true,
             skipEmptyLines: 'greedy',
+            transformHeader : (h) => h.trim().toLowerCase().replace(/\s/g, ''),
+            transform: (r) => r.replace(",", '.').replace(/-/g, "/"),
             complete: results => setUpdates(results.data),
             error: (error) => {
                 toast({ title: "Error parsing the file, try again", description: error.message, status: "error" });
@@ -61,7 +64,13 @@ export function ImportButton() {
             toast({ title: "Error importing, try again later", description: err.message | err, status: "error" });
             console.log(err);
         }
-    })
+    });
+
+    const onCancel = useCallback(() => {
+        setUpdates([]);
+        setValid(false);
+        onClose();
+    }, []);
 
     return (
         <>
@@ -79,6 +88,7 @@ export function ImportButton() {
                         <VStack spacing={5} alignItems={'flex-start'}>
                             <chakra.input type="file" accept='.csv' onChange={changeHandler} justifyContent={'center'} />
                             {updates.length && <ImportPreview updates={updates} setUpdates={setUpdates} setValid={setValid} />}
+                            {!updates.length && <ImportFormatView />}
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
@@ -91,7 +101,7 @@ export function ImportButton() {
                         >
                             Upload
                         </Button>
-                        <Button variant='ghost' onClick={onClose}>Cancel</Button>
+                        <Button variant='ghost' onClick={onCancel}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>

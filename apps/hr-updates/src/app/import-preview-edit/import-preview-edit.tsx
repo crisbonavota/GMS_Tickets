@@ -13,13 +13,13 @@ export interface ImportPreviewEditProps {
 }
 
 export function ImportPreviewEdit({ update, updateIndex, updates, setUpdates, validation }: ImportPreviewEditProps) {
-    const [fileNumber, setFileNumber] = useState<number | undefined>(update.fileNumber);
+    const [fileNumber, setFileNumber] = useState<number | undefined>(update.filenumber);
     const [date, setDate] = useState(update.date ? moment(update.date, "DD/MM/yyyy").format('YYYY-MM-DD') : '');
     const [currency, setCurrency] = useState<string | undefined>(update.currency);
     const [amount, setAmount] = useState<number | undefined>(update.amount);
 
     useEffect(() => {
-        setFileNumber(update.fileNumber);
+        setFileNumber(update.filenumber);
         setDate(update.date ? moment(update.date, "DD/MM/yyyy").format('YYYY-MM-DD') : '');
         setCurrency(update.currency);
         setAmount(update.amount);

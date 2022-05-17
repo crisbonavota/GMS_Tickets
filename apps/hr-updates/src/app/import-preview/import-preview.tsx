@@ -90,7 +90,7 @@ export function ImportPreview({ updates, setUpdates, setValid }: Props) {
                                 prepareRow(row);
                                 const validation = validateRow(row.original, employeesQuery.data.data);
                                 return (
-                                    <Tr {...row.getRowProps()}>
+                                    <Tr {...row.getRowProps()} bgColor={row.index === selectedEdit ? 'blue.100': 'white'}>
                                         {row.cells.map((cell) => {
                                             if (cell.column.id === "index") return (
                                                 <Td key={cell.column.id}>
@@ -119,7 +119,7 @@ export function ImportPreview({ updates, setUpdates, setValid }: Props) {
                                                 <IconButton
                                                     icon={<MdModeEditOutline />}
                                                     aria-label="Edit"
-                                                    onClick={() => setSelectedEdit(row.index)}
+                                                    onClick={() => selectedEdit === row.index ? setSelectedEdit(null) : setSelectedEdit(row.index)}
                                                     colorScheme={'blue'}
                                                     size={'xs'}
                                                 />

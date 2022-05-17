@@ -59,7 +59,7 @@ export const deleteResource = async (resource: string, id: number, authHeader: s
     return await client.delete(`/${resource}/${id}`, { headers: { Authorization: authHeader } });
 }
 
-export const postResource = async (resource: string, authHeader: string, data: KeyValuePair) => {
+export const postResource = async (resource: string, authHeader: string, data: KeyValuePair | KeyValuePair[]) => {
     return await client.post(`/${resource}`, data, { headers: { Authorization: authHeader } });
 }
 

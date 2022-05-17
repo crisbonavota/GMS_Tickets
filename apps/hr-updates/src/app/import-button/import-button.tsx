@@ -1,8 +1,12 @@
-import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast, chakra } from '@chakra-ui/react';
+import { VStack, Text, IconButton, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast, chakra, useBoolean } from '@chakra-ui/react';
 import { BiImport } from 'react-icons/bi';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { parse } from 'papaparse';
 import ImportPreview from '../import-preview/import-preview';
+import { useMutation, useQueryClient } from 'react-query';
+import { postResource } from '@gms-micro/api-utils';
+import { useAuthHeader } from 'react-auth-kit';
+import moment from 'moment';
 
 export interface ImportUpdate {
     currency?: string,
@@ -15,12 +19,15 @@ export function ImportButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [updates, setUpdates] = useState<ImportUpdate[]>([]);
     const [valid, setValid] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useBoolean(false);
     const toast = useToast();
+    const getAuthHeader = useAuthHeader();
+    const queryClient = useQueryClient();
 
     const changeHandler = (event: any) => {
         parse<ImportUpdate>(event.target.files[0], {
             header: true,
-            skipEmptyLines: true,
+            skipEmptyLines: 'greedy',
             complete: results => setUpdates(results.data),
             error: (error) => {
                 toast({ title: "Error parsing the file, try again", description: error.message, status: "error" });
@@ -28,6 +35,33 @@ export function ImportButton() {
             }
         });
     };
+
+    const submitMutation = useMutation(async () => await postResource(
+        "updates/bulk",
+        getAuthHeader(),
+        updates.map(u => { return { ...u, date: moment(u.date, "DD/MM/YYYY").format("YYYY-MM-DD") } })
+    ), {
+        onMutate: () => {
+            setIsSubmitting.on();
+            queryClient.cancelQueries('updates');
+            queryClient.cancelQueries('updatesReport');
+        },
+        onSuccess: () => {
+            setIsSubmitting.off();
+            onClose();
+            toast({ title: "Successfully imported", status: "success" });
+            setUpdates([]);
+            setValid(false);
+            queryClient.resetQueries('updates');
+            queryClient.resetQueries('updatesReport');
+        },
+        onError: (err: any) => {
+            setIsSubmitting.off();
+            onClose();
+            toast({ title: "Error importing, try again later", description: err.message | err, status: "error" });
+            console.log(err);
+        }
+    })
 
     return (
         <>
@@ -48,7 +82,13 @@ export function ImportButton() {
                         </VStack>
                     </ModalBody>
                     <ModalFooter>
-                        <Button colorScheme='blue' mr={3} disabled={!updates.length || !valid}>
+                        <Button
+                            colorScheme='blue'
+                            mr={3}
+                            disabled={!updates.length || !valid}
+                            onClick={async () => await submitMutation.mutateAsync()}
+                            isLoading={isSubmitting}
+                        >
                             Upload
                         </Button>
                         <Button variant='ghost' onClick={onClose}>Cancel</Button>

@@ -46,7 +46,7 @@ export function EmployeeProviderSelect({
 
     const getOptions = useCallback((values: any[]) => {
         const options = values.map((entity) => ({
-            value: entity.id.toString(),
+            value: entity.legacyUser.id.toString(),
             label: entity.legacyUser.fullName,
         }));
         options.unshift(emptyValue);

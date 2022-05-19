@@ -16,10 +16,10 @@ interface DropdownItem {
 }
 
 interface SelectFiltersProps {
-    dropdownsData: Array<DropdownItem>
+    dropdownsData: Array<DropdownItem>;
 }
 
-export function SelectFilters({dropdownsData }: SelectFiltersProps) {
+export function SelectFilters({ dropdownsData }: SelectFiltersProps) {
     return (
         <Stack
             alignItems={'flex-start'}
@@ -27,50 +27,60 @@ export function SelectFilters({dropdownsData }: SelectFiltersProps) {
             w={'full'}
             direction={{ base: 'column', md: 'row' }}
         >
-            {dropdownsData.map((dd, i) => <SelectFiltersItem dropdownItem={dd} key={i} />)}
+            {dropdownsData.map((dd, i) => (
+                <SelectFiltersItem dropdownItem={dd} key={i} />
+            ))}
         </Stack>
     );
 }
 
 interface SelectFiltersItemProps {
-    dropdownItem: DropdownItem,
+    dropdownItem: DropdownItem;
 }
 
 const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
     const getAuthHeader = useAuthHeader();
-    const query = useQuery([dropdownItem.resource], () => getResourceList(dropdownItem.resource, getAuthHeader()));
+    const query = useQuery([dropdownItem.resource], () =>
+        getResourceList(dropdownItem.resource, getAuthHeader())
+    );
 
-    const getOptions = useMemo(() => (data: any[]) => {
-        return data.map(item => {
-            return {
-                value: item[dropdownItem.valueOption],
-                label: item[dropdownItem.labelOption]
-            }
-        });
-    }, []);
+    const getOptions = useMemo(
+        () => (data: any[]) => {
+            return data.map((item) => {
+                return {
+                    value: item[dropdownItem.valueOption],
+                    label: item[dropdownItem.labelOption],
+                };
+            });
+        },
+        []
+    );
 
-    const onChange = useMemo(() => (selected: MultiValue<{ value: any, label: any }>) => {
-        const values = selected.map(s => s.value);
-        dropdownItem.setValue(values);
-    }, []);
+    const onChange = useMemo(
+        () => (selected: MultiValue<any>) => {
+            const values = selected.map((s) => s.value);
+            dropdownItem.setValue(values);
+        },
+        []
+    );
 
     return (
         <>
             {query.isLoading && <Skeleton w={'full'} h={'2.4rem'} />}
             <Box w={'full'}>
-                {query.isSuccess &&
+                {query.isSuccess && (
                     <Select
-                        size='md'
+                        size="md"
                         options={getOptions(query.data.data)}
                         chakraStyles={chakraSelectStyle}
                         isMulti
                         placeholder={dropdownItem.title}
                         onChange={onChange}
-                    />}
+                    />
+                )}
             </Box>
         </>
-    )
-
-}
+    );
+};
 
 export default SelectFilters;

@@ -1,4 +1,4 @@
-import { Flex, Heading, VStack, Wrap, Text, HStack } from '@chakra-ui/react';
+import { Flex, VStack, Wrap, Text, HStack } from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
     KeyValuePair,

@@ -14,7 +14,6 @@ import { useMutation, useQueryClient } from 'react-query';
 import DateInput from '../date-input/date-input';
 import HoursInput from '../hours-input/hours-input';
 import TaskInput from '../task-input/task-input';
-import DeleteEntry from '../delete-entry/delete-entry';
 import { QuerySelect } from '@gms-micro/query-utils';
 import { useAuthHeader } from 'react-auth-kit';
 
@@ -154,14 +153,6 @@ const CreateEditForm = ({
                 <GridItem colSpan={1}>
                     <HoursInput hours={hours} setHours={setHours} />
                 </GridItem>
-                {type === 'edit' && selected && (
-                    <GridItem colSpan={1} mt={'auto'}>
-                        <DeleteEntry
-                            selected={selected}
-                            resetForm={resetForm}
-                        />
-                    </GridItem>
-                )}
                 <GridItem colSpan={2}>
                     <Button
                         w={'full'}

@@ -6,14 +6,11 @@ import {
     AccordionIcon,
     AccordionPanel,
     Text,
-    Heading,
     HStack,
-    Icon,
-    VStack,
 } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
-import { MdModeEditOutline } from 'react-icons/md';
+import TableRow from '../table-row/table-row';
 
 type Props = {
     days: Array<Array<TimetrackItem>>;
@@ -70,43 +67,12 @@ const WeeklyTabAccordion = ({ days, selected, onEdit }: Props) => {
                     </h2>
                     <AccordionPanel p={0}>
                         {day.map((item, index) => (
-                            <HStack
-                                justify={'space-between'}
-                                w={'full'}
-                                key={item.id}
-                                bgColor={
-                                    selected === item.id
-                                        ? 'green.100'
-                                        : index % 2
-                                        ? 'white'
-                                        : '#F6ECD4'
-                                }
-                                p={3}
-                                borderWidth={1}
-                                border={
-                                    selected === item.id
-                                        ? '5px solid steelblue'
-                                        : 'none'
-                                }
-                            >
-                                <HStack spacing={5}>
-                                    <Icon
-                                        cursor={'pointer'}
-                                        size={'sm'}
-                                        color={'steelblue'}
-                                        as={MdModeEditOutline}
-                                        onClick={() => onEdit(item)}
-                                    />
-                                    <VStack
-                                        w={'fit-content'}
-                                        alignItems={'flex-start'}
-                                    >
-                                        <Text>{item.project.name}</Text>
-                                        <Text>{item.task}</Text>
-                                    </VStack>
-                                </HStack>
-                                <Heading fontSize={'sm'}>{item.hours}h</Heading>
-                            </HStack>
+                            <TableRow
+                                index={index}
+                                item={item}
+                                onEdit={onEdit}
+                                selected={selected}
+                            />
                         ))}
                     </AccordionPanel>
                 </AccordionItem>

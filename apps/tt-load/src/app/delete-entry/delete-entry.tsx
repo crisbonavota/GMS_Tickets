@@ -1,30 +1,27 @@
-import { 
-    AlertDialog, 
-    AlertDialogBody, 
-    AlertDialogContent, 
-    AlertDialogFooter, 
-    AlertDialogHeader, 
-    AlertDialogOverlay, 
-    Button, 
-    HStack, 
-    Icon, 
-    Text, 
-    useDisclosure, 
-    useBoolean, 
-    useToast 
+import {
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogContent,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogOverlay,
+    Button,
+    Icon,
+    useDisclosure,
+    useBoolean,
+    useToast,
 } from '@chakra-ui/react';
 import { deleteResource } from '@gms-micro/api-utils';
 import { useRef } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
-import { BsTrash } from 'react-icons/bs'
+import { AiFillDelete } from 'react-icons/ai';
 import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
-    selected: number,
-    resetForm: () => void
-}
+    id: number;
+};
 
-const DeleteEntry = ({ selected, resetForm }: Props) => {
+const DeleteEntry = ({ id }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useBoolean();
     const cancelRef = useRef<any>();
@@ -32,35 +29,39 @@ const DeleteEntry = ({ selected, resetForm }: Props) => {
     const queryClient = useQueryClient();
     const getAuthHeader = useAuthHeader();
 
-    const deleteMutation = useMutation(() => deleteResource("timetrack", selected, getAuthHeader()), {
-        onMutate: () => {
-            setLoading.on();
-        },
-        onSuccess: () => {
-            setLoading.off();
-            onClose();
-            queryClient.resetQueries(['owned-daily']);
-            queryClient.resetQueries(['owned-weekly']);
-            resetForm();
-            toast({ title: "Entry removed", status: "success" });
-        },
-        onError: (err: any) => {
-            setLoading.off();
-            onClose();
-            toast({
-                title: `Error removing the entry, try again later`,
-                description: err.message || err,
-                status: "error"
-            });
+    const deleteMutation = useMutation(
+        () => deleteResource('timetrack', id, getAuthHeader()),
+        {
+            onMutate: () => {
+                setLoading.on();
+            },
+            onSuccess: () => {
+                setLoading.off();
+                onClose();
+                queryClient.resetQueries(['owned-daily']);
+                queryClient.resetQueries(['owned-weekly']);
+                toast({ title: 'Entry removed', status: 'success' });
+            },
+            onError: (err: any) => {
+                setLoading.off();
+                onClose();
+                toast({
+                    title: `Error removing the entry, try again later`,
+                    description: err.message || err,
+                    status: 'error',
+                });
+            },
         }
-    });
+    );
 
     return (
         <>
-            <HStack color={'red'} cursor={'pointer'} onClick={onOpen}>
-                <Icon as={BsTrash} />
-                <Text>Remove entry</Text>
-            </HStack>
+            <Icon
+                as={AiFillDelete}
+                color={'red'}
+                cursor={'pointer'}
+                onClick={onOpen}
+            />
             <AlertDialog
                 isOpen={isOpen}
                 leastDestructiveRef={cancelRef}
@@ -68,7 +69,7 @@ const DeleteEntry = ({ selected, resetForm }: Props) => {
             >
                 <AlertDialogOverlay>
                     <AlertDialogContent>
-                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                        <AlertDialogHeader fontSize="lg" fontWeight="bold">
                             Remove entry
                         </AlertDialogHeader>
 
@@ -80,7 +81,12 @@ const DeleteEntry = ({ selected, resetForm }: Props) => {
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button colorScheme='red' onClick={() => deleteMutation.mutate()} ml={3} isLoading={loading}>
+                            <Button
+                                colorScheme="red"
+                                onClick={() => deleteMutation.mutate()}
+                                ml={3}
+                                isLoading={loading}
+                            >
                                 Delete
                             </Button>
                         </AlertDialogFooter>
@@ -88,7 +94,7 @@ const DeleteEntry = ({ selected, resetForm }: Props) => {
                 </AlertDialogOverlay>
             </AlertDialog>
         </>
-    )
-}
+    );
+};
 
-export default DeleteEntry
+export default DeleteEntry;

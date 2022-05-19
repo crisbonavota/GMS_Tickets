@@ -74,7 +74,8 @@ export interface PatchDocumentItem {
 export interface TaskType {
     id: number,
     name: string,
-    code: string
+    code: string,
+    caption: string
 }
 
 export interface TimetrackItem {

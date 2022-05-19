@@ -104,7 +104,7 @@ const CreateEditForm = ({
                     <QuerySelect resource={'projects/member'} title={"Project"} value={project} setValue={setProject} />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <QuerySelect resource={'timetrack/tasks/types'} title={"Task type"} labelOption="code" value={taskType} setValue={setTaskType} />
+                    <QuerySelect resource={'timetrack/tasks/types'} title={"Task type"} labelOption="caption" value={taskType} setValue={setTaskType} />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <TaskInput projectId={project} task={task} setTask={setTask} />

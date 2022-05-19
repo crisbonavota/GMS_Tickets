@@ -4,10 +4,7 @@ import {
     KeyValuePair,
     Update,
 } from '@gms-micro/api-utils';
-import {
-    TablePaginationWithChakra,
-    TableSingleLegacyUserFilterWithChakra,
-} from '@gms-micro/table-utils';
+import { TablePaginationWithChakra } from '@gms-micro/table-utils';
 import { useState, useEffect, useMemo } from 'react';
 import TableComponent from './table/table';
 import UpdateTypeFilter from './update-type-filter/update-type-filter';
@@ -97,7 +94,6 @@ const App = () => {
     return (
         <VStack w={'full'} maxW={'full'} p={5}>
             <VStack w={'90%'} spacing={5}>
-                <Heading fontSize={'2xl'}>Employees updates</Heading>
                 <Flex
                     justifyContent={'space-between'}
                     alignItems={'flex-start'}

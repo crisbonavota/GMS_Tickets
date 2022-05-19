@@ -57,12 +57,12 @@ const WeeklyTabAccordion = ({ days, selected, onEdit }: Props) => {
                                                 : 'DD/MM'
                                         )}
                                 </Text>
-                                <Heading fontSize={'md'}>
+                                <Text fontSize={'md'} fontWeight={'bold'}>
                                     {day
                                         .map((item) => item.hours)
                                         .reduce((a, b) => a + b)}{' '}
                                     hs
-                                </Heading>
+                                </Text>
                             </HStack>
                             <Box flex="1" textAlign="left"></Box>
                             <AccordionIcon />

@@ -47,7 +47,7 @@
             },
             "allowedRoles": ["tt-load"],
             "module": "Timetrack",
-            "label": "Load Hours",
+            "label": "Timetracker",
             "description": "Manage your loaded hours on the TimeTrack system",
             "requireAuth": true
         },

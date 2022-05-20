@@ -19,9 +19,10 @@ import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
     id: number;
+    onDelete: () => void;
 };
 
-const DeleteEntry = ({ id }: Props) => {
+const DeleteEntry = ({ id, onDelete }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useBoolean();
     const cancelRef = useRef<any>();
@@ -38,6 +39,7 @@ const DeleteEntry = ({ id }: Props) => {
             onSuccess: () => {
                 setLoading.off();
                 onClose();
+                onDelete();
                 queryClient.resetQueries(['owned-daily']);
                 queryClient.resetQueries(['owned-weekly']);
                 toast({ title: 'Entry removed', status: 'success' });

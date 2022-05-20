@@ -3,12 +3,16 @@ import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import { MdModeEditOutline } from 'react-icons/md';
 import DeleteEntry from '../delete-entry/delete-entry';
+import EditEntry from '../edit-entry/edit-entry';
+import CopyEntry from '../copy-entry/copy-entry';
 
 export interface TableRowProps {
     item: TimetrackItem;
     selected: number | null;
     index: number;
     onEdit: (item: TimetrackItem) => void;
+    onCopy: (item: TimetrackItem) => void;
+    onDelete: () => void;
     withDay?: boolean;
 }
 
@@ -18,6 +22,8 @@ export function TableRow({
     index,
     onEdit,
     withDay,
+    onCopy,
+    onDelete,
 }: TableRowProps) {
     return (
         <HStack
@@ -36,14 +42,9 @@ export function TableRow({
             border={selected === item.id ? '5px solid steelblue' : 'none'}
         >
             <HStack spacing={5}>
-                <DeleteEntry id={item.id} />
-                <Icon
-                    cursor={'pointer'}
-                    size={'sm'}
-                    color={'steelblue'}
-                    as={MdModeEditOutline}
-                    onClick={() => onEdit(item)}
-                />
+                <CopyEntry item={item} onCopy={onCopy} />
+                <DeleteEntry id={item.id} onDelete={onDelete} />
+                <EditEntry item={item} onEdit={onEdit} />
                 <VStack w={'fit-content'} alignItems={'flex-start'}>
                     <Text>{item.project.name}</Text>
                     <Text>{item.task}</Text>

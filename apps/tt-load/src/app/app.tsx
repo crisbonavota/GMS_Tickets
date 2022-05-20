@@ -1,10 +1,9 @@
-import { Center, Image, Stack } from '@chakra-ui/react';
+import { Center, Stack } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
-import { useMemo, useState } from 'react';
+import { useState, useCallback } from 'react';
 import CreateEditForm from './create-edit-form/create-edit-form';
 import TableComponent from './table/table';
-import GearsIllustration from '../assets/gears_illustration.png';
 
 const App = () => {
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
@@ -15,31 +14,21 @@ const App = () => {
     const [type, setType] = useState<'create' | 'edit'>('create');
     const [selected, setSelected] = useState<number | null>(null);
 
-    const resetForm = useMemo(
-        () => () => {
-            setSelected(null);
-            setType('create');
-            setProject(undefined);
-            setTask('');
-            setTaskType(undefined);
-            setDate(new Date().toISOString().split('T')[0]);
-            setHours('');
-        },
-        []
-    );
+    const resetForm = useCallback(() => {
+        setProject(undefined);
+        setTask('');
+        setTaskType(undefined);
+        setDate(new Date().toISOString().split('T')[0]);
+        setHours('');
+    }, []);
 
-    const fillForm = useMemo(
-        () => (item: TimetrackItem) => {
-            setSelected(item.id);
-            setType('edit');
-            setDate(item.date.split('T')[0]);
-            setProject(item.project.id);
-            setTask(item.task);
-            setTaskType(item.tasktype.id);
-            setHours(hoursToHoursMinutes(item.hours));
-        },
-        []
-    );
+    const fillForm = useCallback((item: TimetrackItem) => {
+        setDate(item.date.split('T')[0]);
+        setProject(item.project.id);
+        setTask(item.task);
+        setTaskType(item.tasktype.id);
+        setHours(hoursToHoursMinutes(item.hours));
+    }, []);
 
     return (
         <Center
@@ -72,6 +61,8 @@ const App = () => {
                     selected={selected}
                     resetForm={resetForm}
                     fillForm={fillForm}
+                    setSelected={setSelected}
+                    setType={setType}
                 />
             </Stack>
         </Center>

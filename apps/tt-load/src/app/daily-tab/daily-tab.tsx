@@ -20,9 +20,11 @@ import TableRow from '../table-row/table-row';
 type Props = {
     selected: number | null;
     onEdit: (item: TimetrackItem) => void;
+    onCopy: (item: TimetrackItem) => void;
+    onDelete: () => void;
 };
 
-const DailyTab = ({ selected, onEdit }: Props) => {
+const DailyTab = ({ selected, onEdit, onCopy, onDelete }: Props) => {
     const getAuthHeader = useAuthHeader();
     const [dateShift, setDateShift] = useState(0);
     const [displayDate, setDisplayDate] = useState(
@@ -108,6 +110,8 @@ const DailyTab = ({ selected, onEdit }: Props) => {
                                 item={item}
                                 onEdit={onEdit}
                                 selected={selected}
+                                onCopy={onCopy}
+                                onDelete={onDelete}
                             />
                         ))}
                         {!itemsQuery.data.data.length && (

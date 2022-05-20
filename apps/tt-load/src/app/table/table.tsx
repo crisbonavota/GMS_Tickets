@@ -15,7 +15,7 @@ import {
     Text,
 } from '@chakra-ui/react';
 import DailyTab from '../daily-tab/daily-tab';
-import { useMemo, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import WeeklyTab from '../weekly-tab/weekly-tab';
 import { IconButton, HStack, Divider } from '@chakra-ui/react';
@@ -28,36 +28,58 @@ type Props = {
     selected: number | null;
     resetForm: () => void;
     fillForm: (item: TimetrackItem) => void;
+    setSelected: (id: number | null) => void;
+    setType: (type: 'edit' | 'create') => void;
 };
 
-const TableComponent = ({ selected, fillForm, resetForm }: Props) => {
+const TableComponent = ({
+    selected,
+    fillForm,
+    resetForm,
+    setSelected,
+    setType,
+}: Props) => {
     const [tabIndex, setTabIndex] = useState(0);
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [projectFilter, setProjectFilter] = useState<number>();
-    const onEdit = useMemo(
-        () => (item: TimetrackItem) => {
-            if (item.id === selected) resetForm();
-            else fillForm(item);
+
+    const onEdit = useCallback(
+        (item: TimetrackItem) => {
+            if (item.id === selected) {
+                resetForm();
+                setType('create');
+                setSelected(null);
+            } else {
+                fillForm(item);
+                setType('edit');
+                setSelected(item.id);
+            }
         },
         [selected]
     );
 
-    const handleTabsChange = useMemo(
-        () => (index: number) => {
-            setTabIndex(index);
-        },
-        []
-    );
+    const onCopy = useCallback((item: TimetrackItem) => {
+        fillForm(item);
+        setType('create');
+        setSelected(null);
+    }, []);
 
-    const clearFilters = useMemo(
-        () => () => {
-            setFrom('');
-            setTo('');
-            setProjectFilter(undefined);
-        },
-        []
-    );
+    const onDelete = useCallback(() => {
+        resetForm();
+        setSelected(null);
+        setType('create');
+    }, []);
+
+    const handleTabsChange = useCallback((index: number) => {
+        setTabIndex(index);
+    }, []);
+
+    const clearFilters = useCallback(() => {
+        setFrom('');
+        setTo('');
+        setProjectFilter(undefined);
+    }, []);
 
     return (
         <Box
@@ -85,10 +107,20 @@ const TableComponent = ({ selected, fillForm, resetForm }: Props) => {
                 </TabList>
                 <TabPanels>
                     <TabPanel>
-                        <DailyTab selected={selected} onEdit={onEdit} />
+                        <DailyTab
+                            selected={selected}
+                            onEdit={onEdit}
+                            onCopy={onCopy}
+                            onDelete={onDelete}
+                        />
                     </TabPanel>
                     <TabPanel>
-                        <WeeklyTab selected={selected} onEdit={onEdit} />
+                        <WeeklyTab
+                            selected={selected}
+                            onEdit={onEdit}
+                            onCopy={onCopy}
+                            onDelete={onDelete}
+                        />
                     </TabPanel>
                     <TabPanel>
                         <CustomTab
@@ -96,8 +128,10 @@ const TableComponent = ({ selected, fillForm, resetForm }: Props) => {
                             to={to}
                             selected={selected}
                             onEdit={onEdit}
+                            onCopy={onCopy}
                             project={projectFilter}
                             clearFilters={clearFilters}
+                            onDelete={onDelete}
                         />
                     </TabPanel>
                 </TabPanels>

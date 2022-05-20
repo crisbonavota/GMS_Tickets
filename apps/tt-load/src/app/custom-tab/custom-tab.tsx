@@ -17,6 +17,8 @@ type Props = {
     onEdit: (item: TimetrackItem) => void;
     project?: number;
     clearFilters: () => void;
+    onCopy: (item: TimetrackItem) => void;
+    onDelete: () => void;
 };
 
 const CustomTab = ({
@@ -26,6 +28,8 @@ const CustomTab = ({
     onEdit,
     project,
     clearFilters,
+    onCopy,
+    onDelete,
 }: Props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const getAuthHeader = useAuthHeader();
@@ -76,11 +80,14 @@ const CustomTab = ({
                     >
                         {itemsQuery.data.data.map((item, index) => (
                             <TableRow
+                                key={item.id}
                                 index={index}
                                 item={item}
                                 onEdit={onEdit}
                                 selected={selected}
                                 withDay
+                                onCopy={onCopy}
+                                onDelete={onDelete}
                             />
                         ))}
                     </VStack>

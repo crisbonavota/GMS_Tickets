@@ -16,9 +16,17 @@ type Props = {
     days: Array<Array<TimetrackItem>>;
     selected: number | null;
     onEdit: (item: TimetrackItem) => void;
+    onCopy: (item: TimetrackItem) => void;
+    onDelete: () => void;
 };
 
-const WeeklyTabAccordion = ({ days, selected, onEdit }: Props) => {
+const WeeklyTabAccordion = ({
+    days,
+    selected,
+    onEdit,
+    onCopy,
+    onDelete,
+}: Props) => {
     return (
         <Accordion
             allowMultiple
@@ -72,6 +80,9 @@ const WeeklyTabAccordion = ({ days, selected, onEdit }: Props) => {
                                 item={item}
                                 onEdit={onEdit}
                                 selected={selected}
+                                onCopy={onCopy}
+                                key={item.id}
+                                onDelete={onDelete}
                             />
                         ))}
                     </AccordionPanel>

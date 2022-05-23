@@ -7,7 +7,8 @@ import TableComponent from './table/table';
 
 const App = () => {
     const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-    const [hours, setHours] = useState<string>('');
+    const [hours, setHours] = useState<number>(0);
+    const [minutes, setMinutes] = useState<number>(0);
     const [taskType, setTaskType] = useState<number>();
     const [task, setTask] = useState('');
     const [project, setProject] = useState<number>();
@@ -19,7 +20,7 @@ const App = () => {
         setTask('');
         setTaskType(undefined);
         setDate(new Date().toISOString().split('T')[0]);
-        setHours('');
+        setHours(0);
     }, []);
 
     const fillForm = useCallback((item: TimetrackItem) => {
@@ -27,7 +28,8 @@ const App = () => {
         setProject(item.project.id);
         setTask(item.task);
         setTaskType(item.tasktype.id);
-        setHours(hoursToHoursMinutes(item.hours));
+        setHours(Math.trunc(item.hours));
+        setMinutes(Math.trunc(item.hours * 60) % 60);
     }, []);
 
     return (
@@ -56,6 +58,8 @@ const App = () => {
                     type={type}
                     selected={selected}
                     resetForm={resetForm}
+                    minutes={minutes}
+                    setMinutes={setMinutes}
                 />
                 <TableComponent
                     selected={selected}
@@ -67,16 +71,6 @@ const App = () => {
             </Stack>
         </Center>
     );
-};
-
-// This function takes a number that represents an amount of hours an converts it to HH:MM string format
-const hoursToHoursMinutes = (hours: number) => {
-    const minutes = (hours % 1) * 60;
-    const hoursInt = Math.floor(hours);
-    const minutesInt = Math.floor(minutes);
-    return `${hoursInt.toString().padStart(2, '0')}:${minutesInt
-        .toString()
-        .padStart(2, '0')}`;
 };
 
 export default App;

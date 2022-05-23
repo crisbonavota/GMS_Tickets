@@ -19,12 +19,14 @@ import { useAuthHeader } from 'react-auth-kit';
 
 type Props = {
     date: string;
-    hours: string;
+    hours: number;
     taskType?: number;
     task: string;
     project?: number;
+    minutes: number;
+    setMinutes: (minutes: number) => void;
     setDate: (date: string) => void;
-    setHours: (hours: string) => void;
+    setHours: (hours: number) => void;
     setTaskType: (taskType: number) => void;
     setTask: (task: string) => void;
     setProject: (project: number) => void;
@@ -46,7 +48,8 @@ const CreateEditForm = ({
     setProject,
     type,
     selected,
-    resetForm,
+    minutes,
+    setMinutes,
 }: Props) => {
     const toast = useToast();
     const [submitting, setSubmitting] = useBoolean(false);
@@ -58,7 +61,7 @@ const CreateEditForm = ({
             ? () =>
                   postResource('timetrack', getAuthHeader(), {
                       date: date,
-                      hours: hoursMinutesToHours(hours),
+                      hours: (hours + minutes / 60).toFixed(2),
                       taskTypeId: taskType,
                       task: task,
                       projectId: project,
@@ -71,7 +74,7 @@ const CreateEditForm = ({
                       getAuthHeader(),
                       {
                           date: date,
-                          hours: hoursMinutesToHours(hours),
+                          hours: (hours + minutes / 60).toFixed(2),
                           taskTypeId: taskType,
                           task: task,
                           projectId: project,
@@ -151,14 +154,23 @@ const CreateEditForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <HoursInput hours={hours} setHours={setHours} />
+                    <HoursInput
+                        hours={hours}
+                        setHours={setHours}
+                        minutes={minutes}
+                        setMinutes={setMinutes}
+                    />
                 </GridItem>
                 <GridItem colSpan={2}>
                     <Button
                         w={'full'}
                         colorScheme={'orange'}
                         disabled={
-                            !project || !taskType || !task || !hours || !date
+                            !project ||
+                            !taskType ||
+                            !task ||
+                            (hours < 1 && !(minutes > 0)) ||
+                            !date
                         }
                         onClick={() => mutation.mutate()}
                         isLoading={submitting}
@@ -169,16 +181,6 @@ const CreateEditForm = ({
             </SimpleGrid>
         </VStack>
     );
-};
-
-/* HTML handles time inputs with this format HH:MM 
- but we use an absolute number representing the hours (00:30 hours == 0.5 hours)
- because the API needs hours like that, so we parse the value to the input and
- we parse the value from the input
-*/
-const hoursMinutesToHours = (hoursMinutes: string) => {
-    const [hours, minutes] = hoursMinutes.split(':');
-    return (Number(hours) + Number(minutes) / 60).toFixed(2);
 };
 
 export default CreateEditForm;

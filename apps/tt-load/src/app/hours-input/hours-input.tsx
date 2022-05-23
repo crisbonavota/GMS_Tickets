@@ -42,7 +42,7 @@ const HoursInput = ({ hours, minutes, setHours, setMinutes }: Props) => {
             setHours(hours + 1);
         }
         if (valueAsNumber < 0) {
-            setMinutes(55);
+            setMinutes(30);
             hours > 0 && setHours(hours - 1);
         }
     };
@@ -87,7 +87,7 @@ const HoursInput = ({ hours, minutes, setHours, setMinutes }: Props) => {
                     allowMouseWheel
                     min={-5}
                     max={60}
-                    step={5}
+                    step={30}
                 >
                     <NumberInputField
                         boxShadow={'none !important'}

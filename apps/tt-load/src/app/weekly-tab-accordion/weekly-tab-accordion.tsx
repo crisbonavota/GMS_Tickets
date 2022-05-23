@@ -51,6 +51,7 @@ const WeeklyTabAccordion = ({
                             >
                                 <Text as={'span'}>
                                     {moment(day[0].date)
+                                        .locale(navigator.language)
                                         .format('ddd')
                                         .toUpperCase()}
                                     &nbsp;-&nbsp;

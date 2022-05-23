@@ -48,7 +48,7 @@ const WeeklyTab = ({ selected, onEdit, onCopy, onDelete }: Props) => {
                 },
             ],
             [],
-            undefined,
+            { field: 'date', isAscending: true },
             0,
             100
         )

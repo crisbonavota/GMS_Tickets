@@ -3,7 +3,6 @@
         {
             "name": "home",
             "path": "",
-            "devPort": 3001,
             "serveOn": {
                 "production": true,
                 "development": true
@@ -14,7 +13,6 @@
         {
             "name": "login",
             "path": "sign-in",
-            "devPort": 3002,
             "serveOn": {
                 "production": true,
                 "development": true
@@ -25,10 +23,9 @@
         {
             "name": "tt-reports",
             "path": "timetrack/reports",
-            "devPort": 3003,
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["tt-reports"],
             "module": "Timetrack",
@@ -40,10 +37,9 @@
         {
             "name": "tt-load",
             "path": "timetrack/load",
-            "devPort": 3004,
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["tt-load"],
             "module": "Timetrack",
@@ -54,10 +50,9 @@
         {
             "name": "hr-updates",
             "path": "human-resources/updates",
-            "devPort": 3005,
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["hr-updates"],
             "module": "Human Resources",
@@ -69,16 +64,29 @@
         {
             "name": "hr-employees",
             "path": "human-resources/employees",
-            "devPort": 3006,
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["hr-employees"],
             "module": "Human Resources",
             "label": "Employees",
             "description": "See a list of employees and their details",
             "image": "hrEmployees",
+            "requireAuth": true
+        },
+        {
+            "name": "pm-projects",
+            "path": "project-management/projects",
+            "serveOn": {
+                "production": true,
+                "development": true
+            },
+            "allowedRoles": ["project-managers"],
+            "module": "Project Management",
+            "label": "Projects",
+            "description": "See and edit projects that you lead.",
+            "image": "pmProjects",
             "requireAuth": true
         }
     ]

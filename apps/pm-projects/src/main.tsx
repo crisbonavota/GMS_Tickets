@@ -10,7 +10,7 @@ import { config } from '@gms-micro/deploy';
 import { environment } from './environments/environment';
 import { ReactQueryDevtools } from 'react-query/devtools';
 
-const name = 'hr-updates';
+const name = 'pm-projects';
 const app = config.apps.find((app) => app.name === name);
 if (!app) throw new Error(`App ${name} not found`);
 

@@ -14,6 +14,7 @@
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
+        "pm-projects": "apps/pm-projects",
         "query-utils": "libs/query-utils",
         "react-hooks": "libs/react-hooks",
         "table-utils": "libs/table-utils",

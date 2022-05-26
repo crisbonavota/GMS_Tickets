@@ -18,13 +18,26 @@ export function App() {
         field: 'creationDate',
         isAscending: false,
     });
+
+    const [search, setSearch] = useState('');
+    // 0 is all in dropdown
+    const [status, setStatus] = useState<number>(0);
+    const [contractType, setContractType] = useState<number>(0);
+
     const query = useQuery(
-        ['projects', currentPage, sort],
+        ['projects', currentPage, sort, search, status, contractType],
         async () =>
             await getResourceListFilteredAndPaginated<Project>(
                 'projects/leader',
                 getAuthHeader(),
-                [],
+                [
+                    { field: 'name', value: search },
+                    { field: 'status', value: status ? status : undefined },
+                    {
+                        field: 'contractType',
+                        value: contractType ? contractType : undefined,
+                    },
+                ],
                 [],
                 sort,
                 currentPage
@@ -33,8 +46,15 @@ export function App() {
     const { isSuccess, isLoading, data: apiResponse } = query;
 
     return (
-        <VStack p={5} w={'full'}>
-            <Filters />
+        <VStack p={5} w={'full'} spacing={5}>
+            <Filters
+                setSearch={setSearch}
+                search={search}
+                status={status}
+                setStatus={setStatus}
+                contractType={contractType}
+                setContractType={setContractType}
+            />
             {isSuccess && apiResponse ? (
                 <TableComponent
                     tableData={apiResponse.data}

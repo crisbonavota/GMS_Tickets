@@ -185,6 +185,14 @@ export const getProjectStatus = () => {
     ];
 };
 
+export const getContractTypes = () => {
+    return [
+        { label: 'Project', value: 1 },
+        { label: 'BAU', value: 2 },
+        { label: 'Staffing', value: 3 },
+    ];
+};
+
 const keyValueToPatchDocumentItem = (
     key: string,
     value: any

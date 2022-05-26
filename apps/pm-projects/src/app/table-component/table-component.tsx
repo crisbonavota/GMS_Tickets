@@ -11,7 +11,11 @@ import {
     Icon,
 } from '@chakra-ui/react';
 import { Sort } from '@gms-micro/api-filters';
-import { Project } from '@gms-micro/api-utils';
+import {
+    getProjectStatus,
+    Project,
+    getContractTypes,
+} from '@gms-micro/api-utils';
 import { Cell, useTable } from 'react-table';
 import { useCallback } from 'react';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
@@ -30,8 +34,6 @@ const START_DATE = 'Start Date';
 const START_DATE_ACCESSOR = 'startDate';
 const END_DATE = 'End Date';
 const END_DATE_ACCESSOR = 'endDate';
-const LEADER = 'Leader';
-const LEADER_ACCESSOR = 'leaderLegacyUser.fullName';
 const CREATION_DATE = 'Creation Date';
 const CREATION_DATE_ACCESSOR = 'creationDate';
 
@@ -43,7 +45,6 @@ const columns = [
     { Header: CONTRACT_TYPE, accessor: CONTRACT_TYPE_ACCESSOR },
     { Header: START_DATE, accessor: START_DATE_ACCESSOR },
     { Header: END_DATE, accessor: END_DATE_ACCESSOR },
-    { Header: LEADER, accessor: LEADER_ACCESSOR },
     { Header: CREATION_DATE, accessor: CREATION_DATE_ACCESSOR },
 ];
 
@@ -137,6 +138,16 @@ const renderTableCell = (cell: Cell<Project | any>) => {
         case END_DATE:
         case CREATION_DATE:
             return cell.value ? new Date(cell.value).toLocaleDateString() : '';
+
+        case STATUS:
+            return cell.value
+                ? getProjectStatus().find((p) => p.value === cell.value)?.label
+                : '';
+
+        case CONTRACT_TYPE:
+            return cell.value
+                ? getContractTypes().find((p) => p.value === cell.value)?.label
+                : '';
 
         default:
             return cell.render('Cell');

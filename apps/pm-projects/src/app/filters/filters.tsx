@@ -1,19 +1,41 @@
-import { HStack, Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
+import ContractTypeFilter from '../contract-type-filter/contract-type-filter';
 import GeneralSearchFilter from '../general-search-filter/general-search-filter';
 import StatusFilter from '../status-filter/status-filter';
-export interface FiltersProps {}
 
-export function Filters(props: FiltersProps) {
+export interface FiltersProps {
+    setSearch: (search: string) => void;
+    search: string;
+    status: number;
+    setStatus: (status: number) => void;
+    contractType: number;
+    setContractType: (contractType: number) => void;
+}
+
+export function Filters({
+    search,
+    setSearch,
+    status,
+    setStatus,
+    contractType,
+    setContractType,
+}: FiltersProps) {
     return (
-        <Box p={5} w={'full'}>
-            <HStack
-                spacing={5}
+        <Box w={'full'}>
+            <Flex
+                gap={5}
                 justifyContent={'flex-start'}
-                w={['100%', '80%', '60%']}
+                alignItems={'flex-start'}
+                w={'fit-content'}
+                flexDir={['column', 'row']}
             >
-                <GeneralSearchFilter />
-                <StatusFilter />
-            </HStack>
+                <GeneralSearchFilter search={search} setSearch={setSearch} />
+                <StatusFilter status={status} setStatus={setStatus} />
+                <ContractTypeFilter
+                    contractType={contractType}
+                    setContractType={setContractType}
+                />
+            </Flex>
         </Box>
     );
 }

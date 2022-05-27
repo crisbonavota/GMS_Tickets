@@ -19,6 +19,7 @@ import { FiUsers } from 'react-icons/fi';
 import { useQuery } from 'react-query';
 import { useAuthHeader } from 'react-auth-kit';
 import { AiOutlineUser } from 'react-icons/ai';
+import PossibleMembersDropdown from './possible-members-dropdown';
 
 interface Props {
     projectId: number;
@@ -37,6 +38,7 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                 )
             ).data
     );
+
     return (
         <>
             <IconButton
@@ -54,7 +56,12 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                     <ModalCloseButton />
                     <ModalBody>
                         {membersQuery.isSuccess && (
-                            <VStack w={'full'} alignItems={'flex-start'} pb={5}>
+                            <VStack
+                                w={'full'}
+                                alignItems={'flex-start'}
+                                pb={5}
+                                spacing={5}
+                            >
                                 <List
                                     spacing={3}
                                     maxH={'50vh'}
@@ -70,6 +77,9 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                                         <Text>No members in this project</Text>
                                     )}
                                 </List>
+                                <PossibleMembersDropdown
+                                    projectId={projectId}
+                                />
                             </VStack>
                         )}
                     </ModalBody>

@@ -25,11 +25,21 @@ export interface Project {
     endDate?: string;
     creationDate?: string;
     contractType: number;
-    leaderUser: ApplicationUserPublic;
+    leaderLegacyUser: ApplicationUserPublic;
     progress: number;
     comments: string;
     hours: number;
-    creationUser: ApplicationUserPublic;
+    creationLegacyUser: ApplicationUserPublic;
+}
+
+export interface ProjectCreation {
+    name: string;
+    proposalId: number;
+    status: number;
+    contractType: number;
+    startDate?: string;
+    endDate?: string;
+    leaderLegacyUserId: number;
 }
 
 export interface UpdateType {

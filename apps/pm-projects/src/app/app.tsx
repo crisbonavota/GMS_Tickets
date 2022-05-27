@@ -25,7 +25,7 @@ export function App() {
     const [contractType, setContractType] = useState<number>(0);
 
     const query = useQuery(
-        ['projects', currentPage, sort, search, status, contractType],
+        ['projects/leader', currentPage, sort, search, status, contractType],
         async () =>
             await getResourceListFilteredAndPaginated<Project>(
                 'projects/leader',

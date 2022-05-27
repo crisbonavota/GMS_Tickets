@@ -19,6 +19,7 @@ import {
 import { Cell, useTable } from 'react-table';
 import { useCallback } from 'react';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
+import EditModal from '../edit-modal/edit-modal';
 
 const NAME = 'Name';
 const NAME_ACCESSOR = 'name';
@@ -122,7 +123,9 @@ export const TableComponent = ({ tableData, sort, setSort }: Props) => {
                                         </Td>
                                     );
                                 })}
-                                <Td>{/* for edit modal icon */}</Td>
+                                <Td>
+                                    <EditModal project={row.original} />
+                                </Td>
                             </Tr>
                         );
                     })}

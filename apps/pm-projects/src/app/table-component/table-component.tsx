@@ -20,6 +20,7 @@ import { Cell, useTable } from 'react-table';
 import { useCallback } from 'react';
 import { BsChevronDown, BsChevronUp } from 'react-icons/bs';
 import EditModal from '../edit-modal/edit-modal';
+import UsersAssignmentModal from '../users-assignment-modal/users-assignment-modal';
 
 const NAME = 'Name';
 const NAME_ACCESSOR = 'name';
@@ -124,7 +125,12 @@ export const TableComponent = ({ tableData, sort, setSort }: Props) => {
                                     );
                                 })}
                                 <Td>
-                                    <EditModal project={row.original} />
+                                    <HStack>
+                                        <EditModal project={row.original} />
+                                        <UsersAssignmentModal
+                                            projectId={row.original.id}
+                                        />
+                                    </HStack>
                                 </Td>
                             </Tr>
                         );

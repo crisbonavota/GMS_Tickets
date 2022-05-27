@@ -76,7 +76,7 @@ const EditModal = ({ project }: Props) => {
     const editMutation = useMutation(
         (values: ProjectCreation) =>
             patchResource(
-                'projects',
+                'projects/for-pm',
                 project.id,
                 getAuthHeader(),
                 initialValues,
@@ -84,10 +84,10 @@ const EditModal = ({ project }: Props) => {
             ),
         {
             onMutate: () => {
-                queryClient.cancelQueries(['projects/leader']);
+                queryClient.cancelQueries(['projects/for-pm']);
             },
             onSuccess: () => {
-                queryClient.resetQueries(['projects/leader']);
+                queryClient.resetQueries(['projects/for-pm']);
                 toast({ title: 'Project updated', status: 'success' });
             },
             onError: (error: any | AxiosError) => {

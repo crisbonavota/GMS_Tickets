@@ -131,7 +131,7 @@ const CreateEditForm = ({
                 </GridItem>
                 <GridItem colSpan={1}>
                     <QuerySelect
-                        resource={'projects/member'}
+                        resource={'projects/for-timetrack'}
                         title={'Project'}
                         value={project}
                         setValue={setProject}

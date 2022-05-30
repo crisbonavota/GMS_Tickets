@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
 import { useQuery } from 'react-query';
 import { useAuthHeader } from 'react-auth-kit';
+import { getResourceListFilteredAndPaginated } from '../../../../../libs/api-utils/src/lib/api-utils';
 
 interface DropdownItem {
     title: string;
@@ -41,7 +42,15 @@ interface SelectFiltersItemProps {
 const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
     const getAuthHeader = useAuthHeader();
     const query = useQuery([dropdownItem.resource], () =>
-        getResourceList(dropdownItem.resource, getAuthHeader())
+        getResourceListFilteredAndPaginated(
+            dropdownItem.resource,
+            getAuthHeader(),
+            [],
+            [],
+            { field: 'name', isAscending: true },
+            0,
+            10000
+        )
     );
 
     const getOptions = useMemo(
@@ -65,21 +74,19 @@ const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
     );
 
     return (
-        <>
-            {query.isLoading && <Skeleton w={'full'} h={'2.4rem'} />}
-            <Box w={'full'}>
-                {query.isSuccess && (
-                    <Select
-                        size="md"
-                        options={getOptions(query.data.data)}
-                        chakraStyles={chakraSelectStyle}
-                        isMulti
-                        placeholder={dropdownItem.title}
-                        onChange={onChange}
-                    />
-                )}
-            </Box>
-        </>
+        <Box w={'full'}>
+            <Select
+                size="md"
+                options={
+                    query.isSuccess ? getOptions(query.data.data) : undefined
+                }
+                chakraStyles={chakraSelectStyle}
+                isMulti
+                placeholder={dropdownItem.title}
+                onChange={onChange}
+                isLoading={query.isLoading}
+            />
+        </Box>
     );
 };
 

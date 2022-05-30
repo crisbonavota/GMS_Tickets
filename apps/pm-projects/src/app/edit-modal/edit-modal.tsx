@@ -68,7 +68,10 @@ const EditModal = ({ project }: Props) => {
                 ),
                 leaderLegacyUserId: Yup.number().required('Leader is required'),
                 startDate: Yup.date(),
-                endDate: Yup.date(),
+                endDate: Yup.date().min(
+                    Yup.ref('startDate'),
+                    'End date must be after start date'
+                ),
             }),
         []
     );

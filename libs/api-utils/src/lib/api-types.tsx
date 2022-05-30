@@ -40,6 +40,7 @@ export interface ProjectCreation {
     startDate?: string;
     endDate?: string;
     leaderLegacyUserId: number;
+    hours: number;
 }
 
 export interface UpdateType {

@@ -29,6 +29,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useAuthHeader } from 'react-auth-kit';
 import { useToast } from '@chakra-ui/react';
 import { AxiosError } from 'axios';
+import HoursInput from './hours-input';
 
 interface Props {
     project: Project;
@@ -53,6 +54,7 @@ const EditModal = ({ project }: Props) => {
                 ? moment(project.endDate).format('YYYY-MM-DD')
                 : '',
             leaderLegacyUserId: project.leaderLegacyUser?.id,
+            hours: project.hours,
         }),
         [project]
     );
@@ -72,6 +74,7 @@ const EditModal = ({ project }: Props) => {
                     Yup.ref('startDate'),
                     'End date must be after start date'
                 ),
+                hours: Yup.number().min(0).integer(),
             }),
         []
     );
@@ -135,6 +138,7 @@ const EditModal = ({ project }: Props) => {
                                         <StatusDropdown errors={errors} />
                                         <ContractTypeDropdown errors={errors} />
                                         <LeaderDropdown errors={errors} />
+                                        <HoursInput errors={errors} />
                                         <HStack w={'full'}>
                                             <StartDateInput errors={errors} />
                                             <EndDateInput errors={errors} />

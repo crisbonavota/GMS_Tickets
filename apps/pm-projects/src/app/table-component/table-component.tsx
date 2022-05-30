@@ -128,7 +128,7 @@ export const TableComponent = ({ tableData, sort, setSort }: Props) => {
                                     <HStack>
                                         <EditModal project={row.original} />
                                         <UsersAssignmentModal
-                                            projectId={row.original.id}
+                                            project={row.original}
                                         />
                                     </HStack>
                                 </Td>

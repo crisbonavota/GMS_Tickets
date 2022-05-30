@@ -14,7 +14,7 @@ import {
     SkeletonCircle,
     Icon,
 } from '@chakra-ui/react';
-import { getResourceList } from '@gms-micro/api-utils';
+import { getResourceList, Project } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { FiUsers } from 'react-icons/fi';
 import { useQuery } from 'react-query';
@@ -24,12 +24,16 @@ import PossibleMembersDropdown from './possible-members-dropdown';
 import { AxiosResponse, AxiosError } from 'axios';
 import { useBoolean } from '@chakra-ui/react';
 import RemoveMemberButton from './remove-member-button';
+import { useMemo } from 'react';
 
 interface Props {
-    projectId: number;
+    project: Project;
 }
 
-const UsersAssignmentModal = ({ projectId }: Props) => {
+const UsersAssignmentModal = ({ project }: Props) => {
+    const projectId = useMemo(() => project.id, [project]);
+    const isProjectInProcess = useMemo(() => project.status === 2, [project]);
+
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const membersQuery = useQuery<
@@ -54,6 +58,7 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                 aria-label="Manage project members"
             />
 
+            {/* avoid rendering the modal if the project is not in process */}
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
@@ -79,6 +84,9 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                                                 member={member}
                                                 key={member.id}
                                                 projectId={projectId}
+                                                isProjectInProcess={
+                                                    isProjectInProcess
+                                                }
                                             />
                                         ))}
                                         {membersQuery.data.length === 0 && (
@@ -102,7 +110,11 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
                                     </>
                                 )}
                             </VStack>
-                            <PossibleMembersDropdown projectId={projectId} />
+                            {isProjectInProcess && (
+                                <PossibleMembersDropdown
+                                    projectId={projectId}
+                                />
+                            )}
                         </VStack>
                     </ModalBody>
                 </ModalContent>
@@ -114,9 +126,14 @@ const UsersAssignmentModal = ({ projectId }: Props) => {
 interface MembersListItemProps {
     member: LegacyUserPublic;
     projectId: number;
+    isProjectInProcess: boolean;
 }
 
-const MembersListItem = ({ member, projectId }: MembersListItemProps) => {
+const MembersListItem = ({
+    member,
+    projectId,
+    isProjectInProcess,
+}: MembersListItemProps) => {
     const [hovered, setHovered] = useBoolean();
 
     return (
@@ -130,11 +147,13 @@ const MembersListItem = ({ member, projectId }: MembersListItemProps) => {
             <HStack>
                 <Icon as={AiOutlineUser} /> <Text>{member.fullName}</Text>
             </HStack>
-            <RemoveMemberButton
-                member={member}
-                active={hovered}
-                projectId={projectId}
-            />
+            {isProjectInProcess && (
+                <RemoveMemberButton
+                    member={member}
+                    active={hovered}
+                    projectId={projectId}
+                />
+            )}
         </HStack>
     );
 };

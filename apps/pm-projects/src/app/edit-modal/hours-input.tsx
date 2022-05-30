@@ -20,4 +20,5 @@ const HoursInput = ({ errors }: Props) => {
         </FormControl>
     );
 };
+
 export default HoursInput;

@@ -52,7 +52,7 @@ const EditModal = ({ project }: Props) => {
             endDate: project.endDate
                 ? moment(project.endDate).format('YYYY-MM-DD')
                 : '',
-            leaderLegacyUserId: project.leaderLegacyUser.id,
+            leaderLegacyUserId: project.leaderLegacyUser?.id,
         }),
         [project]
     );

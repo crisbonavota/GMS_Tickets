@@ -1,26 +1,40 @@
-import { chakra, HStack, IconButton, Select, Text, VStack } from '@chakra-ui/react';
+import {
+    chakra,
+    HStack,
+    IconButton,
+    Select,
+    Text,
+    VStack,
+} from '@chakra-ui/react';
 import { useMemo } from 'react';
-import { GrFormPrevious, GrFormNext } from "react-icons/gr";
-import { MdSkipNext, MdSkipPrevious } from "react-icons/md";
+import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
+import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import { useQuery } from 'react-query';
 import { getResourceList } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
 import { useAuthHeader } from 'react-auth-kit';
 
 export interface TablePaginationWithChakraProps {
-    currentPage: number,
-    setCurrentPage: (page: number) => void,
-    pagesAmountHeader?: string,
-    isLoading: boolean
+    currentPage: number;
+    setCurrentPage: (page: number) => void;
+    pagesAmountHeader?: string;
+    isLoading: boolean;
 }
 
-export const TablePaginationWithChakra = ({ currentPage, setCurrentPage, pagesAmountHeader, isLoading }: TablePaginationWithChakraProps) => {
+export const TablePaginationWithChakra = ({
+    currentPage,
+    setCurrentPage,
+    pagesAmountHeader,
+    isLoading,
+}: TablePaginationWithChakraProps) => {
     return (
         <HStack>
             <Text>Current page:</Text>
-            <Text fontWeight={'bold'}>{currentPage + 1}</Text>
+            <Text fontWeight={'bold'}>
+                {currentPage + 1}/{pagesAmountHeader}
+            </Text>
             <IconButton
-                icon={<MdSkipPrevious color='black' />}
+                icon={<MdSkipPrevious color="black" />}
                 onClick={() => setCurrentPage(currentPage - 5)}
                 size={'s'}
                 colorScheme={'whiteAlpha'}
@@ -41,42 +55,63 @@ export const TablePaginationWithChakra = ({ currentPage, setCurrentPage, pagesAm
                 size={'s'}
                 colorScheme={'whiteAlpha'}
                 aria-label="Next page"
-                disabled={pagesAmountHeader === (currentPage + 1).toString() || isLoading}
+                disabled={
+                    pagesAmountHeader === (currentPage + 1).toString() ||
+                    isLoading
+                }
             />
             <IconButton
-                icon={<MdSkipNext color='black' />}
+                icon={<MdSkipNext color="black" />}
                 onClick={() => setCurrentPage(currentPage + 5)}
                 size={'s'}
                 colorScheme={'whiteAlpha'}
                 aria-label="Jump 5 pages forward"
                 // Disabled if there's at least 5 pages to jump forward from current page
-                disabled={(pagesAmountHeader && (parseInt(pagesAmountHeader) - currentPage - 5) <= 0) || isLoading || !pagesAmountHeader}
+                disabled={
+                    (pagesAmountHeader &&
+                        parseInt(pagesAmountHeader) - currentPage - 5 <= 0) ||
+                    isLoading ||
+                    !pagesAmountHeader
+                }
             />
         </HStack>
     );
-}
+};
 
 export interface TableDatesFilterWithChakraProps {
-    from: string,
-    to: string,
-    setFrom: (date: string) => void,
-    setTo: (date: string) => void,
-    isLoading: boolean,
-    full?: boolean
+    from: string;
+    to: string;
+    setFrom: (date: string) => void;
+    setTo: (date: string) => void;
+    isLoading: boolean;
+    full?: boolean;
 }
 
-export const TableDatesFilterWithChakra = ({ from, to, setFrom, setTo, isLoading, full }: TableDatesFilterWithChakraProps) => {
-    const onFromChange = useMemo(() =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
+export const TableDatesFilterWithChakra = ({
+    from,
+    to,
+    setFrom,
+    setTo,
+    isLoading,
+    full,
+}: TableDatesFilterWithChakraProps) => {
+    const onFromChange = useMemo(
+        () => (e: React.ChangeEvent<HTMLInputElement>) => {
             setFrom(e.target.value);
-            to && Date.parse(to) < Date.parse(e.target.value) && setTo("");
-        }, []);
+            to && Date.parse(to) < Date.parse(e.target.value) && setTo('');
+        },
+        []
+    );
 
-    const onToChange = useMemo(() =>
-        (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onToChange = useMemo(
+        () => (e: React.ChangeEvent<HTMLInputElement>) => {
             setTo(e.target.value);
-            from && Date.parse(from) > Date.parse(e.target.value) && setFrom("");
-        }, []);
+            from &&
+                Date.parse(from) > Date.parse(e.target.value) &&
+                setFrom('');
+        },
+        []
+    );
 
     return (
         <HStack w={full ? 'full' : undefined}>
@@ -110,25 +145,42 @@ export const TableDatesFilterWithChakra = ({ from, to, setFrom, setTo, isLoading
             </VStack>
         </HStack>
     );
-}
+};
 
 export interface TableLegacyUserFilterWithChakraProps {
-    legacyUser: string,
-    setLegacyUser: (legacyUser: string) => void,
-    isLoading: boolean
+    legacyUser: string;
+    setLegacyUser: (legacyUser: string) => void;
+    isLoading: boolean;
 }
 
-export const TableSingleLegacyUserFilterWithChakra = ({ legacyUser, setLegacyUser, isLoading}: TableLegacyUserFilterWithChakraProps) => {
+export const TableSingleLegacyUserFilterWithChakra = ({
+    legacyUser,
+    setLegacyUser,
+    isLoading,
+}: TableLegacyUserFilterWithChakraProps) => {
     const getAuthHeader = useAuthHeader();
-    const query = useQuery(['legacyUsers'], () => getResourceList<LegacyUserPublic>("users/legacy", getAuthHeader()));
+    const query = useQuery(['legacyUsers'], () =>
+        getResourceList<LegacyUserPublic>('users/legacy', getAuthHeader())
+    );
     return (
         <VStack alignItems={'flex-start'} w={'15rem'}>
             <Text fontSize={'sm'}>Employee</Text>
-            {query.isSuccess &&
-                <Select w={'full'} bgColor={'white'} value={legacyUser} onChange={(e) => setLegacyUser(e.target.value)} disabled={isLoading}>
-                    <option value={""}>All</option>
-                    {query.data.data.map(user => <option key={user.id} value={user.id}>{user.fullName}</option>)}    
-                </Select>}
+            {query.isSuccess && (
+                <Select
+                    w={'full'}
+                    bgColor={'white'}
+                    value={legacyUser}
+                    onChange={(e) => setLegacyUser(e.target.value)}
+                    disabled={isLoading}
+                >
+                    <option value={''}>All</option>
+                    {query.data.data.map((user) => (
+                        <option key={user.id} value={user.id}>
+                            {user.fullName}
+                        </option>
+                    ))}
+                </Select>
+            )}
         </VStack>
     );
-}
+};

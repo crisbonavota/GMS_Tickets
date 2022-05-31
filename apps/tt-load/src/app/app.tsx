@@ -60,6 +60,8 @@ const App = () => {
                     resetForm={resetForm}
                     minutes={minutes}
                     setMinutes={setMinutes}
+                    setSelected={setSelected}
+                    setType={setType}
                 />
                 <TableComponent
                     selected={selected}

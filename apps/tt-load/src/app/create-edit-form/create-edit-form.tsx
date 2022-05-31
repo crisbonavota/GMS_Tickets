@@ -33,6 +33,8 @@ type Props = {
     type: 'create' | 'edit';
     selected: number | null;
     resetForm: () => void;
+    setSelected: (id: number | null) => void;
+    setType: (type: 'edit' | 'create') => void;
 };
 
 const CreateEditForm = ({
@@ -50,6 +52,9 @@ const CreateEditForm = ({
     selected,
     minutes,
     setMinutes,
+    setSelected,
+    resetForm,
+    setType,
 }: Props) => {
     const toast = useToast();
     const [submitting, setSubmitting] = useBoolean(false);
@@ -57,35 +62,44 @@ const CreateEditForm = ({
     const getAuthHeader = useAuthHeader();
 
     const mutation = useMutation(
-        type === 'create'
-            ? () =>
-                  postResource('timetrack', getAuthHeader(), {
-                      date: date,
-                      hours: (hours + minutes / 60).toFixed(2),
-                      taskTypeId: taskType,
-                      task: task,
-                      projectId: project,
-                  })
-            : () =>
-                  putResource(
-                      'timetrack',
-                      // the 0 won't ever be sent because if the type is edit, selected has a value
-                      selected ? selected : 0,
-                      getAuthHeader(),
-                      {
-                          date: date,
-                          hours: (hours + minutes / 60).toFixed(2),
-                          taskTypeId: taskType,
-                          task: task,
-                          projectId: project,
-                      }
-                  ),
+        async () => {
+            if (type === 'create') {
+                await postResource('timetrack', getAuthHeader(), {
+                    date: date,
+                    hours: (hours + minutes / 60).toFixed(2),
+                    taskTypeId: taskType,
+                    task: task,
+                    projectId: project,
+                });
+            } else {
+                await putResource(
+                    'timetrack',
+                    // the 0 won't ever be sent because if the type is edit, selected has a value
+                    selected ? selected : 0,
+                    getAuthHeader(),
+                    {
+                        date: date,
+                        hours: (hours + minutes / 60).toFixed(2),
+                        taskTypeId: taskType,
+                        task: task,
+                        projectId: project,
+                    }
+                );
+            }
+        },
         {
             onMutate: () => {
                 setSubmitting.on();
             },
             onSuccess: () => {
                 setSubmitting.off();
+
+                if (type === 'edit') {
+                    setSelected(null);
+                    setType('create');
+                    resetForm();
+                }
+
                 toast({
                     title: `${
                         type === 'create' ? 'Hours submitted' : 'Entry updated'

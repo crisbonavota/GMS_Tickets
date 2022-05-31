@@ -196,7 +196,7 @@ const CreateEditForm = ({
                             !project ||
                             !taskType ||
                             !task ||
-                            (hours < 1 && !(minutes > 0)) ||
+                            (!hours && !minutes) ||
                             !date
                         }
                         onClick={() => mutation.mutate()}

@@ -65,7 +65,7 @@ const CustomTabPopoverFilters = ({
                         </HStack>
                         <Box w={'full'}>
                             <QuerySelect
-                                resource={'projects/member'}
+                                resource={'projects/for-timetrack'}
                                 title={'Project'}
                                 value={projectFilter}
                                 setValue={setProjectFilter}

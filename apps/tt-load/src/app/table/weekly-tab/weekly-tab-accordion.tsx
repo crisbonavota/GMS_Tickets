@@ -15,17 +15,19 @@ import TableRow from '../table-row/table-row';
 type Props = {
     days: Array<Array<TimetrackItem>>;
     selected: number | null;
-    onEdit: (item: TimetrackItem) => void;
-    onCopy: (item: TimetrackItem) => void;
-    onDelete: () => void;
+    resetForm: () => void;
+    setType: (type: 'edit' | 'create') => void;
+    setSelected: (id: number | null) => void;
+    fillForm: (item: TimetrackItem) => void;
 };
 
 const WeeklyTabAccordion = ({
     days,
     selected,
-    onEdit,
-    onCopy,
-    onDelete,
+    resetForm,
+    setType,
+    setSelected,
+    fillForm,
 }: Props) => {
     return (
         <Accordion
@@ -79,11 +81,12 @@ const WeeklyTabAccordion = ({
                             <TableRow
                                 index={index}
                                 item={item}
-                                onEdit={onEdit}
                                 selected={selected}
-                                onCopy={onCopy}
                                 key={item.id}
-                                onDelete={onDelete}
+                                setSelected={setSelected}
+                                fillForm={fillForm}
+                                setType={setType}
+                                resetForm={resetForm}
                             />
                         ))}
                     </AccordionPanel>

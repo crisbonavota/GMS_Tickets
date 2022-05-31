@@ -19,10 +19,12 @@ import { useMutation, useQueryClient } from 'react-query';
 
 type Props = {
     id: number;
-    onDelete: () => void;
+    resetForm: () => void;
+    setType: (type: 'edit' | 'create') => void;
+    setSelected: (id: number | null) => void;
 };
 
-const DeleteEntry = ({ id, onDelete }: Props) => {
+const DeleteEntry = ({ id, resetForm, setSelected, setType }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [loading, setLoading] = useBoolean();
     const cancelRef = useRef<any>();
@@ -39,7 +41,9 @@ const DeleteEntry = ({ id, onDelete }: Props) => {
             onSuccess: () => {
                 setLoading.off();
                 onClose();
-                onDelete();
+                resetForm();
+                setSelected(null);
+                setType('create');
                 queryClient.resetQueries(['owned-daily']);
                 queryClient.resetQueries(['owned-weekly']);
                 toast({ title: 'Entry removed', status: 'success' });
@@ -85,7 +89,9 @@ const DeleteEntry = ({ id, onDelete }: Props) => {
                             </Button>
                             <Button
                                 colorScheme="red"
-                                onClick={() => deleteMutation.mutate()}
+                                onClick={async () =>
+                                    await deleteMutation.mutateAsync()
+                                }
                                 ml={3}
                                 isLoading={loading}
                             >

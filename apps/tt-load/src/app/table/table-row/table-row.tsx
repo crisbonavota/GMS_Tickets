@@ -9,20 +9,22 @@ export interface TableRowProps {
     item: TimetrackItem;
     selected: number | null;
     index: number;
-    onEdit: (item: TimetrackItem) => void;
-    onCopy: (item: TimetrackItem) => void;
-    onDelete: () => void;
     withDay?: boolean;
+    resetForm: () => void;
+    setType: (type: 'edit' | 'create') => void;
+    setSelected: (id: number | null) => void;
+    fillForm: (item: TimetrackItem) => void;
 }
 
 export function TableRow({
     item,
     selected,
     index,
-    onEdit,
     withDay,
-    onCopy,
-    onDelete,
+    resetForm,
+    setType,
+    setSelected,
+    fillForm,
 }: TableRowProps) {
     return (
         <HStack
@@ -41,9 +43,26 @@ export function TableRow({
             border={selected === item.id ? '5px solid steelblue' : 'none'}
         >
             <HStack spacing={5}>
-                <CopyEntry item={item} onCopy={onCopy} />
-                <DeleteEntry id={item.id} onDelete={onDelete} />
-                <EditEntry item={item} onEdit={onEdit} />
+                <CopyEntry
+                    item={item}
+                    fillForm={fillForm}
+                    setSelected={setSelected}
+                    setType={setType}
+                />
+                <DeleteEntry
+                    id={item.id}
+                    resetForm={resetForm}
+                    setSelected={setSelected}
+                    setType={setType}
+                />
+                <EditEntry
+                    item={item}
+                    fillForm={fillForm}
+                    setSelected={setSelected}
+                    setType={setType}
+                    resetForm={resetForm}
+                    selected={selected}
+                />
                 <VStack w={'fit-content'} alignItems={'flex-start'}>
                     <Text>{item.project.name}</Text>
                     <Text>{item.task}</Text>

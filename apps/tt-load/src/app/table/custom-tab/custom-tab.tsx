@@ -14,22 +14,24 @@ type Props = {
     from: string;
     to: string;
     selected: number | null;
-    onEdit: (item: TimetrackItem) => void;
     project?: number;
     clearFilters: () => void;
-    onCopy: (item: TimetrackItem) => void;
-    onDelete: () => void;
+    resetForm: () => void;
+    setType: (type: 'edit' | 'create') => void;
+    setSelected: (id: number | null) => void;
+    fillForm: (item: TimetrackItem) => void;
 };
 
 const CustomTab = ({
     from,
     to,
     selected,
-    onEdit,
     project,
     clearFilters,
-    onCopy,
-    onDelete,
+    resetForm,
+    setType,
+    setSelected,
+    fillForm,
 }: Props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const getAuthHeader = useAuthHeader();
@@ -83,11 +85,12 @@ const CustomTab = ({
                                 key={item.id}
                                 index={index}
                                 item={item}
-                                onEdit={onEdit}
                                 selected={selected}
                                 withDay
-                                onCopy={onCopy}
-                                onDelete={onDelete}
+                                setSelected={setSelected}
+                                setType={setType}
+                                fillForm={fillForm}
+                                resetForm={resetForm}
                             />
                         ))}
                     </VStack>

@@ -20,12 +20,19 @@ import WeeklyTabAccordion from './weekly-tab-accordion';
 
 type Props = {
     selected: number | null;
-    onEdit: (item: TimetrackItem) => void;
-    onCopy: (item: TimetrackItem) => void;
-    onDelete: () => void;
+    resetForm: () => void;
+    setType: (type: 'edit' | 'create') => void;
+    setSelected: (id: number | null) => void;
+    fillForm: (item: TimetrackItem) => void;
 };
 
-const WeeklyTab = ({ selected, onEdit, onCopy, onDelete }: Props) => {
+const WeeklyTab = ({
+    selected,
+    resetForm,
+    setType,
+    setSelected,
+    fillForm,
+}: Props) => {
     const [fromDate, setFromDate] = useState(
         moment().startOf('week').add(1, 'day')
     );
@@ -127,10 +134,11 @@ const WeeklyTab = ({ selected, onEdit, onCopy, onDelete }: Props) => {
             {itemsQuery.isSuccess && itemsQuery.data.data.length && (
                 <WeeklyTabAccordion
                     selected={selected}
-                    onEdit={onEdit}
                     days={itemsQuery.data.data}
-                    onCopy={onCopy}
-                    onDelete={onDelete}
+                    setSelected={setSelected}
+                    setType={setType}
+                    fillForm={fillForm}
+                    resetForm={resetForm}
                 />
             )}
             {itemsQuery.isLoading && <Loading />}

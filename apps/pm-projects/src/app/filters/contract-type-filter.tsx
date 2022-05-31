@@ -27,4 +27,5 @@ const ContractTypeFilter = ({ contractType, setContractType }: Props) => {
         </VStack>
     );
 };
+
 export default ContractTypeFilter;

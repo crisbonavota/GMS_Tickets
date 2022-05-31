@@ -32,6 +32,8 @@ const STATUS = 'Status';
 const STATUS_ACCESSOR = 'status';
 const CONTRACT_TYPE = 'Contract Type';
 const CONTRACT_TYPE_ACCESSOR = 'contractType';
+const ACCOUNT = 'Account';
+const ACCOUNT_ACCESSOR = 'proposal.account.name';
 const START_DATE = 'Start Date';
 const START_DATE_ACCESSOR = 'startDate';
 const END_DATE = 'End Date';
@@ -45,8 +47,9 @@ const columns = [
     { Header: PROPOSAL, accessor: PROPOSAL_ACCESSOR },
     { Header: STATUS, accessor: STATUS_ACCESSOR },
     { Header: CONTRACT_TYPE, accessor: CONTRACT_TYPE_ACCESSOR },
-    { Header: START_DATE, accessor: START_DATE_ACCESSOR },
-    { Header: END_DATE, accessor: END_DATE_ACCESSOR },
+    /*{ Header: START_DATE, accessor: START_DATE_ACCESSOR },
+    { Header: END_DATE, accessor: END_DATE_ACCESSOR },*/
+    { Header: ACCOUNT, accessor: ACCOUNT_ACCESSOR },
     { Header: CREATION_DATE, accessor: CREATION_DATE_ACCESSOR },
 ];
 

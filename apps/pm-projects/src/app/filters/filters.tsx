@@ -1,7 +1,8 @@
 import { Box, Flex } from '@chakra-ui/react';
-import ContractTypeFilter from '../contract-type-filter/contract-type-filter';
-import GeneralSearchFilter from '../general-search-filter/general-search-filter';
-import StatusFilter from '../status-filter/status-filter';
+import AccountFilter from './account-filter';
+import ContractTypeFilter from './contract-type-filter';
+import GeneralSearchFilter from './general-search-filter';
+import StatusFilter from './status-filter';
 
 export interface FiltersProps {
     setSearch: (search: string) => void;
@@ -10,6 +11,8 @@ export interface FiltersProps {
     setStatus: (status: number) => void;
     contractType: number;
     setContractType: (contractType: number) => void;
+    account: number;
+    setAccount: (account: number) => void;
 }
 
 export function Filters({
@@ -19,6 +22,8 @@ export function Filters({
     setStatus,
     contractType,
     setContractType,
+    account,
+    setAccount,
 }: FiltersProps) {
     return (
         <Box w={'full'}>
@@ -35,6 +40,7 @@ export function Filters({
                     contractType={contractType}
                     setContractType={setContractType}
                 />
+                <AccountFilter account={account} setAccount={setAccount} />
             </Flex>
         </Box>
     );

@@ -23,9 +23,10 @@ export function App() {
     // 0 is all in dropdown
     const [status, setStatus] = useState<number>(0);
     const [contractType, setContractType] = useState<number>(0);
+    const [account, setAccount] = useState(0);
 
     const query = useQuery(
-        ['projects', currentPage, sort, search, status, contractType],
+        ['projects', currentPage, sort, search, status, contractType, account],
         async () =>
             await getResourceListFilteredAndPaginated<Project>(
                 'projects',
@@ -37,12 +38,17 @@ export function App() {
                         field: 'contractType',
                         value: contractType ? contractType : undefined,
                     },
+                    {
+                        field: 'proposal.account.id',
+                        value: account ? account : undefined,
+                    },
                 ],
                 [],
                 sort,
                 currentPage
             )
     );
+
     const { isSuccess, isLoading, data: apiResponse } = query;
 
     return (
@@ -54,6 +60,8 @@ export function App() {
                 setStatus={setStatus}
                 contractType={contractType}
                 setContractType={setContractType}
+                account={account}
+                setAccount={setAccount}
             />
             {isSuccess && apiResponse ? (
                 <TableComponent

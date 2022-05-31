@@ -11,9 +11,9 @@ import {
 } from '@chakra-ui/react';
 import { postResource, putResource } from '@gms-micro/api-utils';
 import { useMutation, useQueryClient } from 'react-query';
-import DateInput from '../date-input/date-input';
-import HoursInput from '../hours-input/hours-input';
-import TaskInput from '../task-input/task-input';
+import DateInput from './date-input';
+import HoursInput from './hours-input';
+import TaskInput from './task-input';
 import { QuerySelect } from '@gms-micro/query-utils';
 import { useAuthHeader } from 'react-auth-kit';
 

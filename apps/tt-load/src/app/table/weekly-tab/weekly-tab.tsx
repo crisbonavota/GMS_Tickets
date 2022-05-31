@@ -16,7 +16,7 @@ import { useState, useEffect } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
 import { GrPrevious, GrNext } from 'react-icons/gr';
 import { useQuery } from 'react-query';
-import WeeklyTabAccordion from '../weekly-tab-accordion/weekly-tab-accordion';
+import WeeklyTabAccordion from './weekly-tab-accordion';
 
 type Props = {
     selected: number | null;

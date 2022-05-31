@@ -1,10 +1,9 @@
-import { HStack, Icon, VStack, Heading, Text } from '@chakra-ui/react';
+import { HStack, VStack, Heading, Text } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
-import { MdModeEditOutline } from 'react-icons/md';
-import DeleteEntry from '../delete-entry/delete-entry';
-import EditEntry from '../edit-entry/edit-entry';
-import CopyEntry from '../copy-entry/copy-entry';
+import DeleteEntry from './delete-entry';
+import EditEntry from './edit-entry';
+import CopyEntry from './copy-entry';
 
 export interface TableRowProps {
     item: TimetrackItem;

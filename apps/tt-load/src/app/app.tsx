@@ -6,30 +6,30 @@ import CreateEditForm from './create-edit-form/create-edit-form';
 import TableComponent from './table/table';
 
 const App = () => {
-    const [date, setDate] = useState(moment().format('YYYY-MM-DD'));
-    const [hours, setHours] = useState<number>(0);
-    const [minutes, setMinutes] = useState<number>(0);
-    const [taskType, setTaskType] = useState<number>();
-    const [task, setTask] = useState('');
-    const [project, setProject] = useState<number>();
-    const [type, setType] = useState<'create' | 'edit'>('create');
-    const [selected, setSelected] = useState<number | null>(null);
+    const [dateInput, setDateInput] = useState(moment().format('YYYY-MM-DD'));
+    const [hoursInput, setHoursInput] = useState<number>(0);
+    const [minutesInput, setMinutesInput] = useState<number>(0);
+    const [taskTypeInput, setTaskTypeInput] = useState<number>();
+    const [taskInput, setTaskInput] = useState('');
+    const [projectInput, setProjectInput] = useState<number>();
+    const [formType, setFormType] = useState<'create' | 'edit'>('create');
+    const [selectedForEdit, setSelectedForEdit] = useState<number | null>(null);
 
     const resetForm = useCallback(() => {
-        setProject(undefined);
-        setTask('');
-        setTaskType(undefined);
-        setDate(new Date().toISOString().split('T')[0]);
-        setHours(0);
+        setProjectInput(undefined);
+        setTaskInput('');
+        setTaskTypeInput(undefined);
+        setDateInput(new Date().toISOString().split('T')[0]);
+        setHoursInput(0);
     }, []);
 
     const fillForm = useCallback((item: TimetrackItem) => {
-        setDate(item.date.split('T')[0]);
-        setProject(item.project.id);
-        setTask(item.task);
-        setTaskType(item.tasktype.id);
-        setHours(Math.trunc(item.hours));
-        setMinutes(Math.trunc(item.hours * 60) % 60);
+        setDateInput(item.date.split('T')[0]);
+        setProjectInput(item.project.id);
+        setTaskInput(item.task);
+        setTaskTypeInput(item.tasktype.id);
+        setHoursInput(Math.trunc(item.hours));
+        setMinutesInput(Math.trunc(item.hours * 60) % 60);
     }, []);
 
     return (
@@ -45,30 +45,30 @@ const App = () => {
                 pt={5}
             >
                 <CreateEditForm
-                    date={date}
-                    hours={hours}
-                    taskType={taskType}
-                    task={task}
-                    project={project}
-                    setDate={setDate}
-                    setHours={setHours}
-                    setTaskType={setTaskType}
-                    setTask={setTask}
-                    setProject={setProject}
-                    type={type}
-                    selected={selected}
+                    date={dateInput}
+                    hours={hoursInput}
+                    taskType={taskTypeInput}
+                    task={taskInput}
+                    project={projectInput}
+                    setDate={setDateInput}
+                    setHours={setHoursInput}
+                    setTaskType={setTaskTypeInput}
+                    setTask={setTaskInput}
+                    setProject={setProjectInput}
+                    type={formType}
+                    selected={selectedForEdit}
                     resetForm={resetForm}
-                    minutes={minutes}
-                    setMinutes={setMinutes}
-                    setSelected={setSelected}
-                    setType={setType}
+                    minutes={minutesInput}
+                    setMinutes={setMinutesInput}
+                    setSelected={setSelectedForEdit}
+                    setType={setFormType}
                 />
                 <TableComponent
-                    selected={selected}
+                    selected={selectedForEdit}
                     resetForm={resetForm}
                     fillForm={fillForm}
-                    setSelected={setSelected}
-                    setType={setType}
+                    setSelected={setSelectedForEdit}
+                    setType={setFormType}
                 />
             </Stack>
         </Center>

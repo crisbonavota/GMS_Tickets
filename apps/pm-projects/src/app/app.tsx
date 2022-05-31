@@ -69,6 +69,7 @@ export function App() {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 pagesAmountHeader={apiResponse?.headers['pages-amount']}
+                elementsAmount={apiResponse?.headers['x-total-count']}
             />
         </VStack>
     );

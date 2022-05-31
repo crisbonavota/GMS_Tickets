@@ -19,6 +19,7 @@ export interface TablePaginationWithChakraProps {
     setCurrentPage: (page: number) => void;
     pagesAmountHeader?: string;
     isLoading: boolean;
+    elementsAmount?: string;
 }
 
 export const TablePaginationWithChakra = ({
@@ -26,53 +27,64 @@ export const TablePaginationWithChakra = ({
     setCurrentPage,
     pagesAmountHeader,
     isLoading,
+    elementsAmount,
 }: TablePaginationWithChakraProps) => {
     const pagesAmount = useMemo(
         () => (pagesAmountHeader ? parseInt(pagesAmountHeader) : null),
         [pagesAmountHeader]
     );
     return (
-        <HStack>
-            <Text>Current page:</Text>
-            <Text fontWeight={'bold'}>
-                {currentPage + 1}/{pagesAmount}
-            </Text>
-            <IconButton
-                icon={<MdSkipPrevious color="black" />}
-                onClick={() => setCurrentPage(0)}
-                size={'s'}
-                colorScheme={'whiteAlpha'}
-                aria-label="Jump to first page"
-                disabled={currentPage === 0 || isLoading}
-            />
-            <IconButton
-                icon={<GrFormPrevious />}
-                onClick={() => setCurrentPage(currentPage - 1)}
-                size={'s'}
-                colorScheme={'whiteAlpha'}
-                aria-label="Previous page"
-                disabled={currentPage === 0 || isLoading}
-            />
-            <IconButton
-                icon={<GrFormNext />}
-                onClick={() => setCurrentPage(currentPage + 1)}
-                size={'s'}
-                colorScheme={'whiteAlpha'}
-                aria-label="Next page"
-                disabled={pagesAmount === currentPage + 1 || isLoading}
-            />
-            <IconButton
-                icon={<MdSkipNext color="black" />}
-                onClick={() =>
-                    setCurrentPage(pagesAmount ? pagesAmount - 1 : 0)
-                }
-                size={'s'}
-                colorScheme={'whiteAlpha'}
-                aria-label="Jump 5 pages forward"
-                // Disabled if there's at least 5 pages to jump forward from current page
-                disabled={pagesAmount === currentPage + 1 || isLoading}
-            />
-        </HStack>
+        <VStack alignItems={'flex-end'} spacing={0}>
+            <HStack>
+                <Text>Current page:</Text>
+                <Text fontWeight={'bold'}>
+                    {currentPage + 1}/{pagesAmount}
+                </Text>
+                <IconButton
+                    icon={<MdSkipPrevious color="black" />}
+                    onClick={() => setCurrentPage(0)}
+                    size={'s'}
+                    colorScheme={'whiteAlpha'}
+                    aria-label="Jump to first page"
+                    disabled={currentPage === 0 || isLoading}
+                />
+                <IconButton
+                    icon={<GrFormPrevious />}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    size={'s'}
+                    colorScheme={'whiteAlpha'}
+                    aria-label="Previous page"
+                    disabled={currentPage === 0 || isLoading}
+                />
+                <IconButton
+                    icon={<GrFormNext />}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    size={'s'}
+                    colorScheme={'whiteAlpha'}
+                    aria-label="Next page"
+                    disabled={pagesAmount === currentPage + 1 || isLoading}
+                />
+                <IconButton
+                    icon={<MdSkipNext color="black" />}
+                    onClick={() =>
+                        setCurrentPage(pagesAmount ? pagesAmount - 1 : 0)
+                    }
+                    size={'s'}
+                    colorScheme={'whiteAlpha'}
+                    aria-label="Jump 5 pages forward"
+                    // Disabled if there's at least 5 pages to jump forward from current page
+                    disabled={pagesAmount === currentPage + 1 || isLoading}
+                />
+            </HStack>
+            {elementsAmount && (
+                <Text as={'span'} fontSize={'sm'}>
+                    <Text fontWeight={'bold'} as={'span'}>
+                        {elementsAmount}
+                    </Text>{' '}
+                    elements
+                </Text>
+            )}
+        </VStack>
     );
 };
 
@@ -168,7 +180,9 @@ export const TableSingleLegacyUserFilterWithChakra = ({
                     w={'full'}
                     bgColor={'white'}
                     value={legacyUser}
-                    onChange={(e) => setLegacyUser(e.target.value)}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setLegacyUser(e.target.value)
+                    }
                     disabled={isLoading}
                 >
                     <option value={''}>All</option>

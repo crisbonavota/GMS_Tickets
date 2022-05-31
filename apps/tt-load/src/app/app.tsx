@@ -27,6 +27,7 @@ const App = () => {
         setTaskTypeInput(undefined);
         setDateInput(moment().format('YYYY-MM-DD'));
         setHoursInput(0);
+        setMinutesInput(0);
     }, []);
 
     const fillForm = useCallback((item: TimetrackItem) => {

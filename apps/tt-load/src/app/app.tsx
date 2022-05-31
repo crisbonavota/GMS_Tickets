@@ -15,16 +15,22 @@ const App = () => {
     const [formType, setFormType] = useState<'create' | 'edit'>('create');
     const [selectedForEdit, setSelectedForEdit] = useState<number | null>(null);
 
+    // Used for avoiding having the dates shift at this level from the table components while
+    // being able to change the date of the table
+    const [dateShiftTrigger, setDateShiftTrigger] = useState<number | null>(
+        null
+    );
+
     const resetForm = useCallback(() => {
         setProjectInput(undefined);
         setTaskInput('');
         setTaskTypeInput(undefined);
-        setDateInput(new Date().toISOString().split('T')[0]);
+        setDateInput(moment().format('YYYY-MM-DD'));
         setHoursInput(0);
     }, []);
 
     const fillForm = useCallback((item: TimetrackItem) => {
-        setDateInput(item.date.split('T')[0]);
+        setDateInput(moment(item.date).format('YYYY-MM-DD'));
         setProjectInput(item.project.id);
         setTaskInput(item.task);
         setTaskTypeInput(item.tasktype.id);
@@ -62,6 +68,7 @@ const App = () => {
                     setMinutes={setMinutesInput}
                     setSelected={setSelectedForEdit}
                     setType={setFormType}
+                    setDateShiftTrigger={setDateShiftTrigger}
                 />
                 <TableComponent
                     selected={selectedForEdit}
@@ -69,6 +76,8 @@ const App = () => {
                     fillForm={fillForm}
                     setSelected={setSelectedForEdit}
                     setType={setFormType}
+                    dateShiftTrigger={dateShiftTrigger}
+                    setDateShiftTrigger={setDateShiftTrigger}
                 />
             </Stack>
         </Center>

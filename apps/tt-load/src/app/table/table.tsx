@@ -1,6 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, Box } from '@chakra-ui/react';
 import DailyTab from './daily-tab/daily-tab';
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import WeeklyTab from './weekly-tab/weekly-tab';
 import CustomTab from './custom-tab/custom-tab';
@@ -12,6 +12,8 @@ type Props = {
     fillForm: (item: TimetrackItem) => void;
     setSelected: (id: number | null) => void;
     setType: (type: 'edit' | 'create') => void;
+    dateShiftTrigger: number | null;
+    setDateShiftTrigger: (date: number | null) => void;
 };
 
 const TableComponent = ({
@@ -20,12 +22,15 @@ const TableComponent = ({
     resetForm,
     setSelected,
     setType,
+    dateShiftTrigger,
+    setDateShiftTrigger,
 }: Props) => {
     const [tabIndex, setTabIndex] = useState(0);
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [projectFilter, setProjectFilter] = useState<number>();
     const onCustomTab = useMemo(() => tabIndex === 2, [tabIndex]);
+    const onDailyTab = useMemo(() => tabIndex === 0, [tabIndex]);
 
     const handleTabsChange = useCallback((index: number) => {
         setTabIndex(index);
@@ -36,6 +41,12 @@ const TableComponent = ({
         setTo('');
         setProjectFilter(undefined);
     }, []);
+
+    // Changing to the daily tab when an entry is edited/submitted
+    // See component daily-tab for use of this dateShiftTrigger
+    useEffect(() => {
+        if (dateShiftTrigger && !onDailyTab) setTabIndex(0);
+    }, [dateShiftTrigger]);
 
     return (
         <Box
@@ -69,6 +80,8 @@ const TableComponent = ({
                             setType={setType}
                             fillForm={fillForm}
                             resetForm={resetForm}
+                            dateShiftTrigger={dateShiftTrigger}
+                            setDateShiftTrigger={setDateShiftTrigger}
                         />
                     </TabPanel>
                     <TabPanel>

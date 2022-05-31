@@ -16,6 +16,8 @@ import HoursInput from './hours-input';
 import TaskInput from './task-input';
 import { QuerySelect } from '@gms-micro/query-utils';
 import { useAuthHeader } from 'react-auth-kit';
+import { useCallback } from 'react';
+import moment from 'moment';
 
 type Props = {
     date: string;
@@ -35,6 +37,7 @@ type Props = {
     resetForm: () => void;
     setSelected: (id: number | null) => void;
     setType: (type: 'edit' | 'create') => void;
+    setDateShiftTrigger: (trigger: number | null) => void;
 };
 
 const CreateEditForm = ({
@@ -55,11 +58,18 @@ const CreateEditForm = ({
     setSelected,
     resetForm,
     setType,
+    setDateShiftTrigger,
 }: Props) => {
     const toast = useToast();
     const [submitting, setSubmitting] = useBoolean(false);
     const queryClient = useQueryClient();
     const getAuthHeader = useAuthHeader();
+
+    const calculateDayShift = useCallback((date: string) => {
+        const today = moment();
+        const newDate = moment(date);
+        setDateShiftTrigger(newDate.diff(today, 'days'));
+    }, []);
 
     const mutation = useMutation(
         async () => {
@@ -106,6 +116,9 @@ const CreateEditForm = ({
                     }`,
                     status: 'success',
                 });
+
+                calculateDayShift(date);
+
                 queryClient.resetQueries('owned-daily');
                 queryClient.resetQueries('owned-weekly');
                 queryClient.resetQueries('owned-custom');

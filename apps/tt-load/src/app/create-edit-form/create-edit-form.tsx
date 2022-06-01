@@ -16,7 +16,7 @@ import HoursInput from './hours-input';
 import TaskInput from './task-input';
 import { QuerySelect } from '@gms-micro/query-utils';
 import { useAuthHeader } from 'react-auth-kit';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import moment from 'moment';
 
 type Props = {
@@ -70,6 +70,11 @@ const CreateEditForm = ({
         const newDate = moment(date);
         setDateShiftTrigger(newDate.diff(today, 'days'));
     }, []);
+
+    const isSubmitAllowed = useMemo(
+        () => !project || !taskType || !task || (!hours && !minutes) || !date,
+        [project, taskType, task, hours, minutes, date]
+    );
 
     const mutation = useMutation(
         async () => {
@@ -192,13 +197,7 @@ const CreateEditForm = ({
                     <Button
                         w={'full'}
                         colorScheme={'orange'}
-                        disabled={
-                            !project ||
-                            !taskType ||
-                            !task ||
-                            (!hours && !minutes) ||
-                            !date
-                        }
+                        disabled={isSubmitAllowed || submitting}
                         onClick={() => mutation.mutate()}
                         isLoading={submitting}
                     >

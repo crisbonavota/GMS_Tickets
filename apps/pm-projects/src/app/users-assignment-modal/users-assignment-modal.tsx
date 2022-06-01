@@ -13,6 +13,7 @@ import {
     HStack,
     SkeletonCircle,
     Icon,
+    Divider,
 } from '@chakra-ui/react';
 import { getResourceList, Project } from '@gms-micro/api-utils';
 import { LegacyUserPublic } from '@gms-micro/auth-types';
@@ -77,8 +78,21 @@ const UsersAssignmentModal = ({ project }: Props) => {
                                 overflowY={'auto'}
                                 w={'full'}
                             >
+                                <VStack alignItems={'flex-start'} w={'full'}>
+                                    <Text fontSize={'sm'}>Leader</Text>
+                                    <MembersListItem
+                                        member={project.leaderLegacyUser}
+                                        projectId={project.id}
+                                        isProjectInProcess={false}
+                                    />
+                                </VStack>
+                                <Divider />
                                 {membersQuery.isSuccess && (
-                                    <>
+                                    <VStack
+                                        alignItems={'flex-start'}
+                                        w={'full'}
+                                    >
+                                        <Text fontSize={'sm'}>Resources</Text>
                                         {membersQuery.data.map((member) => (
                                             <MembersListItem
                                                 member={member}
@@ -94,7 +108,7 @@ const UsersAssignmentModal = ({ project }: Props) => {
                                                 No members in this project
                                             </Text>
                                         )}
-                                    </>
+                                    </VStack>
                                 )}
                                 {membersQuery.isLoading && (
                                     <>

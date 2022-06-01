@@ -1,4 +1,4 @@
-import { ApplicationUserPublic, LegacyUserPublic } from '@gms-micro/auth-types';
+import { LegacyUserPublic } from '@gms-micro/auth-types';
 export interface BusinessUnit {
     id: number;
     name: string;
@@ -25,11 +25,11 @@ export interface Project {
     endDate?: string;
     creationDate?: string;
     contractType: number;
-    leaderLegacyUser: ApplicationUserPublic;
+    leaderLegacyUser: LegacyUserPublic;
     progress: number;
     comments: string;
     hours: number;
-    creationLegacyUser: ApplicationUserPublic;
+    creationLegacyUser: LegacyUserPublic;
     uiColor?: string;
 }
 

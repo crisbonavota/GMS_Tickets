@@ -11,7 +11,7 @@ const App = () => {
     const [minutesInput, setMinutesInput] = useState<number>(0);
     const [taskTypeInput, setTaskTypeInput] = useState<number>();
     const [taskInput, setTaskInput] = useState('');
-    const [projectInput, setProjectInput] = useState<number>();
+    const [projectInput, setProjectInput] = useState<number | null>(null);
     const [formType, setFormType] = useState<'create' | 'edit'>('create');
     const [selectedForEdit, setSelectedForEdit] = useState<number | null>(null);
 
@@ -22,7 +22,7 @@ const App = () => {
     );
 
     const resetForm = useCallback(() => {
-        setProjectInput(undefined);
+        setProjectInput(null);
         setTaskInput('');
         setTaskTypeInput(undefined);
         setDateInput(moment().format('YYYY-MM-DD'));

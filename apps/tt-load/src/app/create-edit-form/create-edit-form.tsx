@@ -18,20 +18,21 @@ import { QuerySelect } from '@gms-micro/query-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import { useCallback, useMemo } from 'react';
 import moment from 'moment';
+import ProjectDropdown from './project-dropdown';
 
 type Props = {
     date: string;
     hours: number;
     taskType?: number;
     task: string;
-    project?: number;
+    project: number | null;
     minutes: number;
     setMinutes: (minutes: number) => void;
     setDate: (date: string) => void;
     setHours: (hours: number) => void;
     setTaskType: (taskType: number) => void;
     setTask: (task: string) => void;
-    setProject: (project: number) => void;
+    setProject: (project: number | null) => void;
     type: 'create' | 'edit';
     selected: number | null;
     resetForm: () => void;
@@ -162,11 +163,9 @@ const CreateEditForm = ({
                     <DateInput date={date} setDate={setDate} />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <QuerySelect
-                        resource={'projects/for-timetrack'}
-                        title={'Project'}
-                        value={project}
-                        setValue={setProject}
+                    <ProjectDropdown
+                        projectId={project}
+                        setProjectId={setProject}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>

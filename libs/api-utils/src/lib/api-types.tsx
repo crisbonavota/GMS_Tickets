@@ -30,6 +30,7 @@ export interface Project {
     comments: string;
     hours: number;
     creationLegacyUser: ApplicationUserPublic;
+    uiColor?: string;
 }
 
 export interface ProjectCreation {

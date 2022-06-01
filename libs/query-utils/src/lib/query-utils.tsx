@@ -1,4 +1,4 @@
-import { VStack, Heading, Skeleton, Box } from '@chakra-ui/react';
+import { VStack, Heading, Box } from '@chakra-ui/react';
 import { getResourceList } from '@gms-micro/api-utils';
 import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
 import { useQuery } from 'react-query';
@@ -53,7 +53,7 @@ export const QuerySelect = ({
         []
     );
 
-    // This is for when an external component changes the value (clicking on edit an item for example)
+    // This is for when an external component changes the value
     useEffect(() => {
         if (!value) return setInternalValue(null);
         if (query.isSuccess) {
@@ -67,17 +67,15 @@ export const QuerySelect = ({
     return (
         <VStack alignItems={'flex-start'}>
             <Heading fontSize={'md'}>{title}</Heading>
-            {query.isLoading && <Skeleton w={'full'} h={'2.4rem'} />}
             <Box w={'full'}>
-                {query.isSuccess && (
-                    <Select
-                        size="md"
-                        options={getOptions(query.data.data)}
-                        chakraStyles={chakraSelectStyle}
-                        value={internalValue}
-                        onChange={onChange}
-                    />
-                )}
+                <Select
+                    size="md"
+                    options={query.isSuccess ? getOptions(query.data.data) : []}
+                    chakraStyles={chakraSelectStyle}
+                    value={internalValue}
+                    onChange={onChange}
+                    isLoading={query.isLoading}
+                />
             </Box>
         </VStack>
     );

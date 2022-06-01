@@ -68,7 +68,7 @@ const DailyTab = ({
     // The idea of this trigger is that when an entry is created/updated, the current day in the tab
     // will change to the day of this entry
     useEffect(() => {
-        if (dateShiftTrigger) {
+        if (dateShiftTrigger !== null) {
             setDateShift(dateShiftTrigger);
             // null to detect when the dateshift was already triggered and handled by this effect
             setDateShiftTrigger(null);

@@ -10,12 +10,13 @@ import {
     getResourceListFilteredAndPaginated,
     TimetrackItem,
 } from '@gms-micro/api-utils';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import moment from 'moment';
 import { useAuthHeader } from 'react-auth-kit';
 import TableRow from '../table-row/table-row';
+import { hoursToHoursMinutesString } from '../../app';
 
 type Props = {
     selected: number | null;
@@ -59,6 +60,19 @@ const DailyTab = ({
         )
     );
 
+    const totalHoursHeader = useMemo(
+        () => itemsQuery.data?.headers['total-hours'],
+        [itemsQuery]
+    );
+
+    const totalHoursMinutes = useMemo(
+        () =>
+            itemsQuery.isSuccess && totalHoursHeader
+                ? hoursToHoursMinutesString(totalHoursHeader)
+                : null,
+        [itemsQuery]
+    );
+
     useEffect(() => {
         setDisplayDate(moment().add(dateShift, 'days'));
     }, [dateShift]);
@@ -89,26 +103,21 @@ const DailyTab = ({
                     onClick={() => setDateShift(dateShift - 1)}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
-                    <HStack>
-                        <Text>{displayDate.format('ddd').toUpperCase()}</Text>
-                        <Text>-</Text>
-                        <Text>
-                            {displayDate
-                                .locale(navigator.language)
-                                .format(
-                                    navigator.language.includes('en')
-                                        ? 'YYYY-MM-DD'
-                                        : 'DD/MM/YYYY'
-                                )}
-                        </Text>
-                    </HStack>
-                    {itemsQuery.isLoading && (
+                    <Text as={'span'}>
+                        {displayDate.format('ddd').toUpperCase()} -{' '}
+                        {displayDate
+                            .locale(navigator.language)
+                            .format(
+                                navigator.language.includes('en')
+                                    ? 'YYYY-MM-DD'
+                                    : 'DD/MM/YYYY'
+                            )}
+                    </Text>
+                    {(itemsQuery.isLoading || !totalHoursMinutes) && (
                         <Skeleton width={'50px'} height={'20px'} />
                     )}
-                    {itemsQuery.isSuccess && (
-                        <Heading fontSize={'md'}>
-                            {itemsQuery.data.headers['total-hours']} hs
-                        </Heading>
+                    {itemsQuery.isSuccess && totalHoursMinutes && (
+                        <Heading fontSize={'md'}>{totalHoursMinutes}</Heading>
                     )}
                 </HStack>
                 <Icon

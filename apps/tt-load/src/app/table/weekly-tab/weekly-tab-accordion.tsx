@@ -11,6 +11,7 @@ import {
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import TableRow from '../table-row/table-row';
+import { hoursToHoursMinutesString } from '../../app';
 
 type Props = {
     days: Array<Array<TimetrackItem>>;
@@ -66,10 +67,11 @@ const WeeklyTabAccordion = ({
                                         )}
                                 </Text>
                                 <Text fontSize={'md'} fontWeight={'bold'}>
-                                    {day
-                                        .map((item) => item.hours)
-                                        .reduce((a, b) => a + b)}{' '}
-                                    hs
+                                    {hoursToHoursMinutesString(
+                                        day
+                                            .map((item) => item.hours)
+                                            .reduce((a, b) => a + b)
+                                    )}
                                 </Text>
                             </HStack>
                             <Box flex="1" textAlign="left"></Box>

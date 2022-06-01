@@ -4,6 +4,8 @@ import moment from 'moment';
 import DeleteEntry from './delete-entry';
 import EditEntry from './edit-entry';
 import CopyEntry from './copy-entry';
+import { useMemo } from 'react';
+import { hoursToHoursMinutesString } from '../../app';
 
 export interface TableRowProps {
     item: TimetrackItem;
@@ -26,6 +28,10 @@ export function TableRow({
     setSelected,
     fillForm,
 }: TableRowProps) {
+    const hoursMinutes = useMemo(
+        () => hoursToHoursMinutesString(item.hours),
+        [item]
+    );
     return (
         <HStack
             justify={'space-between'}
@@ -82,7 +88,7 @@ export function TableRow({
                 </VStack>
             </HStack>
             <VStack alignItems={'flex-end'}>
-                <Heading fontSize={'sm'}>{item.hours}h</Heading>
+                <Heading fontSize={'sm'}>{hoursMinutes}</Heading>
                 {withDay && (
                     <Text fontSize={'sm'}>
                         {moment(item.date)

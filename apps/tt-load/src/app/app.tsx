@@ -31,12 +31,13 @@ const App = () => {
     }, []);
 
     const fillForm = useCallback((item: TimetrackItem) => {
+        const hoursMinutes = hoursToHoursMinutes(item.hours);
         setDateInput(moment(item.date).format('YYYY-MM-DD'));
         setProjectInput(item.project.id);
         setTaskInput(item.task);
         setTaskTypeInput(item.tasktype.id);
-        setHoursInput(Math.trunc(item.hours));
-        setMinutesInput(Math.trunc(item.hours * 60) % 60);
+        setHoursInput(hoursMinutes.hours);
+        setMinutesInput(hoursMinutes.minutes);
     }, []);
 
     return (
@@ -83,6 +84,21 @@ const App = () => {
             </Stack>
         </Center>
     );
+};
+
+export const hoursToHoursMinutes = (hours: number) => {
+    return {
+        hours: Math.trunc(hours),
+        minutes: Math.trunc(hours * 60) % 60,
+    };
+};
+
+export const hoursToHoursMinutesString = (hours: number | string) => {
+    const hoursParsed = parseFloat(hours.toString().replace(',', '.'));
+    const hoursMinutes = hoursToHoursMinutes(hoursParsed);
+    return `${hoursMinutes.hours
+        .toString()
+        .padStart(2, '0')}:${hoursMinutes.minutes.toString().padStart(2, '0')}`;
 };
 
 export default App;

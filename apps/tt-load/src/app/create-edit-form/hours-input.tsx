@@ -34,7 +34,7 @@ const HoursInput = ({ hours, minutes, setHours, setMinutes }: Props) => {
         setHours(Math.round(Number(value)));
     };
 
-    const OnMinutesChange = (valueAsString: string, valueAsNumber: number) => {
+    const onMinutesChange = (valueAsString: string, valueAsNumber: number) => {
         if (valueAsString === '') return;
         setMinutes(Math.round(valueAsNumber));
         if (valueAsNumber > 59) {
@@ -83,7 +83,7 @@ const HoursInput = ({ hours, minutes, setHours, setMinutes }: Props) => {
                 <Text>:</Text>
                 <NumberInput
                     value={minutes.toString().padStart(2, '0')}
-                    onChange={OnMinutesChange}
+                    onChange={onMinutesChange}
                     allowMouseWheel
                     min={-5}
                     max={60}

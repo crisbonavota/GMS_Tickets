@@ -5,18 +5,19 @@ import {
     Skeleton,
     VStack,
     Text,
-    Stack,
 } from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
     TimetrackItem,
 } from '@gms-micro/api-utils';
 import moment from 'moment';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
 import { GrPrevious, GrNext } from 'react-icons/gr';
 import { useQuery } from 'react-query';
+import { hoursToHoursMinutesString } from '../../app';
 import WeeklyTabAccordion from './weekly-tab-accordion';
+import { Flex } from '@chakra-ui/react';
 
 type Props = {
     selected: number | null;
@@ -61,6 +62,19 @@ const WeeklyTab = ({
         )
     );
 
+    const totalHoursHeader = useMemo(
+        () => itemsQuery.data?.headers['total-hours'],
+        [itemsQuery]
+    );
+
+    const totalHoursMinutes = useMemo(
+        () =>
+            itemsQuery.isSuccess && totalHoursHeader
+                ? hoursToHoursMinutesString(totalHoursHeader)
+                : null,
+        [itemsQuery]
+    );
+
     useEffect(() => {
         setFromDate(
             moment()
@@ -88,10 +102,9 @@ const WeeklyTab = ({
                     onClick={() => setDateShift(dateShift - 1)}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
-                    <Stack
+                    <Flex
                         flexDir={{ base: 'column', md: 'row' }}
-                        direction={{ base: 'column', md: 'row' }}
-                        spacing={{ base: 0, md: 2 }}
+                        gap={{ base: 0, md: 2 }}
                     >
                         <Text>
                             {fromDate
@@ -112,14 +125,12 @@ const WeeklyTab = ({
                                         : 'DD/MM/YYYY'
                                 )}
                         </Text>
-                    </Stack>
-                    {itemsQuery.isLoading && (
+                    </Flex>
+                    {(itemsQuery.isLoading || !totalHoursMinutes) && (
                         <Skeleton width={'50px'} height={'20px'} />
                     )}
-                    {itemsQuery.isSuccess && (
-                        <Heading fontSize={'md'}>
-                            {itemsQuery.data.headers['total-hours']} hs
-                        </Heading>
+                    {itemsQuery.isSuccess && totalHoursMinutes && (
+                        <Heading fontSize={'md'}>{totalHoursMinutes}</Heading>
                     )}
                 </HStack>
                 <Icon

@@ -8,7 +8,7 @@ import Filters from './filters/filters';
 import { useAuthHeader } from 'react-auth-kit';
 import TableComponent from './table-component/table-component';
 import { TablePaginationWithChakra } from '@gms-micro/table-utils';
-import { useState } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { Sort } from '@gms-micro/api-filters';
 
 export function App() {
@@ -25,8 +25,18 @@ export function App() {
     const [contractType, setContractType] = useState<number>(0);
     const [account, setAccount] = useState(0);
 
+    const refetchTriggers = useMemo(
+        () => [currentPage, sort, search, status, contractType, account],
+        [currentPage, sort, search, status, contractType, account]
+    );
+
+    // Returning to first page on filters change
+    useEffect(() => {
+        setCurrentPage(0);
+    }, [sort, search, status, contractType, account]);
+
     const query = useQuery(
-        ['projects', currentPage, sort, search, status, contractType, account],
+        ['projects', refetchTriggers],
         async () =>
             await getResourceListFilteredAndPaginated<Project>(
                 'projects',

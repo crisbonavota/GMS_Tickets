@@ -1,4 +1,4 @@
-import { HStack, VStack, Heading, Text } from '@chakra-ui/react';
+import { HStack, VStack, Heading, Text, Tooltip } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import DeleteEntry from './delete-entry';
@@ -65,7 +65,20 @@ export function TableRow({
                 />
                 <VStack w={'fit-content'} alignItems={'flex-start'}>
                     <Text>{item.project.name}</Text>
-                    <Text>{item.task}</Text>
+                    <HStack>
+                        <Tooltip label={item.tasktype.caption}>
+                            <Text fontWeight={'bold'}>
+                                {item.tasktype.code}
+                            </Text>
+                        </Tooltip>
+                        <Text
+                            borderLeft={'1px solid lightgray'}
+                            ps={2}
+                            textTransform={'uppercase'}
+                        >
+                            {item.task}
+                        </Text>
+                    </HStack>
                 </VStack>
             </HStack>
             <VStack alignItems={'flex-end'}>

@@ -7,6 +7,12 @@ export interface BusinessUnit {
 export interface Account {
     id: number;
     name: string;
+    company: Company;
+}
+
+export interface Company{
+    id: number;
+    name: string;
 }
 
 export interface Proposal {

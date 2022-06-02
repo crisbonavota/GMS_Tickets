@@ -1,11 +1,10 @@
-import { Box, Skeleton, Stack } from '@chakra-ui/react';
-import { getResourceList } from '@gms-micro/api-utils';
+import { Box, Stack } from '@chakra-ui/react';
 import { MultiValue, Select } from 'chakra-react-select';
 import { useMemo } from 'react';
 import { chakraSelectStyle } from '@gms-micro/chakra-react-select-styles';
 import { useQuery } from 'react-query';
 import { useAuthHeader } from 'react-auth-kit';
-import { getResourceListFilteredAndPaginated } from '../../../../../libs/api-utils/src/lib/api-utils';
+import { getResourceListFilteredAndPaginated } from '@gms-micro/api-utils';
 
 interface DropdownItem {
     title: string;
@@ -77,9 +76,7 @@ const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
         <Box w={'full'}>
             <Select
                 size="md"
-                options={
-                    query.isSuccess ? getOptions(query.data.data) : undefined
-                }
+                options={query.isSuccess ? getOptions(query.data.data) : []}
                 chakraStyles={chakraSelectStyle}
                 isMulti
                 placeholder={dropdownItem.title}

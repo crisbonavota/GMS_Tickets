@@ -45,7 +45,7 @@ const TableComponent = ({
     // Changing to the daily tab when an entry is edited/submitted
     // See component daily-tab for use of this dateShiftTrigger
     useEffect(() => {
-        if (dateShiftTrigger && !onDailyTab) setTabIndex(0);
+        if (!onDailyTab) setTabIndex(0);
     }, [dateShiftTrigger]);
 
     return (

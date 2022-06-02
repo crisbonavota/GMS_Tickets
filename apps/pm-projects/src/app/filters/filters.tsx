@@ -3,6 +3,8 @@ import AccountFilter from './account-filter';
 import ContractTypeFilter from './contract-type-filter';
 import GeneralSearchFilter from './general-search-filter';
 import StatusFilter from './status-filter';
+import BusinessUnitFilter from './business-unit-filter';
+import CompanyFilter from './company-filter';
 
 export interface FiltersProps {
     setSearch: (search: string) => void;
@@ -13,6 +15,10 @@ export interface FiltersProps {
     setContractType: (contractType: number) => void;
     account: number;
     setAccount: (account: number) => void;
+    businessUnit: number;
+    setBusinessUnit: (businessUnit: number) => void;
+    company: number;
+    setCompany: (company: number) => void;
 }
 
 export function Filters({
@@ -24,6 +30,10 @@ export function Filters({
     setContractType,
     account,
     setAccount,
+    businessUnit,
+    setBusinessUnit,
+    company,
+    setCompany
 }: FiltersProps) {
     return (
         <Box w={'full'}>
@@ -41,6 +51,8 @@ export function Filters({
                     setContractType={setContractType}
                 />
                 <AccountFilter account={account} setAccount={setAccount} />
+                <BusinessUnitFilter businessUnit={businessUnit} setBusinessUnit={setBusinessUnit} />
+                <CompanyFilter company={company} setCompany={setCompany} />
             </Flex>
         </Box>
     );

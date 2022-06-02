@@ -24,16 +24,18 @@ export function App() {
     const [status, setStatus] = useState<number>(0);
     const [contractType, setContractType] = useState<number>(0);
     const [account, setAccount] = useState(0);
+    const [businessUnit, setBusinessUnit] = useState(0);
+    const [company, setCompany] = useState(0);
 
     const refetchTriggers = useMemo(
-        () => [currentPage, sort, search, status, contractType, account],
-        [currentPage, sort, search, status, contractType, account]
+        () => [currentPage, sort, search, status, contractType, account, businessUnit, company],
+        [currentPage, sort, search, status, contractType, account, businessUnit, company]
     );
 
     // Returning to first page on filters change
     useEffect(() => {
         setCurrentPage(0);
-    }, [sort, search, status, contractType, account]);
+    }, [sort, search, status, contractType, account, businessUnit, company]);
 
     const query = useQuery(
         ['projects', refetchTriggers],
@@ -51,6 +53,14 @@ export function App() {
                     {
                         field: 'proposal.account.id',
                         value: account ? account : undefined,
+                    },
+                    {
+                        field: 'proposal.account.company.id',
+                        value: company ? company : undefined,
+                    },
+                    {
+                        field: 'businessUnit.id',
+                        value: businessUnit ? businessUnit : undefined,
                     },
                 ],
                 [],
@@ -72,6 +82,10 @@ export function App() {
                 setContractType={setContractType}
                 account={account}
                 setAccount={setAccount}
+                businessUnit={businessUnit}
+                setBusinessUnit={setBusinessUnit}
+                company={company}
+                setCompany={setCompany}
             />
             {isSuccess && apiResponse ? (
                 <TableComponent

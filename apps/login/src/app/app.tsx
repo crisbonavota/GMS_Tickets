@@ -1,4 +1,13 @@
-import { Box, Text, Image, Heading, VStack, Button, useToast, Center } from '@chakra-ui/react';
+import {
+    Box,
+    Text,
+    Image,
+    Heading,
+    VStack,
+    Button,
+    useToast,
+    Center,
+} from '@chakra-ui/react';
 import LoginBackground from '../assets/images/login-background.png';
 import { Tonic3Logo } from '@gms-micro/assets';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
@@ -17,7 +26,10 @@ const App = () => {
     const toast = useToast();
     const queries = queryString.parse(window.location.search);
 
-    if (getAuthenticated()) window.location.href = `${window.location.origin}/${queries['redirect'] || ''}`;
+    if (getAuthenticated())
+        window.location.href = `${window.location.origin}/${
+            queries['redirect'] || ''
+        }`;
 
     const onSuccess = async (response: GoogleLoginResponse) => {
         setLoading(true);
@@ -26,7 +38,10 @@ const App = () => {
         const googleAuthResponse = response.getAuthResponse();
         try {
             // This response comes from our API, that takes the google token and returns a JWT
-            const apiResponse = await signInWithExternalProvider("google", googleAuthResponse.id_token);
+            const apiResponse = await signInWithExternalProvider(
+                'google',
+                googleAuthResponse.id_token
+            );
             signIn({
                 token: apiResponse.data.authToken.token,
                 expiresIn: apiResponse.data.authToken.expiresIn,
@@ -36,26 +51,34 @@ const App = () => {
                 refreshTokenExpireIn: apiResponse.data.refreshToken.expiresIn*/
             });
             window.location.reload();
-        }
-        catch (err: any) {
+        } catch (err: any) {
             console.log(err);
             setLoading(false);
-            toast({ title: "Error signing in, try again later", description: err.message || err, status: "error"});
+            toast({
+                title: 'Error signing in, try again later',
+                description: err.message || err,
+                status: 'error',
+            });
         }
         setLoading(false);
-    }
+    };
 
     const onFailure = (err: any) => {
         console.log(err);
-        toast({ title: "Can't connect to Google for signing in, try again later", description: err.message || JSON.stringify(err), status: "error"});
-    }
+        toast({
+            title: "Can't connect to Google for signing in, try again later",
+            description: err.message || JSON.stringify(err),
+            status: 'error',
+        });
+    };
 
     return (
         <Box minW={'full'} minH={'100vh'}>
             <Box
                 bgImage={LoginBackground}
-                w={'full'} minH={'50vh'}
-                bgPos={"center center"}
+                w={'full'}
+                minH={'50vh'}
+                bgPos={'center center'}
             >
                 <VStack
                     minW={'full'}
@@ -67,8 +90,21 @@ const App = () => {
                     spacing={8}
                 >
                     <Image src={Tonic3Logo} alt={'Tonic3'} w={'10rem'} />
-                    <Box bgColor={'#999898'} px={3} py={1} borderRadius={5} w={'fit-content'}>
-                        <Heading pt={1} color={'blackAlpha.600'} letterSpacing={2} fontSize={'sm'}>GMS 2022</Heading>
+                    <Box
+                        bgColor={'#999898'}
+                        px={3}
+                        py={1}
+                        borderRadius={5}
+                        w={'fit-content'}
+                    >
+                        <Heading
+                            pt={1}
+                            color={'blackAlpha.600'}
+                            letterSpacing={2}
+                            fontSize={'sm'}
+                        >
+                            GMS 2022
+                        </Heading>
                     </Box>
                 </VStack>
             </Box>
@@ -78,7 +114,7 @@ const App = () => {
                     onSuccess={(r) => onSuccess(r as GoogleLoginResponse)}
                     onRequest={() => setLoading(true)}
                     onFailure={onFailure}
-                    render={renderProps => (
+                    render={(renderProps) => (
                         <Button
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
@@ -95,10 +131,12 @@ const App = () => {
                 />
             </Center>
             <Center bgColor={'black'} w={'full'} h={'4vh'}>
-                <Text color={'whitesmoke'} fontSize={'xs'}>© {new Date().getFullYear()} - TONIC3 GMS</Text>
+                <Text color={'whitesmoke'} fontSize={'xs'}>
+                    © {new Date().getFullYear()} - TONIC3 GMS
+                </Text>
             </Center>
         </Box>
     );
-}
+};
 
 export default App;

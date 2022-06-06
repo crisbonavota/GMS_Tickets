@@ -35,10 +35,10 @@ const CreateModal = ({ updateType }: CreateModalProps) => {
         onSuccess: () => {
             queryClient.resetQueries(['updates']);
             queryClient.resetQueries(['updatesReport']);
-            toast({ title: "Element created", status: "success" });
+            toast({ title: "Element created", status: "success", position: 'top', duration: 2000 });
         },
         onError: (err: any) => {
-            toast({ title: "Error creating the element, try again later", description: err.message || err, status: "error" });
+            toast({ title: "Error creating the element, try again later", description: err.message || err, status: "error", position: 'top', duration: 2000 });
         }
     });
 

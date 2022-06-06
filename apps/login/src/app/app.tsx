@@ -58,6 +58,8 @@ const App = () => {
                 title: 'Error signing in, try again later',
                 description: err.message || err,
                 status: 'error',
+                position: 'top',
+                duration: 2000,
             });
         }
         setLoading(false);
@@ -69,6 +71,8 @@ const App = () => {
             title: "Can't connect to Google for signing in, try again later",
             description: err.message || JSON.stringify(err),
             status: 'error',
+            position: 'top',
+            duration: 2000,
         });
     };
 

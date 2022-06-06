@@ -94,13 +94,15 @@ const EditModal = ({ project }: Props) => {
             },
             onSuccess: () => {
                 queryClient.resetQueries(['projects']);
-                toast({ title: 'Project updated', status: 'success' });
+                toast({ title: 'Project updated', status: 'success', position: 'top', duration: 2000 });
             },
             onError: (error: any | AxiosError) => {
                 toast({
                     title: 'Error updating project',
                     description: error.message || error,
                     status: 'error',
+                    position: 'top', 
+                    duration: 2000,
                 });
             },
         }

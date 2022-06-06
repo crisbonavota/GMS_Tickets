@@ -51,6 +51,8 @@ const RemoveMemberButton = ({ active, member, projectId }: Props) => {
                 toast({
                     title: 'Removed member from project',
                     status: 'success',
+                    position: 'top', 
+                    duration: 2000,
                 });
                 setIsMutating.off();
             },
@@ -59,6 +61,8 @@ const RemoveMemberButton = ({ active, member, projectId }: Props) => {
                     title: 'Failed to remove member to project',
                     description: err.message | err,
                     status: 'error',
+                    position: 'top', 
+                    duration: 2000,
                 });
                 setIsMutating.off();
             },

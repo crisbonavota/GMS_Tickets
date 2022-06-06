@@ -33,7 +33,7 @@ export function ImportButton() {
             transform: (r) => r.replace(",", '.').replace(/-/g, "/"),
             complete: results => setUpdates(results.data),
             error: (error) => {
-                toast({ title: "Error parsing the file, try again", description: error.message, status: "error" });
+                toast({ title: "Error parsing the file, try again", description: error.message, status: "error", position: 'top', duration: 2000 });
                 console.log(error);
             }
         });
@@ -52,7 +52,7 @@ export function ImportButton() {
         onSuccess: () => {
             setIsSubmitting.off();
             onClose();
-            toast({ title: "Successfully imported", status: "success" });
+            toast({ title: "Successfully imported", status: "success", position: 'top', duration: 2000 });
             setUpdates([]);
             setValid(false);
             queryClient.resetQueries('updates');
@@ -61,7 +61,7 @@ export function ImportButton() {
         onError: (err: any) => {
             setIsSubmitting.off();
             onClose();
-            toast({ title: "Error importing, try again later", description: err.message | err, status: "error" });
+            toast({ title: "Error importing, try again later", description: err.message | err, status: "error", position: 'top', duration: 2000 });
             console.log(err);
         }
     });

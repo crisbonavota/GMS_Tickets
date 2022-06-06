@@ -47,10 +47,10 @@ export function EditModal({ update }: EditModalProps) {
         onSuccess: () => {
             queryClient.resetQueries(['updates']);
             queryClient.resetQueries(['updatesReport']);
-            toast({ title: "Element updated", status: "success" });
+            toast({ title: "Element updated", status: "success", position: 'top', duration: 2000 });
         },
         onError: (err: any) => {
-            toast({ title: "Error updating the element, try again later", description: err.message || err, status: "error" });
+            toast({ title: "Error updating the element, try again later", description: err.message || err, status: "error", position: 'top', duration: 2000 });
         }
     });
 

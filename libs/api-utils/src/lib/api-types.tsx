@@ -105,6 +105,7 @@ export interface TaskType {
     name: string;
     code: string;
     caption: string;
+    shortname: string;
 }
 
 export interface TimetrackItem {

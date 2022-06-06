@@ -65,10 +65,10 @@ const EditModal = ({ employee }: Props) => {
         },
         onSuccess: () => {
             queryClient.resetQueries(['employees']);
-            toast({ title: "Employee updated", status: "success" });
+            toast({ title: "Employee updated", status: "success", position: 'top', duration: 2000 });
         },
         onError: (err: any) => {
-            toast({ title: "Error updating the employee, try again later", description: err.message || err, status: "error" });
+            toast({ title: "Error updating the employee, try again later", description: err.message || err, status: "error", position: 'top', duration: 2000 });
         }
     });
 

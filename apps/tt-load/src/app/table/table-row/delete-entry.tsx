@@ -46,7 +46,7 @@ const DeleteEntry = ({ id, resetForm, setSelected, setType }: Props) => {
                 setType('create');
                 queryClient.resetQueries(['owned-daily']);
                 queryClient.resetQueries(['owned-weekly']);
-                toast({ title: 'Entry removed', status: 'success' });
+                toast({ title: 'Entry removed', status: 'success', position: 'top', duration: 2000 });
             },
             onError: (err: any) => {
                 setLoading.off();
@@ -55,6 +55,8 @@ const DeleteEntry = ({ id, resetForm, setSelected, setType }: Props) => {
                     title: `Error removing the entry, try again later`,
                     description: err.message || err,
                     status: 'error',
+                    position: 'top', 
+                    duration: 2000,
                 });
             },
         }

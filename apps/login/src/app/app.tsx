@@ -40,14 +40,14 @@ const App = () => {
         catch (err: any) {
             console.log(err);
             setLoading(false);
-            toast({ title: "Error signing in, try again later", description: err.message || err, status: "error"});
+            toast({ title: "Error signing in, try again later", description: err.message || err, status: "error", position: 'top', duration: 2000});
         }
         setLoading(false);
     }
 
     const onFailure = (err: any) => {
         console.log(err);
-        toast({ title: "Can't connect to Google for signing in, try again later", description: err.message || JSON.stringify(err), status: "error"});
+        toast({ title: "Can't connect to Google for signing in, try again later", description: err.message || JSON.stringify(err), status: "error", position: 'top', duration: 2000});
     }
 
     return (

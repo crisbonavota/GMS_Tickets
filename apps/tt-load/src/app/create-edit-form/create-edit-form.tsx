@@ -121,6 +121,8 @@ const CreateEditForm = ({
                         type === 'create' ? 'Hours submitted' : 'Entry updated'
                     }`,
                     status: 'success',
+                    position: 'top', 
+                    duration: 2000,
                 });
 
                 calculateDayShift(date);
@@ -139,6 +141,8 @@ const CreateEditForm = ({
                     }, try again later`,
                     description: err.message || err,
                     status: 'error',
+                    position: 'top', 
+                    duration: 2000,
                 });
             },
         }

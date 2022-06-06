@@ -61,7 +61,7 @@ const PossibleMembersDropdown = ({ projectId }: Props) => {
                 setSelected(null);
                 queryClient.resetQueries([`members-${projectId}`]);
                 queryClient.resetQueries([`members-possible-${projectId}`]);
-                toast({ title: 'Added member to project', status: 'success' });
+                toast({ title: 'Added member to project', status: 'success', position: 'top', duration: 2000 });
                 setIsMutating.off();
             },
             onError: (err: any) => {
@@ -69,6 +69,8 @@ const PossibleMembersDropdown = ({ projectId }: Props) => {
                     title: 'Failed to add member to project',
                     description: err.message | err,
                     status: 'error',
+                    position: 'top', 
+                    duration: 2000,
                 });
                 setIsMutating.off();
             },

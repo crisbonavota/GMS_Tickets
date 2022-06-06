@@ -74,7 +74,7 @@ export function TableRow({
                     <HStack>
                         <Tooltip label={item.tasktype.caption}>
                             <Text fontWeight={'bold'}>
-                                {item.tasktype.code}
+                                {item.tasktype.shortname}
                             </Text>
                         </Tooltip>
                         <Text

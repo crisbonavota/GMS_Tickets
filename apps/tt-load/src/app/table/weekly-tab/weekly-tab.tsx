@@ -5,6 +5,7 @@ import {
     Skeleton,
     VStack,
     Text,
+    ExpandedIndex,
 } from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
@@ -27,6 +28,8 @@ type Props = {
     fillForm: (item: TimetrackItem) => void;
     expansionTrigger: 'collapse' | 'expand' | null;
     setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
+    dateShiftTrigger: number | null;
+    setDateShiftTrigger: (date: number | null) => void;
 };
 
 const WeeklyTab = ({
@@ -37,26 +40,29 @@ const WeeklyTab = ({
     fillForm,
     expansionTrigger,
     setExpansionTrigger,
+    dateShiftTrigger,
+    setDateShiftTrigger,
 }: Props) => {
     const [fromDate, setFromDate] = useState(
         moment().startOf('week').add(1, 'day')
     );
     const [toDate, setToDate] = useState(moment().endOf('week').add(1, 'day'));
-    const [dateShift, setDateShift] = useState(0);
+    const [weekShift, setWeekShift] = useState(0);
     const getAuthHeader = useAuthHeader();
+    const [accordionIndex, setAccordionIndex] = useState<ExpandedIndex>([]);
 
-    const itemsQuery = useQuery(['owned-weekly', dateShift], () =>
+    const itemsQuery = useQuery(['owned-weekly', weekShift], () =>
         getResourceListFilteredAndPaginated<Array<TimetrackItem>>(
             'timetrack/owned/grouped',
             getAuthHeader(),
             [
                 {
                     field: 'date_bgr',
-                    value: dateShiftToISOString(dateShift, true),
+                    value: weekShiftToDate(weekShift, true),
                 },
                 {
                     field: 'date_sml',
-                    value: dateShiftToISOString(dateShift, false),
+                    value: weekShiftToDate(weekShift, false),
                 },
             ],
             [],
@@ -71,6 +77,20 @@ const WeeklyTab = ({
         [itemsQuery]
     );
 
+    useEffect(() => {
+        if (dateShiftTrigger !== null) {
+            const dateOfNewElement = moment().add(dateShiftTrigger, 'days');
+            const newFromDate = dateOfNewElement.startOf('week').add(1, 'day');
+
+            // This means we are already on the right week
+            if (newFromDate === fromDate) return;
+
+            const differenceInWeeks = newFromDate.diff(fromDate, 'weeks');
+            setWeekShift(weekShift + differenceInWeeks);
+            setDateShiftTrigger(null);
+        }
+    }, [dateShiftTrigger]);
+
     const totalHoursMinutes = useMemo(
         () =>
             itemsQuery.isSuccess && totalHoursHeader
@@ -83,14 +103,14 @@ const WeeklyTab = ({
         setFromDate(
             moment()
                 .startOf('week')
-                .add(dateShift * 7 + 1, 'days')
+                .add(weekShift * 7 + 1, 'days')
         );
         setToDate(
             moment()
                 .endOf('week')
-                .add(dateShift * 7 + 1, 'days')
+                .add(weekShift * 7 + 1, 'days')
         );
-    }, [dateShift]);
+    }, [weekShift]);
 
     return (
         <VStack w={'full'} spacing={5} h={'full'}>
@@ -103,7 +123,7 @@ const WeeklyTab = ({
                 <Icon
                     as={GrPrevious}
                     cursor={'pointer'}
-                    onClick={() => setDateShift(dateShift - 1)}
+                    onClick={() => setWeekShift(weekShift - 1)}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
                     <Flex
@@ -140,7 +160,7 @@ const WeeklyTab = ({
                 <Icon
                     as={GrNext}
                     cursor={'pointer'}
-                    onClick={() => setDateShift(dateShift + 1)}
+                    onClick={() => setWeekShift(weekShift + 1)}
                 />
             </HStack>
             {itemsQuery.isSuccess && !itemsQuery.data.data.length && (
@@ -156,6 +176,8 @@ const WeeklyTab = ({
                     resetForm={resetForm}
                     expansionTrigger={expansionTrigger}
                     setExpansionTrigger={setExpansionTrigger}
+                    index={accordionIndex}
+                    setIndex={setAccordionIndex}
                 />
             )}
             {itemsQuery.isLoading && <Loading />}
@@ -180,7 +202,7 @@ const Loading = () => {
     );
 };
 
-export const dateShiftToISOString = (dateShift: number, start: boolean) => {
+export const weekShiftToDate = (dateShift: number, start: boolean) => {
     var date = start ? moment().startOf('week') : moment().endOf('week');
     // + 1 because moment.js considers the week starting at sundays
     return date.add(dateShift * 7 + 1, 'days').format('YYYY-MM-DD');

@@ -24,6 +24,8 @@ type Props = {
     fillForm: (item: TimetrackItem) => void;
     expansionTrigger: 'collapse' | 'expand' | null;
     setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
+    index: ExpandedIndex;
+    setIndex: (index: ExpandedIndex) => void;
 };
 
 const WeeklyTabAccordion = ({
@@ -35,9 +37,13 @@ const WeeklyTabAccordion = ({
     fillForm,
     expansionTrigger,
     setExpansionTrigger,
+    index,
+    setIndex,
 }: Props) => {
     // Every accordion open by default
-    const [index, setIndex] = useState<ExpandedIndex>(days.map((_, i) => i));
+    useEffect(() => {
+        setIndex(days.map((_, i) => i));
+    }, [days, setIndex]);
 
     useEffect(() => {
         if (expansionTrigger === 'expand') {
@@ -46,7 +52,7 @@ const WeeklyTabAccordion = ({
             setIndex([]);
         }
         setExpansionTrigger(null);
-    }, [expansionTrigger, setExpansionTrigger]);
+    }, [expansionTrigger, setExpansionTrigger, setIndex]);
 
     return (
         <Accordion

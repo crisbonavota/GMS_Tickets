@@ -1,7 +1,6 @@
 import {
     Heading,
     HStack,
-    Icon,
     Skeleton,
     VStack,
     Text,
@@ -12,13 +11,13 @@ import {
     TimetrackItem,
 } from '@gms-micro/api-utils';
 import moment from 'moment';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
 import { GrPrevious, GrNext } from 'react-icons/gr';
 import { useQuery } from 'react-query';
 import { hoursToHoursMinutesString } from '../../app';
 import WeeklyTabAccordion from './weekly-tab-accordion';
-import { Flex } from '@chakra-ui/react';
+import { Flex, IconButton } from '@chakra-ui/react';
 
 type Props = {
     selected: number | null;
@@ -112,6 +111,21 @@ const WeeklyTab = ({
         );
     }, [weekShift]);
 
+    const onPreviousWeekClick = useCallback(() => {
+        setWeekShift(weekShift - 1);
+        setExpansionTrigger('expand');
+    }, [weekShift, setWeekShift]);
+
+    const onNextWeekClick = useCallback(() => {
+        setWeekShift(weekShift + 1);
+        itemsQuery.isSuccess && setExpansionTrigger('expand');
+    }, [weekShift, setWeekShift]);
+
+    // Expanded by default on initial render
+    useEffect(() => {
+        setExpansionTrigger('expand');
+    }, []);
+
     return (
         <VStack w={'full'} spacing={5} h={'full'}>
             <HStack
@@ -120,10 +134,14 @@ const WeeklyTab = ({
                 bgColor={'white'}
                 p={3}
             >
-                <Icon
-                    as={GrPrevious}
-                    cursor={'pointer'}
-                    onClick={() => setWeekShift(weekShift - 1)}
+                <IconButton
+                    icon={<GrPrevious />}
+                    onClick={onPreviousWeekClick}
+                    aria-label="Previous week"
+                    colorScheme={'ghost'}
+                    h={'fit-content'}
+                    w={'fit-content'}
+                    boxShadow={'none !important'}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
                     <Flex
@@ -157,10 +175,14 @@ const WeeklyTab = ({
                         <Heading fontSize={'md'}>{totalHoursMinutes}</Heading>
                     )}
                 </HStack>
-                <Icon
-                    as={GrNext}
-                    cursor={'pointer'}
-                    onClick={() => setWeekShift(weekShift + 1)}
+                <IconButton
+                    icon={<GrNext />}
+                    onClick={onNextWeekClick}
+                    aria-label="Next week"
+                    colorScheme={'ghost'}
+                    h={'fit-content'}
+                    w={'fit-content'}
+                    boxShadow={'none !important'}
                 />
             </HStack>
             {itemsQuery.isSuccess && !itemsQuery.data.data.length && (

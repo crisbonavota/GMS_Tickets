@@ -13,7 +13,7 @@ import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import TableRow from '../table-row/table-row';
 import { hoursToHoursMinutesString } from '../../app';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 type Props = {
     days: Array<Array<TimetrackItem>>;
@@ -40,11 +40,6 @@ const WeeklyTabAccordion = ({
     index,
     setIndex,
 }: Props) => {
-    // Every accordion open by default
-    useEffect(() => {
-        setIndex(days.map((_, i) => i));
-    }, [days, setIndex]);
-
     useEffect(() => {
         if (expansionTrigger === 'expand') {
             setIndex(days.map((_, i) => i));

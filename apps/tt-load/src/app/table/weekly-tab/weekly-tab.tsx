@@ -25,6 +25,8 @@ type Props = {
     setType: (type: 'edit' | 'create') => void;
     setSelected: (id: number | null) => void;
     fillForm: (item: TimetrackItem) => void;
+    expansionTrigger: 'collapse' | 'expand' | null;
+    setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
 };
 
 const WeeklyTab = ({
@@ -33,6 +35,8 @@ const WeeklyTab = ({
     setType,
     setSelected,
     fillForm,
+    expansionTrigger,
+    setExpansionTrigger,
 }: Props) => {
     const [fromDate, setFromDate] = useState(
         moment().startOf('week').add(1, 'day')
@@ -150,6 +154,8 @@ const WeeklyTab = ({
                     setType={setType}
                     fillForm={fillForm}
                     resetForm={resetForm}
+                    expansionTrigger={expansionTrigger}
+                    setExpansionTrigger={setExpansionTrigger}
                 />
             )}
             {itemsQuery.isLoading && <Loading />}

@@ -7,11 +7,13 @@ import {
     AccordionPanel,
     Text,
     HStack,
+    ExpandedIndex,
 } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import moment from 'moment';
 import TableRow from '../table-row/table-row';
 import { hoursToHoursMinutesString } from '../../app';
+import { useState, useEffect } from 'react';
 
 type Props = {
     days: Array<Array<TimetrackItem>>;
@@ -20,6 +22,8 @@ type Props = {
     setType: (type: 'edit' | 'create') => void;
     setSelected: (id: number | null) => void;
     fillForm: (item: TimetrackItem) => void;
+    expansionTrigger: 'collapse' | 'expand' | null;
+    setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
 };
 
 const WeeklyTabAccordion = ({
@@ -29,15 +33,29 @@ const WeeklyTabAccordion = ({
     setType,
     setSelected,
     fillForm,
+    expansionTrigger,
+    setExpansionTrigger,
 }: Props) => {
+    // Every accordion open by default
+    const [index, setIndex] = useState<ExpandedIndex>(days.map((_, i) => i));
+
+    useEffect(() => {
+        if (expansionTrigger === 'expand') {
+            setIndex(days.map((_, i) => i));
+        } else if (expansionTrigger === 'collapse') {
+            setIndex([]);
+        }
+        setExpansionTrigger(null);
+    }, [expansionTrigger, setExpansionTrigger]);
+
     return (
         <Accordion
             allowMultiple
             allowToggle
             w={'full'}
             bgColor={'white'}
-            // Every accordion open by default
-            defaultIndex={days.map((_, i) => i)}
+            index={index}
+            onChange={setIndex}
         >
             {days.map((day, index) => (
                 <AccordionItem key={index}>

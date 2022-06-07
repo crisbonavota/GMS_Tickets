@@ -5,6 +5,7 @@ import { TimetrackItem } from '@gms-micro/api-utils';
 import WeeklyTab from './weekly-tab/weekly-tab';
 import CustomTab from './custom-tab/custom-tab';
 import CustomTabPopoverFilters from './custom-tab/custom-tab-popover-filters';
+import WeeklyTabExpandButtons from './weekly-tab/weekly-tab-expand-buttons';
 
 type Props = {
     selected: number | null;
@@ -29,12 +30,15 @@ const TableComponent = ({
     const [from, setFrom] = useState('');
     const [to, setTo] = useState('');
     const [projectFilter, setProjectFilter] = useState<number>();
-    const onCustomTab = useMemo(() => tabIndex === 2, [tabIndex]);
     const onDailyTab = useMemo(() => tabIndex === 0, [tabIndex]);
+    const onWeeklyTab = useMemo(() => tabIndex === 1, [tabIndex]);
+    const onCustomTab = useMemo(() => tabIndex === 2, [tabIndex]);
 
-    const handleTabsChange = useCallback((index: number) => {
-        setTabIndex(index);
-    }, []);
+    // Aux used for triggering side effect on weekly accordion, that expands/contracts every item in the accordion
+    // Made it this way to avoid having the accordion state at this level
+    const [weeklyExpansionTrigger, setWeeklyExpansionTrigger] = useState<
+        'collapse' | 'expand' | null
+    >(null);
 
     const clearCustomTabFilters = useCallback(() => {
         setFrom('');
@@ -58,7 +62,7 @@ const TableComponent = ({
             h={'fit-content'}
             position={'relative'}
         >
-            <Tabs index={tabIndex} onChange={handleTabsChange}>
+            <Tabs index={tabIndex} onChange={setTabIndex}>
                 <TabList
                     bgColor={'white'}
                     w={'fit-content'}
@@ -91,6 +95,8 @@ const TableComponent = ({
                             setType={setType}
                             fillForm={fillForm}
                             resetForm={resetForm}
+                            expansionTrigger={weeklyExpansionTrigger}
+                            setExpansionTrigger={setWeeklyExpansionTrigger}
                         />
                     </TabPanel>
                     <TabPanel>
@@ -116,6 +122,11 @@ const TableComponent = ({
                     setTo={setTo}
                     projectFilter={projectFilter}
                     setProjectFilter={setProjectFilter}
+                />
+            )}
+            {onWeeklyTab && (
+                <WeeklyTabExpandButtons
+                    setTrigger={setWeeklyExpansionTrigger}
                 />
             )}
         </Box>

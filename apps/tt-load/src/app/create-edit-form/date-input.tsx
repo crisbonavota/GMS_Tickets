@@ -8,34 +8,39 @@ type Props = {
     setDate: (date: string) => void;
 };
 const DateInput = ({ date, setDate }: Props) => {
-    const onArrowClick = useCallback((add: boolean) => {
-        const currentDate = moment(date, 'YYYY-MM-DD');
-        const newDate = currentDate.add(add? 1 : -1, 'days').format('YYYY-MM-DD');
-        setDate(newDate);	
-    }, [date, setDate]);
+    const onArrowClick = useCallback(
+        (add: boolean) => {
+            const currentDate = moment(date, 'YYYY-MM-DD');
+            const newDate = currentDate
+                .add(add ? 1 : -1, 'days')
+                .format('YYYY-MM-DD');
+            setDate(newDate);
+        },
+        [date, setDate]
+    );
 
     return (
         <VStack alignItems={'flex-start'}>
-            <HStack w='full' justifyContent={'space-between'}>
+            <HStack w="full" justifyContent={'space-between'}>
                 <Heading fontSize={'md'}>Date</Heading>
                 <HStack>
                     <IconButton
                         size={'sm'}
-                        icon={<GrPrevious/>} 
-                        cursor={'pointer'} 
-                        onClick={() => onArrowClick(false)} 
+                        icon={<GrPrevious />}
+                        cursor={'pointer'}
+                        onClick={() => onArrowClick(false)}
                         aria-label="Previous day"
-                        isDisabled={date == ""}
+                        isDisabled={date == ''}
                     />
-                    <IconButton 
-                        size={'sm'} 
-                        icon={<GrNext/>} 
-                        cursor={'pointer'} 
+                    <IconButton
+                        size={'sm'}
+                        icon={<GrNext />}
+                        cursor={'pointer'}
                         onClick={() => onArrowClick(true)}
                         aria-label="Next day"
-                        isDisabled={date == ""}
+                        isDisabled={date == ''}
                     />
-                </HStack>  
+                </HStack>
             </HStack>
             <Input
                 type={'date'}
@@ -46,6 +51,7 @@ const DateInput = ({ date, setDate }: Props) => {
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     setDate(e.target.value)
                 }
+                id={'tt-load-date-input'}
             />
         </VStack>
     );

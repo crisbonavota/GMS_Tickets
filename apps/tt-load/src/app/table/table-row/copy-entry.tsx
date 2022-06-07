@@ -1,6 +1,6 @@
 import { Icon } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { FiCopy } from 'react-icons/fi';
 
 export interface CopyEntryProps {
@@ -16,10 +16,22 @@ export function CopyEntry({
     setType,
     setSelected,
 }: CopyEntryProps) {
+    const dateInput = useMemo(
+        () => document.getElementById('tt-load-date-input') as HTMLInputElement,
+        []
+    );
+
     const onClick = useCallback(() => {
         fillForm(item);
         setType('create');
         setSelected(null);
+
+        if ('showPicker' in HTMLInputElement.prototype) {
+            // @ts-ignore
+            dateInput.showPicker();
+        } else {
+            dateInput.focus();
+        }
     }, [fillForm, setType, setSelected, item]);
 
     return (

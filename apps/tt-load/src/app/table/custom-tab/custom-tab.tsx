@@ -1,14 +1,22 @@
-import { VStack, Skeleton, Text, Link } from '@chakra-ui/react';
+import {
+    VStack,
+    Skeleton,
+    Text,
+    Link,
+    HStack,
+    Heading,
+} from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
     TimetrackItem,
 } from '@gms-micro/api-utils';
 import moment from 'moment';
 import { useQuery } from 'react-query';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { TablePaginationWithChakra } from '@gms-micro/table-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import TableRow from '../table-row/table-row';
+import { hoursToHoursMinutesString } from '../../app';
 
 type Props = {
     from: string;
@@ -47,14 +55,14 @@ const CustomTab = ({
                         field: 'date_bgr',
                         value:
                             from !== ''
-                                ? moment(from).toISOString().split('T')[0]
+                                ? moment(from).format('YYYY-MM-DD')
                                 : undefined,
                     },
                     {
                         field: 'date_sml',
                         value:
                             to !== ''
-                                ? moment(to).toISOString().split('T')[0]
+                                ? moment(to).format('YYYY-MM-DD')
                                 : undefined,
                     },
                     { field: 'projectId', value: project },
@@ -66,11 +74,27 @@ const CustomTab = ({
             )
     );
 
+    const totalHours = useMemo(
+        () =>
+            itemsQuery.isSuccess
+                ? parseInt(itemsQuery.data.headers['total-hours'])
+                : 0,
+        [itemsQuery]
+    );
+
     return (
         <VStack w={'full'} spacing={5}>
-            <Link ms={'auto'} color={'steelblue'} onClick={clearFilters}>
-                Clear filters
-            </Link>
+            <HStack w={'full'} justifyContent={'space-between'}>
+                {itemsQuery.isLoading && <Skeleton h={'20px'} w={'3rem'} />}
+                {itemsQuery.isSuccess && (
+                    <Heading fontSize={'lg'}>
+                        {hoursToHoursMinutesString(totalHours)} total
+                    </Heading>
+                )}
+                <Link ms={'auto'} color={'steelblue'} onClick={clearFilters}>
+                    Clear filters
+                </Link>
+            </HStack>
             {itemsQuery.isLoading && <Loading />}
             {itemsQuery.isSuccess && (
                 <>

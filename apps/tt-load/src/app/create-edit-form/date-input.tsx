@@ -8,16 +8,17 @@ type Props = {
     setDate: (date: string) => void;
 };
 const DateInput = ({ date, setDate }: Props) => {
-    const onArrowClick = useCallback(
-        (add: boolean) => {
-            const currentDate = moment(date, 'YYYY-MM-DD');
-            const newDate = currentDate
-                .add(add ? 1 : -1, 'days')
-                .format('YYYY-MM-DD');
-            setDate(newDate);
-        },
-        [date, setDate]
-    );
+    const onPreviousDayClick = useCallback(() => {
+        const currentDate = moment(date, 'YYYY-MM-DD');
+        const newDate = currentDate.add(-1, 'days').format('YYYY-MM-DD');
+        setDate(newDate);
+    }, [date, setDate]);
+
+    const onNextDayClick = useCallback(() => {
+        const currentDate = moment(date, 'YYYY-MM-DD');
+        const newDate = currentDate.add(1, 'days').format('YYYY-MM-DD');
+        setDate(newDate);
+    }, [date, setDate]);
 
     return (
         <VStack alignItems={'flex-start'}>
@@ -27,18 +28,24 @@ const DateInput = ({ date, setDate }: Props) => {
                     <IconButton
                         size={'sm'}
                         icon={<GrPrevious />}
-                        cursor={'pointer'}
-                        onClick={() => onArrowClick(false)}
+                        onClick={onPreviousDayClick}
                         aria-label="Previous day"
                         isDisabled={date == ''}
+                        colorScheme={'ghost'}
+                        w={'fit-content'}
+                        h={'fit-content'}
+                        boxShadow={'none !important'}
                     />
                     <IconButton
                         size={'sm'}
                         icon={<GrNext />}
-                        cursor={'pointer'}
-                        onClick={() => onArrowClick(true)}
+                        onClick={onNextDayClick}
                         aria-label="Next day"
                         isDisabled={date == ''}
+                        colorScheme={'ghost'}
+                        w={'fit-content'}
+                        h={'fit-content'}
+                        boxShadow={'none !important'}
                     />
                 </HStack>
             </HStack>

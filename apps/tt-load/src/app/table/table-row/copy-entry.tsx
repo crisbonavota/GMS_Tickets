@@ -25,6 +25,7 @@ export function CopyEntry({
         fillForm(item);
         setType('create');
         setSelected(null);
+        window.scrollTo(0, 0);
 
         if ('showPicker' in HTMLInputElement.prototype) {
             // @ts-ignore

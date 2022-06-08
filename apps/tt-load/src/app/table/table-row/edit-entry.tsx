@@ -25,10 +25,12 @@ export function EditEntry({
             resetForm();
             setType('create');
             setSelected(null);
+            window.scrollTo(0,0);
         } else {
             fillForm(item);
             setType('edit');
             setSelected(item.id);
+            window.scrollTo(0,0);
         }
     }, [item, selected, setType, setSelected, fillForm, resetForm]);
     return (

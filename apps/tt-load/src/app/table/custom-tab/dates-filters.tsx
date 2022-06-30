@@ -1,13 +1,31 @@
 import { VStack, Heading, Input, Stack } from '@chakra-ui/react';
+import {
+    setCustomFiltersEndDate,
+    setCustomFiltersStartDate,
+} from 'apps/tt-load/src/redux/slices/timetrackSlice';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 
-interface Props {
-    from: string;
-    to: string;
-    setFrom: (from: string) => void;
-    setTo: (to: string) => void;
-}
+const DatesFilters = () => {
+    const { startDate, endDate } = useAppSelector(
+        (state) => state.timetrack.table.custom
+    );
 
-const DatesFilters = ({ from, to, setFrom, setTo }: Props) => {
+    const dispatch = useAppDispatch();
+
+    const setStartDate = (startDate: string) => {
+        dispatch({
+            type: setCustomFiltersStartDate,
+            payload: startDate,
+        });
+    };
+
+    const setEndDate = (endDate: string) => {
+        dispatch({
+            type: setCustomFiltersEndDate,
+            payload: endDate,
+        });
+    };
+
     return (
         <VStack alignItems={'flex-start'} spacing={3}>
             <Heading fontSize={'lg'}>Date</Heading>
@@ -15,8 +33,16 @@ const DatesFilters = ({ from, to, setFrom, setTo }: Props) => {
                 flexDir={{ base: 'column', md: 'row' }}
                 direction={{ base: 'column', md: 'row' }}
             >
-                <DatesFilterItem label={'From'} value={from} setter={setFrom} />
-                <DatesFilterItem label={'To'} value={to} setter={setTo} />
+                <DatesFilterItem
+                    label={'From'}
+                    value={startDate}
+                    setter={setStartDate}
+                />
+                <DatesFilterItem
+                    label={'To'}
+                    value={endDate}
+                    setter={setEndDate}
+                />
             </Stack>
         </VStack>
     );

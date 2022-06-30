@@ -1,67 +1,50 @@
-import {
-    Heading,
-    HStack,
-    Skeleton,
-    VStack,
-    Text,
-    ExpandedIndex,
-} from '@chakra-ui/react';
+import { Heading, HStack, Skeleton, VStack, Text } from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
     TimetrackItem,
 } from '@gms-micro/api-utils';
-import moment from 'moment';
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
 import { GrPrevious, GrNext } from 'react-icons/gr';
 import { useQuery } from 'react-query';
-import { hoursToHoursMinutesString } from '../../app';
+import { hoursToHHMMstring } from '@gms-micro/datetime-utils';
 import WeeklyTabAccordion from './weekly-tab-accordion';
-import { Flex, IconButton } from '@chakra-ui/react';
+import { IconButton } from '@chakra-ui/react';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
+import { momentToLocaleDateString } from '@gms-micro/datetime-utils';
+import {
+    openWeeklyAccordion,
+    setTableWeeklyDate,
+} from 'apps/tt-load/src/redux/slices/timetrackSlice';
 
-type Props = {
-    selected: number | null;
-    resetForm: () => void;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
-    fillForm: (item: TimetrackItem) => void;
-    expansionTrigger: 'collapse' | 'expand' | null;
-    setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
-    dateShiftTrigger: number | null;
-    setDateShiftTrigger: (date: number | null) => void;
-};
-
-const WeeklyTab = ({
-    selected,
-    resetForm,
-    setType,
-    setSelected,
-    fillForm,
-    expansionTrigger,
-    setExpansionTrigger,
-    dateShiftTrigger,
-    setDateShiftTrigger,
-}: Props) => {
-    const [fromDate, setFromDate] = useState(
-        moment().startOf('week').add(1, 'day')
+const WeeklyTab = () => {
+    const dispatch = useAppDispatch();
+    const startDate = useAppSelector(
+        (state) => state.timetrack.table.weekly.startDate
     );
-    const [toDate, setToDate] = useState(moment().endOf('week').add(1, 'day'));
-    const [weekShift, setWeekShift] = useState(0);
-    const getAuthHeader = useAuthHeader();
-    const [accordionIndex, setAccordionIndex] = useState<ExpandedIndex>([]);
 
-    const itemsQuery = useQuery(['owned-weekly', weekShift], () =>
+    const endDate = useAppSelector(
+        (state) => state.timetrack.table.weekly.endDate
+    );
+
+    const getAuthHeader = useAuthHeader();
+
+    const {
+        isLoading,
+        isSuccess,
+        data: axiosResponse,
+    } = useQuery(['owned-weekly', startDate, endDate], () =>
         getResourceListFilteredAndPaginated<Array<TimetrackItem>>(
             'timetrack/owned/grouped',
             getAuthHeader(),
             [
                 {
                     field: 'date_bgr',
-                    value: weekShiftToDate(weekShift, true),
+                    value: startDate.format('YYYY-MM-DD'),
                 },
                 {
                     field: 'date_sml',
-                    value: weekShiftToDate(weekShift, false),
+                    value: endDate.format('YYYY-MM-DD'),
                 },
             ],
             [],
@@ -72,59 +55,43 @@ const WeeklyTab = ({
     );
 
     const totalHoursHeader = useMemo(
-        () => itemsQuery.data?.headers['total-hours'],
-        [itemsQuery]
+        () => axiosResponse?.headers['total-hours'],
+        [axiosResponse]
     );
-
-    useEffect(() => {
-        if (dateShiftTrigger !== null) {
-            const dateOfNewElement = moment().add(dateShiftTrigger, 'days');
-            const newFromDate = dateOfNewElement.startOf('week').add(1, 'day');
-
-            // This means we are already on the right week
-            if (newFromDate === fromDate) return;
-
-            const differenceInWeeks = newFromDate.diff(fromDate, 'weeks');
-            setWeekShift(weekShift + differenceInWeeks);
-            setDateShiftTrigger(null);
-        }
-    }, [dateShiftTrigger]);
 
     const totalHoursMinutes = useMemo(
         () =>
-            itemsQuery.isSuccess && totalHoursHeader
-                ? hoursToHoursMinutesString(totalHoursHeader)
+            isSuccess && totalHoursHeader
+                ? hoursToHHMMstring(totalHoursHeader)
                 : null,
-        [itemsQuery]
+        [isSuccess]
     );
 
+    const onPreviousWeekClick = () => {
+        dispatch({
+            type: setTableWeeklyDate,
+            payload: {
+                startDate: startDate.clone().subtract(1, 'week'),
+                endDate: endDate.clone().subtract(1, 'week'),
+            },
+        });
+    };
+
+    const onNextWeekClick = () => {
+        dispatch({
+            type: setTableWeeklyDate,
+            payload: {
+                startDate: startDate.clone().add(1, 'week'),
+                endDate: endDate.clone().add(1, 'week'),
+            },
+        });
+    };
+
     useEffect(() => {
-        setFromDate(
-            moment()
-                .startOf('week')
-                .add(weekShift * 7 + 1, 'days')
-        );
-        setToDate(
-            moment()
-                .endOf('week')
-                .add(weekShift * 7 + 1, 'days')
-        );
-    }, [weekShift]);
-
-    const onPreviousWeekClick = useCallback(() => {
-        setWeekShift(weekShift - 1);
-        setExpansionTrigger('expand');
-    }, [weekShift, setWeekShift]);
-
-    const onNextWeekClick = useCallback(() => {
-        setWeekShift(weekShift + 1);
-        itemsQuery.isSuccess && setExpansionTrigger('expand');
-    }, [weekShift, setWeekShift]);
-
-    // Expanded by default on initial render
-    useEffect(() => {
-        setExpansionTrigger('expand');
-    }, []);
+        dispatch({
+            type: openWeeklyAccordion,
+        });
+    }, [startDate, endDate]);
 
     return (
         <VStack w={'full'} spacing={5} h={'full'}>
@@ -138,40 +105,17 @@ const WeeklyTab = ({
                     icon={<GrPrevious />}
                     onClick={onPreviousWeekClick}
                     aria-label="Previous week"
-                    colorScheme={'ghost'}
-                    h={'fit-content'}
-                    w={'fit-content'}
-                    boxShadow={'none !important'}
+                    variant={'ghost'}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
-                    <Flex
-                        flexDir={{ base: 'column', md: 'row' }}
-                        gap={{ base: 0, md: 2 }}
-                    >
-                        <Text>
-                            {fromDate
-                                .locale(navigator.language)
-                                .format(
-                                    navigator.language.includes('en')
-                                        ? 'YYYY-MM-DD'
-                                        : 'DD/MM/YYYY'
-                                )}
-                        </Text>
-                        <Text>-</Text>
-                        <Text>
-                            {toDate
-                                .locale(navigator.language)
-                                .format(
-                                    navigator.language.includes('en')
-                                        ? 'YYYY-MM-DD'
-                                        : 'DD/MM/YYYY'
-                                )}
-                        </Text>
-                    </Flex>
-                    {(itemsQuery.isLoading || !totalHoursMinutes) && (
+                    <Text as={'span'}>
+                        {momentToLocaleDateString(startDate)} -{' '}
+                        {momentToLocaleDateString(endDate)}
+                    </Text>
+                    {(isLoading || !totalHoursMinutes) && (
                         <Skeleton width={'50px'} height={'20px'} />
                     )}
-                    {itemsQuery.isSuccess && totalHoursMinutes && (
+                    {isSuccess && totalHoursMinutes && (
                         <Heading fontSize={'md'}>{totalHoursMinutes}</Heading>
                     )}
                 </HStack>
@@ -179,30 +123,16 @@ const WeeklyTab = ({
                     icon={<GrNext />}
                     onClick={onNextWeekClick}
                     aria-label="Next week"
-                    colorScheme={'ghost'}
-                    h={'fit-content'}
-                    w={'fit-content'}
-                    boxShadow={'none !important'}
+                    variant={'ghost'}
                 />
             </HStack>
-            {itemsQuery.isSuccess && !itemsQuery.data.data.length && (
+            {isSuccess && !axiosResponse?.data.length && (
                 <Text>No hours found for this week</Text>
             )}
-            {itemsQuery.isSuccess && itemsQuery.data.data.length && (
-                <WeeklyTabAccordion
-                    selected={selected}
-                    days={itemsQuery.data.data}
-                    setSelected={setSelected}
-                    setType={setType}
-                    fillForm={fillForm}
-                    resetForm={resetForm}
-                    expansionTrigger={expansionTrigger}
-                    setExpansionTrigger={setExpansionTrigger}
-                    index={accordionIndex}
-                    setIndex={setAccordionIndex}
-                />
+            {isSuccess && axiosResponse?.data.length && (
+                <WeeklyTabAccordion days={axiosResponse.data} />
             )}
-            {itemsQuery.isLoading && <Loading />}
+            {isLoading && <Loading />}
         </VStack>
     );
 };
@@ -222,12 +152,6 @@ const Loading = () => {
             ))}
         </VStack>
     );
-};
-
-export const weekShiftToDate = (dateShift: number, start: boolean) => {
-    var date = start ? moment().startOf('week') : moment().endOf('week');
-    // + 1 because moment.js considers the week starting at sundays
-    return date.add(dateShift * 7 + 1, 'days').format('YYYY-MM-DD');
 };
 
 export default WeeklyTab;

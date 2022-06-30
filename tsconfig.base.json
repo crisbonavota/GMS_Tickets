@@ -22,6 +22,7 @@
             "@gms-micro/chakra-react-select-styles": [
                 "libs/chakra-react-select-styles/src/index.ts"
             ],
+            "@gms-micro/datetime-utils": ["libs/datetime-utils/src/index.ts"],
             "@gms-micro/deploy": ["libs/deploy/src/index.ts"],
             "@gms-micro/files-utils": ["libs/files-utils/src/index.ts"],
             "@gms-micro/microfront-utils": [

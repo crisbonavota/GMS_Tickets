@@ -1,0 +1,23 @@
+{
+    "root": "libs/datetime-utils",
+    "sourceRoot": "libs/datetime-utils/src",
+    "projectType": "library",
+    "tags": [],
+    "targets": {
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["libs/datetime-utils/**/*.{ts,tsx,js,jsx}"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/libs/datetime-utils"],
+            "options": {
+                "jestConfig": "libs/datetime-utils/jest.config.js",
+                "passWithNoTests": true
+            }
+        }
+    }
+}

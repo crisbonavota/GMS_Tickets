@@ -3,14 +3,21 @@ import { getResourceList } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import { useQuery } from 'react-query';
 import { useMemo } from 'react';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { setFormTask } from '../../redux/slices/timetrackSlice';
 
-type Props = {
-    projectId: number | null;
-    task: string;
-    setTask: (task: string) => void;
-};
+const TaskInput = () => {
+    const dispatch = useAppDispatch();
+    const projectId = useAppSelector((state) => state.timetrack.form.project);
+    const task = useAppSelector((state) => state.timetrack.form.task);
 
-const TaskInput = ({ projectId, task, setTask }: Props) => {
+    const setTask = (task: string) => {
+        dispatch({
+            type: setFormTask,
+            payload: task,
+        });
+    };
+
     const getAuthHeader = useAuthHeader();
     // This query will only get triggered when projectId is different from null
     const tasksQuery = useQuery(
@@ -33,6 +40,10 @@ const TaskInput = ({ projectId, task, setTask }: Props) => {
         []
     );
 
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTask(e.target.value);
+    };
+
     return (
         <VStack alignItems={'flex-start'}>
             <Heading fontSize={'md'}>Task</Heading>
@@ -47,9 +58,13 @@ const TaskInput = ({ projectId, task, setTask }: Props) => {
                                 {...inputCommonProps}
                                 list={'tasks-list'}
                                 value={task}
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => setTask(e.target.value)}
+                                onChange={onChange}
+                                // Removes the arrow from the datalist
+                                css={{
+                                    '&::-webkit-calendar-picker-indicator': {
+                                        display: 'none !important',
+                                    },
+                                }}
                             />
                             <datalist id="tasks-list">
                                 {tasksQuery?.data?.data.map((task) => (

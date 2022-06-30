@@ -9,30 +9,13 @@ import {
     VStack,
     HStack,
     Divider,
-    Box,
     Text,
 } from '@chakra-ui/react';
-import { QuerySelect } from '@gms-micro/query-utils';
 import { AiOutlineControl } from 'react-icons/ai';
 import DatesFilters from './dates-filters';
+import CustomTabProjectFilter from './custom-tab-project-filter';
 
-interface Props {
-    from: string;
-    to: string;
-    setFrom: (date: string) => void;
-    setTo: (date: string) => void;
-    projectFilter?: number;
-    setProjectFilter: (id?: number) => void;
-}
-
-const CustomTabPopoverFilters = ({
-    from,
-    to,
-    setFrom,
-    setTo,
-    projectFilter,
-    setProjectFilter,
-}: Props) => {
+const CustomTabPopoverFilters = () => {
     return (
         <Popover placement="auto-start">
             <PopoverTrigger>
@@ -52,25 +35,13 @@ const CustomTabPopoverFilters = ({
                 <PopoverCloseButton />
                 <PopoverBody>
                     <VStack alignItems={'flex-start'} spacing={5} p={2}>
-                        <DatesFilters
-                            from={from}
-                            to={to}
-                            setFrom={setFrom}
-                            setTo={setTo}
-                        />
+                        <DatesFilters />
                         <HStack w={'full'} alignItems={'center'}>
                             <Divider borderColor={'orangered'} />
                             <Text px={3}>Or</Text>
                             <Divider borderColor={'orangered'} />
                         </HStack>
-                        <Box w={'full'}>
-                            <QuerySelect
-                                resource={'projects/for-timetrack'}
-                                title={'Project'}
-                                value={projectFilter}
-                                setValue={setProjectFilter}
-                            />
-                        </Box>
+                        <CustomTabProjectFilter />
                     </VStack>
                 </PopoverBody>
             </PopoverContent>

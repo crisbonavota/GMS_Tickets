@@ -8,54 +8,52 @@ import {
     Button,
     Icon,
     useDisclosure,
-    useBoolean,
     useToast,
 } from '@chakra-ui/react';
 import { deleteResource } from '@gms-micro/api-utils';
+import { clearForm } from 'apps/tt-load/src/redux/slices/timetrackSlice';
 import { useRef } from 'react';
 import { useAuthHeader } from 'react-auth-kit';
 import { AiFillDelete } from 'react-icons/ai';
 import { useMutation, useQueryClient } from 'react-query';
+import { useAppDispatch } from '../../../redux/hooks';
 
 type Props = {
     id: number;
-    resetForm: () => void;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
 };
 
-const DeleteEntry = ({ id, resetForm, setSelected, setType }: Props) => {
+const DeleteEntry = ({ id }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [loading, setLoading] = useBoolean();
     const cancelRef = useRef<any>();
     const toast = useToast();
     const queryClient = useQueryClient();
     const getAuthHeader = useAuthHeader();
+    const dispatch = useAppDispatch();
 
-    const deleteMutation = useMutation(
+    const { mutateAsync: deleteItem, isLoading } = useMutation(
         () => deleteResource('timetrack', id, getAuthHeader()),
         {
-            onMutate: () => {
-                setLoading.on();
-            },
             onSuccess: () => {
-                setLoading.off();
                 onClose();
-                resetForm();
-                setSelected(null);
-                setType('create');
+                dispatch({
+                    type: clearForm,
+                });
                 queryClient.resetQueries(['owned-daily']);
                 queryClient.resetQueries(['owned-weekly']);
-                toast({ title: 'Entry removed', status: 'success', position: 'top', duration: 2000 });
+                toast({
+                    title: 'Entry removed',
+                    status: 'success',
+                    position: 'top',
+                    duration: 2000,
+                });
             },
             onError: (err: any) => {
-                setLoading.off();
                 onClose();
                 toast({
                     title: `Error removing the entry, try again later`,
                     description: err.message || err,
                     status: 'error',
-                    position: 'top', 
+                    position: 'top',
                     duration: 2000,
                 });
             },
@@ -91,11 +89,9 @@ const DeleteEntry = ({ id, resetForm, setSelected, setType }: Props) => {
                             </Button>
                             <Button
                                 colorScheme="red"
-                                onClick={async () =>
-                                    await deleteMutation.mutateAsync()
-                                }
+                                onClick={() => deleteItem()}
                                 ml={3}
-                                isLoading={loading}
+                                isLoading={isLoading}
                             >
                                 Delete
                             </Button>

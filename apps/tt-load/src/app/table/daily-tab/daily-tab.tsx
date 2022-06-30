@@ -1,56 +1,42 @@
-import {
-    VStack,
-    HStack,
-    Text,
-    Icon,
-    Heading,
-    Skeleton,
-} from '@chakra-ui/react';
+import { VStack, HStack, Text, Heading, Skeleton } from '@chakra-ui/react';
 import {
     getResourceListFilteredAndPaginated,
     TimetrackItem,
 } from '@gms-micro/api-utils';
-import { useState, useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useQuery } from 'react-query';
 import { GrNext, GrPrevious } from 'react-icons/gr';
-import moment from 'moment';
 import { useAuthHeader } from 'react-auth-kit';
+import { hoursToHHMMstring } from '@gms-micro/datetime-utils';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 import TableRow from '../table-row/table-row';
-import { hoursToHoursMinutesString } from '../../app';
+import {
+    momentToLocaleDateString,
+    momentToLocaleMoment,
+} from '@gms-micro/datetime-utils';
+import { setTableDailyDate } from 'apps/tt-load/src/redux/slices/timetrackSlice';
+import { IconButton } from '@chakra-ui/react';
 
-type Props = {
-    selected: number | null;
-    resetForm: () => void;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
-    fillForm: (item: TimetrackItem) => void;
-    dateShiftTrigger: number | null;
-    setDateShiftTrigger: (date: number | null) => void;
-};
-
-const DailyTab = ({
-    selected,
-    resetForm,
-    setSelected,
-    fillForm,
-    setType,
-    dateShiftTrigger,
-    setDateShiftTrigger,
-}: Props) => {
+const DailyTab = () => {
+    const dispatch = useAppDispatch();
     const getAuthHeader = useAuthHeader();
-    const [dateShift, setDateShift] = useState(0);
-    const [displayDate, setDisplayDate] = useState(
-        moment().add(dateShift, 'days')
+
+    const dailyDate = useAppSelector(
+        (state) => state.timetrack.table.daily.date
     );
 
-    const itemsQuery = useQuery(['owned-daily', dateShift], () =>
+    const {
+        isSuccess,
+        isLoading,
+        data: axiosResponse,
+    } = useQuery(['owned-daily', dailyDate], () =>
         getResourceListFilteredAndPaginated<TimetrackItem>(
             'timetrack/owned',
             getAuthHeader(),
             [
                 {
                     field: 'date',
-                    value: moment().add(dateShift, 'days').format('YYYY-MM-DD'),
+                    value: dailyDate.format('YYYY-MM-DD'),
                 },
             ],
             [],
@@ -61,33 +47,31 @@ const DailyTab = ({
     );
 
     const totalHoursHeader = useMemo(
-        () => itemsQuery.data?.headers['total-hours'],
-        [itemsQuery]
+        () => axiosResponse?.headers['total-hours'],
+        [axiosResponse]
     );
 
     const totalHoursMinutes = useMemo(
         () =>
-            itemsQuery.isSuccess && totalHoursHeader
-                ? hoursToHoursMinutesString(totalHoursHeader)
+            isSuccess && totalHoursHeader
+                ? hoursToHHMMstring(totalHoursHeader)
                 : null,
-        [itemsQuery]
+        [isSuccess]
     );
 
-    useEffect(() => {
-        setDisplayDate(moment().add(dateShift, 'days'));
-    }, [dateShift]);
+    const onPreviousDayClick = () => {
+        dispatch({
+            type: setTableDailyDate,
+            payload: dailyDate.clone().subtract(1, 'days'),
+        });
+    };
 
-    // This side effect will run when this dateShiftTrigger changes
-    // This dateShiftTrigger is a value set by the create/edit form
-    // The idea of this trigger is that when an entry is created/updated, the current day in the tab
-    // will change to the day of this entry
-    useEffect(() => {
-        if (dateShiftTrigger !== null) {
-            setDateShift(dateShiftTrigger);
-            // null to detect when the dateshift was already triggered and handled by this effect
-            setDateShiftTrigger(null);
-        }
-    }, [dateShiftTrigger, setDateShiftTrigger]);
+    const onNextDayClick = () => {
+        dispatch({
+            type: setTableDailyDate,
+            payload: dailyDate.clone().add(1, 'days'),
+        });
+    };
 
     return (
         <VStack w={'full'} spacing={5} h={'full'}>
@@ -97,33 +81,31 @@ const DailyTab = ({
                 bgColor={'white'}
                 p={3}
             >
-                <Icon
-                    as={GrPrevious}
-                    cursor={'pointer'}
-                    onClick={() => setDateShift(dateShift - 1)}
+                <IconButton
+                    icon={<GrPrevious />}
+                    onClick={onPreviousDayClick}
+                    aria-label="Previous day"
+                    variant={'ghost'}
                 />
                 <HStack justifyContent={'space-between'} w={'full'} px={3}>
                     <Text as={'span'}>
-                        {displayDate.format('ddd').toUpperCase()} -{' '}
-                        {displayDate
-                            .locale(navigator.language)
-                            .format(
-                                navigator.language.includes('en')
-                                    ? 'YYYY-MM-DD'
-                                    : 'DD/MM/YYYY'
-                            )}
+                        {momentToLocaleMoment(dailyDate)
+                            .format('ddd')
+                            .toUpperCase()}{' '}
+                        - {momentToLocaleDateString(dailyDate)}
                     </Text>
-                    {(itemsQuery.isLoading || !totalHoursMinutes) && (
+                    {(isLoading || !totalHoursMinutes) && (
                         <Skeleton width={'50px'} height={'20px'} />
                     )}
-                    {itemsQuery.isSuccess && totalHoursMinutes && (
+                    {totalHoursMinutes && (
                         <Heading fontSize={'md'}>{totalHoursMinutes}</Heading>
                     )}
                 </HStack>
-                <Icon
-                    as={GrNext}
-                    cursor={'pointer'}
-                    onClick={() => setDateShift(dateShift + 1)}
+                <IconButton
+                    icon={<GrNext />}
+                    aria-label="Next day"
+                    onClick={onNextDayClick}
+                    variant={'ghost'}
                 />
             </HStack>
             <VStack
@@ -132,22 +114,13 @@ const DailyTab = ({
                 maxH={{ base: '35vh', md: '40vh' }}
                 overflowY={'auto'}
             >
-                {itemsQuery.isLoading && <Loading />}
-                {itemsQuery.isSuccess && (
+                {isLoading && <Loading />}
+                {isSuccess && axiosResponse && (
                     <>
-                        {itemsQuery.data.data.map((item, index) => (
-                            <TableRow
-                                index={index}
-                                item={item}
-                                selected={selected}
-                                setSelected={setSelected}
-                                fillForm={fillForm}
-                                setType={setType}
-                                key={item.id}
-                                resetForm={resetForm}
-                            />
+                        {axiosResponse.data.map((item, index) => (
+                            <TableRow index={index} item={item} key={item.id} />
                         ))}
-                        {!itemsQuery.data.data.length && (
+                        {!axiosResponse.data.length && (
                             <Text>No hours found for this day</Text>
                         )}
                     </>
@@ -160,7 +133,7 @@ const DailyTab = ({
 const Loading = () => {
     return (
         <VStack w={'full'} spacing={0}>
-            {Array.from(Array(4).keys()).map((item, index) => (
+            {Array.from(Array(4).keys()).map((_i, index) => (
                 <Skeleton
                     key={index}
                     w={'full'}

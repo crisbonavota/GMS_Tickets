@@ -2,33 +2,35 @@ import { Icon } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
 import { useCallback, useMemo } from 'react';
 import { FiCopy } from 'react-icons/fi';
+import { useAppDispatch } from '../../../redux/hooks';
+import {
+    fillForm,
+    clearForm,
+} from 'apps/tt-load/src/redux/slices/timetrackSlice';
 
 export interface CopyEntryProps {
     item: TimetrackItem;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
-    fillForm: (item: TimetrackItem) => void;
 }
 
-export function CopyEntry({
-    item,
-    fillForm,
-    setType,
-    setSelected,
-}: CopyEntryProps) {
+export function CopyEntry({ item }: CopyEntryProps) {
+    const dispatch = useAppDispatch();
     const dateInput = useMemo(
         () => document.getElementById('tt-load-date-input') as HTMLInputElement,
         []
     );
 
-    const onClick = useCallback(() => {
-        fillForm(item);
-        setType('create');
-        setSelected(null);
+    const onClick = () => {
+        dispatch({
+            type: clearForm,
+        });
+        dispatch({
+            type: fillForm,
+            payload: item,
+        });
         window.scrollTo({
             top: 0,
-            behavior: "smooth"
-          });
+            behavior: 'smooth',
+        });
 
         if ('showPicker' in HTMLInputElement.prototype) {
             // @ts-ignore
@@ -36,7 +38,7 @@ export function CopyEntry({
         } else {
             dateInput.focus();
         }
-    }, [fillForm, setType, setSelected, item]);
+    };
 
     return (
         <Icon

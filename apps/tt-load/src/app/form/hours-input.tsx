@@ -1,4 +1,5 @@
 import { useCallback, useRef } from 'react';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import {
     VStack,
     Heading,
@@ -10,15 +11,30 @@ import {
     NumberInputStepper,
     Text,
 } from '@chakra-ui/react';
+import {
+    setFormHours,
+    setFormMinutes,
+} from '../../redux/slices/timetrackSlice';
 
-type Props = {
-    hours: number;
-    minutes: number;
-    setHours: (hours: number) => void;
-    setMinutes: (minutes: number) => void;
-};
+const HoursInput = () => {
+    const dispatch = useAppDispatch();
+    const hours = useAppSelector((state) => state.timetrack.form.hours);
+    const minutes = useAppSelector((state) => state.timetrack.form.minutes);
 
-const HoursInput = ({ hours, minutes, setHours, setMinutes }: Props) => {
+    const setHours = (value: number) => {
+        dispatch({
+            type: setFormHours,
+            payload: value,
+        });
+    };
+
+    const setMinutes = (value: number) => {
+        dispatch({
+            type: setFormMinutes,
+            payload: value,
+        });
+    };
+
     const minutesRef = useRef<HTMLInputElement>(null);
 
     const onHoursChange = (valueAsString: string) => {

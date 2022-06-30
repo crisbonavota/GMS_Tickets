@@ -1,40 +1,41 @@
 import { Icon } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
-import { useCallback } from 'react';
+import {
+    clearForm,
+    clearSelectedForEdit,
+    setForEdit,
+} from 'apps/tt-load/src/redux/slices/timetrackSlice';
 import { MdModeEditOutline } from 'react-icons/md';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
 
 export interface EditEntryProps {
     item: TimetrackItem;
-    resetForm: () => void;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
-    fillForm: (item: TimetrackItem) => void;
-    selected: number | null;
 }
 
-export function EditEntry({
-    item,
-    resetForm,
-    setType,
-    setSelected,
-    fillForm,
-    selected,
-}: EditEntryProps) {
-    const onClick = useCallback(() => {
-        if (item.id === selected) {
-            resetForm();
-            setType('create');
-            setSelected(null);
+export function EditEntry({ item }: EditEntryProps) {
+    const dispatch = useAppDispatch();
+
+    const selectedForEdit = useAppSelector(
+        (state) => state.timetrack.selectedForEdit
+    );
+
+    const onClick = () => {
+        if (item.id === selectedForEdit) {
+            dispatch({ type: clearForm });
+            dispatch({ type: clearSelectedForEdit });
         } else {
-            fillForm(item);
-            setType('edit');
-            setSelected(item.id);
+            dispatch({
+                type: setForEdit,
+                payload: item,
+            });
+
             window.scrollTo({
                 top: 0,
-                behavior: "smooth"
-              });
+                behavior: 'smooth',
+            });
         }
-    }, [item, selected, setType, setSelected, fillForm, resetForm]);
+    };
+
     return (
         <Icon
             cursor={'pointer'}

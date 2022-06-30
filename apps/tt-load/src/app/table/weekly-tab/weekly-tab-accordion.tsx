@@ -1,53 +1,26 @@
-import {
-    Accordion,
-    AccordionItem,
-    AccordionButton,
-    Box,
-    AccordionIcon,
-    AccordionPanel,
-    Text,
-    HStack,
-    ExpandedIndex,
-} from '@chakra-ui/react';
+import { Accordion, ExpandedIndex } from '@chakra-ui/react';
 import { TimetrackItem } from '@gms-micro/api-utils';
-import moment from 'moment';
-import TableRow from '../table-row/table-row';
-import { hoursToHoursMinutesString } from '../../app';
-import { useEffect } from 'react';
+import { useAppSelector, useAppDispatch } from '../../../redux/hooks';
+import { setWeeklyAccordionIndex } from 'apps/tt-load/src/redux/slices/timetrackSlice';
+import WeeklyTabAccordionItem from './weekly-tab-accordion-item';
 
 type Props = {
     days: Array<Array<TimetrackItem>>;
-    selected: number | null;
-    resetForm: () => void;
-    setType: (type: 'edit' | 'create') => void;
-    setSelected: (id: number | null) => void;
-    fillForm: (item: TimetrackItem) => void;
-    expansionTrigger: 'collapse' | 'expand' | null;
-    setExpansionTrigger: (trigger: 'collapse' | 'expand' | null) => void;
-    index: ExpandedIndex;
-    setIndex: (index: ExpandedIndex) => void;
 };
 
-const WeeklyTabAccordion = ({
-    days,
-    selected,
-    resetForm,
-    setType,
-    setSelected,
-    fillForm,
-    expansionTrigger,
-    setExpansionTrigger,
-    index,
-    setIndex,
-}: Props) => {
-    useEffect(() => {
-        if (expansionTrigger === 'expand') {
-            setIndex(days.map((_, i) => i));
-        } else if (expansionTrigger === 'collapse') {
-            setIndex([]);
-        }
-        setExpansionTrigger(null);
-    }, [expansionTrigger, setExpansionTrigger, setIndex]);
+const WeeklyTabAccordion = ({ days }: Props) => {
+    const dispatch = useAppDispatch();
+    const accordionIndex = useAppSelector(
+        (state) => state.timetrack.table.weekly.accordion.index
+    );
+
+    const onChange = (index: ExpandedIndex) => {
+        if (!Array.isArray(index)) return;
+        dispatch({
+            type: setWeeklyAccordionIndex,
+            payload: index as number[],
+        });
+    };
 
     return (
         <Accordion
@@ -55,63 +28,12 @@ const WeeklyTabAccordion = ({
             allowToggle
             w={'full'}
             bgColor={'white'}
-            index={index}
-            onChange={setIndex}
+            index={accordionIndex}
+            onChange={onChange}
         >
+            {/* Each accordion item is a day of the week containing every timetrack item of that day */}
             {days.map((day, index) => (
-                <AccordionItem key={index}>
-                    <h2>
-                        <AccordionButton
-                            bgColor={'gray'}
-                            color={'white'}
-                            _hover={{ bgColor: 'lightgray', color: 'black' }}
-                        >
-                            <HStack
-                                justifyContent={'space-between'}
-                                w={'full'}
-                                pe={2}
-                            >
-                                <Text as={'span'}>
-                                    {moment(day[0].date)
-                                        .locale(navigator.language)
-                                        .format('ddd')
-                                        .toUpperCase()}
-                                    &nbsp;-&nbsp;
-                                    {moment(day[0].date)
-                                        .locale(navigator.language)
-                                        .format(
-                                            navigator.language.includes('en')
-                                                ? 'MM-DD'
-                                                : 'DD/MM'
-                                        )}
-                                </Text>
-                                <Text fontSize={'md'} fontWeight={'bold'}>
-                                    {hoursToHoursMinutesString(
-                                        day
-                                            .map((item) => item.hours)
-                                            .reduce((a, b) => a + b)
-                                    )}
-                                </Text>
-                            </HStack>
-                            <Box flex="1" textAlign="left"></Box>
-                            <AccordionIcon />
-                        </AccordionButton>
-                    </h2>
-                    <AccordionPanel p={0}>
-                        {day.map((item, index) => (
-                            <TableRow
-                                index={index}
-                                item={item}
-                                selected={selected}
-                                key={item.id}
-                                setSelected={setSelected}
-                                fillForm={fillForm}
-                                setType={setType}
-                                resetForm={resetForm}
-                            />
-                        ))}
-                    </AccordionPanel>
-                </AccordionItem>
+                <WeeklyTabAccordionItem key={index} dayOfWeek={day} />
             ))}
         </Accordion>
     );

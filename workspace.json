@@ -7,6 +7,7 @@
         "auth-types": "libs/auth-types",
         "chakra-react-select-styles": "libs/chakra-react-select-styles",
         "container": "apps/container",
+        "datetime-utils": "libs/datetime-utils",
         "deploy": "libs/deploy",
         "files-utils": "libs/files-utils",
         "home": "apps/home",

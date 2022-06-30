@@ -1,18 +1,20 @@
 import { HStack, IconButton } from '@chakra-ui/react';
+import {
+    closeWeeklyAccordion,
+    openWeeklyAccordion,
+} from 'apps/tt-load/src/redux/slices/timetrackSlice';
 import { BsArrowsAngleContract, BsArrowsAngleExpand } from 'react-icons/bs';
-import { useCallback } from 'react';
+import { useAppDispatch } from '../../../redux/hooks';
 
-interface Props {
-    setTrigger: (trigger: 'collapse' | 'expand' | null) => void;
-}
-const WeeklyTabExpandButtons = ({ setTrigger }: Props) => {
-    const onCollapseClick = useCallback(() => {
-        setTrigger('collapse');
-    }, [setTrigger]);
+const WeeklyTabExpandButtons = () => {
+    const dispatch = useAppDispatch();
+    const onCollapseClick = () => {
+        dispatch({ type: closeWeeklyAccordion });
+    };
 
-    const onExpandClick = useCallback(() => {
-        setTrigger('expand');
-    }, [setTrigger]);
+    const onExpandClick = () => {
+        dispatch({ type: openWeeklyAccordion });
+    };
 
     return (
         <HStack w={'fit-content'} position={'absolute'} top={0} right={0} m={5}>

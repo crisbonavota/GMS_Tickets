@@ -2,12 +2,17 @@ import { VStack, Input, Heading, IconButton, HStack } from '@chakra-ui/react';
 import moment from 'moment';
 import { useCallback } from 'react';
 import { GrNext, GrPrevious } from 'react-icons/gr';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { setFormDate } from '../../redux/slices/timetrackSlice';
 
-type Props = {
-    date: string;
-    setDate: (date: string) => void;
-};
-const DateInput = ({ date, setDate }: Props) => {
+const DateInput = () => {
+    const dispatch = useAppDispatch();
+    const date = useAppSelector((state) => state.timetrack.form.date);
+
+    const setDate = (date: string) => {
+        dispatch({ type: setFormDate, payload: date });
+    };
+
     const onPreviousDayClick = useCallback(() => {
         const currentDate = moment(date, 'YYYY-MM-DD');
         const newDate = currentDate.add(-1, 'days').format('YYYY-MM-DD');
@@ -31,10 +36,9 @@ const DateInput = ({ date, setDate }: Props) => {
                         onClick={onPreviousDayClick}
                         aria-label="Previous day"
                         isDisabled={date == ''}
-                        colorScheme={'ghost'}
-                        w={'fit-content'}
+                        variant={'ghost'}
                         h={'fit-content'}
-                        boxShadow={'none !important'}
+                        w={'fit-content'}
                     />
                     <IconButton
                         size={'sm'}
@@ -42,10 +46,9 @@ const DateInput = ({ date, setDate }: Props) => {
                         onClick={onNextDayClick}
                         aria-label="Next day"
                         isDisabled={date == ''}
-                        colorScheme={'ghost'}
-                        w={'fit-content'}
+                        variant={'ghost'}
                         h={'fit-content'}
-                        boxShadow={'none !important'}
+                        w={'fit-content'}
                     />
                 </HStack>
             </HStack>

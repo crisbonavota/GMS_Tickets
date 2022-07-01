@@ -5,16 +5,18 @@ import '@fontsource/quicksand';
 import '@fontsource/b612';
 import '@fontsource/b612-mono';
 import App from './app/app';
-import { ChakraProvider } from '@chakra-ui/react';
-import { getTheme } from '@gms-micro/theme-chakra-ui';
+import { AuthProvider } from 'react-auth-kit';
+import { WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
 
 ReactDOM.render(
     <StrictMode>
-        <ChakraProvider theme={getTheme()}>
-            <BrowserRouter>
-                <App />
-            </BrowserRouter>
-        </ChakraProvider>
+        <WithAuthProvider>
+            <WithChakraProvider>
+                <BrowserRouter>
+                    <App />
+                </BrowserRouter>
+            </WithChakraProvider>
+        </WithAuthProvider>
     </StrictMode>,
     document.getElementById('root')
 );

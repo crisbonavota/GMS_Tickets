@@ -1,4 +1,13 @@
-import { Box, Text, VStack, Image, Heading, Center, Button, useToast } from '@chakra-ui/react';
+import {
+    Box,
+    Text,
+    Image,
+    Heading,
+    VStack,
+    Button,
+    useToast,
+    Center,
+} from '@chakra-ui/react';
 import LoginBackground from '../assets/images/login-background.png';
 import { Tonic3Logo } from '@gms-micro/assets';
 import { GoogleLogin, GoogleLoginResponse } from 'react-google-login';
@@ -6,28 +15,21 @@ import { RiGoogleLine } from 'react-icons/ri';
 import { environment } from '../environments/environment';
 import { useState } from 'react';
 import { signInWithExternalProvider } from './auth';
-import { useAuthHeader, useAuthUser, useIsAuthenticated, useSignIn } from 'react-auth-kit';
+import { useIsAuthenticated, useSignIn } from 'react-auth-kit';
 import queryString from 'query-string';
-import { ApplicationUserPublic } from '@gms-micro/auth-types';
-
-const redirectWithData = (authHeader: string, authState: ApplicationUserPublic) => {
-    const queries = queryString.parse(window.location.search); // .search contains everything in the URL after the ?
-
-    // TODO: create custom no-redirect page or determine where to redirect if no redirect is specified
-    const redirect = queries['redirect'] || 'no-redirect'; // if redirect is not set, redirects to a custom no-redirect page
-    window.location.href = `${window.location.origin}/${redirect}?header=${authHeader}&user=${JSON.stringify(authState)}`;
-}
 
 const App = () => {
     const googleClientId = environment.googleClientId;
     const [loading, setLoading] = useState(false);
     const signIn = useSignIn();
-    const getAuthHeader = useAuthHeader();
-    const getAuthState = useAuthUser();
     const getAuthenticated = useIsAuthenticated();
     const toast = useToast();
+    const queries = queryString.parse(window.location.search);
 
-    if (getAuthenticated()) redirectWithData(getAuthHeader(), getAuthState() as ApplicationUserPublic);
+    if (getAuthenticated())
+        window.location.href = `${window.location.origin}/${
+            queries['redirect'] || ''
+        }`;
 
     const onSuccess = async (response: GoogleLoginResponse) => {
         setLoading(true);
@@ -36,7 +38,10 @@ const App = () => {
         const googleAuthResponse = response.getAuthResponse();
         try {
             // This response comes from our API, that takes the google token and returns a JWT
-            const apiResponse = await signInWithExternalProvider("google", googleAuthResponse.id_token);
+            const apiResponse = await signInWithExternalProvider(
+                'google',
+                googleAuthResponse.id_token
+            );
             signIn({
                 token: apiResponse.data.authToken.token,
                 expiresIn: apiResponse.data.authToken.expiresIn,
@@ -46,24 +51,38 @@ const App = () => {
                 refreshTokenExpireIn: apiResponse.data.refreshToken.expiresIn*/
             });
             window.location.reload();
-        }
-        catch (err) {
-            onFailure(err);
+        } catch (err: any) {
+            console.log(err);
+            setLoading(false);
+            toast({
+                title: 'Error signing in, try again later',
+                description: err.message || err,
+                status: 'error',
+                position: 'top',
+                duration: 2000,
+            });
         }
         setLoading(false);
-    }
+    };
 
-    const onFailure = (e: any) => {
-        console.log(e);
-        toast({ title: "Error signing in, try again later", description: e?.message, status: "error"});
-    }
+    const onFailure = (err: any) => {
+        console.log(err);
+        toast({
+            title: "Can't connect to Google for signing in, try again later",
+            description: err.message || JSON.stringify(err),
+            status: 'error',
+            position: 'top',
+            duration: 2000,
+        });
+    };
 
     return (
         <Box minW={'full'} minH={'100vh'}>
             <Box
                 bgImage={LoginBackground}
-                w={'full'} minH={'50vh'}
-                bgPos={"center center"}
+                w={'full'}
+                minH={'50vh'}
+                bgPos={'center center'}
             >
                 <VStack
                     minW={'full'}
@@ -75,8 +94,21 @@ const App = () => {
                     spacing={8}
                 >
                     <Image src={Tonic3Logo} alt={'Tonic3'} w={'10rem'} />
-                    <Box bgColor={'#999898'} px={3} py={1} borderRadius={5} w={'fit-content'}>
-                        <Heading pt={1} color={'blackAlpha.600'} letterSpacing={2} fontSize={'sm'}>GMS 2022</Heading>
+                    <Box
+                        bgColor={'#999898'}
+                        px={3}
+                        py={1}
+                        borderRadius={5}
+                        w={'fit-content'}
+                    >
+                        <Heading
+                            pt={1}
+                            color={'blackAlpha.600'}
+                            letterSpacing={2}
+                            fontSize={'sm'}
+                        >
+                            GMS 2022
+                        </Heading>
                     </Box>
                 </VStack>
             </Box>
@@ -86,7 +118,7 @@ const App = () => {
                     onSuccess={(r) => onSuccess(r as GoogleLoginResponse)}
                     onRequest={() => setLoading(true)}
                     onFailure={onFailure}
-                    render={renderProps => (
+                    render={(renderProps) => (
                         <Button
                             onClick={renderProps.onClick}
                             disabled={renderProps.disabled}
@@ -103,10 +135,12 @@ const App = () => {
                 />
             </Center>
             <Center bgColor={'black'} w={'full'} h={'4vh'}>
-                <Text color={'whitesmoke'} fontSize={'xs'}>© {new Date().getFullYear()} - TONIC3 GMS</Text>
+                <Text color={'whitesmoke'} fontSize={'xs'}>
+                    © {new Date().getFullYear()} - TONIC3 GMS
+                </Text>
             </Center>
         </Box>
     );
-}
+};
 
 export default App;

@@ -1,17 +1,17 @@
 stages:
-  - test
-  - build-src
-  - update-images
-  - docker-compose-up
-  - prune-images
+    - test
+    - build-src
+    - update-images
+    - docker-compose-up
+    - prune-images
 
 variables:
-  CURRENT_BRANCH: $CI_COMMIT_REF_NAME
-  NODE_VERSION: "17.4.0"
-  VIRTUAL_HOST: gms.devw3americas.com
-  LETSENCRYPT_HOST: gms.devw3americas.com
-  LETSENCRYPT_EMAIL: itteam@tonic3.com
-  NETWORK: nginx-proxy-default
+    CURRENT_BRANCH: $CI_COMMIT_REF_NAME
+    NODE_VERSION: '17.4.0'
+    VIRTUAL_HOST: gms.tonic3.com
+    LETSENCRYPT_HOST: gms.tonic3.com
+    LETSENCRYPT_EMAIL: itteam@tonic3.com
+    NETWORK: nginx-proxy-default
 
 # You can override the included template(s) by including variable overrides
 # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
@@ -21,54 +21,54 @@ variables:
 # See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 
 include:
-  - template: Security/SAST.gitlab-ci.yml
+    - template: Security/SAST.gitlab-ci.yml
 
 sast:
-  stage: test
-  tags:
-    - docker-gms-dev
+    stage: test
+    tags:
+        - docker-gms-dev
 
 gms:
-  stage: build-src
-  tags:
-    - docker-gms-dev
-  image: node:$NODE_VERSION
-  script:
-    - node --version    
-    - npm install
-    #- npm run test
-    - npm run build
-  artifacts:
-    paths:
-    - dist
-    expire_in: 1 week
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    stage: build-src
+    tags:
+        - docker-gms-dev
+    image: node:$NODE_VERSION
+    script:
+        - node --version
+        - npm install
+        #- npm run test
+        - npm run build
+    artifacts:
+        paths:
+            - dist
+        expire_in: 1 week
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
 
 update-images:
-  stage: update-images
-  tags:
-    - gms-new
-  script:
-    - docker build -t gms-img .
-    - docker-compose pull
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    stage: update-images
+    tags:
+        - gms-new
+    script:
+        - docker build -t gms-img .
+        - docker-compose pull
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
 
 build-and-restart-containers:
-  stage: docker-compose-up
-  tags:
-    - gms-new
-  script:
-    - docker-compose up -d --build --remove-orphans
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    stage: docker-compose-up
+    tags:
+        - gms-new
+    script:
+        - docker-compose up -d --build --remove-orphans
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'
 
 prune-images:
-  stage: prune-images
-  tags:
-    - gms-new
-  script:
-    - docker image prune -a -f
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "develop"'
+    stage: prune-images
+    tags:
+        - gms-new
+    script:
+        - docker image prune -a -f
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "master"'

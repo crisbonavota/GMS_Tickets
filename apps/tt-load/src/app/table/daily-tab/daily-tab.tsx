@@ -56,7 +56,7 @@ const DailyTab = () => {
             isSuccess && totalHoursHeader
                 ? hoursToHHMMstring(totalHoursHeader)
                 : null,
-        [isSuccess]
+        [isSuccess, totalHoursHeader]
     );
 
     const onPreviousDayClick = () => {

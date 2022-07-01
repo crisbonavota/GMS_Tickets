@@ -64,7 +64,7 @@ const WeeklyTab = () => {
             isSuccess && totalHoursHeader
                 ? hoursToHHMMstring(totalHoursHeader)
                 : null,
-        [isSuccess]
+        [isSuccess, totalHoursHeader]
     );
 
     const onPreviousWeekClick = () => {

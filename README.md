@@ -16,6 +16,29 @@ npx create-nx-workspace@latest gms-micro
 
 ````
 
+## Development server
+
+Requirements: 
+- `node v17.4.x`
+- `npm v8.3.x`
+- `nx v13.9.x` (`npm i -G nx@13.9.5`)
+
+`npm run start-dev` to start the development server on port 3000.
+ 
+## Production server
+
+Requirements: 
+- `node v17.4.x`
+- `npm v8.3.x`
+- `nx v13.9.x` (`npm i -G nx@13.9.5`)
+- `docker CLI (v18 or higher)`
+- *recommended* `docker desktop 4.x.x`
+
+`npm run start-prod` to start the production server on port 3000.
+> Make sure to have docker running on the background.
+
+*Sometimes an error message appears on console when running this script. This is normal (common bug on the **nx build** command) and can be fixed by running it again*.
+
 ## Generate an application
 
 To maintain the micro-frontend structure, you must create an application (independent web-app) per service.
@@ -85,90 +108,79 @@ First, we must use our custom webpack configuration so the building process will
 },
 ```
 
-After this, we must modify the entrypoint of the app to avoid rendering it to the DOM automatically and rendering it at the `container` app command. We have a lib already setted up to do this for your, all you have to do is calling the lib function for your framework and passing the main component and app name as argument.
+Then, we must add the micro-app to the deploy configuration. You can find it on `libs/deploy/src/lib/deploy.json` and will have this format:
+
+```
+{
+    "apps": [
+        {
+            "name": "tt-reports",
+            "path": "timetrack/reports",
+            "devPort": 3003,
+            "serveOn": {
+                "production": true,
+                "development": true
+            },
+            "allowedRoles": ["tt-reports"],
+            "module": "Timetrack",
+            "label": "Reports",
+            "description": "Generate reports about users TimeTrack loaded hours",
+            "image": "ttReports",
+            "requireAuth": true
+        },
+        ...
+    ]
+}
+```
+
+- name: the name of the micro-app **make sure that it's unique**.
+  
+- path: the route used by react-router-dom to generate the *Route* element.
+  
+- devPort: the port used by the development server to serve the micro-app to the main routing system **Can't be 3000 and can't overlap other ports**.
+  
+- serveOn: booleans that determine if your app will be served on production and on development.
+  
+- allowedRoles: if your app access role-protected endpoints on the API (therefore not any user can use it), you have to specify the role name/s that can access it so the `home` app can detect which apps the authenticated user can access through the roles on the JWT token.
+
+- module: parent module of the app, used for generating cards on home app
+
+- label: app name displayed to the user in links, navbar, etc.
+
+- description: app description displayed on the app card
+
+- image: app image displayed on the app card
+
+- requireAuth: makes the route of the app private so you have to be logged in
+  
+
+Finally, we must modify the entrypoint of the app to avoid rendering it to the DOM automatically and rendering it at the `container` app command. We have a lib already setted up to do this for your, all you have to do is calling the lib function for your framework and passing the main component and app name as argument.
 > By default, the entrypoint is `main`, located on the `src` folder of the app (`myapp/src/main`)
 
-#### Example in React:
+#### Example in React ChakraUI app that requires auth:
 
 ```
 import App from './app/app';
-import { StrictMode } from  'react';
-import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
+import { StrictMode } from 'react';
+import { generateReactMicrofrontEntrypoint, WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
+import { environment } from './environments/environment';
+import { config } from '@gms-micro/deploy';
 
-export const mainComponent = 
-	<StrictMode>
-		<App />
-	</StrictMode>;
+const name = 'tt-load';
+const app = config.apps.find(app => app.name === name);
+if (!app) throw (new Error(`App ${name} not found`));
 
-generateReactMicrofrontEntrypoint('myapp', mainComponent);
+const mainComponent =
+    <StrictMode>
+        <WithAuthProvider>
+            <WithChakraProvider>
+                <App />
+            </WithChakraProvider>
+        </WithAuthProvider>
+    </StrictMode>;
+
+generateReactMicrofrontEntrypoint(app.name, mainComponent);
 ```
-
-
-Once those things are properly configured, we can access the `environment` file of the `container` app and add the app name to the `apps` variable, that will have this format `apps="app1,app2,yourapp"` and your app will be accessible from `yourdomain/yourappname`
-> Don't forget to also app the app to the environment.prod file, that will be used in production build.
-
-If you wan't to use a custom path for your app, instead of the name. you can access the `app.tsx` of the `container` app (`apps/container/src/app/app.tsx`) and add an element to the `customPaths` array that will have this format:
-```
-const customPaths = [
-	{
-		app: 'app1',
-		route: '/pathForApp1'
-	}
-]
-```
-
-This will automatically change the route of the app that matches the app name.
-
-**Take a look at the *development server* section for your app to be served on development**
-
-**Take a look at the *production server* section for your app to be served on production**
-
-## Development server
-
-Requirements: 
-- `node v17.4.x`
-- `npm v8.3.x`
-- `concurrently - any version`  (`npm i -G concurrently`)
-- `nx v13.9.x` (`npm i -G nx@13.9.5`)
-
-If you want to run an application invidually, you can just serve it with `nx run my-app:serve --port=1234` and the app will run on your port.
- 
-However, if you want to run the `container` app with the full routing system, you have to run them simultaneously on different ports (being the `container` app the port 3000) and the `container` app will take care of rendering them under the same host.
-
-`concurrently "nx run container:serve --port:3000" "nx run app-1:serve --port=3001" "nx run app-2:serve --port=3002"`
-> Make sure to scape the " if you paste this code on an npm script
-> `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run app-1:serve --port=3001\"  \"nx run app-2:serve --port=3002\""`
-
-**For an app to work on the development server, it has to meet this requirements:**
-- The app name is present on the `apps` environmental variable of the `container` app (`apps/container/environments/environment.ts`)
-- The app is present on the `start` script/command and the port is explicitly specified as the previous app port + 1.
-- The  position of the app on the `start` script command is the same that the position of the app name on the `apps` environmental variable:
->  ✓ Works
-> `apps = "login,reports,home"`
->  `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run login:serve --port=3001\"  \"nx run reports:serve --port=3002\" \"nx run home --port=3003\""`
-
->  X Doesn't work
->  `apps = "login,reports,home"`
->  `"start": "concurrently \"nx run container:serve --port 3000\"  \"nx run reports:serve --port=3001\"  \"nx run login:serve --port=3002\" \"nx run home --port=3003\""`
-> Both `login` and `reports` won't work properly because the `container` is looking for `login` on port 3001 and `reports` on port 3002 (this is because of the order that they're presented on the `apps` variable) but the server is serving `login` on 3002 and `reports` on 3001.
- 
-## Production server
-
-Requirements: 
-- `node v17.4.x`
-- `npm v8.3.x`
-- `nx v13.9.x` (`npm i -G nx@13.9.5`)
-- `docker CLI (v18 or higher)`
-- *recommended* `docker desktop 4.x.x`
-
- An express/helmet production server is already setted up, (`server.js` ) we just have to run it:
-  - `nx run-many --all --target=build --parallel` // Create the production release of the apps
-  - `docker build -t gms-img` // Create the docker image through the dockerfile
-  - `docker run -dp 3000:80 --name gms-front gms-img` // Start a container running on your localhost (on the 3000 port but you can change it at will)
-
-You can access to the production app through the 3000 port of your localhost.
-
-**For an app to work on the production server, it has to be set on the APPS environmental variable of the `dockerfile`**, that has this format: `ENV APPS=APP1,APP2,YOURAPP`.
 
 ## Running unit tests
 
@@ -184,35 +196,5 @@ Run `nx e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cy
   
 Run `nx graph` to see a diagram of the dependencies of the project
 
-## Authentication logic in Micro-Frontend architecture
-  
-Our `login` app handles the auth API connections, and since services can't share their current state, every app that you create that needs the JWT token / Authenticated user data must redirect to /sign-in sending `redirect=appRoute` as an URL query parameter (`?redirect=myapp`). Then, the sign-in component will handle the JWT token retrieval from cookies or generation from API, and will redirect to the caller route (`appRoute`) sending as URL query parameters the authentication header + authenticated user (`?header=authHeader&user=authUser`) so the original app that asked for the auth data can retrieve it from the URL. 
-
-We use `react-auth-kit` to handle the auth token expiration and persist the sign-in between sessions (cookies)
-
-## How to integrate authentication on your app
-
-There's a handy library already integrated in the workspace to get the auth data (JWT token + authenticated user info)
-
-On your app entrypoint (refer to the ***Integrate an application to the main routing system*** section if you don't know what this is), just call the `getAuthHeader` method from `@gms-micro/auth-methods`.
-
-#### Example in React
-
-```
-import App from './app/app';
-import { StrictMode } from  'react';
-import { generateReactMicrofrontEntrypoint } from  '@gms-micro/microfront-utils';
-import { getAuthHeader } from  '@gms-micro/auth-methods';
-
-const  authHeader = getAuthHeader('reports');
-
-export const mainComponent = 
-	<StrictMode>
-		// Your App has to be configured to receive this info as prop
-		{authHeader && <App  authHeader={authHeader}  />}
-	</StrictMode>;
-
-generateReactMicrofrontEntrypoint('myapp', mainComponent);
-```
-
-Calling the library methods will handle the redirection to the sign in page and the posterior removal of the query parameters from the URL.
+## About auth
+If your app requires auth, you can use the `WithAuthProvider` component to provide the auth context to your app (see previous example); then you can use in the app the provider hooks by `react-auth-kit` to get auth data.

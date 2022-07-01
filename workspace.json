@@ -2,12 +2,25 @@
     "version": 2,
     "projects": {
         "api-filters": "libs/api-filters",
+        "api-utils": "libs/api-utils",
         "assets": "libs/assets",
-        "auth-methods": "libs/auth-methods",
         "auth-types": "libs/auth-types",
+        "chakra-react-select-styles": "libs/chakra-react-select-styles",
         "container": "apps/container",
+        "datetime-utils": "libs/datetime-utils",
+        "deploy": "libs/deploy",
+        "files-utils": "libs/files-utils",
+        "home": "apps/home",
+        "hr-employees": "apps/hr-employees",
+        "hr-updates": "apps/hr-updates",
         "login": "apps/login",
-        "reports": "apps/reports",
-        "theme-chakra-ui": "libs/theme-chakra-ui"
+        "microfront-utils": "libs/microfront-utils",
+        "pm-projects": "apps/pm-projects",
+        "query-utils": "libs/query-utils",
+        "react-hooks": "libs/react-hooks",
+        "table-utils": "libs/table-utils",
+        "theme-chakra-ui": "libs/theme-chakra-ui",
+        "tt-load": "apps/tt-load",
+        "tt-reports": "apps/tt-reports"
     }
 }

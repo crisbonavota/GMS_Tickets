@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
     gms:
-        image: gms-img
+        image: gms-img-prod
         build:
             context: ./
             dockerfile: dockerfile

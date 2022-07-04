@@ -50,7 +50,7 @@ update-images:
     tags:
         - gms-new
     script:
-        - docker build -t gms-img .
+        - docker build -t gms-img-prod .
         - docker-compose pull
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'

@@ -19,10 +19,9 @@ import { postResource } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import { useToast } from '@chakra-ui/react';
 import {
-    clearForm,
+    setTableDailyDate,
     setTableWeeklyDateFromDate,
 } from '../../redux/slices/timetrackSlice';
-import { setTableDailyDate } from 'apps/tt-load/src/redux/slices/timetrackSlice';
 import moment from 'moment';
 
 const CreateForm = () => {
@@ -59,7 +58,6 @@ const CreateForm = () => {
                     duration: 2000,
                 });
 
-                dispatch({ type: clearForm });
                 dispatch({
                     type: setTableDailyDate,
                     payload: moment(formValues.date),

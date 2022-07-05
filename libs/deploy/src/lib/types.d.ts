@@ -16,6 +16,7 @@ export interface App {
     description?: string;
     image?: string;
     requireAuth: boolean;
+    inNavbar?: boolean;
 }
 
 export as namespace Config;

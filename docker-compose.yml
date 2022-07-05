@@ -10,6 +10,7 @@ services:
             VIRTUAL_HOST: gms.tonic3.com
             LETSENCRYPT_HOST: gms.tonic3.com
             LETSENCRYPT_EMAIL: itteam@tonic3.com
+            COMPOSE_PROJECT_NAME: gms-prod
         restart: unless-stopped
 
 networks:

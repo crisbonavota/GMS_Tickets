@@ -12,6 +12,7 @@ variables:
     LETSENCRYPT_HOST: gms.tonic3.com
     LETSENCRYPT_EMAIL: itteam@tonic3.com
     NETWORK: nginx-proxy-default
+    COMPOSE_PROJECT_NAME: gms-prod
 
 # You can override the included template(s) by including variable overrides
 # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
@@ -60,7 +61,7 @@ build-and-restart-containers:
     tags:
         - gms-new
     script:
-        - docker-compose -p gms-prod up -d --build --remove-orphans
+        - docker-compose up -d --build --remove-orphans
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 

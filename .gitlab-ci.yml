@@ -60,7 +60,7 @@ build-and-restart-containers:
     tags:
         - gms-new
     script:
-        - docker-compose up -d --build --remove-orphans
+        - docker-compose -p gms-prod up -d --build --remove-orphans
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 

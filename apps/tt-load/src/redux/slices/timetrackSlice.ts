@@ -107,6 +107,12 @@ export const slice = createSlice({
         clearForm: (state: TimetrackState) => {
             state.form = initialState.form;
         },
+        clearFormButDate: (state: TimetrackState) => {
+            state.form = {
+                ...initialState.form,
+                date: state.form.date,
+            };
+        },
         setForEdit: (
             state: TimetrackState,
             action: PayloadAction<TimetrackItem>
@@ -217,6 +223,7 @@ export const {
     setFormHours,
     setFormMinutes,
     clearForm,
+    clearFormButDate,
     setForEdit,
     fillForm,
     clearSelectedForEdit,

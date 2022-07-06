@@ -10,9 +10,11 @@ export interface Account {
     company: Company;
 }
 
-export interface Company{
+export interface Company {
     id: number;
     name: string;
+    country: Country;
+    status: string;
 }
 
 export interface Proposal {

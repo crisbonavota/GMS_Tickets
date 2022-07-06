@@ -10,8 +10,20 @@ interface Props {
 
 const TabsContent = ({ tabIndex, setTabIndex }: Props) => {
     return (
-        <Tabs index={tabIndex} onChange={setTabIndex} w={'full'}>
-            <TabPanels>
+        <Tabs
+            index={tabIndex}
+            onChange={setTabIndex}
+            w={'fit-content'}
+            minW={'80%'}
+        >
+            <TabPanels
+                bgColor={'gray.200'}
+                rounded={10}
+                borderWidth={1}
+                borderColor={'lightgray'}
+                borderStyle={'solid'}
+                p={5}
+            >
                 <TabPanel>
                     <Clients />
                 </TabPanel>

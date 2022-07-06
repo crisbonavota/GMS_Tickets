@@ -8,6 +8,7 @@ const commonTabProps = {
         color: 'orangered',
         borderColor: 'orangered',
     },
+    boxShadow: 'none !important',
 };
 
 interface Props {

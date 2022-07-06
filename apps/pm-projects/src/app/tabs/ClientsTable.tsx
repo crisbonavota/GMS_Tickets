@@ -5,9 +5,12 @@ import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
 import { HStack, Link, Text } from '@chakra-ui/react';
 import { BsSearch } from 'react-icons/bs';
 import { Link as RouterLink } from 'react-router-dom';
+import { Sort } from '@gms-micro/api-filters';
 
 interface Props {
     clients: Company[];
+    sort: Sort;
+    setSort: (sort: Sort) => void;
 }
 
 const format: DynamicTableFormat[] = [
@@ -46,8 +49,15 @@ const format: DynamicTableFormat[] = [
     },
 ];
 
-const ClientsTable = ({ clients }: Props) => {
-    return <DynamicTable format={format} data={clients} />;
+const ClientsTable = ({ clients, sort, setSort }: Props) => {
+    return (
+        <DynamicTable
+            format={format}
+            data={clients}
+            sort={sort}
+            setSort={setSort}
+        />
+    );
 };
 
 export default ClientsTable;

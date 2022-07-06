@@ -13,8 +13,7 @@ const TabsContent = ({ tabIndex, setTabIndex }: Props) => {
         <Tabs
             index={tabIndex}
             onChange={setTabIndex}
-            w={'fit-content'}
-            minW={'80%'}
+            w={{ base: 'full', md: '80%' }}
         >
             <TabPanels
                 bgColor={'gray.200'}
@@ -23,8 +22,9 @@ const TabsContent = ({ tabIndex, setTabIndex }: Props) => {
                 borderColor={'lightgray'}
                 borderStyle={'solid'}
                 p={5}
+                w={'full'}
             >
-                <TabPanel>
+                <TabPanel w={'full'}>
                     <Clients />
                 </TabPanel>
                 <TabPanel>

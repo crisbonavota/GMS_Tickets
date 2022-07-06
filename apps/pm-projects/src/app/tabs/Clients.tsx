@@ -9,8 +9,14 @@ import { VStack } from '@chakra-ui/react';
 import { RiBuilding4Fill } from 'react-icons/ri';
 import TabHeader from './TabHeader';
 import ClientsTable from './ClientsTable';
+import { useState } from 'react';
+import { Sort } from '@gms-micro/api-filters';
 
 const Clients = () => {
+    const [sort, setSort] = useState<Sort>({
+        field: 'creationDate',
+        isAscending: false,
+    });
     const getAuthHeader = useAuthHeader();
     const {
         isLoading,
@@ -18,14 +24,14 @@ const Clients = () => {
         isError,
         data: clients,
     } = useQuery(
-        'clients',
+        ['clients', sort],
         () =>
             getResourceListFilteredAndPaginated<Company>(
                 'companies',
                 getAuthHeader(),
                 [],
                 [],
-                { field: 'creationDate', isAscending: false }
+                sort
             ),
         { select: (r) => r.data }
     );
@@ -37,7 +43,7 @@ const Clients = () => {
     return (
         <VStack w={'full'} alignItems={'flex-start'} spacing={5}>
             <TabHeader label={'Clients'} icon={RiBuilding4Fill} />
-            <ClientsTable clients={clients} />
+            <ClientsTable clients={clients} sort={sort} setSort={setSort} />
         </VStack>
     );
 };

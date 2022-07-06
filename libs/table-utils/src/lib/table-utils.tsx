@@ -1,4 +1,5 @@
 import {
+    Box,
     Center,
     HStack,
     IconButton,
@@ -12,10 +13,12 @@ import {
     Tr,
     VStack,
 } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import * as lodash from 'lodash';
+import { Sort } from '@gms-micro/api-filters';
+import SortIcons from '../components/SortIcons';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number;
@@ -100,41 +103,68 @@ export interface DynamicTableFormat {
 interface DynamicTableProps {
     format: DynamicTableFormat[];
     data: any[];
+    sort?: Sort;
+    setSort?: (sort: Sort) => void;
 }
 
-export const DynamicTable = ({ format, data }: DynamicTableProps) => {
+export const DynamicTable = ({
+    format,
+    data,
+    sort,
+    setSort,
+}: DynamicTableProps) => {
+    const onSortClick = useCallback(
+        (accessor: string) => {
+            if (!sort || !setSort) return;
+            if (sort.field === accessor)
+                setSort({ ...sort, isAscending: !sort.isAscending });
+            else setSort({ field: accessor, isAscending: true });
+        },
+        [sort, setSort]
+    );
+
     return (
-        <Table w={'full'} maxW={'full'} overflowX={'auto'} bgColor={'white'}>
-            <Thead bgColor={'#FBEAC0'} py={'10px'}>
-                <Tr>
-                    {format.map((f) => (
-                        <Th key={f.header}>
-                            <HStack spacing={1}>
-                                <Text>{f.header}</Text>
-                                {/*<SortIcons />*/}
-                            </HStack>
-                        </Th>
-                    ))}
-                </Tr>
-            </Thead>
-            <Tbody>
-                {data.map((item, _i) => (
-                    <Tr key={_i}>
+        <Box w={'full'} maxW={'full'} overflowX={'auto'}>
+            <Table bgColor={'white'} w={'full'}>
+                <Thead bgColor={'#FBEAC0'} py={'10px'}>
+                    <Tr>
                         {format.map((f) => (
-                            <Td key={f.accessor}>
-                                <Text>
-                                    {f.accessorFn
-                                        ? f.accessorFn(
-                                              lodash.get(item, f.accessor)
-                                          )
-                                        : lodash.get(item, f.accessor)}
-                                </Text>
-                            </Td>
+                            <Th key={f.header}>
+                                <HStack spacing={1}>
+                                    <Text>{f.header}</Text>
+                                    {sort && setSort && (
+                                        <SortIcons
+                                            onClick={() =>
+                                                onSortClick(f.accessor)
+                                            }
+                                            isSorted={f.accessor === sort.field}
+                                            isSortedAscending={sort.isAscending}
+                                        />
+                                    )}
+                                </HStack>
+                            </Th>
                         ))}
                     </Tr>
-                ))}
-            </Tbody>
-        </Table>
+                </Thead>
+                <Tbody>
+                    {data.map((item, _i) => (
+                        <Tr key={_i}>
+                            {format.map((f) => (
+                                <Td key={f.accessor}>
+                                    <Text>
+                                        {f.accessorFn
+                                            ? f.accessorFn(
+                                                  lodash.get(item, f.accessor)
+                                              )
+                                            : lodash.get(item, f.accessor)}
+                                    </Text>
+                                </Td>
+                            ))}
+                        </Tr>
+                    ))}
+                </Tbody>
+            </Table>
+        </Box>
     );
 };
 

@@ -12,6 +12,7 @@ interface BasicModuleProps {
 interface ProjectManagementState {
     clients: BasicModuleProps;
     accounts: BasicModuleProps;
+    jobs: BasicModuleProps;
 }
 
 const initialState: ProjectManagementState = {
@@ -33,6 +34,16 @@ const initialState: ProjectManagementState = {
         sort: {
             field: 'company.name',
             isAscending: true,
+        },
+    },
+    jobs: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: 'creationDate',
+            isAscending: false,
         },
     },
 };

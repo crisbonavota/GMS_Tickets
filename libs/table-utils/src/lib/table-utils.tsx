@@ -19,6 +19,7 @@ import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
 import * as lodash from 'lodash';
 import { Sort } from '@gms-micro/api-filters';
 import SortIcons from '../components/SortIcons';
+import DynamicTablePagination from '../components/DynamicTablePagination';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number;
@@ -105,6 +106,9 @@ interface DynamicTableProps {
     data: any[];
     sort?: Sort;
     setSort?: (sort: Sort) => void;
+    currentPage?: number;
+    totalPages?: number | null;
+    setCurrentPage?: (page: number) => void;
 }
 
 export const DynamicTable = ({
@@ -112,6 +116,9 @@ export const DynamicTable = ({
     data,
     sort,
     setSort,
+    currentPage,
+    totalPages,
+    setCurrentPage,
 }: DynamicTableProps) => {
     const onSortClick = useCallback(
         (accessor: string) => {
@@ -124,47 +131,65 @@ export const DynamicTable = ({
     );
 
     return (
-        <Box w={'full'} maxW={'full'} overflowX={'auto'}>
-            <Table bgColor={'white'} w={'full'}>
-                <Thead bgColor={'#FBEAC0'} py={'10px'}>
-                    <Tr>
-                        {format.map((f) => (
-                            <Th key={f.header}>
-                                <HStack spacing={1}>
-                                    <Text>{f.header}</Text>
-                                    {sort && setSort && (
-                                        <SortIcons
-                                            onClick={() =>
-                                                onSortClick(f.accessor)
-                                            }
-                                            isSorted={f.accessor === sort.field}
-                                            isSortedAscending={sort.isAscending}
-                                        />
-                                    )}
-                                </HStack>
-                            </Th>
-                        ))}
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {data.map((item, _i) => (
-                        <Tr key={_i}>
+        <VStack w={'full'}>
+            {currentPage !== undefined &&
+                setCurrentPage &&
+                totalPages !== undefined && (
+                    <DynamicTablePagination
+                        page={currentPage}
+                        setPage={setCurrentPage}
+                        totalPages={totalPages}
+                    />
+                )}
+            <Box w={'full'} maxW={'full'} overflowX={'auto'}>
+                <Table bgColor={'white'} w={'full'}>
+                    <Thead bgColor={'#FBEAC0'} py={'10px'}>
+                        <Tr>
                             {format.map((f) => (
-                                <Td key={f.accessor}>
-                                    <Text>
-                                        {f.accessorFn
-                                            ? f.accessorFn(
-                                                  lodash.get(item, f.accessor)
-                                              )
-                                            : lodash.get(item, f.accessor)}
-                                    </Text>
-                                </Td>
+                                <Th key={f.header}>
+                                    <HStack spacing={1}>
+                                        <Text>{f.header}</Text>
+                                        {sort && setSort && (
+                                            <SortIcons
+                                                onClick={() =>
+                                                    onSortClick(f.accessor)
+                                                }
+                                                isSorted={
+                                                    f.accessor === sort.field
+                                                }
+                                                isSortedAscending={
+                                                    sort.isAscending
+                                                }
+                                            />
+                                        )}
+                                    </HStack>
+                                </Th>
                             ))}
                         </Tr>
-                    ))}
-                </Tbody>
-            </Table>
-        </Box>
+                    </Thead>
+                    <Tbody>
+                        {data.map((item, _i) => (
+                            <Tr key={_i}>
+                                {format.map((f) => (
+                                    <Td key={f.accessor}>
+                                        <Text>
+                                            {f.accessorFn
+                                                ? f.accessorFn(
+                                                      lodash.get(
+                                                          item,
+                                                          f.accessor
+                                                      )
+                                                  )
+                                                : lodash.get(item, f.accessor)}
+                                        </Text>
+                                    </Td>
+                                ))}
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </Box>
+        </VStack>
     );
 };
 

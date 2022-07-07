@@ -5,12 +5,13 @@ import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
 import { HStack, Link, Text } from '@chakra-ui/react';
 import { BsSearch } from 'react-icons/bs';
 import { Link as RouterLink } from 'react-router-dom';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { changePage, changeSort } from '../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
+import { useCallback } from 'react';
 
 interface Props {
     clients: Company[];
-    sort: Sort;
-    setSort: (sort: Sort) => void;
 }
 
 const format: DynamicTableFormat[] = [
@@ -49,13 +50,37 @@ const format: DynamicTableFormat[] = [
     },
 ];
 
-const ClientsTable = ({ clients, sort, setSort }: Props) => {
+const ClientsTable = ({ clients }: Props) => {
+    const state = useAppSelector((s) => s.projectManagement.clients);
+    const dispatch = useAppDispatch();
+
+    const setSort = useCallback(
+        (s: Sort) =>
+            dispatch({
+                type: changeSort,
+                payload: { module: 'clients', value: s },
+            }),
+        [changeSort, useAppDispatch]
+    );
+
+    const setPage = useCallback(
+        (p: number) =>
+            dispatch({
+                type: changePage,
+                payload: { module: 'clients', value: p },
+            }),
+        [changePage, useAppDispatch]
+    );
+
     return (
         <DynamicTable
             format={format}
             data={clients}
-            sort={sort}
+            sort={state.sort}
             setSort={setSort}
+            currentPage={state.pagination.currentPage}
+            totalPages={state.pagination.totalPages}
+            setCurrentPage={setPage}
         />
     );
 };

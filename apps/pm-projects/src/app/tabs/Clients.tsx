@@ -9,41 +9,60 @@ import { VStack } from '@chakra-ui/react';
 import { RiBuilding4Fill } from 'react-icons/ri';
 import TabHeader from './TabHeader';
 import ClientsTable from './ClientsTable';
-import { useState } from 'react';
-import { Sort } from '@gms-micro/api-filters';
+import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import { useEffect } from 'react';
+import { changeTotalPages } from '../redux/slices/mainSlice';
 
 const Clients = () => {
-    const [sort, setSort] = useState<Sort>({
-        field: 'creationDate',
-        isAscending: false,
-    });
+    const state = useAppSelector((s) => s.projectManagement.clients);
     const getAuthHeader = useAuthHeader();
+    const dispatch = useAppDispatch();
+
     const {
         isLoading,
         isSuccess,
         isError,
-        data: clients,
-    } = useQuery(
-        ['clients', sort],
-        () =>
-            getResourceListFilteredAndPaginated<Company>(
-                'companies',
-                getAuthHeader(),
-                [],
-                [],
-                sort
-            ),
-        { select: (r) => r.data }
+        data: axiosRes,
+    } = useQuery(['clients', state], () =>
+        getResourceListFilteredAndPaginated<Company>(
+            'companies',
+            getAuthHeader(),
+            [],
+            [],
+            state.sort,
+            state.pagination.currentPage,
+            10
+        )
     );
 
+    const clients = axiosRes?.data;
+
+    useEffect(() => {
+        if (isSuccess) {
+            const pagesAmountString = axiosRes?.headers['pages-amount'];
+            if (!pagesAmountString) return;
+
+            const pagesAmount = parseInt(pagesAmountString, 10);
+            if (isNaN(pagesAmount)) return;
+
+            dispatch({
+                type: changeTotalPages,
+                payload: {
+                    module: 'clients',
+                    value: pagesAmount,
+                },
+            });
+        }
+    }, [clients, isSuccess, axiosRes, dispatch, changeTotalPages]);
+
     if (isLoading) return <LoadingOverlay />;
-    if (isError || !isSuccess || !clients)
-        return <>There was an error, try again later</>;
+    if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
-        <VStack w={'full'} alignItems={'flex-start'} spacing={5}>
+        <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
             <TabHeader label={'Clients'} icon={RiBuilding4Fill} />
-            <ClientsTable clients={clients} sort={sort} setSort={setSort} />
+            {/*  @ts-ignore */}
+            <ClientsTable clients={clients} />
         </VStack>
     );
 };

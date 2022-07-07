@@ -1,14 +1,17 @@
 import { Sort } from '@gms-micro/api-filters';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface ProjectManagementState {
-    clients: {
-        pagination: {
-            currentPage: number;
-            totalPages: number | null;
-        };
-        sort: Sort;
+interface BasicModuleProps {
+    pagination: {
+        currentPage: number;
+        totalPages: number | null;
     };
+    sort: Sort;
+}
+
+interface ProjectManagementState {
+    clients: BasicModuleProps;
+    accounts: BasicModuleProps;
 }
 
 const initialState: ProjectManagementState = {
@@ -20,6 +23,16 @@ const initialState: ProjectManagementState = {
         sort: {
             field: 'creationDate',
             isAscending: false,
+        },
+    },
+    accounts: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: 'company.name',
+            isAscending: true,
         },
     },
 };

@@ -48,7 +48,7 @@ const Accounts = () => {
             dispatch({
                 type: changeTotalPages,
                 payload: {
-                    module: 'accounts',
+                    module: 'jobs',
                     value: pagesAmount,
                 },
             });

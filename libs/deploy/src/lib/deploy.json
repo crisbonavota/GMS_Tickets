@@ -82,7 +82,7 @@
         },
         {
             "name": "pm-projects",
-            "path": "project-management/projects",
+            "path": "project-management",
             "serveOn": {
                 "production": true,
                 "development": true

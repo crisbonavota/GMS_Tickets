@@ -12,6 +12,7 @@ export function Navbar() {
     const apps = config.apps.filter(
         (a) =>
             a.inNavbar &&
+            currentUser &&
             currentUser.roles.some((r) => a.allowedRoles?.includes(r))
     );
 

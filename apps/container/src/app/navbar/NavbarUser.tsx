@@ -4,15 +4,19 @@ import { HStack, Avatar, Text } from '@chakra-ui/react';
 const NavbarUser = () => {
     const user = useAuthUser()() as ApplicationUserPrivate;
     return (
-        <HStack color={'white'}>
-            <Avatar
-                variant={'circle'}
-                size={'sm'}
-                src={user.image}
-                name={user.fullName}
-            />
-            <Text>{user.fullName}</Text>
-        </HStack>
+        <>
+            {user && (
+                <HStack color={'white'}>
+                    <Avatar
+                        variant={'circle'}
+                        size={'sm'}
+                        src={user.image}
+                        name={user.fullName}
+                    />
+                    <Text>{user.fullName}</Text>
+                </HStack>
+            )}
+        </>
     );
 };
 export default NavbarUser;

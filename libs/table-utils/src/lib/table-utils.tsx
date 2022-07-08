@@ -99,6 +99,7 @@ export interface DynamicTableFormat {
     header: string;
     accessor: string;
     accessorFn?: (row: any) => any;
+    disableSort?: boolean;
 }
 
 interface DynamicTableProps {
@@ -149,7 +150,7 @@ export const DynamicTable = ({
                                 <Th key={f.header}>
                                     <HStack spacing={1}>
                                         <Text>{f.header}</Text>
-                                        {sort && setSort && (
+                                        {sort && setSort && !f.disableSort && (
                                             <SortIcons
                                                 onClick={() =>
                                                     onSortClick(f.accessor)
@@ -171,7 +172,7 @@ export const DynamicTable = ({
                         {data.map((item, _i) => (
                             <Tr key={_i}>
                                 {format.map((f) => (
-                                    <Td key={f.accessor}>
+                                    <Td key={`${f.header}-${f.accessor}`}>
                                         <Text>
                                             {f.accessorFn
                                                 ? f.accessorFn(

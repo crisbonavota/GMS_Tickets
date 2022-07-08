@@ -2,13 +2,12 @@ import { Company } from '@gms-micro/api-utils';
 import moment from 'moment';
 import { momentToLocaleDateString } from '@gms-micro/datetime-utils';
 import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
-import { HStack, Link, Text } from '@chakra-ui/react';
-import { BsSearch } from 'react-icons/bs';
-import { Link as RouterLink } from 'react-router-dom';
+import { Text } from '@chakra-ui/react';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { changePage, changeSort } from '../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
+import DetailsCell from './DetailsCell';
 
 interface Props {
     clients: Company[];
@@ -40,13 +39,8 @@ const format: DynamicTableFormat[] = [
     {
         header: 'Details',
         accessor: 'id',
-        accessorFn: (id: string) => (
-            <HStack w={'full'}>
-                <Link as={RouterLink} to={`clients/${id}`} w={'fit-content'}>
-                    <BsSearch color={'orangered'} />
-                </Link>
-            </HStack>
-        ),
+        accessorFn: (id: number) => <DetailsCell resource="clients" id={id} />,
+        disableSort: true,
     },
 ];
 

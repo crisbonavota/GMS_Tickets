@@ -39,6 +39,8 @@ export interface Project {
     hours: number;
     creationLegacyUser: LegacyUserPublic;
     uiColor?: string;
+    active: boolean;
+    sold: boolean;
 }
 
 export interface ProjectCreation {

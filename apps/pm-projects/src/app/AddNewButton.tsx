@@ -6,6 +6,8 @@ const AddNewButton = () => {
             colorScheme={'orange'}
             px={10}
             w={{ base: 'full', md: 'fit-content' }}
+            disabled
+            title="Coming soon"
         >
             ADD NEW
         </Button>

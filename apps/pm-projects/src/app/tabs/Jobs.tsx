@@ -8,10 +8,11 @@ import { LoadingOverlay } from '@gms-micro/table-utils';
 import { VStack } from '@chakra-ui/react';
 import TabHeader from './TabHeader';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useEffect } from 'react';
-import { changeTotalPages } from '../redux/slices/mainSlice';
+import { useCallback, useEffect } from 'react';
+import { changeSearch, changeTotalPages } from '../redux/slices/mainSlice';
 import { BsFillBriefcaseFill } from 'react-icons/bs';
 import JobsTable from './JobsTable';
+import FiltersBar from './FiltersBar';
 
 const Accounts = () => {
     const state = useAppSelector((s) => s.projectManagement.jobs);
@@ -23,16 +24,21 @@ const Accounts = () => {
         isSuccess,
         isError,
         data: axiosRes,
-    } = useQuery(['projects', state], () =>
-        getResourceListFilteredAndPaginated<Project>(
-            'projects',
-            getAuthHeader(),
-            [],
-            [],
-            state.sort,
-            state.pagination.currentPage,
-            10
-        )
+        refetch,
+        isRefetching,
+    } = useQuery(
+        ['projects', state.pagination],
+        () =>
+            getResourceListFilteredAndPaginated<Project>(
+                'projects',
+                getAuthHeader(),
+                [{ field: 'name', value: state.search }],
+                [],
+                state.sort,
+                state.pagination.currentPage,
+                10
+            ),
+        { refetchOnWindowFocus: false }
     );
 
     const jobs = axiosRes?.data;
@@ -55,12 +61,32 @@ const Accounts = () => {
         }
     }, [jobs, isSuccess, axiosRes, dispatch, changeTotalPages]);
 
-    if (isLoading) return <LoadingOverlay />;
+    const onSearch = useCallback(
+        (s: string) => {
+            dispatch({
+                type: changeSearch,
+                payload: {
+                    module: 'jobs',
+                    value: s,
+                },
+            });
+        },
+        [dispatch, changeSearch]
+    );
+
+    const onApplyFilters = useCallback(async () => await refetch(), [refetch]);
+
+    if (isLoading || isRefetching) return <LoadingOverlay />;
     if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
-        <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
+        <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
             <TabHeader label={'Jobs'} icon={BsFillBriefcaseFill} />
+            <FiltersBar
+                onSearchChange={onSearch}
+                onApplyClick={onApplyFilters}
+                search={state.search}
+            />
             {/* @ts-ignore */}
             <JobsTable jobs={jobs} />
         </VStack>

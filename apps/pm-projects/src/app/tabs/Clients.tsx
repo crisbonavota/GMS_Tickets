@@ -10,8 +10,9 @@ import { RiBuilding4Fill } from 'react-icons/ri';
 import TabHeader from './TabHeader';
 import ClientsTable from './ClientsTable';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useEffect } from 'react';
-import { changeTotalPages } from '../redux/slices/mainSlice';
+import { useEffect, useCallback } from 'react';
+import { changeSearch, changeTotalPages } from '../redux/slices/mainSlice';
+import FiltersBar from './FiltersBar';
 
 const Clients = () => {
     const state = useAppSelector((s) => s.projectManagement.clients);
@@ -23,16 +24,21 @@ const Clients = () => {
         isSuccess,
         isError,
         data: axiosRes,
-    } = useQuery(['clients', state], () =>
-        getResourceListFilteredAndPaginated<Company>(
-            'companies',
-            getAuthHeader(),
-            [],
-            [],
-            state.sort,
-            state.pagination.currentPage,
-            10
-        )
+        refetch,
+        isRefetching,
+    } = useQuery(
+        ['clients', state.pagination],
+        () =>
+            getResourceListFilteredAndPaginated<Company>(
+                'companies',
+                getAuthHeader(),
+                [{ field: 'name', value: state.search }],
+                [],
+                state.sort,
+                state.pagination.currentPage,
+                10
+            ),
+        { refetchOnWindowFocus: false }
     );
 
     const clients = axiosRes?.data;
@@ -55,12 +61,32 @@ const Clients = () => {
         }
     }, [clients, isSuccess, axiosRes, dispatch, changeTotalPages]);
 
-    if (isLoading) return <LoadingOverlay />;
+    const onSearch = useCallback(
+        (s: string) => {
+            dispatch({
+                type: changeSearch,
+                payload: {
+                    module: 'clients',
+                    value: s,
+                },
+            });
+        },
+        [dispatch, changeSearch]
+    );
+
+    const onApplyFilters = useCallback(async () => await refetch(), [refetch]);
+
+    if (isLoading || isRefetching) return <LoadingOverlay />;
     if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
-        <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
+        <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
             <TabHeader label={'Clients'} icon={RiBuilding4Fill} />
+            <FiltersBar
+                search={state.search}
+                onSearchChange={onSearch}
+                onApplyClick={onApplyFilters}
+            />
             {/*  @ts-ignore */}
             <ClientsTable clients={clients} />
         </VStack>

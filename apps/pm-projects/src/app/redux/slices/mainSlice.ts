@@ -7,6 +7,7 @@ interface BasicModuleProps {
         totalPages: number | null;
     };
     sort: Sort;
+    search: string;
 }
 
 interface ProjectManagementState {
@@ -25,6 +26,7 @@ const initialState: ProjectManagementState = {
             field: 'creationDate',
             isAscending: false,
         },
+        search: '',
     },
     accounts: {
         pagination: {
@@ -35,6 +37,7 @@ const initialState: ProjectManagementState = {
             field: 'company.name',
             isAscending: true,
         },
+        search: '',
     },
     jobs: {
         pagination: {
@@ -45,6 +48,7 @@ const initialState: ProjectManagementState = {
             field: 'creationDate',
             isAscending: false,
         },
+        search: '',
     },
 };
 
@@ -77,9 +81,16 @@ const slice = createSlice({
             state[action.payload.module].pagination.totalPages =
                 action.payload.value;
         },
+        changeSearch: (
+            state: ProjectManagementState,
+            action: PayloadAction<Action>
+        ) => {
+            state[action.payload.module].search = action.payload.value;
+        },
     },
 });
 
-export const { changeSort, changePage, changeTotalPages } = slice.actions;
+export const { changeSort, changePage, changeTotalPages, changeSearch } =
+    slice.actions;
 
 export default slice.reducer;

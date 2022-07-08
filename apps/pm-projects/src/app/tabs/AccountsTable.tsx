@@ -1,12 +1,11 @@
 import { Account } from '@gms-micro/api-utils';
 import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
-import { HStack, Link, Text } from '@chakra-ui/react';
-import { BsSearch } from 'react-icons/bs';
-import { Link as RouterLink } from 'react-router-dom';
+import { Text } from '@chakra-ui/react';
 import { useAppSelector, useAppDispatch } from '../redux/hooks';
 import { changePage, changeSort } from '../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
+import DetailsCell from './DetailsCell';
 
 interface Props {
     accounts: Account[];
@@ -37,13 +36,8 @@ const format: DynamicTableFormat[] = [
     {
         header: 'Details',
         accessor: 'id',
-        accessorFn: (id: string) => (
-            <HStack w={'full'}>
-                <Link as={RouterLink} to={`accounts/${id}`} w={'fit-content'}>
-                    <BsSearch color={'orangered'} />
-                </Link>
-            </HStack>
-        ),
+        accessorFn: (id: number) => <DetailsCell resource="accounts" id={id} />,
+        disableSort: true,
     },
 ];
 

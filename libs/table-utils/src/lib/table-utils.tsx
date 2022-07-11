@@ -1,7 +1,25 @@
-import { HStack, IconButton, Text, VStack } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import {
+    Box,
+    Center,
+    HStack,
+    IconButton,
+    Spinner,
+    Table,
+    Tbody,
+    Td,
+    Text,
+    Th,
+    Thead,
+    Tr,
+    VStack,
+} from '@chakra-ui/react';
+import { useMemo, useCallback } from 'react';
 import { GrFormPrevious, GrFormNext } from 'react-icons/gr';
 import { MdSkipNext, MdSkipPrevious } from 'react-icons/md';
+import * as lodash from 'lodash';
+import { Sort } from '@gms-micro/api-filters';
+import SortIcons from '../components/SortIcons';
+import DynamicTablePagination from '../components/DynamicTablePagination';
 
 export interface TablePaginationWithChakraProps {
     currentPage: number;
@@ -74,5 +92,119 @@ export const TablePaginationWithChakra = ({
                 </Text>
             )}
         </VStack>
+    );
+};
+
+export interface DynamicTableFormat {
+    header: string;
+    accessor: string;
+    accessorFn?: (row: any) => any;
+    disableSort?: boolean;
+}
+
+interface DynamicTableProps {
+    format: DynamicTableFormat[];
+    data: any[];
+    sort?: Sort;
+    setSort?: (sort: Sort) => void;
+    currentPage?: number;
+    totalPages?: number | null;
+    setCurrentPage?: (page: number) => void;
+}
+
+export const DynamicTable = ({
+    format,
+    data,
+    sort,
+    setSort,
+    currentPage,
+    totalPages,
+    setCurrentPage,
+}: DynamicTableProps) => {
+    const onSortClick = useCallback(
+        (accessor: string) => {
+            if (!sort || !setSort) return;
+            if (sort.field === accessor)
+                setSort({ ...sort, isAscending: !sort.isAscending });
+            else setSort({ field: accessor, isAscending: true });
+        },
+        [sort, setSort]
+    );
+
+    return (
+        <VStack w={'full'}>
+            {currentPage !== undefined &&
+                setCurrentPage &&
+                totalPages !== undefined && (
+                    <DynamicTablePagination
+                        page={currentPage}
+                        setPage={setCurrentPage}
+                        totalPages={totalPages}
+                    />
+                )}
+            <Box w={'full'} maxW={'full'} overflowX={'auto'}>
+                <Table bgColor={'white'} w={'full'}>
+                    <Thead bgColor={'#FBEAC0'} py={'10px'}>
+                        <Tr>
+                            {format.map((f) => (
+                                <Th key={f.header}>
+                                    <HStack spacing={1}>
+                                        <Text>{f.header}</Text>
+                                        {sort && setSort && !f.disableSort && (
+                                            <SortIcons
+                                                onClick={() =>
+                                                    onSortClick(f.accessor)
+                                                }
+                                                isSorted={
+                                                    f.accessor === sort.field
+                                                }
+                                                isSortedAscending={
+                                                    sort.isAscending
+                                                }
+                                            />
+                                        )}
+                                    </HStack>
+                                </Th>
+                            ))}
+                        </Tr>
+                    </Thead>
+                    <Tbody>
+                        {data.map((item, _i) => (
+                            <Tr key={_i}>
+                                {format.map((f) => (
+                                    <Td key={`${f.header}-${f.accessor}`}>
+                                        <Text>
+                                            {f.accessorFn
+                                                ? f.accessorFn(
+                                                      lodash.get(
+                                                          item,
+                                                          f.accessor
+                                                      )
+                                                  )
+                                                : lodash.get(item, f.accessor)}
+                                        </Text>
+                                    </Td>
+                                ))}
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </Box>
+        </VStack>
+    );
+};
+
+export const LoadingOverlay = () => {
+    return (
+        <Center
+            w={'full'}
+            h={'full'}
+            position={'absolute'}
+            top={0}
+            left={0}
+            bgColor={'rgba(0, 0, 0, 0.5)'}
+        >
+            <Spinner size={'xl'} color={'white'} />
+        </Center>
     );
 };

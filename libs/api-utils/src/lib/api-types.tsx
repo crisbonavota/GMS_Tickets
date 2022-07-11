@@ -10,9 +10,11 @@ export interface Account {
     company: Company;
 }
 
-export interface Company{
+export interface Company {
     id: number;
     name: string;
+    country: Country;
+    status: string;
 }
 
 export interface Proposal {
@@ -37,6 +39,8 @@ export interface Project {
     hours: number;
     creationLegacyUser: LegacyUserPublic;
     uiColor?: string;
+    active: boolean;
+    sold: boolean;
 }
 
 export interface ProjectCreation {

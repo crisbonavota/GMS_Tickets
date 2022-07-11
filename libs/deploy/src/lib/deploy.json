@@ -8,7 +8,8 @@
                 "development": true
             },
             "label": "Home",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         },
         {
             "name": "login",
@@ -25,14 +26,15 @@
             "path": "timetrack/reports",
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["tt-reports"],
             "module": "Timetrack",
             "label": "Reports",
             "description": "Generate reports about users TimeTrack loaded hours",
             "image": "ttReports",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         },
         {
             "name": "tt-load",
@@ -45,49 +47,53 @@
             "module": "Timetrack",
             "label": "Timetracker",
             "description": "Manage your loaded hours on the TimeTrack system",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         },
         {
             "name": "hr-updates",
             "path": "human-resources/updates",
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["hr-updates"],
             "module": "Human Resources",
             "label": "Updates",
             "description": "Create, see, edit, delete, and export employees updates",
             "image": "hrUpdates",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         },
         {
             "name": "hr-employees",
             "path": "human-resources/employees",
             "serveOn": {
                 "production": true,
-                "development": false
+                "development": true
             },
             "allowedRoles": ["hr-employees"],
             "module": "Human Resources",
             "label": "Employees",
             "description": "See a list of employees and their details",
             "image": "hrEmployees",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         },
         {
             "name": "pm-projects",
-            "path": "project-management/projects",
+            "path": "project-management",
             "serveOn": {
-                "production": true,
-                "development": false
+                "production": false,
+                "development": true
             },
             "allowedRoles": ["project-managers"],
             "module": "Project Management",
             "label": "Projects",
             "description": "See and edit projects that you lead.",
             "image": "pmProjects",
-            "requireAuth": true
+            "requireAuth": true,
+            "inNavbar": true
         }
     ]
 }

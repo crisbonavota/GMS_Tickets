@@ -6,16 +6,10 @@ import FiltersMenu from './FiltersMenu';
 interface Props {
     search: string;
     onSearchChange: (search: string) => void;
-    onApplyClick: () => void;
     filters?: React.ReactNode;
 }
 
-const FiltersBar = ({
-    search,
-    onSearchChange,
-    onApplyClick,
-    filters,
-}: Props) => {
+const FiltersBar = ({ search, onSearchChange, filters }: Props) => {
     const { isOpen, onToggle } = useDisclosure();
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,18 +46,8 @@ const FiltersBar = ({
                         w={'full'}
                         value={search}
                         onChange={onSearch}
-                        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
-                            e.key === 'Enter' && onApplyClick()
-                        }
                     />
                     {filters && <FiltersMenu children={filters} />}
-                    <Button
-                        colorScheme={'orange'}
-                        px={10}
-                        onClick={onApplyClick}
-                    >
-                        Apply
-                    </Button>
                 </Flex>
             )}
         </VStack>

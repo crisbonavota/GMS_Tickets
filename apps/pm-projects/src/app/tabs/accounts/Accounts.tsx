@@ -27,7 +27,7 @@ const Accounts = () => {
         refetch,
         isRefetching,
     } = useQuery(
-        ['accounts', state.pagination],
+        ['accounts', state],
         () =>
             getResourceListFilteredAndPaginated<Account>(
                 'accounts',
@@ -74,19 +74,13 @@ const Accounts = () => {
         [dispatch, changeSearch]
     );
 
-    const onApplyFilters = useCallback(async () => await refetch(), [refetch]);
-
     if (isLoading || isRefetching) return <LoadingOverlay />;
     if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
         <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
             <TabHeader label={'Accounts'} icon={MdAccountBalanceWallet} />
-            <FiltersBar
-                onSearchChange={onSearch}
-                search={state.search}
-                onApplyClick={onApplyFilters}
-            />
+            <FiltersBar onSearchChange={onSearch} search={state.search} />
             {/* @ts-ignore */}
             <AccountsTable accounts={accounts} />
         </VStack>

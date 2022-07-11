@@ -27,7 +27,7 @@ const Accounts = () => {
         refetch,
         isRefetching,
     } = useQuery(
-        ['projects', state.pagination],
+        ['projects', state],
         () =>
             getResourceListFilteredAndPaginated<Project>(
                 'projects',
@@ -74,19 +74,13 @@ const Accounts = () => {
         [dispatch, changeSearch]
     );
 
-    const onApplyFilters = useCallback(async () => await refetch(), [refetch]);
-
     if (isLoading || isRefetching) return <LoadingOverlay />;
     if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
         <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
             <TabHeader label={'Jobs'} icon={BsFillBriefcaseFill} />
-            <FiltersBar
-                onSearchChange={onSearch}
-                onApplyClick={onApplyFilters}
-                search={state.search}
-            />
+            <FiltersBar onSearchChange={onSearch} search={state.search} />
             {/* @ts-ignore */}
             <JobsTable jobs={jobs} />
         </VStack>

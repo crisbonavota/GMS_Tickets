@@ -10,8 +10,15 @@ interface BasicModuleProps {
     search: string;
 }
 
+interface ClientsState extends BasicModuleProps {
+    filters: {
+        country: number | null;
+        active: boolean;
+    };
+}
+
 interface ProjectManagementState {
-    clients: BasicModuleProps;
+    clients: ClientsState;
     accounts: BasicModuleProps;
     jobs: BasicModuleProps;
 }
@@ -27,6 +34,10 @@ const initialState: ProjectManagementState = {
             isAscending: false,
         },
         search: '',
+        filters: {
+            country: null,
+            active: true,
+        },
     },
     accounts: {
         pagination: {
@@ -52,9 +63,9 @@ const initialState: ProjectManagementState = {
     },
 };
 
-interface Action {
+interface Action<T> {
     module: 'clients';
-    value: any;
+    value: T;
 }
 
 const slice = createSlice({
@@ -63,34 +74,47 @@ const slice = createSlice({
     reducers: {
         changeSort: (
             state: ProjectManagementState,
-            action: PayloadAction<Action>
+            action: PayloadAction<Action<Sort>>
         ) => {
             state[action.payload.module].sort = action.payload.value;
         },
         changePage: (
             state: ProjectManagementState,
-            action: PayloadAction<Action>
+            action: PayloadAction<Action<number>>
         ) => {
             state[action.payload.module].pagination.currentPage =
                 action.payload.value;
         },
         changeTotalPages: (
             state: ProjectManagementState,
-            action: PayloadAction<Action>
+            action: PayloadAction<Action<number | null>>
         ) => {
             state[action.payload.module].pagination.totalPages =
                 action.payload.value;
         },
         changeSearch: (
             state: ProjectManagementState,
-            action: PayloadAction<Action>
+            action: PayloadAction<Action<string>>
         ) => {
             state[action.payload.module].search = action.payload.value;
+        },
+        changeFilter: (
+            state: ProjectManagementState,
+            action: PayloadAction<Action<{ key: string; value: number | null }>>
+        ) => {
+            // @ts-ignore
+            state[action.payload.module].filters[action.payload.value.key] =
+                action.payload.value.value;
         },
     },
 });
 
-export const { changeSort, changePage, changeTotalPages, changeSearch } =
-    slice.actions;
+export const {
+    changeSort,
+    changePage,
+    changeTotalPages,
+    changeSearch,
+    changeFilter,
+} = slice.actions;
 
 export default slice.reducer;

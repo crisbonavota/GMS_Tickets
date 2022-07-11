@@ -56,7 +56,7 @@ const generateModules = (roles: string[]) => {
             p={5}
             borderColor={'lightgray'}
             borderWidth={1}
-            colSpan={_i === 0 ? 12 : { base: 12, md: 6, lg: 4, xl: 3 }}
+            colSpan={12}
         >
             <Link href={app.path} w={'full'} h={'full'}>
                 <VStack

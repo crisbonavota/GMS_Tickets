@@ -26,7 +26,7 @@
             "path": "timetrack/reports",
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["tt-reports"],
             "module": "Timetrack",
@@ -41,7 +41,7 @@
             "path": "timetrack/load",
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["tt-load"],
             "module": "Timetrack",
@@ -55,7 +55,7 @@
             "path": "human-resources/updates",
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["hr-updates"],
             "module": "Human Resources",
@@ -70,7 +70,7 @@
             "path": "human-resources/employees",
             "serveOn": {
                 "production": true,
-                "development": true
+                "development": false
             },
             "allowedRoles": ["hr-employees"],
             "module": "Human Resources",

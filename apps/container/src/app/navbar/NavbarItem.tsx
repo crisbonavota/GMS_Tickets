@@ -1,5 +1,4 @@
 import { Link, Text, VStack } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
 
 interface Props {
     label: string;
@@ -11,8 +10,7 @@ interface Props {
 const NavbarItem = ({ label, to, isActive, isDisabled }: Props) => {
     return (
         <Link
-            as={RouterLink}
-            to={isDisabled ? '#' : to}
+            href={isDisabled ? '#' : to}
             px={2}
             color={isDisabled ? 'gray' : 'white'}
             borderBottomColor={'rgba(0, 0, 0, .7)'}

@@ -1,7 +1,15 @@
-import { VStack, Heading, Text, HStack, Avatar, Stack, Link } from '@chakra-ui/react';
+import {
+    VStack,
+    Heading,
+    Text,
+    HStack,
+    Avatar,
+    Link,
+    SimpleGrid,
+    GridItem,
+} from '@chakra-ui/react';
 import { config } from '@gms-micro/deploy';
-import { ApplicationUserPrivate } from '@gms-micro/auth-types'
-import moment from 'moment';
+import { ApplicationUserPrivate } from '@gms-micro/auth-types';
 import { DeployAssets } from '@gms-micro/assets';
 import { environment } from '../environments/environment';
 import { useAuthUser } from 'react-auth-kit';
@@ -10,42 +18,69 @@ const App = () => {
     const authUser = useAuthUser()() as ApplicationUserPrivate;
 
     return (
-        <VStack w={'full'} minH={'92vh'} justifyContent={'center'} spacing={10}>
-            <Heading color={'orangered'} fontSize={'6xl'}>GMS {moment().get("year")}</Heading>
-            {!authUser.roles.length && <Text fontSize={'2xl'}>You don't have any modules yet, please contact your administrator</Text>}
-            <Stack p={3} maxH={'70vh'} overflowY={'auto'}>
+        <VStack
+            w={'full'}
+            minH={'92vh'}
+            justifyContent={'center'}
+            spacing={10}
+            p={5}
+        >
+            {!authUser.roles.length && (
+                <Text fontSize={'2xl'}>
+                    You don't have any modules yet, please contact your
+                    administrator
+                </Text>
+            )}
+            <SimpleGrid w={'80%'} columns={12} spacing={5}>
                 {authUser.roles.length && generateModules(authUser.roles)}
-            </Stack>
+            </SimpleGrid>
         </VStack>
-    )
-}
+    );
+};
 
 const generateModules = (roles: string[]) => {
     // Get apps the apps accessible by the user roles
     let apps = config.apps
-        .filter(app => environment.production ? app.serveOn.production : app.serveOn.development)
-        .filter(app => app.allowedRoles?.some(role => roles.includes(role)));
+        .filter((app) =>
+            environment.production
+                ? app.serveOn.production
+                : app.serveOn.development
+        )
+        .filter((app) => app.allowedRoles?.some((role) => roles.includes(role)))
+        .sort((app) => (app.name === 'tt-load' ? -1 : 1));
 
-    return apps.map(app =>
-        <Link href={app.path}>
-            <HStack
-                key={app.name}
-                bgColor={'white'}
-                p={5}
-                spacing={5}
-                borderRadius={7}
-                borderColor={'lightgray'}
-                borderWidth={1}
-            >
-                <Avatar borderColor={'lightgray'} borderWidth={2} src={DeployAssets[app.image ? app.image : "default"]} size={'lg'} />
-                <VStack alignItems={'flex-start'} w={'full'} position={'relative'}>
-                    <Text fontSize={'sm'} position={'absolute'} top={0} right={0}>{app.module}</Text>
-                    <Heading fontSize={'lg'}>{app.label}</Heading>
-                    <Text>{app.description}</Text>
+    return apps.map((app, _i) => (
+        <GridItem
+            key={app.name}
+            bgColor={'white'}
+            p={5}
+            borderColor={'lightgray'}
+            borderWidth={1}
+            colSpan={_i === 0 ? 12 : { base: 12, md: 6, lg: 4, xl: 3 }}
+        >
+            <Link href={app.path} w={'full'} h={'full'}>
+                <VStack
+                    spacing={5}
+                    justifyContent={'center'}
+                    h={'full'}
+                    w={'full'}
+                >
+                    <HStack>
+                        <Avatar
+                            borderColor={'lightgray'}
+                            borderWidth={2}
+                            src={
+                                DeployAssets[app.image ? app.image : 'default']
+                            }
+                            size={'lg'}
+                        />
+                        <Heading fontSize={'lg'}>{app.label}</Heading>
+                    </HStack>
+                    <Text textAlign={'center'}>{app.description}</Text>
                 </VStack>
-            </HStack>
-        </Link>
-    );
-}
+            </Link>
+        </GridItem>
+    ));
+};
 
-export default App
+export default App;

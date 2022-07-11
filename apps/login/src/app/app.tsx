@@ -107,7 +107,7 @@ const App = () => {
                             letterSpacing={2}
                             fontSize={'sm'}
                         >
-                            GMS 2022
+                            GMS v2.0.1
                         </Heading>
                     </Box>
                 </VStack>

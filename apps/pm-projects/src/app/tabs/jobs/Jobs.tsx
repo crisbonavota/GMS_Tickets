@@ -6,13 +6,13 @@ import {
 import { useAuthHeader } from 'react-auth-kit';
 import { LoadingOverlay } from '@gms-micro/table-utils';
 import { VStack } from '@chakra-ui/react';
-import TabHeader from './TabHeader';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
+import TabHeader from './../TabHeader';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { useCallback, useEffect } from 'react';
-import { changeSearch, changeTotalPages } from '../redux/slices/mainSlice';
+import { changeSearch, changeTotalPages } from '../../redux/slices/mainSlice';
 import { BsFillBriefcaseFill } from 'react-icons/bs';
 import JobsTable from './JobsTable';
-import FiltersBar from './FiltersBar';
+import FiltersBar from './../FiltersBar';
 
 const Accounts = () => {
     const state = useAppSelector((s) => s.projectManagement.jobs);

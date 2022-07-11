@@ -1,21 +1,22 @@
 import { useQuery } from 'react-query';
 import {
-    Account,
+    Company,
     getResourceListFilteredAndPaginated,
 } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
 import { LoadingOverlay } from '@gms-micro/table-utils';
 import { VStack } from '@chakra-ui/react';
-import TabHeader from './TabHeader';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { useCallback, useEffect } from 'react';
-import { changeSearch, changeTotalPages } from '../redux/slices/mainSlice';
-import { MdAccountBalanceWallet } from 'react-icons/md';
-import AccountsTable from './AccountsTable';
-import FiltersBar from './FiltersBar';
+import { RiBuilding4Fill } from 'react-icons/ri';
+import TabHeader from '../TabHeader';
+import ClientsTable from './ClientsTable';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { useEffect, useCallback } from 'react';
+import { changeSearch, changeTotalPages } from '../../redux/slices/mainSlice';
+import FiltersBar from '../FiltersBar';
+import ClientsFilters from './ClientsFilters';
 
-const Accounts = () => {
-    const state = useAppSelector((s) => s.projectManagement.accounts);
+const Clients = () => {
+    const state = useAppSelector((s) => s.projectManagement.clients);
     const getAuthHeader = useAuthHeader();
     const dispatch = useAppDispatch();
 
@@ -27,10 +28,10 @@ const Accounts = () => {
         refetch,
         isRefetching,
     } = useQuery(
-        ['accounts', state.pagination],
+        ['clients', state.pagination],
         () =>
-            getResourceListFilteredAndPaginated<Account>(
-                'accounts',
+            getResourceListFilteredAndPaginated<Company>(
+                'companies',
                 getAuthHeader(),
                 [{ field: 'name', value: state.search }],
                 [],
@@ -41,7 +42,7 @@ const Accounts = () => {
         { refetchOnWindowFocus: false }
     );
 
-    const accounts = axiosRes?.data;
+    const clients = axiosRes?.data;
 
     useEffect(() => {
         if (isSuccess) {
@@ -54,19 +55,19 @@ const Accounts = () => {
             dispatch({
                 type: changeTotalPages,
                 payload: {
-                    module: 'accounts',
+                    module: 'clients',
                     value: pagesAmount,
                 },
             });
         }
-    }, [accounts, isSuccess, axiosRes, dispatch, changeTotalPages]);
+    }, [clients, isSuccess, axiosRes, dispatch, changeTotalPages]);
 
     const onSearch = useCallback(
         (s: string) => {
             dispatch({
                 type: changeSearch,
                 payload: {
-                    module: 'accounts',
+                    module: 'clients',
                     value: s,
                 },
             });
@@ -80,17 +81,18 @@ const Accounts = () => {
     if (isError || !isSuccess) return <>There was an error, try again later</>;
 
     return (
-        <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
-            <TabHeader label={'Accounts'} icon={MdAccountBalanceWallet} />
+        <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
+            <TabHeader label={'Clients'} icon={RiBuilding4Fill} />
             <FiltersBar
-                onSearchChange={onSearch}
                 search={state.search}
+                onSearchChange={onSearch}
                 onApplyClick={onApplyFilters}
+                filters={<ClientsFilters />}
             />
-            {/* @ts-ignore */}
-            <AccountsTable accounts={accounts} />
+            {/*  @ts-ignore */}
+            <ClientsTable clients={clients} />
         </VStack>
     );
 };
 
-export default Accounts;
+export default Clients;

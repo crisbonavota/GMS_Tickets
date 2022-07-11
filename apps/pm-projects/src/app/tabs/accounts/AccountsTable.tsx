@@ -1,11 +1,11 @@
 import { Account } from '@gms-micro/api-utils';
 import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
 import { Text } from '@chakra-ui/react';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { changePage, changeSort } from '../redux/slices/mainSlice';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { changePage, changeSort } from '../../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
-import DetailsCell from './DetailsCell';
+import DetailsCell from './../DetailsCell';
 
 interface Props {
     accounts: Account[];

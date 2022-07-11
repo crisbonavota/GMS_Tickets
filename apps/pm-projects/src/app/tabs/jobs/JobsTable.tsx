@@ -1,12 +1,12 @@
 import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
-import { useAppSelector, useAppDispatch } from '../redux/hooks';
-import { changePage, changeSort } from '../redux/slices/mainSlice';
+import { useAppSelector, useAppDispatch } from '../../redux/hooks';
+import { changePage, changeSort } from '../../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
 import { Project } from '@gms-micro/api-utils';
 import JobType from './JobType';
 import JobResources from './JobResources';
-import DetailsCell from './DetailsCell';
+import DetailsCell from './../DetailsCell';
 
 interface Props {
     jobs: Project[];

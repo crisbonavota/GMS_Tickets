@@ -1,7 +1,7 @@
 import { Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
-import Clients from './Clients';
-import Accounts from './Accounts';
-import Jobs from './Jobs';
+import Clients from './clients/Clients';
+import Accounts from './accounts/Accounts';
+import Jobs from './jobs/Jobs';
 
 interface Props {
     tabIndex: number;

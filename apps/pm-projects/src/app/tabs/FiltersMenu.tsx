@@ -1,21 +1,37 @@
-import { Menu, MenuButton, Button, MenuList, Icon } from '@chakra-ui/react';
+import {
+    Button,
+    Popover,
+    PopoverArrow,
+    PopoverBody,
+    PopoverCloseButton,
+    PopoverContent,
+    PopoverTrigger,
+} from '@chakra-ui/react';
 import { BiFilterAlt } from 'react-icons/bi';
 
-const FiltersMenu = () => {
+interface Props {
+    children: React.ReactNode;
+}
+
+const FiltersMenu = ({ children }: Props) => {
     return (
-        <Menu>
-            <MenuButton minW={'10rem'}>
+        <Popover>
+            <PopoverTrigger>
                 <Button
-                    w={'full'}
+                    minW={'10rem'}
                     rightIcon={<BiFilterAlt />}
                     colorScheme={'orange'}
                     justifyContent={'space-between'}
                 >
                     Filter
                 </Button>
-            </MenuButton>
-            <MenuList></MenuList>
-        </Menu>
+            </PopoverTrigger>
+            <PopoverContent>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverBody pt={8}>{children}</PopoverBody>
+            </PopoverContent>
+        </Popover>
     );
 };
 export default FiltersMenu;

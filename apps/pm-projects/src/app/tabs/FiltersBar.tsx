@@ -7,9 +7,15 @@ interface Props {
     search: string;
     onSearchChange: (search: string) => void;
     onApplyClick: () => void;
+    filters?: React.ReactNode;
 }
 
-const FiltersBar = ({ search, onSearchChange, onApplyClick }: Props) => {
+const FiltersBar = ({
+    search,
+    onSearchChange,
+    onApplyClick,
+    filters,
+}: Props) => {
     const { isOpen, onToggle } = useDisclosure();
 
     const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +56,7 @@ const FiltersBar = ({ search, onSearchChange, onApplyClick }: Props) => {
                             e.key === 'Enter' && onApplyClick()
                         }
                     />
-                    <FiltersMenu />
+                    {filters && <FiltersMenu children={filters} />}
                     <Button
                         colorScheme={'orange'}
                         px={10}

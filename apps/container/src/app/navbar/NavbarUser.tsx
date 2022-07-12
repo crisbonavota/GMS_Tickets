@@ -9,26 +9,22 @@ const NavbarUser = () => {
     return (
         <>
             {user && (
-                <HStack color={'white'} role={'group'}>
+                <HStack color={'white'}>
                     <Avatar
                         variant={'circle'}
                         size={'md'}
                         src={user.image}
                         name={user.fullName}
-                        _groupHover={{ display: 'none' }}
-                    />
-                    <IconButton
-                        colorScheme={'blue'}
-                        icon={<BiExit />}
-                        aria-label="sign out"
-                        rounded={'50%'}
-                        size={'lg'}
-                        border={'1px solid white'}
-                        display={'none'}
-                        _groupHover={{ display: 'flex' }}
-                        onClick={signOut}
                     />
                     <Text>{user.fullName}</Text>
+                    <IconButton
+                        colorScheme={'white'}
+                        variant={'ghost'}
+                        icon={<BiExit />}
+                        aria-label="sign out"
+                        size={'lg'}
+                        onClick={signOut}
+                    />
                 </HStack>
             )}
         </>

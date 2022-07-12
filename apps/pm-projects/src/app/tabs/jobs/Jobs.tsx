@@ -4,7 +4,6 @@ import {
     Project,
 } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
-import { LoadingOverlay } from '@gms-micro/table-utils';
 import { VStack } from '@chakra-ui/react';
 import TabHeader from './../TabHeader';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -13,6 +12,14 @@ import { changeSearch, changeTotalPages } from '../../redux/slices/mainSlice';
 import { BsFillBriefcaseFill } from 'react-icons/bs';
 import JobsTable from './JobsTable';
 import FiltersBar from './../FiltersBar';
+import Loading from '../Loading';
+import JobsFilters from './JobsFilters';
+
+const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
+    if (type.project && type.proposal) return undefined;
+    if (type.project) return true;
+    return false;
+};
 
 const Accounts = () => {
     const state = useAppSelector((s) => s.projectManagement.jobs);
@@ -24,21 +31,24 @@ const Accounts = () => {
         isSuccess,
         isError,
         data: axiosRes,
-        refetch,
-        isRefetching,
-    } = useQuery(
-        ['projects', state],
-        () =>
-            getResourceListFilteredAndPaginated<Project>(
-                'projects',
-                getAuthHeader(),
-                [{ field: 'name', value: state.search }],
-                [],
-                state.sort,
-                state.pagination.currentPage,
-                10
-            ),
-        { refetchOnWindowFocus: false }
+    } = useQuery(['projects', state], () =>
+        getResourceListFilteredAndPaginated<Project>(
+            'projects',
+            getAuthHeader(),
+            [
+                { field: 'name', value: state.search },
+                { field: 'client', value: state.filters.client },
+                { field: 'account', value: state.filters.account },
+                {
+                    field: 'sold',
+                    value: translateTypeFilter(state.filters.type),
+                },
+            ],
+            [],
+            state.sort,
+            state.pagination.currentPage,
+            10
+        )
     );
 
     const jobs = axiosRes?.data;
@@ -74,15 +84,18 @@ const Accounts = () => {
         [dispatch, changeSearch]
     );
 
-    if (isLoading || isRefetching) return <LoadingOverlay />;
-    if (isError || !isSuccess) return <>There was an error, try again later</>;
+    if (isError) return <>Something went wrong, try again later</>;
 
     return (
         <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
             <TabHeader label={'Jobs'} icon={BsFillBriefcaseFill} />
-            <FiltersBar onSearchChange={onSearch} search={state.search} />
-            {/* @ts-ignore */}
-            <JobsTable jobs={jobs} />
+            <FiltersBar
+                onSearchChange={onSearch}
+                search={state.search}
+                filters={<JobsFilters />}
+            />
+            {isSuccess && jobs && <JobsTable jobs={jobs} />}
+            {isLoading && <Loading />}
         </VStack>
     );
 };

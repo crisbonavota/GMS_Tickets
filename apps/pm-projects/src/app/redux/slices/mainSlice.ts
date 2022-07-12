@@ -22,7 +22,14 @@ interface AccountsFilters {
     client: number | null;
 }
 
-interface JobsFilters {}
+interface JobsFilters {
+    account: number | null;
+    client: number | null;
+    type: {
+        project: boolean;
+        proposal: boolean;
+    };
+}
 
 interface ProjectManagementState {
     clients: BasicModuleProps<ClientsFilters>;
@@ -72,7 +79,14 @@ const initialState: ProjectManagementState = {
             isAscending: false,
         },
         search: '',
-        filters: {},
+        filters: {
+            account: null,
+            client: null,
+            type: {
+                project: true,
+                proposal: true,
+            },
+        },
     },
 };
 

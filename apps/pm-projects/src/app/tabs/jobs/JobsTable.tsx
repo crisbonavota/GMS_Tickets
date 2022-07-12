@@ -18,8 +18,8 @@ const format: DynamicTableFormat[] = [
         accessor: 'name',
     },
     {
-        header: 'company',
-        accessor: 'company.name',
+        header: 'account',
+        accessor: 'proposal.account.name',
     },
     {
         header: 'type',

@@ -25,24 +25,21 @@ const Accounts = () => {
         isSuccess,
         isError,
         data: axiosRes,
-    } = useQuery(
-        ['accounts', state],
-        () =>
-            getResourceListFilteredAndPaginated<Account>(
-                'accounts',
-                getAuthHeader(),
-                [
-                    { field: 'name', value: state.search },
-                    { field: 'countryId', value: state.filters.country },
-                    { field: 'active', value: state.filters.active },
-                    { field: 'companyId', value: state.filters.client },
-                ],
-                [],
-                state.sort,
-                state.pagination.currentPage,
-                10
-            ),
-        { refetchOnWindowFocus: false }
+    } = useQuery(['accounts', state], () =>
+        getResourceListFilteredAndPaginated<Account>(
+            'accounts',
+            getAuthHeader(),
+            [
+                { field: 'name', value: state.search },
+                { field: 'countryId', value: state.filters.country },
+                { field: 'active', value: state.filters.active },
+                { field: 'companyId', value: state.filters.client },
+            ],
+            [],
+            state.sort,
+            state.pagination.currentPage,
+            10
+        )
     );
 
     const accounts = axiosRes?.data;

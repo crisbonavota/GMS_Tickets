@@ -4,7 +4,6 @@ import {
     getResourceListFilteredAndPaginated,
 } from '@gms-micro/api-utils';
 import { useAuthHeader } from 'react-auth-kit';
-import { LoadingOverlay } from '@gms-micro/table-utils';
 import { VStack } from '@chakra-ui/react';
 import TabHeader from '../TabHeader';
 import { useAppSelector, useAppDispatch } from '../../redux/hooks';
@@ -13,6 +12,8 @@ import { changeSearch, changeTotalPages } from '../../redux/slices/mainSlice';
 import { MdAccountBalanceWallet } from 'react-icons/md';
 import AccountsTable from './AccountsTable';
 import FiltersBar from '../FiltersBar';
+import Loading from '../Loading';
+import AccountsFilters from './AccountsFilters';
 
 const Accounts = () => {
     const state = useAppSelector((s) => s.projectManagement.accounts);
@@ -24,15 +25,18 @@ const Accounts = () => {
         isSuccess,
         isError,
         data: axiosRes,
-        refetch,
-        isRefetching,
     } = useQuery(
         ['accounts', state],
         () =>
             getResourceListFilteredAndPaginated<Account>(
                 'accounts',
                 getAuthHeader(),
-                [{ field: 'name', value: state.search }],
+                [
+                    { field: 'name', value: state.search },
+                    { field: 'countryId', value: state.filters.country },
+                    { field: 'active', value: state.filters.active },
+                    { field: 'companyId', value: state.filters.client },
+                ],
                 [],
                 state.sort,
                 state.pagination.currentPage,
@@ -74,15 +78,18 @@ const Accounts = () => {
         [dispatch, changeSearch]
     );
 
-    if (isLoading || isRefetching) return <LoadingOverlay />;
-    if (isError || !isSuccess) return <>There was an error, try again later</>;
+    if (isError) return <>There was an error, try again later</>;
 
     return (
         <VStack w={'full'} alignItems={'flex-start'} spacing={1}>
             <TabHeader label={'Accounts'} icon={MdAccountBalanceWallet} />
-            <FiltersBar onSearchChange={onSearch} search={state.search} />
-            {/* @ts-ignore */}
-            <AccountsTable accounts={accounts} />
+            <FiltersBar
+                onSearchChange={onSearch}
+                search={state.search}
+                filters={<AccountsFilters />}
+            />
+            {isSuccess && accounts && <AccountsTable accounts={accounts} />}
+            {isLoading && <Loading />}
         </VStack>
     );
 };

@@ -1,26 +1,33 @@
 import { Sort } from '@gms-micro/api-filters';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface BasicModuleProps {
+interface BasicModuleProps<Filter> {
     pagination: {
         currentPage: number;
         totalPages: number | null;
     };
     sort: Sort;
     search: string;
+    filters: Filter;
 }
 
-interface ClientsState extends BasicModuleProps {
-    filters: {
-        country: number | null;
-        active: boolean;
-    };
+interface ClientsFilters {
+    country: number | null;
+    active: boolean;
 }
+
+interface AccountsFilters {
+    country: number | null;
+    active: boolean;
+    client: number | null;
+}
+
+interface JobsFilters {}
 
 interface ProjectManagementState {
-    clients: ClientsState;
-    accounts: BasicModuleProps;
-    jobs: BasicModuleProps;
+    clients: BasicModuleProps<ClientsFilters>;
+    accounts: BasicModuleProps<AccountsFilters>;
+    jobs: BasicModuleProps<JobsFilters>;
 }
 
 const initialState: ProjectManagementState = {
@@ -49,6 +56,11 @@ const initialState: ProjectManagementState = {
             isAscending: true,
         },
         search: '',
+        filters: {
+            country: null,
+            active: true,
+            client: null,
+        },
     },
     jobs: {
         pagination: {
@@ -60,6 +72,7 @@ const initialState: ProjectManagementState = {
             isAscending: false,
         },
         search: '',
+        filters: {},
     },
 };
 

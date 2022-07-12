@@ -136,7 +136,8 @@ const App = () => {
             </Center>
             <Center bgColor={'black'} w={'full'} h={'4vh'}>
                 <Text color={'whitesmoke'} fontSize={'xs'}>
-                    © {new Date().getFullYear()} - TONIC3 GMS
+                    All GMS W3 Rights Reserved | GMS is a W3 Trendmark | ©{' '}
+                    {new Date(Date.now()).getFullYear()}
                 </Text>
             </Center>
         </Box>

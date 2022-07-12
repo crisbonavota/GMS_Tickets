@@ -197,12 +197,14 @@ export const DynamicTable = ({
 export const LoadingOverlay = () => {
     return (
         <Center
-            w={'full'}
-            h={'full'}
+            w={'100vw'}
+            h={'100vh'}
             position={'absolute'}
-            top={0}
-            left={0}
+            top={'50%'}
+            left={'50%'}
+            transform={'translate(-50%, -50%)'}
             bgColor={'rgba(0, 0, 0, 0.5)'}
+            zIndex={999}
         >
             <Spinner size={'xl'} color={'white'} />
         </Center>

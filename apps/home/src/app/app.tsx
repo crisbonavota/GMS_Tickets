@@ -31,7 +31,11 @@ const App = () => {
                     administrator
                 </Text>
             )}
-            <SimpleGrid w={'80%'} columns={12} spacing={5}>
+            <SimpleGrid
+                w={{ base: '80%', md: '50%', lg: '40%', xl: '30%' }}
+                columns={12}
+                spacing={5}
+            >
                 {authUser.roles.length && generateModules(authUser.roles)}
             </SimpleGrid>
         </VStack>

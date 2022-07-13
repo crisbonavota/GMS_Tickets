@@ -1,5 +1,6 @@
 import {
     Button,
+    Divider,
     Modal,
     ModalBody,
     ModalCloseButton,
@@ -10,6 +11,7 @@ import {
     VStack,
 } from '@chakra-ui/react';
 import { HiPuzzle } from 'react-icons/hi';
+import AddMember from './AddMember';
 import Members from './Members';
 
 interface Props {
@@ -34,8 +36,10 @@ const JobResources = ({ id }: Props) => {
                     <ModalHeader>Project resources</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <VStack w={'full'}>
+                        <VStack w={'full'} spacing={5}>
                             <Members id={id} />
+                            <Divider />
+                            <AddMember projectId={id} />
                         </VStack>
                     </ModalBody>
                 </ModalContent>

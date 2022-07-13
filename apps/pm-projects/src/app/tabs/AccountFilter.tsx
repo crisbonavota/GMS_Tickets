@@ -50,7 +50,7 @@ const AccountFilter = ({ setter }: Props) => {
                 noOptionsMessage={(props) =>
                     props.inputValue !== ''
                         ? 'No results found, try different keywords'
-                        : 'Start typing to search for clients'
+                        : 'Start typing to search for accounts'
                 }
                 onChange={onChange}
             />

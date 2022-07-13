@@ -28,7 +28,13 @@ const Members = ({ id }: Props) => {
     );
 
     return (
-        <VStack w={'full'} alignItems={'flex-start'} spacing={3}>
+        <VStack
+            w={'full'}
+            alignItems={'flex-start'}
+            spacing={3}
+            maxH={'50vh'}
+            overflowY={'auto'}
+        >
             {isLoading && <Loading />}
             {isSuccess && members && (
                 <>

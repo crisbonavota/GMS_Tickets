@@ -28,8 +28,11 @@ const format: DynamicTableFormat[] = [
     },
     {
         header: 'resources',
-        accessor: 'id',
-        accessorFn: (id: number) => <JobResources id={id} />,
+        accessor: '',
+        accessorFn: (project: Project) => (
+            <JobResources id={project.id} leader={project.leaderLegacyUser} />
+        ),
+        rawObject: true,
         disableSort: true,
     },
     {

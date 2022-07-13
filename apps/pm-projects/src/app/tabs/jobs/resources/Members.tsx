@@ -50,7 +50,6 @@ const Members = ({ id }: Props) => {
                                     />
                                 </HStack>
                                 <Text fontSize={'sm'} color={'orangered'}>
-                                    {' '}
                                     {m.email}
                                 </Text>
                             </VStack>

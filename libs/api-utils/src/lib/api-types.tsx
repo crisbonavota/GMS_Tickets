@@ -8,6 +8,10 @@ export interface Account {
     id: number;
     name: string;
     company: Company;
+    country: Country;
+    notes: string;
+    active: boolean;
+    responsibleLegacyUser: LegacyUserPublic;
 }
 
 export interface Company {

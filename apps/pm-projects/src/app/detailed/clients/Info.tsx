@@ -1,7 +1,7 @@
 import { Company } from '@gms-micro/api-utils';
 import InfoBox, { InfoTitle } from '../InfoBox';
 import { SimpleGrid, GridItem, VStack, Heading } from '@chakra-ui/react';
-import EditClient from './EditClient';
+import EditButton from '../EditButton';
 
 interface Props {
     client: Company;
@@ -18,7 +18,7 @@ const Info = ({ client }: Props) => {
                         alignItems={'flex-start'}
                     >
                         <InfoTitle title={'Address'} content={client.address} />
-                        <EditClient />
+                        <EditButton />
                     </VStack>
                 </GridItem>
                 <GridItem colSpan={6}>

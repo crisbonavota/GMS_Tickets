@@ -7,6 +7,7 @@ import NotFound from './not-found/not-found';
 import { config } from '@gms-micro/deploy';
 import { RequireAuth } from 'react-auth-kit';
 import ClientDetailedView from '../../../pm-projects/src/app/detailed/clients/ClientDetailedView';
+import AccountDetailedView from '../../../pm-projects/src/app/detailed/accounts/AccountDetailedView';
 
 const App = () => {
     const location = useLocation();
@@ -21,6 +22,10 @@ const App = () => {
                     <Route
                         path={'/project-management/clients/:id'}
                         element={<ClientDetailedView />}
+                    />
+                    <Route
+                        path={'/project-management/accounts/:id'}
+                        element={<AccountDetailedView />}
                     />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

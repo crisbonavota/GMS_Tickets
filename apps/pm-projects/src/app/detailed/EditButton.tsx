@@ -1,13 +1,13 @@
 import { Button } from '@chakra-ui/react';
-import { BiEdit, BiPencil } from 'react-icons/bi';
+import { BiPencil } from 'react-icons/bi';
 
 interface Props {}
 
-const EditClient = (props: Props) => {
+const EditButton = (props: Props) => {
     return (
         <Button colorScheme={'ghost'} leftIcon={<BiPencil />}>
             Edit
         </Button>
     );
 };
-export default EditClient;
+export default EditButton;

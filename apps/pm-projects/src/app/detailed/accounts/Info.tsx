@@ -1,6 +1,6 @@
 import { Account } from '@gms-micro/api-utils';
 import InfoBox, { InfoTitle } from '../InfoBox';
-import { SimpleGrid, GridItem, HStack, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import EditButton from '../EditButton';
 
 interface Props {
@@ -9,33 +9,28 @@ interface Props {
 
 const Info = ({ account }: Props) => {
     return (
-        <InfoBox>
-            <SimpleGrid columns={12} minW={'25rem'} spacing={10}>
-                <GridItem colSpan={12}>
-                    <HStack
-                        w={'full'}
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                    >
-                        <InfoTitle
-                            title={'Country'}
-                            content={account.country.name}
-                        />
-                        <InfoTitle
-                            title={'Responsible'}
-                            content={
-                                account.responsibleLegacyUser?.fullName || ''
-                            }
-                        />
-                    </HStack>
-                </GridItem>
-                <GridItem colSpan={6}>
-                    <VStack spacing={5} alignItems={'flex-start'}>
-                        <InfoTitle title="Notes" content={account.notes} />
-                        <EditButton />
-                    </VStack>
-                </GridItem>
-            </SimpleGrid>
+        <InfoBox w={'full'}>
+            <VStack spacing={10} w={{ base: 'full', md: 'fit-content' }}>
+                <HStack
+                    w={'full'}
+                    justifyContent={'space-between'}
+                    alignItems={'center'}
+                    spacing={20}
+                >
+                    <InfoTitle
+                        title={'Country'}
+                        content={account.country.name}
+                    />
+                    <InfoTitle
+                        title={'Responsible'}
+                        content={account.responsibleLegacyUser?.fullName || ''}
+                    />
+                </HStack>
+                <VStack spacing={5} alignItems={'flex-start'} w={'full'}>
+                    <InfoTitle title="Notes" content={account.notes} />
+                    <EditButton />
+                </VStack>
+            </VStack>
         </InfoBox>
     );
 };

@@ -1,15 +1,7 @@
-import { Box, VStack, Text } from '@chakra-ui/react';
+import { Box, VStack, Text, BoxProps } from '@chakra-ui/react';
 
-interface Props {
-    children: React.ReactNode;
-}
-
-const InfoBox = ({ children }: Props) => {
-    return (
-        <Box p={5} rounded={20} bgColor={'#3B8A7F'}>
-            {children}
-        </Box>
-    );
+const InfoBox = (props: BoxProps) => {
+    return <Box p={5} rounded={20} bgColor={'#3B8A7F'} {...props} />;
 };
 
 interface InfoTitleProps {

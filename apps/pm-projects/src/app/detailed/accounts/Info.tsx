@@ -23,7 +23,9 @@ const Info = ({ account }: Props) => {
                         />
                         <InfoTitle
                             title={'Responsible'}
-                            content={account.responsibleLegacyUser.fullName}
+                            content={
+                                account.responsibleLegacyUser?.fullName || ''
+                            }
                         />
                     </HStack>
                 </GridItem>

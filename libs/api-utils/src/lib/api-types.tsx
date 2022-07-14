@@ -11,7 +11,7 @@ export interface Account {
     country: Country;
     notes: string;
     active: boolean;
-    responsibleLegacyUser: LegacyUserPublic;
+    responsibleLegacyUser?: LegacyUserPublic;
 }
 
 export interface Company {

@@ -6,6 +6,7 @@ import Navbar from './navbar/navbar';
 import NotFound from './not-found/not-found';
 import { config } from '@gms-micro/deploy';
 import { RequireAuth } from 'react-auth-kit';
+import ClientDetailedView from '../../../pm-projects/src/app/detailed/clients/ClientDetailedView';
 
 const App = () => {
     const location = useLocation();
@@ -17,6 +18,10 @@ const App = () => {
             <Box w={'full'} flex={1} bgColor={'whitesmoke'}>
                 <Routes>
                     {generateMicrofrontRoutes()}
+                    <Route
+                        path={'/project-management/clients/:id'}
+                        element={<ClientDetailedView />}
+                    />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Box>

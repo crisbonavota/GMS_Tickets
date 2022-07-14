@@ -6,7 +6,7 @@ import { useCallback } from 'react';
 import { Project } from '@gms-micro/api-utils';
 import JobType from './JobType';
 import JobResources from './resources/JobResources';
-import DetailsCell from './../DetailsCell';
+import DetailsCell from '../DetailsCell';
 
 interface Props {
     jobs: Project[];

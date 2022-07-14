@@ -1,28 +1,27 @@
 import App from './app/app';
 import { StrictMode } from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
-import { generateReactMicrofrontEntrypoint, WithAuthProvider, WithChakraProvider } from '@gms-micro/microfront-utils';
-import { environment } from './environments/environment';
+import {
+    generateReactMicrofrontEntrypoint,
+    WithAuthProvider,
+    WithChakraProvider,
+    WithQueryProvider,
+} from '@gms-micro/microfront-utils';
 import { config } from '@gms-micro/deploy';
 
-const name = "tt-reports";
-const app = config.apps.find(app => app.name === 'tt-reports');
-if (!app) throw (new Error(`App ${name} not found`));
+const name = 'tt-reports';
+const app = config.apps.find((app) => app.name === 'tt-reports');
+if (!app) throw new Error(`App ${name} not found`);
 
-const queryClient = new QueryClient();
-
-const mainComponent =
+const mainComponent = (
     <StrictMode>
         <WithAuthProvider>
             <WithChakraProvider>
-                <QueryClientProvider client={queryClient}>
+                <WithQueryProvider>
                     <App />
-                    {!environment.production && <ReactQueryDevtools />}
-                </QueryClientProvider>
+                </WithQueryProvider>
             </WithChakraProvider>
         </WithAuthProvider>
-    </StrictMode>;
+    </StrictMode>
+);
 
 generateReactMicrofrontEntrypoint(app.name, mainComponent);
-

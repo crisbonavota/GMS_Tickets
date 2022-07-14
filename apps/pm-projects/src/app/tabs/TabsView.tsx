@@ -1,9 +1,9 @@
 import { Text, VStack, HStack, Hide, Flex } from '@chakra-ui/react';
 import { BsGearFill } from 'react-icons/bs';
 import AddNewButton from './AddNewButton';
-import TabsSelector from './tabs/TabsSelector';
+import TabsSelector from './TabsSelector';
 import { useState } from 'react';
-import TabsContent from './tabs/TabsContent';
+import TabsContent from './TabsContent';
 
 const TabsView = () => {
     const [tabIndex, setTabIndex] = useState(0);

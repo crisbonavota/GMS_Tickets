@@ -5,13 +5,14 @@ interface Props {
     label: string;
     icon: IconType;
 }
-const TabHeader = ({ label, icon }: Props) => {
+
+const TableHeader = ({ label, icon }: Props) => {
     return (
-        <HStack spacing={2} fontSize={'4xl'}>
+        <HStack spacing={2} fontSize={'2xl'}>
             <Icon as={icon} color={'#3B8A7F'} />
             <Heading fontSize={'inherit'}>{label}</Heading>
         </HStack>
     );
 };
 
-export default TabHeader;
+export default TableHeader;

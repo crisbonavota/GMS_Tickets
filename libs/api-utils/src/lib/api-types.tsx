@@ -52,6 +52,8 @@ export interface Project {
     uiColor?: string;
     active: boolean;
     sold: boolean;
+    currency: Currency;
+    notes: string;
 }
 
 export interface ProjectCreation {

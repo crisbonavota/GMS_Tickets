@@ -1,8 +1,5 @@
 import { Project } from '@gms-micro/api-utils';
 import { DynamicTable, DynamicTableFormat } from '@gms-micro/table-utils';
-import { Link } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-import { BiSearch } from 'react-icons/bi';
 import JobType from '../tabs/jobs/JobType';
 import DetailsButton from './DetailsButton';
 
@@ -26,7 +23,7 @@ const format: DynamicTableFormat[] = [
     {
         header: 'Details',
         accessor: 'id',
-        accessorFn: (id: number) => <DetailsButton path="jobs" id={id} />,
+        accessorFn: (id: number) => <DetailsButton path="Projects" id={id} />,
     },
 ];
 

@@ -6,7 +6,7 @@ const InfoBox = (props: BoxProps) => {
 
 interface InfoTitleProps {
     title: string;
-    content: string;
+    content?: string;
 }
 
 export const InfoTitle = ({ title, content }: InfoTitleProps) => {

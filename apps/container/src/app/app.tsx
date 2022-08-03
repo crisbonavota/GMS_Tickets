@@ -8,6 +8,7 @@ import { config } from '@gms-micro/deploy';
 import { RequireAuth } from 'react-auth-kit';
 import ClientDetailedView from '../../../pm-projects/src/app/detailed/clients/ClientDetailedView';
 import AccountDetailedView from '../../../pm-projects/src/app/detailed/accounts/AccountDetailedView';
+import JobDetailedView from '../../../pm-projects/src/app/detailed/jobs/JobDetailedView';
 
 const App = () => {
     const location = useLocation();
@@ -26,6 +27,10 @@ const App = () => {
                     <Route
                         path={'/project-management/accounts/:id'}
                         element={<AccountDetailedView />}
+                    />
+                    <Route
+                        path={'/project-management/Projects/:id'}
+                        element={<JobDetailedView />}
                     />
                     <Route path="*" element={<NotFound />} />
                 </Routes>

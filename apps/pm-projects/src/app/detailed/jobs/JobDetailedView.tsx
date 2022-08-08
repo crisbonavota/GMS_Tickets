@@ -52,8 +52,7 @@ const JobDetailedView = () => {
                             spacing={10}
                             alignItems={'flex-start'}
                         >
-                            <JobResources id={job.id} />
-                            
+                            <JobResources id={job.id} leader={job.leaderLegacyUser} />
                         </VStack>
                     </TablesBox>
                 </Flex>

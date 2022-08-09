@@ -30,7 +30,7 @@ export const WithAuthProvider = (props: { children: React.ReactNode }) => {
     return (
         <AuthProvider
             authType={navigator.cookieEnabled ? 'cookie' : 'localstorage'}
-            authName={'_auth'}
+            authName={'_gms_auth'}
             cookieDomain={window.location.hostname}
             cookieSecure={window.location.protocol === 'https:'}
         >

@@ -15,6 +15,7 @@
         "hr-updates": "apps/hr-updates",
         "login": "apps/login",
         "microfront-utils": "libs/microfront-utils",
+        "pm-container-common-routes": "libs/pm-container-common-routes",
         "pm-projects": "apps/pm-projects",
         "query-utils": "libs/query-utils",
         "react-hooks": "libs/react-hooks",

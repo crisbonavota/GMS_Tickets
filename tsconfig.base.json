@@ -28,6 +28,9 @@
             "@gms-micro/microfront-utils": [
                 "libs/microfront-utils/src/index.ts"
             ],
+            "@gms-micro/pm-container-common-routes": [
+                "libs/pm-container-common-routes/src/index.ts"
+            ],
             "@gms-micro/query-utils": ["libs/query-utils/src/index.ts"],
             "@gms-micro/react-hooks": ["libs/react-hooks/src/index.ts"],
             "@gms-micro/table-utils": ["libs/table-utils/src/index.ts"],

@@ -22,7 +22,7 @@ const mainComponent = (
                 <WithChakraProvider>
                     <WithQueryProvider>
                         <BrowserRouter>
-                            <App basePath={app.path} />
+                            <App />
                         </BrowserRouter>
                     </WithQueryProvider>
                 </WithChakraProvider>

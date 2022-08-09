@@ -4,11 +4,9 @@ import ClientDetailedView from './detailed/clients/ClientDetailedView';
 import AccountDetailedView from './detailed/accounts/AccountDetailedView';
 import JobDetailedView from './detailed/jobs/JobDetailedView';
 
-interface Props {
-    basePath: string;
-}
+const basePath = '/project-management';
 
-const App = ({ basePath }: Props) => {
+const App = () => {
     return (
         <Routes>
             <Route path={basePath} element={<TabsView />} />
@@ -16,15 +14,26 @@ const App = ({ basePath }: Props) => {
                 path={`${basePath}/clients/:id`}
                 element={<ClientDetailedView />}
             />
-            <Route
-                path={`${basePath}/accounts/:id`}
-                element={<AccountDetailedView />}
-            />
-            <Route
-                path={`${basePath}/Projects/:id`}
-                element={<JobDetailedView />}
-            />
+            {commonRoutes.map((r) => (
+                <Route key={r.path} {...r} />
+            ))}
         </Routes>
     );
 };
+
+export const commonRoutes = [
+    {
+        path: `${basePath}/accounts/:id`,
+        element: <AccountDetailedView />,
+    },
+    {
+        path: `${basePath}/jobs/:id`,
+        element: <JobDetailedView />,
+    },
+    {
+        path: `${basePath}/projects/:id`,
+        element: <JobDetailedView />,
+    },
+];
+
 export default App;

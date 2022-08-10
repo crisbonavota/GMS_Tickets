@@ -30,11 +30,11 @@ const TabsView = () => {
                     </Text>
                 </HStack>
                 <Hide above="md">
-                    <AddNewButton />
+                    <AddNewButton tabIndex={tabIndex} />
                 </Hide>
                 <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
                 <Hide below="md">
-                    <AddNewButton />
+                    <AddNewButton tabIndex={tabIndex} />
                 </Hide>
             </Flex>
             <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} />

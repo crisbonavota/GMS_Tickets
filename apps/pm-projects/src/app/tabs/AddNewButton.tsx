@@ -1,16 +1,34 @@
-import { Button } from '@chakra-ui/react';
+import { Button, useDisclosure } from '@chakra-ui/react';
+import CreateClientModal from './creation/CreateClientModal';
+import { useEffect } from 'react';
 
-const AddNewButton = () => {
+interface Props {
+    tabIndex: number;
+}
+
+const AddNewButton = ({ tabIndex }: Props) => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
+    useEffect(onClose, [tabIndex]);
+
     return (
-        <Button
-            colorScheme={'orange'}
-            px={10}
-            w={{ base: 'full', md: 'fit-content' }}
-            disabled
-            title="Coming soon"
-        >
-            ADD NEW
-        </Button>
+        <>
+            <Button
+                colorScheme={'orange'}
+                px={10}
+                w={{ base: 'full', md: 'fit-content' }}
+                onClick={onOpen}
+            >
+                ADD NEW
+            </Button>
+            {tabIndex === 0 && (
+                <CreateClientModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                />
+            )}
+        </>
     );
 };
 export default AddNewButton;

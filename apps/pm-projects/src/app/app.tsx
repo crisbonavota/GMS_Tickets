@@ -14,26 +14,16 @@ const App = () => {
                 path={`${basePath}/clients/:id`}
                 element={<ClientDetailedView />}
             />
-            {commonRoutes.map((r) => (
-                <Route key={r.path} {...r} />
-            ))}
+            <Route
+                path={`${basePath}/accounts/:id`}
+                element={<AccountDetailedView />}
+            />
+            <Route
+                path={`${basePath}/jobs/:id`}
+                element={<JobDetailedView />}
+            />
         </Routes>
     );
 };
-
-export const commonRoutes = [
-    {
-        path: `${basePath}/accounts/:id`,
-        element: <AccountDetailedView />,
-    },
-    {
-        path: `${basePath}/jobs/:id`,
-        element: <JobDetailedView />,
-    },
-    {
-        path: `${basePath}/projects/:id`,
-        element: <JobDetailedView />,
-    },
-];
 
 export default App;

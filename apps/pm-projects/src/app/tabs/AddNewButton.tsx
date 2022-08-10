@@ -1,6 +1,7 @@
 import { Button, useDisclosure } from '@chakra-ui/react';
 import CreateClientModal from './creation/CreateClientModal';
 import { useEffect } from 'react';
+import CreateAccountModal from './creation/CreateAccountModal';
 
 interface Props {
     tabIndex: number;
@@ -23,6 +24,13 @@ const AddNewButton = ({ tabIndex }: Props) => {
             </Button>
             {tabIndex === 0 && (
                 <CreateClientModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                />
+            )}
+            {tabIndex === 1 && (
+                <CreateAccountModal
                     isOpen={isOpen}
                     onOpen={onOpen}
                     onClose={onClose}

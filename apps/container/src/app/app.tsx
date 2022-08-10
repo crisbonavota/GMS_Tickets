@@ -6,7 +6,6 @@ import Navbar from './navbar/navbar';
 import NotFound from './not-found/not-found';
 import { config } from '@gms-micro/deploy';
 import { RequireAuth } from 'react-auth-kit';
-import PmContainerCommonRoutes from '@gms-micro/pm-container-common-routes';
 
 const App = () => {
     const location = useLocation();
@@ -18,9 +17,6 @@ const App = () => {
             <Box w={'full'} flex={1} bgColor={'whitesmoke'}>
                 <Routes>
                     {generateMicrofrontRoutes()}
-                    {PmContainerCommonRoutes.map((r) => (
-                        <Route key={r.path} {...r} />
-                    ))}
                     <Route path="*" element={<NotFound />} />
                 </Routes>
             </Box>

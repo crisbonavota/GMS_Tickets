@@ -10,6 +10,8 @@ stages:
 variables:
     CURRENT_BRANCH: $CI_COMMIT_REF_NAME
     NODE_VERSION: '17.4.0'
+    VIRTUAL_HOST: gms.devw3americas.com
+    LETSENCRYPT_HOST: gms.devw3americas.com
     LETSENCRYPT_EMAIL: itteam@tonic3.com
 
     NETWORK: nginx-proxy-default
@@ -80,17 +82,13 @@ update-images-prod:
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 
-build-and-restart-containers-dev:
-    stage: docker-compose-up-dev
-    variables:
-        VIRTUAL_HOST: gms.devw3americas.com
-        LETSENCRYPT_HOST: gms.devw3americas.com
-        CONTAINER_NAME: gms-dev
-        IMAGE: gms-dev:latest
+update-images:
+    stage: update-images
     tags:
         - gms-new
     script:
-        - docker-compose -f docker-compose.yml up -d --build --remove-orphans dev-service
+        - docker build -t gms-img .
+        - docker-compose pull
     rules:
         - if: '$CI_COMMIT_BRANCH == "develop"'
 
@@ -114,3 +112,5 @@ prune-images:
         - gms-new
     script:
         - docker image prune -a -f
+    rules:
+        - if: '$CI_COMMIT_BRANCH == "develop"'

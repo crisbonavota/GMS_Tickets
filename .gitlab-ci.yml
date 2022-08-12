@@ -65,6 +65,7 @@ update-images-dev:
         - gms-new
     script:
         - docker build -t gms-dev-img .
+        - docker-compose pull
     rules:
         - if: '$CI_COMMIT_BRANCH == "develop"'
 
@@ -79,16 +80,21 @@ update-images-prod:
         - gms-new
     script:
         - docker build -t gms-prod-img .
+        - docker-compose pull
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 
-update-images:
-    stage: update-images
+build-and-restart-containers-dev:
+    stage: docker-compose-up-dev
+    variables:
+        VIRTUAL_HOST: gms.devw3americas.com
+        LETSENCRYPT_HOST: gms.devw3americas.com
+        CONTAINER_NAME: gms-dev
+        IMAGE: gms-dev:latest
     tags:
         - gms-new
     script:
-        - docker build -t gms-img .
-        - docker-compose pull
+        - docker-compose -f docker-compose.yml up -d --build --remove-orphans dev-service
     rules:
         - if: '$CI_COMMIT_BRANCH == "develop"'
 

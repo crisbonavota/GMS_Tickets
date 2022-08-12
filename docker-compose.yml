@@ -1,17 +1,25 @@
 version: '3.8'
 
 services:
-    gms:
-        image: gms-new-img
+    sharptool-tonic3: &source_service
+        image: ${IMAGE}
         build:
             context: ./
             dockerfile: dockerfile
         environment:
-            VIRTUAL_HOST: gms.devw3americas.com
-            LETSENCRYPT_HOST: gms.devw3americas.com
-            LETSENCRYPT_EMAIL: itteam@tonic3.com
+            VIRTUAL_HOST: ${VIRTUAL_HOST}
+            LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+            LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+            CONTAINER_NAME: ${CONTAINER_NAME}
+        container_name: ${CONTAINER_NAME}
         restart: unless-stopped
+
+    prod-service:
+        <<: *source_service
+
+    dev-service:
+        <<: *source_service
 
 networks:
     default:
-        name: nginx-proxy-default
+        name: ${NETWORK}

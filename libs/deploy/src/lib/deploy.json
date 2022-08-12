@@ -84,7 +84,7 @@
             "name": "pm-projects",
             "path": "project-management",
             "serveOn": {
-                "production": false,
+                "production": true,
                 "development": true
             },
             "allowedRoles": ["project-managers"],

@@ -10,6 +10,7 @@ stages:
 variables:
     CURRENT_BRANCH: $CI_COMMIT_REF_NAME
     NODE_VERSION: '17.4.0'
+    LETSENCRYPT_EMAIL: itteam@tonic3.com
 
     NETWORK: nginx-proxy-default
 

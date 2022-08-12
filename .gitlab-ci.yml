@@ -8,6 +8,7 @@ stages:
     - prune-images
 
 variables:
+    PIPELINE_ID: $CI_PIPELINE_ID
     CURRENT_BRANCH: $CI_COMMIT_REF_NAME
     NODE_VERSION: '17.4.0'
     LETSENCRYPT_EMAIL: itteam@tonic3.com
@@ -58,6 +59,7 @@ update-images-dev:
         VIRTUAL_HOST: gms.devw3americas.com
         LETSENCRYPT_HOST: gms.devw3americas.com
         CONTAINER_NAME: gms-dev
+        PIPELINE_ID: $CI_PIPELINE_ID
         IMAGE: gms-dev:latest
     tags:
         - gms-new
@@ -74,6 +76,7 @@ update-images-prod:
         LETSENCRYPT_HOST: gms.tonic3.com
         CONTAINER_NAME: gms-dev
         IMAGE: gms-dev:latest
+        PIPELINE_ID: $CI_PIPELINE_ID
     tags:
         - gms-new
     script:
@@ -89,6 +92,7 @@ build-and-restart-containers-dev:
         LETSENCRYPT_HOST: gms.devw3americas.com
         CONTAINER_NAME: gms-dev
         IMAGE: gms-dev:latest
+        PIPELINE_ID: $CI_PIPELINE_ID
     tags:
         - gms-new
     script:
@@ -103,6 +107,7 @@ build-and-restart-containers-prod:
         LETSENCRYPT_HOST: gms.tonic3.com
         CONTAINER_NAME: gms-prod
         IMAGE: gms-prod:latest
+        PIPELINE_ID: $CI_PIPELINE_ID
     tags:
         - gms-new
     script:

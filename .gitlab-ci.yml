@@ -116,5 +116,3 @@ prune-images:
         - gms-new
     script:
         - docker image prune -a -f
-    rules:
-        - if: '$CI_COMMIT_BRANCH == "develop"'

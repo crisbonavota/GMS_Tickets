@@ -1,16 +1,19 @@
 stages:
     - test
     - build-src
-    - update-images
-    - docker-compose-up
+    - update-images-dev
+    - update-images-prod
+    - docker-compose-up-dev
+    - docker-compose-up-prod
     - prune-images
 
 variables:
     CURRENT_BRANCH: $CI_COMMIT_REF_NAME
     NODE_VERSION: '17.4.0'
-    VIRTUAL_HOST: gms.tonic3.com
-    LETSENCRYPT_HOST: gms.tonic3.com
+    VIRTUAL_HOST: gms.devw3americas.com
+    LETSENCRYPT_HOST: gms.devw3americas.com
     LETSENCRYPT_EMAIL: itteam@tonic3.com
+
     NETWORK: nginx-proxy-default
 
 # You can override the included template(s) by including variable overrides
@@ -42,14 +45,26 @@ gms:
         - nx run hr-updates:build:production --verbose
         - nx run pm-projects:build:production --verbose
         - nx run tt-reports:build:production --verbose
-        - nx run container:build:production --verbose
         - nx run tt-load:build:production --verbose
         - nx run login:build:production --verbose
         - nx run home:build:production --verbose
+        - nx run container:build:production --verbose
     artifacts:
         paths:
             - dist
         expire_in: 1 week
+
+update-images-dev:
+    stage: update-images-dev
+    variables:
+        VIRTUAL_HOST: gms.devw3americas.com
+        LETSENCRYPT_HOST: gms.devw3americas.com
+        CONTAINER_NAME: gms-dev
+        IMAGE: gms-dev:latest
+    tags:
+        - gms-new
+    script:
+        - docker build -t gms-dev-img .
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 
@@ -58,17 +73,22 @@ update-images:
     tags:
         - gms-new
     script:
-        - docker build -t gms-img-prod .
+        - docker build -t gms-img .
         - docker-compose pull
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
+        - if: '$CI_COMMIT_BRANCH == "develop"'
 
-build-and-restart-containers:
-    stage: docker-compose-up
+build-and-restart-containers-prod:
+    stage: docker-compose-up-prod
+    variables:
+        VIRTUAL_HOST: gms.tonic3.com
+        LETSENCRYPT_HOST: gms.tonic3.com
+        CONTAINER_NAME: gms-prod
+        IMAGE: gms-prod:latest
     tags:
         - gms-new
     script:
-        - docker-compose up -d --build --remove-orphans
+        - docker-compose -f docker-compose.yml up -d --build --remove-orphans prod-service
     rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 
@@ -79,4 +99,4 @@ prune-images:
     script:
         - docker image prune -a -f
     rules:
-        - if: '$CI_COMMIT_BRANCH == "master"'
+        - if: '$CI_COMMIT_BRANCH == "develop"'

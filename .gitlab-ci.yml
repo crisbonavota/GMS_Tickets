@@ -66,6 +66,20 @@ update-images-dev:
     script:
         - docker build -t gms-dev-img .
     rules:
+        - if: '$CI_COMMIT_BRANCH == "develop"'
+
+update-images-prod:
+    stage: update-images-prod
+    variables:
+        VIRTUAL_HOST: gms.tonic3.com
+        LETSENCRYPT_HOST: gms.tonic3.com
+        CONTAINER_NAME: gms-dev
+        IMAGE: gms-dev:latest
+    tags:
+        - gms-new
+    script:
+        - docker build -t gms-prod-img .
+    rules:
         - if: '$CI_COMMIT_BRANCH == "master"'
 
 update-images:

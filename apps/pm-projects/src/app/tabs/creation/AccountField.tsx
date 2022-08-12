@@ -1,5 +1,5 @@
 import {
-    Company,
+    Account,
     getResourceListFilteredAndPaginated,
 } from '@gms-micro/api-utils';
 import AsyncSelect from 'react-select/async';
@@ -14,23 +14,21 @@ import {
 } from '@chakra-ui/react';
 import { SingleValue } from 'react-select';
 import { MdAddCircle } from 'react-icons/md';
-import CreateClientModal from './CreateClientModal';
-import { useCallback } from 'react';
+import CreateAccountModal from './CreateAccountModal';
 
 interface Props {
     setter: (value: number | null) => void;
-    value: number | null;
     error?: string;
     touched?: boolean;
     name: string;
 }
 
-const ClientField = ({ setter, name, error, touched }: Props) => {
+const AccountField = ({ setter, error, touched, name }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
-        const res = await getResourceListFilteredAndPaginated<Company>(
-            'companies',
+        const res = await getResourceListFilteredAndPaginated<Account>(
+            'accounts',
             getAuthHeader(),
             [{ field: 'name', value: input }],
             [],
@@ -43,15 +41,15 @@ const ClientField = ({ setter, name, error, touched }: Props) => {
     };
 
     const onChange = (
-        client: SingleValue<{ label: string; value: number }>
+        account: SingleValue<{ label: string; value: number }>
     ) => {
-        setter(client ? client.value : null);
+        setter(account ? account.value : null);
     };
 
     return (
         <>
             <FormControl isInvalid={Boolean(error) && touched}>
-                <FormLabel htmlFor={name}>Client</FormLabel>
+                <FormLabel htmlFor={name}>Account</FormLabel>
                 <HStack spacing={1}>
                     <AsyncSelect
                         id={name}
@@ -69,13 +67,13 @@ const ClientField = ({ setter, name, error, touched }: Props) => {
                         noOptionsMessage={(props) =>
                             props.inputValue !== ''
                                 ? 'No results found, try different keywords'
-                                : 'Start typing to search for clients'
+                                : 'Start typing to search for accounts'
                         }
                         onChange={onChange}
                     />
                     <IconButton
                         icon={<MdAddCircle size={20} />}
-                        aria-label="Create client"
+                        aria-label="Create account"
                         variant="ghost"
                         colorScheme={'green'}
                         onClick={onOpen}
@@ -83,7 +81,7 @@ const ClientField = ({ setter, name, error, touched }: Props) => {
                 </HStack>
                 <FormErrorMessage>{error}</FormErrorMessage>
             </FormControl>
-            <CreateClientModal
+            <CreateAccountModal
                 isOpen={isOpen}
                 onClose={onClose}
                 onOpen={onOpen}
@@ -92,4 +90,4 @@ const ClientField = ({ setter, name, error, touched }: Props) => {
     );
 };
 
-export default ClientField;
+export default AccountField;

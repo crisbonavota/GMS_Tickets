@@ -9,7 +9,6 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import FormikTextInput from './FormikTextInput';
-import { useState } from 'react';
 import ClientField from './ClientField';
 import CountryField from './CountryField';
 import LeadField from './LeadField';
@@ -24,20 +23,24 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().required('Name is required'),
     countryId: Yup.number(),
     notes: Yup.string(),
+    companyId: Yup.number().nullable().required('Client is required'),
+    responsibleLegacyUserId: Yup.number()
+        .nullable()
+        .required('Leader is required'),
 });
 
 const initialValues = {
     name: '',
     countryId: 0,
     notes: '',
+    companyId: null,
+    responsibleLegacyUserId: null,
 };
 
 const CreateAccountForm = ({ onClose }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
-    const [client, setClient] = useState<number | null>(null);
-    const [lead, setLead] = useState<number | null>(null);
     const formik = useFormik({
         initialValues,
         validationSchema,
@@ -47,12 +50,7 @@ const CreateAccountForm = ({ onClose }: Props) => {
     });
 
     const { mutateAsync: createAccount, isLoading } = useMutation(
-        () =>
-            postResource('accounts', getAuthHeader(), {
-                ...formik.values,
-                companyId: client,
-                responsibleLegacyUserId: lead,
-            }),
+        () => postResource('accounts', getAuthHeader(), formik.values),
         {
             onSuccess: () => {
                 queryClient.resetQueries('clients');
@@ -76,7 +74,7 @@ const CreateAccountForm = ({ onClose }: Props) => {
 
     return (
         <chakra.form onSubmit={formik.handleSubmit} w={'full'}>
-            <SimpleGrid columns={2} spacing={4}>
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
                     <FormikTextInput
                         name="name"
@@ -89,7 +87,15 @@ const CreateAccountForm = ({ onClose }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <ClientField setter={setClient} value={client} />
+                    <ClientField
+                        setter={(value: number | null) =>
+                            formik.setFieldValue('companyId', value, true)
+                        }
+                        value={formik.values.companyId}
+                        error={formik.errors.companyId}
+                        touched={formik.touched.companyId}
+                        name="companyId"
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <CountryField
@@ -103,9 +109,20 @@ const CreateAccountForm = ({ onClose }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <LeadField setter={setLead} value={lead} />
+                    <LeadField
+                        setter={(value: number | null) =>
+                            formik.setFieldValue(
+                                'responsibleLegacyUserId',
+                                value,
+                                true
+                            )
+                        }
+                        error={formik.errors.responsibleLegacyUserId}
+                        touched={formik.touched.responsibleLegacyUserId}
+                        name="responsibleLegacyUserId"
+                    />
                 </GridItem>
-                <GridItem colSpan={2}>
+                <GridItem colSpan={{ base: 1, md: 2 }}>
                     <FormikTextInput
                         name="notes"
                         id="notes"
@@ -130,7 +147,7 @@ const CreateAccountForm = ({ onClose }: Props) => {
                             type="submit"
                             colorScheme={'orange'}
                             isLoading={isLoading}
-                            disabled={isLoading || !client || !lead}
+                            disabled={isLoading}
                         >
                             Create Account
                         </Button>

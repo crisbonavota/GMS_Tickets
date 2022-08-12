@@ -7,6 +7,8 @@ import { Project } from '@gms-micro/api-utils';
 import JobType from './JobType';
 import JobResources from './resources/JobResources';
 import DetailsCell from '../DetailsCell';
+import { momentToLocaleDateString } from '@gms-micro/datetime-utils';
+import moment from 'moment';
 
 interface Props {
     jobs: Project[];
@@ -40,6 +42,11 @@ const format: DynamicTableFormat[] = [
         accessor: 'id',
         accessorFn: (id: number) => <DetailsCell resource="Projects" id={id} />,
         disableSort: true,
+    },
+    {
+        header: 'Creation Date',
+        accessor: 'creationDate',
+        accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
     },
 ];
 

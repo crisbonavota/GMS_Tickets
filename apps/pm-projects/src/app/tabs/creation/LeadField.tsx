@@ -7,10 +7,12 @@ import { LegacyUserPublic } from '@gms-micro/auth-types';
 
 interface Props {
     setter: (value: number | null) => void;
-    value: number | null;
+    error?: string;
+    touched?: boolean;
+    name: string;
 }
 
-const LeadField = ({ setter, value }: Props) => {
+const LeadField = ({ setter, error, touched, name }: Props) => {
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
         const res = await getResourceListFilteredAndPaginated<LegacyUserPublic>(
@@ -33,11 +35,11 @@ const LeadField = ({ setter, value }: Props) => {
     };
 
     return (
-        <FormControl isInvalid={value === null}>
-            <FormLabel htmlFor="lead">Lead</FormLabel>
+        <FormControl isInvalid={Boolean(error) && touched}>
+            <FormLabel htmlFor={name}>Lead</FormLabel>
             <AsyncSelect
-                id="lead"
-                name="lead"
+                id={name}
+                name={name}
                 placeholder="Type for results..."
                 cacheOptions
                 loadOptions={getOptions}
@@ -55,7 +57,7 @@ const LeadField = ({ setter, value }: Props) => {
                 }
                 onChange={onChange}
             />
-            <FormErrorMessage>This field is required</FormErrorMessage>
+            <FormErrorMessage>{error}</FormErrorMessage>
         </FormControl>
     );
 };

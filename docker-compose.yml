@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  gms:
-    image: gms-img
-    build:
-      context: ./
-      dockerfile: dockerfile
-    environment:
-      VIRTUAL_HOST: gms.devw3americas.com
-      LETSENCRYPT_HOST: gms.devw3americas.com
-      LETSENCRYPT_EMAIL: itteam@tonic3.com
-    restart: unless-stopped
+    gms:
+        image: gms-new-img
+        build:
+            context: ./
+            dockerfile: dockerfile
+        environment:
+            VIRTUAL_HOST: gms.devw3americas.com
+            LETSENCRYPT_HOST: gms.devw3americas.com
+            LETSENCRYPT_EMAIL: itteam@tonic3.com
+        restart: unless-stopped
 
 networks:
-  default:
-    name: nginx-proxy-default
+    default:
+        name: nginx-proxy-default

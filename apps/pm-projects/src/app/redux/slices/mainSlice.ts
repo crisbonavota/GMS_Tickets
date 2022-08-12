@@ -59,8 +59,8 @@ const initialState: ProjectManagementState = {
             totalPages: null,
         },
         sort: {
-            field: 'company.name',
-            isAscending: true,
+            field: 'creationDate',
+            isAscending: false,
         },
         search: '',
         filters: {

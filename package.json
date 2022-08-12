@@ -6,7 +6,7 @@
         "start": "npm run start-dev",
         "start-dev": "node --experimental-json-modules ./servers/dev/run-dev.js",
         "start-prod": "sh ./servers/prod/run-prod.sh",
-        "build": "nx run-many --all --target=build --parallel",
+        "build": "nx run-many --all --target=build --parallel --skip-nx-cache --verbose",
         "test": "nx run-many --all --target=test --parallel"
     },
     "private": true,

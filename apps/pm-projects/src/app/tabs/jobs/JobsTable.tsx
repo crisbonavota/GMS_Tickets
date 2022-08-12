@@ -5,8 +5,10 @@ import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
 import { Project } from '@gms-micro/api-utils';
 import JobType from './JobType';
-import JobResources from './JobResources';
-import DetailsCell from './../DetailsCell';
+import JobResources from './resources/JobResources';
+import DetailsCell from '../DetailsCell';
+import { momentToLocaleDateString } from '@gms-micro/datetime-utils';
+import moment from 'moment';
 
 interface Props {
     jobs: Project[];
@@ -18,8 +20,8 @@ const format: DynamicTableFormat[] = [
         accessor: 'name',
     },
     {
-        header: 'company',
-        accessor: 'company.name',
+        header: 'account',
+        accessor: 'proposal.account.name',
     },
     {
         header: 'type',
@@ -28,15 +30,23 @@ const format: DynamicTableFormat[] = [
     },
     {
         header: 'resources',
-        accessor: 'id',
-        accessorFn: (id: number) => <JobResources id={id} />,
+        accessor: '',
+        accessorFn: (project: Project) => (
+            <JobResources id={project.id} leader={project.leaderLegacyUser} />
+        ),
+        rawObject: true,
         disableSort: true,
     },
     {
         header: 'Details',
         accessor: 'id',
-        accessorFn: (id: number) => <DetailsCell resource="jobs" id={id} />,
+        accessorFn: (id: number) => <DetailsCell resource="Projects" id={id} />,
         disableSort: true,
+    },
+    {
+        header: 'Creation Date',
+        accessor: 'creationDate',
+        accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
     },
 ];
 

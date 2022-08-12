@@ -23,7 +23,7 @@ export const insertStandardFilters = (
     filters: FilterItem[]
 ) => {
     var processedFilters = filters.filter(
-        (filter) => filter.value !== undefined
+        (filter) => filter.value !== undefined && filter.value !== null
     );
     params['filters'] = JSON.stringify(processedFilters);
 };

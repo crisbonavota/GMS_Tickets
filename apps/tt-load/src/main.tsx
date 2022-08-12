@@ -1,13 +1,11 @@
 import App from './app/app';
 import { StrictMode } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
 import {
     generateReactMicrofrontEntrypoint,
     WithAuthProvider,
     WithChakraProvider,
 } from '@gms-micro/microfront-utils';
-import { environment } from './environments/environment';
 import { config } from '@gms-micro/deploy';
 import { Provider as ReduxProvider } from 'react-redux';
 import store from './redux/store';
@@ -24,7 +22,6 @@ const mainComponent = (
                 <WithChakraProvider>
                     <QueryClientProvider client={queryClient}>
                         <App />
-                        {!environment.production && <ReactQueryDevtools />}
                     </QueryClientProvider>
                 </WithChakraProvider>
             </WithAuthProvider>

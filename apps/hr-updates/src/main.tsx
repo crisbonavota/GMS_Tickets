@@ -7,8 +7,6 @@ import {
 } from '@gms-micro/microfront-utils';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { config } from '@gms-micro/deploy';
-import { environment } from './environments/environment';
-import { ReactQueryDevtools } from 'react-query/devtools';
 
 const name = 'hr-updates';
 const app = config.apps.find((app) => app.name === name);
@@ -22,7 +20,6 @@ const mainComponent = (
             <WithChakraProvider>
                 <QueryClientProvider client={queryClient}>
                     <App />
-                    {!environment.production && <ReactQueryDevtools />}
                 </QueryClientProvider>
             </WithChakraProvider>
         </WithAuthProvider>

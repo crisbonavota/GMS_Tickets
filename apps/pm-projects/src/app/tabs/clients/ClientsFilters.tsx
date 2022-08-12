@@ -47,4 +47,5 @@ const ClientsFilters = () => {
         </VStack>
     );
 };
+
 export default ClientsFilters;

@@ -8,6 +8,10 @@ export interface Account {
     id: number;
     name: string;
     company: Company;
+    country: Country;
+    notes: string;
+    active: boolean;
+    responsibleLegacyUser?: LegacyUserPublic;
 }
 
 export interface Company {
@@ -15,6 +19,13 @@ export interface Company {
     name: string;
     country: Country;
     status: string;
+    active: boolean;
+    address: string;
+    afipId: string;
+    city: string;
+    creationDate: string;
+    fiscalId: string;
+    ivaType: string;
 }
 
 export interface Proposal {
@@ -41,6 +52,8 @@ export interface Project {
     uiColor?: string;
     active: boolean;
     sold: boolean;
+    currency: Currency;
+    notes: string;
 }
 
 export interface ProjectCreation {

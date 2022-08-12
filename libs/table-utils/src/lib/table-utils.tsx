@@ -100,6 +100,7 @@ export interface DynamicTableFormat {
     accessor: string;
     accessorFn?: (row: any) => any;
     disableSort?: boolean;
+    rawObject?: boolean;
 }
 
 interface DynamicTableProps {
@@ -176,11 +177,15 @@ export const DynamicTable = ({
                                         <Text>
                                             {f.accessorFn
                                                 ? f.accessorFn(
-                                                      lodash.get(
-                                                          item,
-                                                          f.accessor
-                                                      )
+                                                      f.rawObject
+                                                          ? item
+                                                          : lodash.get(
+                                                                item,
+                                                                f.accessor
+                                                            )
                                                   )
+                                                : f.rawObject
+                                                ? item
                                                 : lodash.get(item, f.accessor)}
                                         </Text>
                                     </Td>

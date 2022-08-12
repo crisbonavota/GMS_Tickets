@@ -5,7 +5,9 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks';
 import { changePage, changeSort } from '../../redux/slices/mainSlice';
 import { Sort } from '@gms-micro/api-filters';
 import { useCallback } from 'react';
-import DetailsCell from './../DetailsCell';
+import DetailsCell from '../DetailsCell';
+import { momentToLocaleDateString } from '@gms-micro/datetime-utils';
+import moment from 'moment';
 
 interface Props {
     accounts: Account[];
@@ -38,6 +40,11 @@ const format: DynamicTableFormat[] = [
         accessor: 'id',
         accessorFn: (id: number) => <DetailsCell resource="accounts" id={id} />,
         disableSort: true,
+    },
+    {
+        header: 'Creation Date',
+        accessor: 'creationDate',
+        accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
     },
 ];
 

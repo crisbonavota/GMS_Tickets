@@ -13,4 +13,5 @@ const TabHeader = ({ label, icon }: Props) => {
         </HStack>
     );
 };
+
 export default TabHeader;

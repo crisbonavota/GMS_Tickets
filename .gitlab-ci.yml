@@ -12,7 +12,6 @@ variables:
     LETSENCRYPT_HOST: gms.tonic3.com
     LETSENCRYPT_EMAIL: itteam@tonic3.com
     NETWORK: nginx-proxy-default
-    COMPOSE_PROJECT_NAME: gms-prod
 
 # You can override the included template(s) by including variable overrides
 # SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
@@ -37,8 +36,16 @@ gms:
     script:
         - node --version
         - npm install
+        - npm i -g nx
         #- npm run test
-        - npm run build
+        - nx run hr-employees:build:production --verbose
+        - nx run hr-updates:build:production --verbose
+        - nx run pm-projects:build:production --verbose
+        - nx run tt-reports:build:production --verbose
+        - nx run container:build:production --verbose
+        - nx run tt-load:build:production --verbose
+        - nx run login:build:production --verbose
+        - nx run home:build:production --verbose
     artifacts:
         paths:
             - dist

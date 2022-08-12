@@ -1,9 +1,9 @@
 import { Text, VStack, HStack, Hide, Flex } from '@chakra-ui/react';
 import { BsGearFill } from 'react-icons/bs';
 import AddNewButton from './AddNewButton';
-import TabsSelector from './tabs/TabsSelector';
+import TabsSelector from './TabsSelector';
 import { useState } from 'react';
-import TabsContent from './tabs/TabsContent';
+import TabsContent from './TabsContent';
 
 const TabsView = () => {
     const [tabIndex, setTabIndex] = useState(0);
@@ -30,11 +30,11 @@ const TabsView = () => {
                     </Text>
                 </HStack>
                 <Hide above="md">
-                    <AddNewButton />
+                    <AddNewButton tabIndex={tabIndex} />
                 </Hide>
                 <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
                 <Hide below="md">
-                    <AddNewButton />
+                    <AddNewButton tabIndex={tabIndex} />
                 </Hide>
             </Flex>
             <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} />

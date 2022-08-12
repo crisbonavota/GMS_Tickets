@@ -36,6 +36,7 @@ gms:
     script:
         - node --version
         - npm install
+        - npm i -g nx
         #- npm run test
         - nx run hr-employees:build:production --verbose
         - nx run hr-updates:build:production --verbose

@@ -75,7 +75,7 @@ update-images-prod:
         VIRTUAL_HOST: gms.tonic3.com
         LETSENCRYPT_HOST: gms.tonic3.com
         CONTAINER_NAME: gms-dev
-        IMAGE: gms-dev:latest
+        IMAGE: gms-prod:latest
         PIPELINE_ID: $CI_PIPELINE_ID
     tags:
         - gms-new

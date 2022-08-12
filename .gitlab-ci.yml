@@ -69,8 +69,8 @@ update-images-dev:
 update-images-prod:
     stage: update-images-prod
     variables:
-        VIRTUAL_HOST: gms.devw3americas.com
-        LETSENCRYPT_HOST: gms.devw3americas.com
+        VIRTUAL_HOST: gms.tonic3.com
+        LETSENCRYPT_HOST: gms.tonic3.com
         CONTAINER_NAME: gms-dev
         IMAGE: gms-dev:latest
     tags:

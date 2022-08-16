@@ -1,4 +1,4 @@
-import { VStack, Text, Input } from '@chakra-ui/react';
+import { VStack, Text, Input, Checkbox } from '@chakra-ui/react';
 import { useEffect, useState, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import TableComponent from './table/table';
@@ -31,12 +31,20 @@ const App = () => {
     const [proposals, setProposals] = useState<Array<number>>([]);
     const [accounts, setAccounts] = useState<Array<number>>([]);
     const [generalSearch, setGeneralSearch] = useState('');
+    const [given, setGiven] = useState(false);
     const [refetchAux, setRefetchAux] = useState(0);
     const getAuthHeader = useAuthHeader();
 
     const onGeneralSearchChange = useMemo(
         () => (e: React.ChangeEvent<HTMLInputElement>) => {
             setGeneralSearch(e.target.value);
+        },
+        []
+    );
+
+    const onGivenHoursChange = useMemo(
+        () => (e: React.ChangeEvent<HTMLInputElement>) => {
+            setGiven(e.target.checked);
         },
         []
     );
@@ -62,7 +70,7 @@ const App = () => {
         // This is to avoid refetching the query when the user is typing in the general searchbar
         const timeOutId = setTimeout(() => setRefetchAux(refetchAux + 1), 1500);
         return () => clearTimeout(timeOutId);
-    }, [generalSearch]);
+    }, [generalSearch, given]);
 
     const filters = useMemo(
         () => [
@@ -104,8 +112,8 @@ const App = () => {
     );
 
     const customFilters = useMemo(
-        () => [{ name: 'generalSearch', value: generalSearch }],
-        [generalSearch]
+        () => [{ name: 'generalSearch', value: generalSearch }, { name: 'isGiven', value: given }],
+        [generalSearch, given]
     );
 
     const refetchTriggers = useMemo(
@@ -163,6 +171,11 @@ const App = () => {
                         onChange={onGeneralSearchChange}
                         placeholder={'General search'}
                     />
+                    <Checkbox
+                        onChange={onGivenHoursChange}
+                    >
+                        Show only borrowed hours
+                    </Checkbox>
                     <SelectFilters
                         dropdownsData={[
                             {

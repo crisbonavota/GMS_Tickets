@@ -11,6 +11,7 @@ interface DropdownItem {
     resource: string;
     labelOption: string;
     valueOption: string;
+    optionField?: string;
     values: number[];
     setValue: React.Dispatch<React.SetStateAction<number[]>>;
 }
@@ -46,7 +47,7 @@ const SelectFiltersItem = ({ dropdownItem }: SelectFiltersItemProps) => {
             getAuthHeader(),
             [],
             [],
-            { field: 'name', isAscending: true },
+            { field: dropdownItem.optionField ? dropdownItem.optionField : "name", isAscending: true },
             0,
             10000
         )

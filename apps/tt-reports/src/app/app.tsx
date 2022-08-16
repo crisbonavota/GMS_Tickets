@@ -172,6 +172,7 @@ const App = () => {
                                 setValue: setUsers,
                                 title: 'Employee',
                                 resource: 'users/legacy',
+                                optionField: 'fullName',
                             },
                             {
                                 labelOption: 'name',

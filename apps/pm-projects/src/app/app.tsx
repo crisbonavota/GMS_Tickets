@@ -19,7 +19,7 @@ const App = () => {
                 element={<AccountDetailedView />}
             />
             <Route
-                path={`${basePath}/jobs/:id`}
+                path={`${basePath}/projects/:id`}
                 element={<JobDetailedView />}
             />
         </Routes>

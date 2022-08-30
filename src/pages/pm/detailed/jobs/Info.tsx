@@ -41,12 +41,7 @@ const Info = ({ job }: Props) => {
                     />
                 </VStack>
             </HStack>
-            <VStack alignItems={"flex-start"} paddingTop={10}>
-                <InfoTitle title={"Notes"} content={job.notes} />
-                <HStack paddingTop={5}>
-                    <EditButton />
-                </HStack>
-            </VStack>
+            <InfoTitle title={"Notes"} content={job.notes} />
         </InfoBox>
     );
 };

@@ -9,6 +9,7 @@ import JobResources from "./JobResources";
 import { getResource } from "../../../../api/api";
 import { Project } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
+import EditButton from "../EditButton";
 
 const JobDetailedView = () => {
     const { id } = useParams();
@@ -37,7 +38,10 @@ const JobDetailedView = () => {
             >
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{job.name}</Heading>
-                    <CloneButton />
+                    <HStack spacing={2}>
+                        <EditButton />
+                        <CloneButton resource="projects" id={job.id} />
+                    </HStack>
                 </HStack>
                 <Flex
                     w={"full"}

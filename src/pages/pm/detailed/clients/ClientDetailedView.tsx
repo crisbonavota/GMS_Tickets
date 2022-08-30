@@ -38,7 +38,7 @@ const ClientDetailedView = () => {
             >
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{client.name}</Heading>
-                    <CloneButton />
+                    <CloneButton resource="companies" id={client.id} />
                 </HStack>
                 <Flex
                     w={"full"}

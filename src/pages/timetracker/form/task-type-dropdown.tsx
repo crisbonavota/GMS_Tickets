@@ -47,7 +47,7 @@ const TaskTypeDropdown = () => {
 
     return (
         <VStack alignItems={"flex-start"}>
-            <Heading fontSize={"md"}>Project</Heading>
+            <Heading fontSize={"md"}>Task type</Heading>
             <Box w={"full"}>
                 <Select
                     options={

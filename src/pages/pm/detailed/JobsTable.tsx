@@ -26,7 +26,7 @@ const format: DynamicTableFormat[] = [
     {
         header: "Details",
         accessor: "id",
-        accessorFn: (id: number) => <DetailsButton path="Projects" id={id} />,
+        accessorFn: (id: number) => <DetailsButton path="jobs" id={id} />,
     },
 ];
 

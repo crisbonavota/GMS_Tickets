@@ -96,7 +96,7 @@ const App = () => {
                         }
                     />
                     <Route
-                        path={"/project-management/projects/:id"}
+                        path={"/project-management/jobs/:id"}
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <JobDetailedView />

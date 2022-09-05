@@ -7,8 +7,8 @@ import {
     HStack,
 } from "@chakra-ui/react";
 import { SingleValue } from "react-select";
-import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { BusinessUnit } from "../../../../api/types";
+import { getResourceListFilteredAndPaginated } from "../../../api/api";
+import { BusinessUnit } from "../../../api/types";
 
 interface Props {
     setter: (value: number | null) => void;

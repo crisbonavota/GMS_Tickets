@@ -11,8 +11,8 @@ import {
 import { SingleValue } from "react-select";
 import { MdAddCircle } from "react-icons/md";
 import CreateClientModal from "./CreateClientModal";
-import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { Company } from "../../../../api/types";
+import { getResourceListFilteredAndPaginated } from "../../../api/api";
+import { Company } from "../../../api/types";
 
 interface Props {
     setter: (value: number | null) => void;

@@ -14,7 +14,7 @@ import CountryField from "./CountryField";
 import LeadField from "./LeadField";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { postResource } from "../../../../api/api";
+import { postResource } from "../../../api/api";
 
 interface Props {
     onClose: () => void;

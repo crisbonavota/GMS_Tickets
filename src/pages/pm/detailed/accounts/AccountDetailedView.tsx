@@ -9,6 +9,7 @@ import TablesBox from "../TablesBox";
 import { getResource } from "../../../../api/api";
 import { Account } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
+import EditButton from "../EditButton";
 
 const AccountDetailedView = () => {
     const { id } = useParams();
@@ -37,7 +38,10 @@ const AccountDetailedView = () => {
             >
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{account.name}</Heading>
-                    <CloneButton resource="accounts" id={account.id} />
+                    <HStack spacing={2}>
+                        <EditButton />
+                        <CloneButton resource="accounts" id={account.id} />
+                    </HStack>
                 </HStack>
                 <Flex
                     w={"full"}

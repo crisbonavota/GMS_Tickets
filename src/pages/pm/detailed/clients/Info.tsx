@@ -10,15 +10,7 @@ interface Props {
 const Info = ({ client }: Props) => {
     return (
         <InfoBox>
-            <HStack>
-                <VStack
-                    h={"full"}
-                    justifyContent={"space-between"}
-                    alignItems={"flex-start"}
-                >
-                    <InfoTitle title={"Address"} content={client.address} />
-                    <EditButton />
-                </VStack>
+            <HStack minW="20rem">
                 <VStack alignItems={"flex-start"} spacing={5}>
                     <InfoTitle title={"Fiscal ID"} content={client.fiscalId} />
                     <InfoTitle title={"CUIT/CUIL"} content={client.afipId} />

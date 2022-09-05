@@ -1,8 +1,8 @@
-import { Button, useDisclosure } from '@chakra-ui/react';
-import CreateClientModal from './creation/CreateClientModal';
-import { useEffect } from 'react';
-import CreateAccountModal from './creation/CreateAccountModal';
-import CreateJobModal from './creation/CreateJobModal';
+import { Button, useDisclosure } from "@chakra-ui/react";
+import CreateClientModal from "../creation-edition/CreateClientModal";
+import { useEffect } from "react";
+import CreateAccountModal from "../creation-edition/CreateAccountModal";
+import CreateJobModal from "../creation-edition/CreateJobModal";
 
 interface Props {
     tabIndex: number;
@@ -16,9 +16,9 @@ const AddNewButton = ({ tabIndex }: Props) => {
     return (
         <>
             <Button
-                colorScheme={'orange'}
+                colorScheme={"orange"}
                 px={10}
-                w={{ base: 'full', md: 'fit-content' }}
+                w={{ base: "full", md: "fit-content" }}
                 onClick={onOpen}
             >
                 ADD NEW

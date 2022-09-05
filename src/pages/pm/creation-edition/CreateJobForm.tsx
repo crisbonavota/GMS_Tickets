@@ -27,7 +27,7 @@ import {
     postResource,
     getContractTypes,
     getCurrencies,
-} from "../../../../api/api";
+} from "../../../api/api";
 
 interface Props {
     onClose: () => void;

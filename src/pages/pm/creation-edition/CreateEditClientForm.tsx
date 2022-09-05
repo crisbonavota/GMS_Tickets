@@ -9,20 +9,20 @@ import {
 import * as Yup from "yup";
 import FormikTextInput from "./FormikTextInput";
 import { useFormik } from "formik";
-import FormikSelectInput from "./FormikSelectInput";
 import { useMutation, useQueryClient } from "react-query";
 import CountryField from "./CountryField";
 import { useAuthHeader } from "react-auth-kit";
-import { postResource } from "../../../../api/api";
+import { postResource, patchResource } from "../../../api/api";
+import LabeledReactSelectInput from "../../../components/LabeledReactSelectInput";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     address: Yup.string(),
-    city: Yup.string(),
+    city: Yup.string().nullable(),
     countryId: Yup.number(),
     fiscalId: Yup.string(),
-    afipId: Yup.string(),
-    IVAType: Yup.string(),
+    afipId: Yup.string().nullable(),
+    ivaType: Yup.number().nullable(),
 });
 
 const initialValues = {
@@ -32,47 +32,71 @@ const initialValues = {
     countryId: 0,
     fiscalId: "",
     afipId: "",
-    IVAType: 0,
+    ivaType: 0,
 };
 
 interface Props {
     onClose: () => void;
+    editInitialValues?: typeof initialValues;
+    id?: number;
 }
 
-const CreateClientForm = ({ onClose }: Props) => {
+const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
     const getAuthHeader = useAuthHeader();
     const toast = useToast();
     const queryClient = useQueryClient();
 
-    const { mutateAsync: createClient, isLoading } = useMutation(
-        () => postResource("companies", getAuthHeader(), formik.values),
+    const onSuccess = () => {
+        queryClient.resetQueries("clients");
+        toast({
+            title: `Client ${editInitialValues ? "edited" : "created"}`,
+            status: "success",
+            isClosable: true,
+        });
+        onClose();
+    };
+
+    const onError = (err: unknown) => {
+        console.log(err);
+        toast({
+            title: "There was an error",
+            description: "Try again later",
+            status: "error",
+            isClosable: true,
+        });
+    };
+
+    const { mutateAsync: createClient, isLoading: creationLoading } =
+        useMutation(
+            () => postResource("companies", getAuthHeader(), formik.values),
+            {
+                onSuccess: onSuccess,
+                onError: onError,
+            }
+        );
+
+    const { mutateAsync: editClient, isLoading: editLoading } = useMutation(
+        () =>
+            // both id and editInitialValues won't be undefined if we're using this mutation
+            patchResource(
+                "companies",
+                id || 0,
+                getAuthHeader(),
+                editInitialValues || {},
+                formik.values
+            ),
         {
-            onSuccess: () => {
-                queryClient.resetQueries("clients");
-                toast({
-                    title: "Client created",
-                    status: "success",
-                    isClosable: true,
-                });
-                onClose();
-            },
-            onError: (error) => {
-                console.log(error);
-                toast({
-                    title: "There was an error creating the client",
-                    description: "Try again later",
-                    status: "error",
-                    isClosable: true,
-                });
-            },
+            onSuccess: onSuccess,
+            onError: onError,
         }
     );
 
     const formik = useFormik({
-        initialValues,
+        initialValues: editInitialValues || initialValues,
         validationSchema,
-        onSubmit: async (values) => {
-            await createClient();
+        onSubmit: async () => {
+            if (editInitialValues) await editClient();
+            else await createClient();
         },
     });
 
@@ -146,27 +170,21 @@ const CreateClientForm = ({ onClose }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikSelectInput
+                    <LabeledReactSelectInput
                         label="IVA Type"
-                        name="IVAType"
-                        value={formik.values.IVAType}
-                        error={formik.errors.IVAType}
-                        touched={formik.touched.IVAType}
-                        onChange={formik.handleChange}
-                        id="IVAType"
-                        children={[
-                            <option value={0}>Select an IVA type</option>,
-                        ].concat(
-                            [
-                                "IVA Responsable Inscripto",
-                                "IVA Responsable no Inscripto",
-                                "IVA Exento",
-                            ].map((t, i) => (
-                                <chakra.option value={i + 1} key={t}>
-                                    {t}
-                                </chakra.option>
-                            ))
-                        )}
+                        name="ivaType"
+                        value={formik.values.ivaType}
+                        error={formik.errors.ivaType}
+                        touched={formik.touched.ivaType}
+                        options={[
+                            { value: 1, label: "Responsable Inscripto" },
+                            { value: 2, label: "Reponsable No Inscripto" },
+                            { value: 4, label: "Exento" },
+                        ]}
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("ivaType", value, true)
+                        }
+                        placeholder="IVA Type"
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -182,9 +200,9 @@ const CreateClientForm = ({ onClose }: Props) => {
                         <Button
                             type="submit"
                             colorScheme={"orange"}
-                            isLoading={isLoading}
+                            isLoading={creationLoading}
                         >
-                            Create Client
+                            Submit
                         </Button>
                     </HStack>
                 </GridItem>
@@ -193,4 +211,4 @@ const CreateClientForm = ({ onClose }: Props) => {
     );
 };
 
-export default CreateClientForm;
+export default CreateEditClientForm;

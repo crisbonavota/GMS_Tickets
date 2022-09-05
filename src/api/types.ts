@@ -74,7 +74,7 @@ export interface Company {
     city: string;
     creationDate: string;
     fiscalId: string;
-    ivaType: string;
+    ivaType: number;
 }
 
 export interface Proposal {

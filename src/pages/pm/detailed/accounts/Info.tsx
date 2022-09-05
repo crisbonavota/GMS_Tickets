@@ -1,6 +1,5 @@
 import InfoBox, { InfoTitle } from "../InfoBox";
 import { HStack, VStack } from "@chakra-ui/react";
-import EditButton from "../EditButton";
 import { Account } from "../../../../api/types";
 
 interface Props {
@@ -9,8 +8,12 @@ interface Props {
 
 const Info = ({ account }: Props) => {
     return (
-        <InfoBox w={"full"}>
-            <VStack spacing={10} w={{ base: "full", md: "fit-content" }}>
+        <InfoBox w={{ base: "full", md: "50%" }}>
+            <VStack
+                spacing={10}
+                w={{ base: "full", md: "fit-content" }}
+                alignItems="flex-start"
+            >
                 <HStack
                     w={"full"}
                     justifyContent={"space-between"}
@@ -26,10 +29,7 @@ const Info = ({ account }: Props) => {
                         content={account.responsibleLegacyUser?.fullName || ""}
                     />
                 </HStack>
-                <VStack spacing={5} alignItems={"flex-start"} w={"full"}>
-                    <InfoTitle title="Notes" content={account.notes} />
-                    <EditButton />
-                </VStack>
+                <InfoTitle title="Notes" content={account.notes} />
             </VStack>
         </InfoBox>
     );

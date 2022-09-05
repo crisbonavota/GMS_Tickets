@@ -1,13 +1,41 @@
-import { Button } from "@chakra-ui/react";
+import {
+    Button,
+    Modal,
+    ModalBody,
+    ModalCloseButton,
+    ModalContent,
+    ModalHeader,
+    ModalOverlay,
+} from "@chakra-ui/react";
 import { BiPencil } from "react-icons/bi";
 
-interface Props {}
+interface Props {
+    modalBody: React.ReactNode;
+    onOpen: () => void;
+    onClose: () => void;
+    isOpen: boolean;
+}
 
-const EditButton = (props: Props) => {
+const EditButton = ({ modalBody, onOpen, onClose, isOpen }: Props) => {
     return (
-        <Button colorScheme={"orange"} variant="ghost" leftIcon={<BiPencil />}>
-            Edit
-        </Button>
+        <>
+            <Button
+                colorScheme={"orange"}
+                variant="ghost"
+                leftIcon={<BiPencil />}
+                onClick={onOpen}
+            >
+                Edit
+            </Button>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Editar</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>{modalBody}</ModalBody>
+                </ModalContent>
+            </Modal>
+        </>
     );
 };
 export default EditButton;

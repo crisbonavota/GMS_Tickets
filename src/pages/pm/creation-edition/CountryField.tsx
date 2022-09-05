@@ -1,8 +1,8 @@
 import { chakra, SelectProps } from "@chakra-ui/react";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
-import { getResourceList } from "../../../../api/api";
-import { Country } from "../../../../api/types";
+import { getResourceList } from "../../../api/api";
+import { Country } from "../../../api/types";
 import FormikSelectInput from "./FormikSelectInput";
 
 interface Props extends SelectProps {

@@ -2,8 +2,8 @@ import AsyncSelect from "react-select/async";
 import { useAuthHeader } from "react-auth-kit";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
 import { SingleValue } from "react-select";
-import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { LegacyUserPublic } from "../../../../api/types";
+import { getResourceListFilteredAndPaginated } from "../../../api/api";
+import { LegacyUserPublic } from "../../../api/types";
 
 interface Props {
     setter: (value: number | null) => void;

@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { Flex, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Flex, Heading, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import Info from "./Info";
 import TablesBox from "../TablesBox";
 import ClientAccounts from "./ClientAccounts";
@@ -10,10 +10,13 @@ import CloneButton from "../CloneButton";
 import { getResource } from "../../../../api/api";
 import { Company } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
+import EditButton from "../EditButton";
+import CreateEditClientForm from "../../creation-edition/CreateEditClientForm";
 
 const ClientDetailedView = () => {
     const { id } = useParams();
     const getAuthHeader = useAuthHeader();
+    const { onOpen, isOpen, onClose } = useDisclosure();
 
     const {
         isLoading,
@@ -38,7 +41,24 @@ const ClientDetailedView = () => {
             >
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{client.name}</Heading>
-                    <CloneButton resource="companies" id={client.id} />
+                    <HStack>
+                        <EditButton
+                            modalBody={
+                                <CreateEditClientForm
+                                    onClose={onClose}
+                                    editInitialValues={{
+                                        ...client,
+                                        countryId: client.country.id,
+                                    }}
+                                    id={client.id}
+                                />
+                            }
+                            onClose={onClose}
+                            isOpen={isOpen}
+                            onOpen={onOpen}
+                        />
+                        <CloneButton resource="companies" id={client.id} />
+                    </HStack>
                 </HStack>
                 <Flex
                     w={"full"}

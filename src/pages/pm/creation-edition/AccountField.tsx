@@ -19,9 +19,16 @@ interface Props {
     error?: string;
     touched?: boolean;
     name: string;
+    defaultValue?: { label: string; value: number };
 }
 
-const AccountField = ({ setter, error, touched, name }: Props) => {
+const AccountField = ({
+    setter,
+    error,
+    touched,
+    name,
+    defaultValue,
+}: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
@@ -68,6 +75,7 @@ const AccountField = ({ setter, error, touched, name }: Props) => {
                                 : "Start typing to search for accounts"
                         }
                         onChange={onChange}
+                        defaultValue={defaultValue}
                     />
                     <IconButton
                         icon={<MdAddCircle size={20} />}

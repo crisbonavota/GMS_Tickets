@@ -30,7 +30,7 @@ const EditButton = ({ modalBody, onOpen, onClose, isOpen }: Props) => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent minW={"40vw"}>
-                    <ModalHeader>Editar</ModalHeader>
+                    <ModalHeader>Edit</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>{modalBody}</ModalBody>
                 </ModalContent>

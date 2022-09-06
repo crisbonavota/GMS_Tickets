@@ -41,13 +41,16 @@ const initialValues = {
     responsibleLegacyUserId: null,
 };
 
-const editInitialValuesToFormikValues = (editInitialValues?: Account) => ({
-    ...editInitialValues,
-    countryId: editInitialValues?.country.id,
-    responsibleLegacyUserId:
-        editInitialValues?.responsibleLegacyUser?.id ?? null,
-    companyId: editInitialValues?.company.id,
-});
+const editInitialValuesToFormikValues = (editInitialValues?: Account) =>
+    editInitialValues
+        ? {
+              ...editInitialValues,
+              countryId: editInitialValues?.country.id,
+              responsibleLegacyUserId:
+                  editInitialValues?.responsibleLegacyUser?.id ?? null,
+              companyId: editInitialValues?.company.id,
+          }
+        : undefined;
 
 const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
     const getAuthHeader = useAuthHeader();

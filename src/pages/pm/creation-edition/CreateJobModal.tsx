@@ -1,4 +1,4 @@
-import CreateJobForm from './CreateJobForm';
+import CreateEditJobForm from "./CreateEditJobForm";
 import {
     Modal,
     ModalOverlay,
@@ -6,7 +6,7 @@ import {
     ModalHeader,
     ModalCloseButton,
     ModalBody,
-} from '@chakra-ui/react';
+} from "@chakra-ui/react";
 
 interface Props {
     isOpen: boolean;
@@ -14,15 +14,15 @@ interface Props {
     onClose: () => void;
 }
 
-const CreateJobModal = ({ isOpen, onOpen, onClose }: Props) => {
+const CreateJobModal = ({ isOpen, onClose }: Props) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
-            <ModalContent minW={'fit-content'}>
+            <ModalContent minW={"fit-content"}>
                 <ModalHeader>Create job</ModalHeader>
                 <ModalCloseButton />
-                <ModalBody w={'fit-content'} minW={'40vw'}>
-                    <CreateJobForm onClose={onClose} />
+                <ModalBody w={"fit-content"} minW={"40vw"}>
+                    <CreateEditJobForm onClose={onClose} />
                 </ModalBody>
             </ModalContent>
         </Modal>

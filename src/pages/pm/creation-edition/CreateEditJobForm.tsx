@@ -23,6 +23,8 @@ import FormikSelectInput from "./FormikSelectInput";
 import StatusField from "./StatusField";
 import SoldField from "./SoldField";
 import BusinessUnitField from "./BusinessUnitField";
+import { Project } from "../../../api/types";
+import { patchResource } from "../../../api/api";
 import {
     postResource,
     getContractTypes,
@@ -31,6 +33,8 @@ import {
 
 interface Props {
     onClose: () => void;
+    editInitialValues?: Project;
+    id?: number;
 }
 
 const validationSchema = Yup.object().shape({
@@ -41,7 +45,7 @@ const validationSchema = Yup.object().shape({
     sold: Yup.boolean(),
     startDate: Yup.date(),
     endDate: Yup.date(),
-    notes: Yup.string(),
+    notes: Yup.string().nullable(),
     active: Yup.bool(),
     accountId: Yup.number().nullable().required("Account is required"),
     leaderLegacyUserId: Yup.number().nullable().required("Lead is required"),
@@ -65,39 +69,72 @@ const initialValues = {
     businessUnitId: null,
 };
 
-const CreateJobForm = ({ onClose }: Props) => {
+const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
+    editInitialValues
+        ? {
+              ...editInitialValues,
+              accountId: editInitialValues?.proposal.account.id,
+              leaderLegacyUserId:
+                  editInitialValues?.leaderLegacyUser?.id ?? null,
+              businessUnitId: editInitialValues?.businessUnit.id,
+              currencyId: editInitialValues?.currency?.id ?? null,
+          }
+        : undefined;
+
+const CreateEditJobForm = ({ onClose, editInitialValues, id }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
 
     const formik = useFormik({
-        initialValues,
+        initialValues:
+            editInitialValuesToFormikValues(editInitialValues) || initialValues,
         validationSchema,
         onSubmit: async () => {
-            await createJob();
+            if (editInitialValues) await editJob();
+            else await createJob();
         },
     });
 
-    const { mutateAsync: createJob, isLoading } = useMutation(
+    const onSuccess = () => {
+        queryClient.resetQueries("projects");
+        toast({
+            title: "Job created",
+            status: "success",
+            isClosable: true,
+        });
+        onClose();
+    };
+
+    const onError = (err: unknown) => {
+        console.log(err);
+        toast({
+            title: "Error",
+            description: "Try again later",
+            status: "error",
+        });
+    };
+
+    const { mutateAsync: createJob, isLoading: creationLoading } = useMutation(
         () => postResource("projects", getAuthHeader(), formik.values),
         {
-            onSuccess: () => {
-                queryClient.resetQueries("projects");
-                toast({
-                    title: "Job created",
-                    status: "success",
-                    isClosable: true,
-                });
-                onClose();
-            },
-            onError: (error) => {
-                console.log(error);
-                toast({
-                    title: "Error creating job",
-                    description: "Try again later",
-                    status: "error",
-                });
-            },
+            onSuccess: onSuccess,
+            onError: onError,
+        }
+    );
+
+    const { mutateAsync: editJob, isLoading: editLoading } = useMutation(
+        () =>
+            patchResource(
+                "projects",
+                id || 0,
+                getAuthHeader(),
+                editInitialValuesToFormikValues(editInitialValues) || {},
+                formik.values
+            ),
+        {
+            onSuccess: onSuccess,
+            onError: onError,
         }
     );
 
@@ -145,6 +182,16 @@ const CreateJobForm = ({ onClose }: Props) => {
                         error={formik.errors.accountId}
                         touched={formik.touched.accountId}
                         name="accountId"
+                        defaultValue={
+                            editInitialValues
+                                ? {
+                                      value: editInitialValues?.proposal.account
+                                          .id,
+                                      label: editInitialValues?.proposal.account
+                                          .name,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -159,6 +206,16 @@ const CreateJobForm = ({ onClose }: Props) => {
                         error={formik.errors.leaderLegacyUserId}
                         touched={formik.touched.leaderLegacyUserId}
                         name="leaderLegacyUserId"
+                        defaultValue={
+                            editInitialValues
+                                ? {
+                                      value: editInitialValues?.leaderLegacyUser
+                                          ?.id,
+                                      label: editInitialValues?.leaderLegacyUser
+                                          ?.fullName,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -168,6 +225,15 @@ const CreateJobForm = ({ onClose }: Props) => {
                         }
                         error={formik.errors.businessUnitId}
                         touched={formik.touched.businessUnitId}
+                        defaultValue={
+                            editInitialValues
+                                ? {
+                                      value: editInitialValues.businessUnit.id,
+                                      label: editInitialValues.businessUnit
+                                          .name,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -266,9 +332,10 @@ const CreateJobForm = ({ onClose }: Props) => {
                         <Button
                             type="submit"
                             colorScheme={"orange"}
-                            isLoading={isLoading}
+                            isLoading={creationLoading || editLoading}
+                            isDisabled={creationLoading || editLoading}
                         >
-                            Create Job
+                            Submit
                         </Button>
                     </HStack>
                 </GridItem>
@@ -277,4 +344,4 @@ const CreateJobForm = ({ onClose }: Props) => {
     );
 };
 
-export default CreateJobForm;
+export default CreateEditJobForm;

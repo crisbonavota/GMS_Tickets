@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { Flex, Heading, HStack, VStack } from "@chakra-ui/react";
+import { Flex, Heading, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import Info from "./Info";
 import TablesBox from "../TablesBox";
 import CloneButton from "../CloneButton";
@@ -10,8 +10,10 @@ import { getResource } from "../../../../api/api";
 import { Project } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
 import EditButton from "../EditButton";
+import CreateEditJobForm from "../../creation-edition/CreateEditJobForm";
 
 const JobDetailedView = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { id } = useParams();
     const getAuthHeader = useAuthHeader();
 
@@ -39,7 +41,18 @@ const JobDetailedView = () => {
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{job.name}</Heading>
                     <HStack spacing={2}>
-                        <EditButton />
+                        <EditButton
+                            modalBody={
+                                <CreateEditJobForm
+                                    onClose={onClose}
+                                    id={job.id}
+                                    editInitialValues={job}
+                                />
+                            }
+                            onClose={onClose}
+                            isOpen={isOpen}
+                            onOpen={onOpen}
+                        />
                         <CloneButton resource="projects" id={job.id} />
                     </HStack>
                 </HStack>

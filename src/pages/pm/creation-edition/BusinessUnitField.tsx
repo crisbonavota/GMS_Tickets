@@ -14,9 +14,10 @@ interface Props {
     setter: (value: number | null) => void;
     error?: string;
     touched?: boolean;
+    defaultValue?: { label: string; value: number };
 }
 
-const BusinessUnitField = ({ setter, error, touched }: Props) => {
+const BusinessUnitField = ({ setter, error, touched, defaultValue }: Props) => {
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
         const res = await getResourceListFilteredAndPaginated<BusinessUnit>(
@@ -59,6 +60,7 @@ const BusinessUnitField = ({ setter, error, touched }: Props) => {
                             : "Start typing to search for business units"
                     }
                     onChange={onChange}
+                    defaultValue={defaultValue}
                 />
             </HStack>
             <FormErrorMessage>{error}</FormErrorMessage>

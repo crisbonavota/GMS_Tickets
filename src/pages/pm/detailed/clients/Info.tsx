@@ -1,6 +1,5 @@
 import InfoBox, { InfoTitle } from "../InfoBox";
 import { VStack, HStack } from "@chakra-ui/react";
-import EditButton from "../EditButton";
 import { Company } from "../../../../api/types";
 
 interface Props {

@@ -40,8 +40,8 @@ interface Props {
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     contractType: Yup.number(),
-    hours: Yup.number().min(0, "Hours must be greater than 0"),
-    currencyId: Yup.number(),
+    hours: Yup.number().min(0, "Hours must be greater than 0").nullable(),
+    currencyId: Yup.number().nullable(),
     sold: Yup.boolean(),
     startDate: Yup.date(),
     endDate: Yup.date(),
@@ -78,6 +78,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
                   editInitialValues?.leaderLegacyUser?.id ?? null,
               businessUnitId: editInitialValues?.businessUnit.id,
               currencyId: editInitialValues?.currency?.id ?? null,
+              sold: editInitialValues.sold ?? false,
           }
         : undefined;
 

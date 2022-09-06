@@ -14,7 +14,10 @@ const Info = ({ client }: Props) => {
                 <VStack alignItems={"flex-start"} spacing={5}>
                     <InfoTitle title={"Fiscal ID"} content={client.fiscalId} />
                     <InfoTitle title={"CUIT/CUIL"} content={client.afipId} />
-                    <InfoTitle title={"IVA Type"} content={client.ivaType} />
+                    <InfoTitle
+                        title={"IVA Type"}
+                        content={client.ivaType.toString()}
+                    />
                 </VStack>
             </HStack>
         </InfoBox>

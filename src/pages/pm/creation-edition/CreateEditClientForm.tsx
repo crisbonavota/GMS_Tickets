@@ -200,7 +200,8 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                         <Button
                             type="submit"
                             colorScheme={"orange"}
-                            isLoading={creationLoading}
+                            isLoading={creationLoading || editLoading}
+                            isDisabled={creationLoading || editLoading}
                         >
                             Submit
                         </Button>

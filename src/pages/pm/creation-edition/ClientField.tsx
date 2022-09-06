@@ -20,9 +20,17 @@ interface Props {
     error?: string;
     touched?: boolean;
     name: string;
+    defaultValue?: { label: string; value: number };
 }
 
-const ClientField = ({ setter, name, error, touched }: Props) => {
+const ClientField = ({
+    setter,
+    name,
+    error,
+    touched,
+    value,
+    defaultValue,
+}: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
@@ -69,6 +77,7 @@ const ClientField = ({ setter, name, error, touched }: Props) => {
                                 : "Start typing to search for clients"
                         }
                         onChange={onChange}
+                        defaultValue={defaultValue}
                     />
                     <IconButton
                         icon={<MdAddCircle size={20} />}

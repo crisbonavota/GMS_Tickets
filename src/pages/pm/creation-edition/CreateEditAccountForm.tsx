@@ -14,16 +14,19 @@ import CountryField from "./CountryField";
 import LeadField from "./LeadField";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { postResource } from "../../../api/api";
+import { postResource, patchResource } from "../../../api/api";
+import { Account } from "../../../api/types";
 
 interface Props {
     onClose: () => void;
+    editInitialValues?: Account;
+    id?: number;
 }
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     countryId: Yup.number(),
-    notes: Yup.string(),
+    notes: Yup.string().nullable(),
     companyId: Yup.number().nullable().required("Client is required"),
     responsibleLegacyUserId: Yup.number()
         .nullable()
@@ -38,38 +41,68 @@ const initialValues = {
     responsibleLegacyUserId: null,
 };
 
-const CreateAccountForm = ({ onClose }: Props) => {
+const editInitialValuesToFormikValues = (editInitialValues?: Account) => ({
+    ...editInitialValues,
+    countryId: editInitialValues?.country.id,
+    responsibleLegacyUserId:
+        editInitialValues?.responsibleLegacyUser?.id ?? null,
+    companyId: editInitialValues?.company.id,
+});
+
+const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
     const formik = useFormik({
-        initialValues,
+        initialValues:
+            editInitialValuesToFormikValues(editInitialValues) || initialValues,
         validationSchema,
         onSubmit: async () => {
-            await createAccount();
+            if (editInitialValues) await editAccount();
+            else await createAccount();
         },
     });
 
-    const { mutateAsync: createAccount, isLoading } = useMutation(
-        () => postResource("accounts", getAuthHeader(), formik.values),
+    const onSuccess = () => {
+        queryClient.resetQueries("clients");
+        toast({
+            title: "Account created",
+            status: "success",
+            isClosable: true,
+        });
+        onClose();
+    };
+
+    const onError = (err: unknown) => {
+        console.log(err);
+        toast({
+            title: "Error",
+            description: "Try again later",
+            status: "error",
+        });
+    };
+
+    const { mutateAsync: createAccount, isLoading: creationLoading } =
+        useMutation(
+            () => postResource("accounts", getAuthHeader(), formik.values),
+            {
+                onSuccess: onSuccess,
+                onError: onError,
+            }
+        );
+
+    const { mutateAsync: editAccount, isLoading: editLoading } = useMutation(
+        () =>
+            patchResource(
+                "accounts",
+                id || 0,
+                getAuthHeader(),
+                editInitialValuesToFormikValues(editInitialValues) || {},
+                formik.values
+            ),
         {
-            onSuccess: () => {
-                queryClient.resetQueries("clients");
-                toast({
-                    title: "Account created",
-                    status: "success",
-                    isClosable: true,
-                });
-                onClose();
-            },
-            onError: (error) => {
-                console.log(error);
-                toast({
-                    title: "Error creating account",
-                    description: "Try again later",
-                    status: "error",
-                });
-            },
+            onSuccess: onSuccess,
+            onError: onError,
         }
     );
 
@@ -92,10 +125,18 @@ const CreateAccountForm = ({ onClose }: Props) => {
                         setter={(value: number | null) =>
                             formik.setFieldValue("companyId", value, true)
                         }
-                        value={formik.values.companyId}
+                        value={formik.values.companyId || null}
                         error={formik.errors.companyId}
                         touched={formik.touched.companyId}
                         name="companyId"
+                        defaultValue={
+                            editInitialValues
+                                ? {
+                                      label: editInitialValues.company.name,
+                                      value: editInitialValues.company.id,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -121,6 +162,16 @@ const CreateAccountForm = ({ onClose }: Props) => {
                         error={formik.errors.responsibleLegacyUserId}
                         touched={formik.touched.responsibleLegacyUserId}
                         name="responsibleLegacyUserId"
+                        defaultValue={
+                            editInitialValues?.responsibleLegacyUser
+                                ? {
+                                      label: editInitialValues
+                                          .responsibleLegacyUser.fullName,
+                                      value: editInitialValues
+                                          .responsibleLegacyUser.id,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -147,10 +198,10 @@ const CreateAccountForm = ({ onClose }: Props) => {
                         <Button
                             type="submit"
                             colorScheme={"orange"}
-                            isLoading={isLoading}
-                            disabled={isLoading}
+                            isLoading={creationLoading || editLoading}
+                            disabled={creationLoading || editLoading}
                         >
-                            Create Account
+                            Submit
                         </Button>
                     </HStack>
                 </GridItem>
@@ -158,4 +209,4 @@ const CreateAccountForm = ({ onClose }: Props) => {
         </chakra.form>
     );
 };
-export default CreateAccountForm;
+export default CreateEditAccountForm;

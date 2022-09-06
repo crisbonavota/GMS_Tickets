@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { Heading, HStack, VStack, Flex } from "@chakra-ui/react";
+import { Heading, HStack, VStack, Flex, useDisclosure } from "@chakra-ui/react";
 import CloneButton from "../CloneButton";
 import Info from "./Info";
 import AccountJobs from "./AccountJobs";
@@ -10,10 +10,12 @@ import { getResource } from "../../../../api/api";
 import { Account } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
 import EditButton from "../EditButton";
+import CreateEditAccountForm from "../../creation-edition/CreateEditAccountForm";
 
 const AccountDetailedView = () => {
     const { id } = useParams();
     const getAuthHeader = useAuthHeader();
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
     const {
         isLoading,
@@ -39,7 +41,18 @@ const AccountDetailedView = () => {
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{account.name}</Heading>
                     <HStack spacing={2}>
-                        <EditButton />
+                        <EditButton
+                            modalBody={
+                                <CreateEditAccountForm
+                                    onClose={onClose}
+                                    id={account.id}
+                                    editInitialValues={account}
+                                />
+                            }
+                            onClose={onClose}
+                            isOpen={isOpen}
+                            onOpen={onOpen}
+                        />
                         <CloneButton resource="accounts" id={account.id} />
                     </HStack>
                 </HStack>

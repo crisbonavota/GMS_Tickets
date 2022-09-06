@@ -10,9 +10,10 @@ interface Props {
     error?: string;
     touched?: boolean;
     name: string;
+    defaultValue?: { label: string; value: number };
 }
 
-const LeadField = ({ setter, error, touched, name }: Props) => {
+const LeadField = ({ setter, error, touched, name, defaultValue }: Props) => {
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
         const res = await getResourceListFilteredAndPaginated<LegacyUserPublic>(
@@ -56,6 +57,7 @@ const LeadField = ({ setter, error, touched, name }: Props) => {
                         : "Start typing to search for users"
                 }
                 onChange={onChange}
+                defaultValue={defaultValue}
             />
             <FormErrorMessage>{error}</FormErrorMessage>
         </FormControl>

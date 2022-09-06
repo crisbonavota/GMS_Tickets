@@ -48,6 +48,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
 
     const onSuccess = () => {
         queryClient.resetQueries("clients");
+        queryClient.resetQueries(`client-${id}`);
         toast({
             title: `Client ${editInitialValues ? "edited" : "created"}`,
             status: "success",

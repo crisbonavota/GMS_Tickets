@@ -99,6 +99,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id }: Props) => {
 
     const onSuccess = () => {
         queryClient.resetQueries("projects");
+        queryClient.resetQueries(`project-${id}`);
         toast({
             title: "Job created",
             status: "success",

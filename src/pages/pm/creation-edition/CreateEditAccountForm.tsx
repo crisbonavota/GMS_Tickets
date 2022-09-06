@@ -68,6 +68,7 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
 
     const onSuccess = () => {
         queryClient.resetQueries("clients");
+        queryClient.resetQueries(`client-${id}`);
         toast({
             title: "Account created",
             status: "success",

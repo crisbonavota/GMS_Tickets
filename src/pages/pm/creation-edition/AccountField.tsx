@@ -12,7 +12,7 @@ import { SingleValue } from "react-select";
 import { MdAddCircle } from "react-icons/md";
 import CreateAccountModal from "./CreateAccountModal";
 import { getResourceListFilteredAndPaginated } from "../../../api/api";
-import { Account } from "../../../api/types";
+import { Account, Company } from "../../../api/types";
 
 interface Props {
     setter: (value: number | null) => void;
@@ -20,6 +20,9 @@ interface Props {
     touched?: boolean;
     name: string;
     defaultValue?: { label: string; value: number };
+    preset?: boolean;
+    predefinedCompany?: Company;
+    presetAccount?: boolean;
 }
 
 const AccountField = ({
@@ -28,6 +31,9 @@ const AccountField = ({
     touched,
     name,
     defaultValue,
+    preset,
+    predefinedCompany,
+    presetAccount,
 }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
@@ -35,7 +41,10 @@ const AccountField = ({
         const res = await getResourceListFilteredAndPaginated<Account>(
             "accounts",
             getAuthHeader(),
-            [{ field: "name", value: input }],
+            [
+                { field: "name", value: input },
+                {field: "companyId", value: predefinedCompany?.id}
+            ],
             [],
             { field: "name", isAscending: true }
         );
@@ -76,6 +85,7 @@ const AccountField = ({
                         }
                         onChange={onChange}
                         defaultValue={defaultValue}
+                        isDisabled={presetAccount}
                     />
                     <IconButton
                         icon={<MdAddCircle size={20} />}
@@ -83,6 +93,7 @@ const AccountField = ({
                         variant="ghost"
                         colorScheme={"green"}
                         onClick={onOpen}
+                        isDisabled={preset}
                     />
                 </HStack>
                 <FormErrorMessage>{error}</FormErrorMessage>

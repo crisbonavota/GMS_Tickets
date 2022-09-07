@@ -1,3 +1,4 @@
+import CreateEditJobForm from "./CreateEditJobForm";
 import {
     Modal,
     ModalOverlay,
@@ -6,27 +7,29 @@ import {
     ModalCloseButton,
     ModalBody,
 } from "@chakra-ui/react";
-import CreateEditAccountForm from "./CreateEditAccountForm";
+import { Account } from '../../../api/types';
 
 interface Props {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
+    predefinedAccount?: Account;
 }
 
-const CreateAccountModal = ({ isOpen, onOpen, onClose }: Props) => {
+const AddJobToAccount = ({ isOpen, onClose, predefinedAccount }: Props) => {
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent minW={"fit-content"}>
-                <ModalHeader>Create account</ModalHeader>
+                <ModalHeader>Add job to {predefinedAccount?.name}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody w={"fit-content"} minW={"40vw"}>
-                    <CreateEditAccountForm onClose={onClose}/>
+                    <CreateEditJobForm onClose={onClose} predefinedAccount={predefinedAccount}  />
                 </ModalBody>
             </ModalContent>
         </Modal>
     );
 };
 
-export default CreateAccountModal;
+export default AddJobToAccount;

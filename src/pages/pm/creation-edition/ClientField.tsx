@@ -21,6 +21,7 @@ interface Props {
     touched?: boolean;
     name: string;
     defaultValue?: { label: string; value: number };
+    preset?: boolean;
 }
 
 const ClientField = ({
@@ -30,6 +31,7 @@ const ClientField = ({
     touched,
     value,
     defaultValue,
+    preset,
 }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
@@ -78,6 +80,7 @@ const ClientField = ({
                         }
                         onChange={onChange}
                         defaultValue={defaultValue}
+                        isDisabled={preset}              
                     />
                     <IconButton
                         icon={<MdAddCircle size={20} />}
@@ -85,6 +88,7 @@ const ClientField = ({
                         variant="ghost"
                         colorScheme={"green"}
                         onClick={onOpen}
+                        isDisabled={preset}
                     />
                 </HStack>
                 <FormErrorMessage>{error}</FormErrorMessage>

@@ -1,21 +1,24 @@
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, VStack, useDisclosure } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import { useQuery } from "react-query";
 import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { Project } from "../../../../api/types";
+import { Account, Project } from "../../../../api/types";
 import Loading from "../../tabs/Loading";
 import AddButton from "../AddButton";
 import JobsTable from "../JobsTable";
 import TableHeader from "../TableHeader";
+import AddJobToAccount from "../../creation-edition/AddJobToAccount";
 
 interface Props {
     accountId: number;
+    account: Account;
 }
 
-const AccountJobs = ({ accountId }: Props) => {
+const AccountJobs = ({ accountId, account }: Props) => {
     const [page, setPage] = useState(0);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const {
         isLoading,
@@ -50,7 +53,8 @@ const AccountJobs = ({ accountId }: Props) => {
                 alignItems={"flex-end"}
             >
                 <TableHeader label="Jobs" icon={BsFillBriefcaseFill} />
-                <AddButton label="job" />
+                <AddButton label="job" onOpen={onOpen} />
+                <AddJobToAccount isOpen={isOpen} onOpen={onOpen} onClose={onClose} predefinedAccount={isSuccess && account ? account : undefined} />
             </HStack>
             {isSuccess && jobs && (
                 <JobsTable

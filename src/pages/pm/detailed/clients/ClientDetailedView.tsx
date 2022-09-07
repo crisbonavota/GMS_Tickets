@@ -74,8 +74,8 @@ const ClientDetailedView = () => {
                             spacing={10}
                             alignItems={"flex-start"}
                         >
-                            <ClientAccounts clientId={client.id} />
-                            <ClientJobs clientId={client.id} />
+                            <ClientAccounts clientId={client.id} company={client} />
+                            <ClientJobs clientId={client.id} company={client} />
                         </VStack>
                     </TablesBox>
                 </Flex>

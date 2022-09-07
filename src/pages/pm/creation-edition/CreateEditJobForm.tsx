@@ -23,7 +23,7 @@ import FormikSelectInput from "./FormikSelectInput";
 import StatusField from "./StatusField";
 import SoldField from "./SoldField";
 import BusinessUnitField from "./BusinessUnitField";
-import { Project } from "../../../api/types";
+import { Account, Company, Project } from "../../../api/types";
 import { patchResource } from "../../../api/api";
 import {
     postResource,
@@ -35,6 +35,8 @@ interface Props {
     onClose: () => void;
     editInitialValues?: Project;
     id?: number;
+    predefinedClient?: Company;
+    predefinedAccount?: Account;
 }
 
 const validationSchema = Yup.object().shape({
@@ -82,14 +84,22 @@ const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
           }
         : undefined;
 
-const CreateEditJobForm = ({ onClose, editInitialValues, id }: Props) => {
+const initialValuesIfPredefinedAccount = (predefinedAccount?: Account) =>
+    initialValues
+        ? {
+              ...initialValues,
+              accountId: predefinedAccount?.id,
+          }
+        : undefined;
+
+const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, predefinedAccount }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
 
     const formik = useFormik({
         initialValues:
-            editInitialValuesToFormikValues(editInitialValues) || initialValues,
+            editInitialValuesToFormikValues(editInitialValues) || initialValuesIfPredefinedAccount(predefinedAccount) || initialValues,
         validationSchema,
         onSubmit: async () => {
             if (editInitialValues) await editJob();
@@ -192,8 +202,14 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id }: Props) => {
                                       label: editInitialValues?.proposal.account
                                           .name,
                                   }
-                                : undefined
+                                  : predefinedAccount ? {
+                                    label:  predefinedAccount.name,
+                                    value: predefinedAccount.id,
+                                } : undefined
                         }
+                        preset={predefinedClient !== undefined || predefinedAccount !== undefined }
+                        predefinedCompany={predefinedClient}
+                        presetAccount={predefinedAccount !== undefined}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>

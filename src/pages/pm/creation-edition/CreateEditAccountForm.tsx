@@ -15,12 +15,13 @@ import LeadField from "./LeadField";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
 import { postResource, patchResource } from "../../../api/api";
-import { Account } from "../../../api/types";
+import { Account, Company } from "../../../api/types";
 
 interface Props {
     onClose: () => void;
     editInitialValues?: Account;
     id?: number;
+    predefinedClient?: Company;
 }
 
 const validationSchema = Yup.object().shape({
@@ -52,13 +53,21 @@ const editInitialValuesToFormikValues = (editInitialValues?: Account) =>
           }
         : undefined;
 
-const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
+const initialValuesIfPredefinedClient = (predefinedClient?: Company) =>
+          initialValues
+          ? {
+            ...initialValues,
+            companyId: predefinedClient?.id,
+          }
+          : undefined;
+
+const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClient }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
     const formik = useFormik({
         initialValues:
-            editInitialValuesToFormikValues(editInitialValues) || initialValues,
+            editInitialValuesToFormikValues(editInitialValues) || initialValuesIfPredefinedClient(predefinedClient) || initialValues,
         validationSchema,
         onSubmit: async () => {
             if (editInitialValues) await editAccount();
@@ -110,6 +119,8 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
         }
     );
 
+    if(predefinedClient) formik.values.companyId === predefinedClient.id;
+
     return (
         <chakra.form onSubmit={formik.handleSubmit} w={"full"}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
@@ -139,8 +150,12 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id }: Props) => {
                                       label: editInitialValues.company.name,
                                       value: editInitialValues.company.id,
                                   }
-                                : undefined
+                                : predefinedClient ? {
+                                    label:  predefinedClient.name,
+                                    value: predefinedClient.id,
+                                } : undefined
                         }
+                        preset={predefinedClient !== undefined}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>

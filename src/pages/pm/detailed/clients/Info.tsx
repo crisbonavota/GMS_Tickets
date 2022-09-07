@@ -15,7 +15,7 @@ const Info = ({ client }: Props) => {
                     <InfoTitle title={"CUIT/CUIL"} content={client.afipId} />
                     <InfoTitle
                         title={"IVA Type"}
-                        content={client.ivaType.toString()}
+                        content={client.ivaType?.toString()}
                     />
                 </VStack>
             </HStack>

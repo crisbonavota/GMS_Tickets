@@ -6,27 +6,29 @@ import {
     ModalCloseButton,
     ModalBody,
 } from "@chakra-ui/react";
+import { Company } from "../../../api/types";
 import CreateEditAccountForm from "./CreateEditAccountForm";
 
 interface Props {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
+    predefinedClient?: Company;
 }
 
-const CreateAccountModal = ({ isOpen, onOpen, onClose }: Props) => {
+const AddAccountToClient = ({ isOpen, onOpen, onClose, predefinedClient }: Props) => {
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent minW={"fit-content"}>
-                <ModalHeader>Create account</ModalHeader>
+                <ModalHeader>Add account to {predefinedClient?.name}</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody w={"fit-content"} minW={"40vw"}>
-                    <CreateEditAccountForm onClose={onClose}/>
+                    <CreateEditAccountForm onClose={onClose} predefinedClient={predefinedClient}/>
                 </ModalBody>
             </ModalContent>
         </Modal>
     );
 };
 
-export default CreateAccountModal;
+export default AddAccountToClient;

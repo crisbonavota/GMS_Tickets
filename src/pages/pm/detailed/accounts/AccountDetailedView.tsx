@@ -65,7 +65,7 @@ const AccountDetailedView = () => {
                 >
                     <Info account={account} />
                     <TablesBox w={{ base: "full", md: "fit-content" }}>
-                        <AccountJobs accountId={account.id} />
+                        <AccountJobs accountId={account.id} account={account} />
                     </TablesBox>
                 </Flex>
             </VStack>

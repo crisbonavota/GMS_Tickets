@@ -1,10 +1,12 @@
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, useDisclosure, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { BsFillBriefcaseFill } from "react-icons/bs";
 import { useQuery } from "react-query";
 import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { Project } from "../../../../api/types";
+import { Company, Project } from "../../../../api/types";
+import AddJobToClient from "../../creation-edition/AddJobToClient";
+import CreateJobModal from "../../creation-edition/CreateJobModal";
 import Loading from "../../tabs/Loading";
 import AddButton from "../AddButton";
 import JobsTable from "../JobsTable";
@@ -12,10 +14,12 @@ import TableHeader from "../TableHeader";
 
 interface Props {
     clientId: number;
+    company: Company;
 }
 
-const ClientJobs = ({ clientId }: Props) => {
+const ClientJobs = ({ clientId, company }: Props) => {
     const [page, setPage] = useState(0);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const getAuthHeader = useAuthHeader();
     const {
         isLoading,
@@ -50,7 +54,9 @@ const ClientJobs = ({ clientId }: Props) => {
                 alignItems={"flex-end"}
             >
                 <TableHeader label="Jobs" icon={BsFillBriefcaseFill} />
-                <AddButton label="job" />
+                <AddButton label="job" onOpen={onOpen} />
+                <CreateJobModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
+                <AddJobToClient isOpen={isOpen} onOpen={onOpen} onClose={onClose} predefinedClient={isSuccess && company ? company : undefined} />
             </HStack>
             {isSuccess && jobs && (
                 <JobsTable

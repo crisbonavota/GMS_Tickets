@@ -75,6 +75,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
     editInitialValues
         ? {
               ...editInitialValues,
+              name: editInitialValues.name.replace(` (${editInitialValues.id})`, ""),
               accountId: editInitialValues?.proposal.account.id,
               leaderLegacyUserId:
                   editInitialValues?.leaderLegacyUser?.id ?? null,

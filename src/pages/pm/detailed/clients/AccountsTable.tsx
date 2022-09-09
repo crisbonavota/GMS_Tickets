@@ -19,7 +19,7 @@ const format: DynamicTableFormat[] = [
     },
     {
         header: "Country",
-        accessor: "country.name",
+        accessor: "country?.name",
     },
     {
         header: "Details",

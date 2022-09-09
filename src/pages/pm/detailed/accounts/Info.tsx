@@ -22,7 +22,7 @@ const Info = ({ account }: Props) => {
                 >
                     <InfoTitle
                         title={"Country"}
-                        content={account.country.name}
+                        content={account.country?.name}
                     />
                     <InfoTitle
                         title={"Responsible"}

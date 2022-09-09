@@ -48,7 +48,7 @@ const ClientDetailedView = () => {
                                     onClose={onClose}
                                     editInitialValues={{
                                         ...client,
-                                        countryId: client.country.id,
+                                        countryId: client.country?.id,
                                     }}
                                     id={client.id}
                                 />
@@ -74,7 +74,10 @@ const ClientDetailedView = () => {
                             spacing={10}
                             alignItems={"flex-start"}
                         >
-                            <ClientAccounts clientId={client.id} company={client} />
+                            <ClientAccounts
+                                clientId={client.id}
+                                company={client}
+                            />
                             <ClientJobs clientId={client.id} company={client} />
                         </VStack>
                     </TablesBox>

@@ -1,7 +1,8 @@
 import InfoBox, { InfoTitle } from "../InfoBox";
 import { VStack, HStack } from "@chakra-ui/react";
-import EditButton from "../EditButton";
 import { Project } from "../../../../api/types";
+import { momentToLocaleDateString } from '../../../../utils/datetime';
+import moment from 'moment';
 
 interface Props {
     job: Project;
@@ -26,7 +27,7 @@ const Info = ({ job }: Props) => {
                     />
                     <InfoTitle
                         title={"Start Date"}
-                        content={job.startDate?.toString()}
+                        content={momentToLocaleDateString(moment(job.startDate))}
                     />
                 </VStack>
                 <VStack alignItems={"flex-start"}>
@@ -37,7 +38,7 @@ const Info = ({ job }: Props) => {
                     <InfoTitle title={"Comments"} content={job.comments} />
                     <InfoTitle
                         title={"End Date"}
-                        content={job.endDate?.toString()}
+                        content={momentToLocaleDateString(moment(job.endDate))}
                     />
                 </VStack>
             </HStack>

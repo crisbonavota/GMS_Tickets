@@ -3,12 +3,18 @@ import { VStack, HStack } from "@chakra-ui/react";
 import { Project } from "../../../../api/types";
 import { momentToLocaleDateString } from '../../../../utils/datetime';
 import moment from 'moment';
+import { getContractTypes } from "../../../../api/api";
 
 interface Props {
     job: Project;
 }
 
 const Info = ({ job }: Props) => {
+
+    const contractTypes = getContractTypes();
+
+    const contractType = contractTypes.filter(p => p.value === job.contractType)[0];
+
     return (
         <InfoBox>
             <HStack>
@@ -23,7 +29,7 @@ const Info = ({ job }: Props) => {
                     />
                     <InfoTitle
                         title={"Contract Type"}
-                        content={job.contractType.toString()}
+                        content={contractType.label}
                     />
                     <InfoTitle
                         title={"Start Date"}

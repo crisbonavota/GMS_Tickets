@@ -26,7 +26,7 @@ interface Props {
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    countryId: Yup.number(),
+    countryId: Yup.number().required("Country is required"),
     notes: Yup.string().nullable(),
     companyId: Yup.number().nullable().required("Client is required"),
     responsibleLegacyUserId: Yup.number()
@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
 
 const initialValues = {
     name: "",
-    countryId: 0,
+    countryId: undefined,
     notes: "",
     companyId: null,
     responsibleLegacyUserId: null,

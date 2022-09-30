@@ -12,6 +12,7 @@ import Reports from "./pages/reports/Reports";
 import Employees from "./pages/employees/Employees";
 import Updates from "./pages/updates/Updates";
 import Timetracker from "./pages/timetracker/Timetracker";
+import Providers from "./pages/providers/Providers";
 
 const signInPath = "/sign-in";
 
@@ -58,6 +59,15 @@ const App = () => {
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <Employees />
+                            </RequireAuth>
+                        }
+                    />
+
+                    <Route
+                        path="/human-resources/providers"
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <Providers />
                             </RequireAuth>
                         }
                     />

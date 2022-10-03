@@ -1,56 +1,54 @@
-import moment from "moment";
-import { TimetrackItem, Sort } from "../../api/types";
+import { useCallback } from "react";
+import { Provider, Sort } from "../../api/types";
 import {
     DynamicTable,
     DynamicTableFormat,
 } from "../../components/DynamicTable/DynamicTable";
-import { momentToLocaleDateString } from "../../utils/datetime";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useCallback } from "react";
-import { changeSort, changePage } from "../../redux/slices/tt-reports";
+import { changeSort, changePage } from "../../redux/slices/hr-providers";
+import { Text } from "@chakra-ui/react";
+import EditModal from "./EditModal";
 
 interface Props {
-    data: Array<TimetrackItem>;
+    providers: Provider[];
 }
 
 const format: DynamicTableFormat[] = [
     {
         header: "File number",
-        accessor: "legacyUser.fileNumber",
+        accessor: "fileNumber",
         disableSort: true,
     },
     {
-        header: "Employee",
+        header: "Name",
         accessor: "legacyUser.fullName",
     },
     {
-        header: "Business Unit (Employee)",
-        accessor: "legacyUser.businessUnit.name",
-    },
-    { header: "Project", accessor: "project.name" },
-    {
-        header: "Business Unit (Project)",
-        accessor: "project.businessUnit.name",
+        header: "Email",
+        accessor: "email",
     },
     {
-        header: "Task",
-        accessor: "task",
+        header: "Active",
+        accessor: "active",
+        accessorFn: (active: boolean) =>
+            active ? (
+                <Text color="green">Yes</Text>
+            ) : (
+                <Text color="red">No</Text>
+            ),
     },
     {
-        header: "Date",
-        accessor: "date",
-        accessorFn: (date: string) =>
-            date ? momentToLocaleDateString(moment(date)) : "",
-    },
-    {
-        header: "Hours",
-        accessor: "hours",
-        accessorFn: (hours: number) => hours?.toFixed(2),
+        header: "",
+        accessor: "",
+        disableSort: true,
+        rawObject: true,
+        accessorFn: (provider: Provider) => <EditModal provider={provider} />,
     },
 ];
 
-const TableComponent = ({ data }: Props) => {
-    const state = useAppSelector((s) => s.ttReports);
+const TableComponent = ({ providers }: Props) => {
+    const state = useAppSelector((s) => s.hrProviders);
+
     const dispatch = useAppDispatch();
 
     const setSort = useCallback(
@@ -73,12 +71,12 @@ const TableComponent = ({ data }: Props) => {
 
     return (
         <DynamicTable
+            data={providers}
             format={format}
-            data={data}
             sort={state.sort}
-            setSort={setSort}
             currentPage={state.pagination.currentPage}
             totalPages={state.pagination.totalPages}
+            setSort={setSort}
             setCurrentPage={setPage}
         />
     );

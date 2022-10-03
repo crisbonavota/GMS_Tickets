@@ -27,6 +27,13 @@ export const routes = [
         logo: HrEmployees,
     },
     {
+        label: "Providers",
+        allowedRoles: ["hr-employees"],
+        description: "See a list of providers and edit their details",
+        path: "/human-resources/providers",
+        logo: HrEmployees,
+    },
+    {
         label: "Updates",
         allowedRoles: ["hr-updates"],
         description: "Create, see, edit, delete, and export employees updates",

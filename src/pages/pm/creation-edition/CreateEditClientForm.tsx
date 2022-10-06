@@ -14,6 +14,7 @@ import CountryField from "./CountryField";
 import { useAuthHeader } from "react-auth-kit";
 import { postResource, patchResource } from "../../../api/api";
 import LabeledReactSelectInput from "../../../components/LabeledReactSelectInput";
+import StatusField from "./StatusField";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
@@ -23,6 +24,7 @@ const validationSchema = Yup.object().shape({
     fiscalId: Yup.string(),
     afipId: Yup.string().nullable(),
     ivaType: Yup.number().nullable(),
+    active: Yup.bool(),
 });
 
 const initialValues = {
@@ -33,6 +35,7 @@ const initialValues = {
     fiscalId: "",
     afipId: "",
     ivaType: 0,
+    active: true,
 };
 
 interface Props {
@@ -186,6 +189,14 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                             formik.setFieldValue("ivaType", value, true)
                         }
                         placeholder="IVA Type"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <StatusField
+                        setter={(value: boolean) =>
+                            formik.setFieldValue("active", value, true)
+                        }                     
+                        value={formik.values.active === true ? 'active' : 'inactive'}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

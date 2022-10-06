@@ -53,7 +53,7 @@ const AccountDetailedView = () => {
                             isOpen={isOpen}
                             onOpen={onOpen}
                         />
-                        <CloneButton resource="accounts" id={account.id} />
+                        <CloneButton resource="accounts" id={account.id} route="accounts"/>
                     </HStack>
                 </HStack>
                 <Flex

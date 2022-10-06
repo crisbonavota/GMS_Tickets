@@ -82,6 +82,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
               businessUnitId: editInitialValues?.businessUnit.id,
               currencyId: editInitialValues?.currency?.id ?? null,
               sold: editInitialValues.sold ?? false,
+              active: editInitialValues?.active,
           }
         : undefined;
 
@@ -336,6 +337,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
                         }
+                        value={formik.values.active === true ? 'active' : 'inactive'}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

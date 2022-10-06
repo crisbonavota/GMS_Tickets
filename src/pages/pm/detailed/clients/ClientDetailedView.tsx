@@ -57,7 +57,7 @@ const ClientDetailedView = () => {
                             isOpen={isOpen}
                             onOpen={onOpen}
                         />
-                        <CloneButton resource="companies" id={client.id} />
+                        <CloneButton resource="companies" id={client.id} route="clients" />
                     </HStack>
                 </HStack>
                 <Flex

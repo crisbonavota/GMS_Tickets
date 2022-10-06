@@ -53,7 +53,7 @@ const JobDetailedView = () => {
                             isOpen={isOpen}
                             onOpen={onOpen}
                         />
-                        <CloneButton resource="projects" id={job.id} />
+                        <CloneButton resource="projects" id={job.id} route="jobs"/>
                     </HStack>
                 </HStack>
                 <Flex

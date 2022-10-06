@@ -17,8 +17,6 @@ const format: DynamicTableFormat[] = [
     {
         header: "File number",
         accessor: "legacyUser.fileNumber",
-        accessorFn: (fileNumber: number) =>
-            fileNumber ? fileNumber : "Contractor",
         disableSort: true,
     },
     {
@@ -33,6 +31,10 @@ const format: DynamicTableFormat[] = [
     {
         header: "Business Unit (Project)",
         accessor: "project.businessUnit.name",
+    },
+    {
+        header: "Task Type",
+        accessor: "tasktype.shortname",
     },
     {
         header: "Task",

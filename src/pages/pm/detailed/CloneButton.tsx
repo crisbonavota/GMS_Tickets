@@ -8,9 +8,10 @@ import { useAuthHeader } from "react-auth-kit";
 interface Props {
     id: number;
     resource: string;
+    route: string;
 }
 
-const CloneButton = ({ id, resource }: Props) => {
+const CloneButton = ({ id, resource, route }: Props) => {
     const navigate = useNavigate();
     const getAuthHeader = useAuthHeader();
     const toast = useToast();
@@ -30,12 +31,12 @@ const CloneButton = ({ id, resource }: Props) => {
             onSuccess: (res) => {
                 toast({
                     status: "success",
-                    title: `Cloned ${resource.substring(
+                    title: `Cloned ${route.substring(
                         0,
-                        resource.length - 1
+                        route.length - 1
                     )}`,
                 });
-                navigate(`/project-management/${resource}/${res.data}`);
+                navigate(`/project-management/${route}/${res.data}`);
             },
             onError: (err) => {
                 console.error(err);

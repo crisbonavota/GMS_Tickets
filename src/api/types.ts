@@ -114,6 +114,7 @@ export interface ProjectCreation {
     endDate?: string;
     leaderLegacyUserId: number;
     hours: number;
+    active: boolean;
 }
 
 export interface UpdateType {
@@ -243,4 +244,22 @@ export interface Employee {
     city: City;
     country: Country;
     active: boolean;
+}
+
+export interface Provider {
+    id: number;
+    legacyUserId: number;
+    legacyUser: LegacyUserPublic;
+    firstName: string;
+    lastName: string;
+    afipId: string;
+    businessName: string;
+    email: string;
+    phone: string;
+    address: string;
+    cityId: number;
+    city: City;
+    creationDate: Date;
+    active: boolean;
+    fileNumber: number;
 }

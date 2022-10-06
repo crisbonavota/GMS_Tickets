@@ -114,6 +114,7 @@ export interface ProjectCreation {
     endDate?: string;
     leaderLegacyUserId: number;
     hours: number;
+    active: boolean;
 }
 
 export interface UpdateType {

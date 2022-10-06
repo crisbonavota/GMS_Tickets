@@ -2,10 +2,11 @@ import { HStack, Radio, RadioGroup, Text, VStack } from '@chakra-ui/react';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 interface Props {
+    value: string;
     setter: (value: boolean) => void;
 }
 
-const StatusField = ({ setter }: Props) => {
+const StatusField = ({ setter, value }: Props) => {
     const handleChange = (e: string) => {
         setter(e === 'active');
     };
@@ -13,7 +14,7 @@ const StatusField = ({ setter }: Props) => {
     return (
         <VStack alignItems={'flex-start'} w={'full'}>
             <Text>Status</Text>
-            <RadioGroup onChange={handleChange} defaultValue={'active'}>
+            <RadioGroup onChange={handleChange} defaultValue={value}>
                 <HStack spacing={5}>
                     <Radio value={'active'}>
                         <HStack>

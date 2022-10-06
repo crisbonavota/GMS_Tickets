@@ -33,6 +33,10 @@ const format: DynamicTableFormat[] = [
         accessor: "project.businessUnit.name",
     },
     {
+        header: "Task Type",
+        accessor: "tasktype.shortname",
+    },
+    {
         header: "Task",
         accessor: "task",
     },

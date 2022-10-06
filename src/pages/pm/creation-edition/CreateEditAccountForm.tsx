@@ -16,6 +16,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
 import { postResource, patchResource } from "../../../api/api";
 import { Account, Company } from "../../../api/types";
+import StatusField from "./StatusField";
 
 interface Props {
     onClose: () => void;
@@ -29,6 +30,7 @@ const validationSchema = Yup.object().shape({
     countryId: Yup.number().required("Country is required"),
     notes: Yup.string().nullable(),
     companyId: Yup.number().nullable().required("Client is required"),
+    active: Yup.bool(),
     responsibleLegacyUserId: Yup.number()
         .nullable()
         .required("Leader is required"),
@@ -40,6 +42,7 @@ const initialValues = {
     notes: "",
     companyId: null,
     responsibleLegacyUserId: null,
+    active: true,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Account) =>
@@ -203,6 +206,14 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
                         label="Notes"
                         error={formik.errors.notes}
                         touched={formik.touched.notes}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <StatusField
+                        setter={(value: boolean) =>
+                            formik.setFieldValue("active", value, true)
+                        }
+                        value={formik.values.active === true ? 'active' : 'inactive'}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

@@ -95,14 +95,12 @@ export interface Project {
     contractType: number;
     leaderLegacyUser: LegacyUserPublic;
     progress: number;
-    comments: string;
     hours: number;
     creationLegacyUser: LegacyUserPublic;
     uiColor?: string;
     active: boolean;
     sold: boolean;
     currency: Currency;
-    notes: string;
 }
 
 export interface ProjectCreation {

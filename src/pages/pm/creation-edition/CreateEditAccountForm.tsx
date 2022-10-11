@@ -80,10 +80,10 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
     });
 
     const onSuccess = () => {
-        queryClient.resetQueries("clients");
-        queryClient.resetQueries(`client-${id}`);
+        queryClient.resetQueries("accounts");
+        queryClient.resetQueries(`account-${id}`);
         toast({
-            title: "Account created",
+            title: editInitialValues ? "Account updated" : "Account created",
             status: "success",
             isClosable: true,
         });

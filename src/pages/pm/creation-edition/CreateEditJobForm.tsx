@@ -30,6 +30,7 @@ import {
     getContractTypes,
     getCurrencies,
 } from "../../../api/api";
+import moment from "moment";
 
 interface Props {
     onClose: () => void;
@@ -113,7 +114,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
         queryClient.resetQueries("projects");
         queryClient.resetQueries(`project-${id}`);
         toast({
-            title: "Job created",
+            title: editInitialValues ? "Job updated" : "Job created",
             status: "success",
             isClosable: true,
         });
@@ -151,6 +152,9 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
             onError: onError,
         }
     );
+    
+    const startDate = moment(formik.values.startDate).format("yyyy-MM-DD");
+    const endDate = moment(formik.values.endDate).format("yyyy-MM-DD");
 
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
@@ -312,7 +316,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                     <FormikTextInput
                         name="startDate"
                         id="startDate"
-                        value={formik.values.startDate}
+                        value={startDate}
                         onChange={formik.handleChange}
                         error={formik.errors.startDate}
                         touched={formik.touched.startDate}
@@ -324,7 +328,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                     <FormikTextInput
                         name="endDate"
                         id="endDate"
-                        value={formik.values.endDate}
+                        value={endDate}
                         onChange={formik.handleChange}
                         error={formik.errors.endDate}
                         touched={formik.touched.endDate}

@@ -53,7 +53,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
         queryClient.resetQueries("clients");
         queryClient.resetQueries(`client-${id}`);
         toast({
-            title: `Client ${editInitialValues ? "edited" : "created"}`,
+            title: `Client ${editInitialValues ? "updated" : "created"}`,
             status: "success",
             isClosable: true,
         });

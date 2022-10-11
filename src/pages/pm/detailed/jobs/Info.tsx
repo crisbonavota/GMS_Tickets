@@ -41,14 +41,13 @@ const Info = ({ job }: Props) => {
                         title={"Currency"}
                         content={job.currency?.code}
                     />
-                    <InfoTitle title={"Comments"} content={job.comments} />
+                    <InfoTitle title={"Status"} content={job.sold ? "Project" : "Proposal"} />
                     <InfoTitle
                         title={"End Date"}
                         content={momentToLocaleDateString(moment(job.endDate))}
                     />
                 </VStack>
             </HStack>
-            <InfoTitle title={"Notes"} content={job.notes} />
         </InfoBox>
     );
 };

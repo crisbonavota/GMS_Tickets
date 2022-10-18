@@ -70,7 +70,8 @@ const ExportModule = () => {
                         value: state.filters.generalSearch,
                     },
                     { name: "isGiven", value: state.filters.borrowed },
-                ]
+                ],
+                state.sort
             )
     );
 

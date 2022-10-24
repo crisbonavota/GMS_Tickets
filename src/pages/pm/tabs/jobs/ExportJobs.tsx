@@ -5,24 +5,46 @@ import { getReportFiltered } from "../../../../api/api";
 import { useAppSelector } from "../../../../redux/hooks";
 import { downloadFile, generateExcelFileURL } from "../../../../utils/files";
 
+const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
+    if (type.project && type.proposal) return undefined;
+    if (type.project) return true;
+    return false;
+};
 
 const onExport = (base64?: string) => {
     base64 &&
         downloadFile(
             generateExcelFileURL(base64),
-            `gms_projects_report_${new Date(Date.now()).toISOString()}.xlsx`
+            `gms_jobs_report_${new Date(Date.now()).toISOString()}.xlsx`
         );
 };
 
 const ExportJobs = () => {
     const getAuthHeader = useAuthHeader();
-    const state = useAppSelector((s) => s.projectManagement.jobs.filters);
+    const state = useAppSelector((s) => s.projectManagement.jobs);
     const reportQuery = useQuery(
-        ["projectReport", state],
+        ["projectReport", state.filters, state.sort, state.search],
         () =>
             getReportFiltered(
                 "projects/report",
                 getAuthHeader(),
+                [
+                    { field: "name", value: state.search },
+                    {
+                        field: "proposal.accountId",
+                        value: state.filters.account
+                    },
+                    {
+                        field: "client",
+                        value: state.filters.client
+                    },
+                    {
+                        field: "sold",
+                        value: translateTypeFilter(state.filters.type)
+                    },
+                ],
+                [],
+                state.sort
             )
     );
 

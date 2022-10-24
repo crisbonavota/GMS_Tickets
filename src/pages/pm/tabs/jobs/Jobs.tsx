@@ -20,7 +20,7 @@ const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
     return false;
 };
 
-const Accounts = () => {
+const Jobs = () => {
     const state = useAppSelector((s) => s.projectManagement.jobs);
     const getAuthHeader = useAuthHeader();
     const dispatch = useAppDispatch();
@@ -102,4 +102,4 @@ const Accounts = () => {
     );
 };
 
-export default Accounts;
+export default Jobs;

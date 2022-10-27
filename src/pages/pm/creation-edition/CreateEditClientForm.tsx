@@ -5,6 +5,7 @@ import {
     HStack,
     SimpleGrid,
     useToast,
+    Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import FormikTextInput from "./FormikTextInput";
@@ -104,6 +105,8 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
         },
     });
 
+    const alertText = "IMPORTANT: this will set inactive all accounts and jobs related to this client";
+
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
@@ -197,13 +200,19 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                             formik.setFieldValue("active", value, true)
                         }                     
                         value={formik.values.active === true ? 'active' : 'inactive'}
+                        
                     />
+                    <Text 
+                        paddingTop={2} 
+                        color={"red"}
+                    >
+                        {editInitialValues && formik.values.active === false ? alertText : ""}
+                    </Text>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"
                         justifyContent={"flex-end"}
-                        spacing={5}
                         p={5}
                     >
                         <Button type="button" onClick={onClose} variant="ghost">

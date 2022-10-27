@@ -42,6 +42,10 @@ const ExportJobs = () => {
                         field: "sold",
                         value: translateTypeFilter(state.filters.type)
                     },
+                    { 
+                        field: "active", 
+                        value: state.filters.active 
+                    },
                 ],
                 [],
                 state.sort

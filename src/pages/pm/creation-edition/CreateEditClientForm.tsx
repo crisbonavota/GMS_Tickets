@@ -18,10 +18,10 @@ import StatusField from "./StatusField";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    address: Yup.string(),
+    address: Yup.string().nullable(),
     city: Yup.string().nullable(),
     countryId: Yup.number(),
-    fiscalId: Yup.string(),
+    fiscalId: Yup.string().nullable(),
     afipId: Yup.string().nullable(),
     ivaType: Yup.number().nullable(),
     active: Yup.bool(),

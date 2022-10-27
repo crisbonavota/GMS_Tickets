@@ -47,6 +47,7 @@ const Jobs = () => {
                 getAuthHeader(),
                 [
                     { field: "name", value: state.search },
+                    { field: "active", value: state.filters.active },
                     { field: "client", value: state.filters.client },
                     {
                         field: "proposal.accountId",

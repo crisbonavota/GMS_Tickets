@@ -11,6 +11,7 @@ import {
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/pm";
 import { momentToLocaleDateString } from "../../../../utils/datetime";
+import { Text } from "@chakra-ui/react";
 
 interface Props {
     jobs: Project[];
@@ -49,6 +50,15 @@ const format: DynamicTableFormat[] = [
         header: "Creation Date",
         accessor: "creationDate",
         accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
+    },
+    {
+        header: "Active",
+        accessor: "active",
+        accessorFn: (r: boolean) => (
+            <Text color={r ? "green" : "red"}>
+                {r ? "Active" : "Not active"}
+            </Text>
+        ),
     },
 ];
 

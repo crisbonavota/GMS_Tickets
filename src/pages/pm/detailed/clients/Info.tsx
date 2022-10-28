@@ -18,7 +18,7 @@ const Info = ({ client }: Props) => {
                 <InfoTitle title={"CUIT/CUIL"} content={client.afipId} />
                 <InfoTitle
                     title={"IVA Type"}
-                    content={ivaType === 1 ? "Exento" : ivaType === 2 ? "Responsable inscripto" : ivaType === 3 ? "Responsable no inscripto" : "N/A"}
+                    content={ivaType === 1 ? "Responsable Inscripto" : ivaType === 2 ? "Responsable No Inscripto" : ivaType === 4 ? "Exento" : "N/A"}
                 />
             </VStack>
             <VStack alignItems={"flex-start"}>

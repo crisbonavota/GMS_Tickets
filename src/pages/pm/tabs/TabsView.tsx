@@ -6,7 +6,7 @@ import { useState } from 'react';
 import TabsContent from './TabsContent';
 
 const TabsView = () => {
-    const [tabIndex, setTabIndex] = useState(0);
+    const [tabIndex, setTabIndex] = useState(+localStorage.getItem('tabIndex')!);
     return (
         <VStack
             w={'full'}

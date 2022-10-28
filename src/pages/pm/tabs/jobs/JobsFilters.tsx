@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { changeFilter } from "../../../../redux/slices/pm";
 import AccountFilter from "../AccountFilter";
 import ClientFilter from "../ClientFilter";
+import StatusFilter from "../StatusFilter";
 import TypeFilter from "./TypeFilter";
 
 const JobsFilters = () => {
@@ -67,11 +68,28 @@ const JobsFilters = () => {
         [dispatch, changeFilter]
     );
 
+    const stateSetter = useCallback(
+        (val: boolean) => {
+            dispatch({
+                type: changeFilter,
+                payload: {
+                    module: "jobs",
+                    value: {
+                        key: "active",
+                        value: val,
+                    },
+                },
+            });
+        },
+        [dispatch, changeFilter]
+    );
+
     return (
         <VStack w={"full"}>
             <ClientFilter setter={clientSetter} />
             <AccountFilter setter={accountSetter} />
             <TypeFilter setter={typeSetter} value={type} />
+            <StatusFilter setter={stateSetter}/>
         </VStack>
     );
 };

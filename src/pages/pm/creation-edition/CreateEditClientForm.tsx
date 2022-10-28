@@ -5,6 +5,7 @@ import {
     HStack,
     SimpleGrid,
     useToast,
+    Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import FormikTextInput from "./FormikTextInput";
@@ -18,10 +19,10 @@ import StatusField from "./StatusField";
 
 const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
-    address: Yup.string(),
+    address: Yup.string().nullable(),
     city: Yup.string().nullable(),
     countryId: Yup.number(),
-    fiscalId: Yup.string(),
+    fiscalId: Yup.string().nullable(),
     afipId: Yup.string().nullable(),
     ivaType: Yup.number().nullable(),
     active: Yup.bool(),
@@ -103,6 +104,8 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
             else await createClient();
         },
     });
+
+    const alertText = "IMPORTANT: this will set inactive all accounts and jobs related to this client";
 
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
@@ -197,13 +200,19 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                             formik.setFieldValue("active", value, true)
                         }                     
                         value={formik.values.active === true ? 'active' : 'inactive'}
+                        
                     />
+                    <Text 
+                        paddingTop={2} 
+                        color={"red"}
+                    >
+                        {editInitialValues && formik.values.active === false ? alertText : ""}
+                    </Text>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"
                         justifyContent={"flex-end"}
-                        spacing={5}
                         p={5}
                     >
                         <Button type="button" onClick={onClose} variant="ghost">

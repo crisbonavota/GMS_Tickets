@@ -72,6 +72,7 @@ const DropdownFilters = () => {
                 nameProp="fullName"
                 valueProp="id"
                 resource="users/legacy"
+                disableNormalFilter={false}
             />
             <AsyncMultiDropdownFilter
                 placeholder="Business Unit"
@@ -79,11 +80,14 @@ const DropdownFilters = () => {
                 nameProp="name"
                 valueProp="id"
                 resource="businessUnits"
+                disableNormalFilter={false}
             />
             <AsyncMultiDropdownFilter
                 placeholder="Project"
                 setter={setProjects}
                 nameProp="name"
+                customFilter={true}
+                disableNormalFilter={true}
                 valueProp="id"
                 resource="projects"
             />
@@ -93,6 +97,7 @@ const DropdownFilters = () => {
                 nameProp="name"
                 valueProp="id"
                 resource="accounts"
+                disableNormalFilter={false}
             />
         </Flex>
     );

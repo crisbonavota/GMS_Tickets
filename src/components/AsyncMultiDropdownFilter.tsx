@@ -9,6 +9,8 @@ interface Props {
     resource: string;
     nameProp: string;
     valueProp: string;
+    customFilter?: boolean;
+    disableNormalFilter: boolean;
     label?: string;
     placeholder?: string;
 }
@@ -18,6 +20,8 @@ const AsyncMultiDropdownFilter = ({
     resource,
     nameProp,
     valueProp,
+    customFilter,
+    disableNormalFilter,
     label,
     placeholder,
 }: Props) => {
@@ -26,8 +30,12 @@ const AsyncMultiDropdownFilter = ({
         const res = await getResourceListFilteredAndPaginated<any>(
             resource,
             getAuthHeader(),
-            [{ field: nameProp, value: input }],
-            [],
+            disableNormalFilter === false ? 
+            [{ field: nameProp, value: input }]
+            : [],
+            customFilter === true ? 
+            [{name: "search", value: input}]
+            : [],      
             { field: nameProp, isAscending: true }
         );
         return res.data.map((c) => ({

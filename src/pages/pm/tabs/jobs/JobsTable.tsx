@@ -52,13 +52,14 @@ const format: DynamicTableFormat[] = [
         accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
     },
     {
-        header: "Active",
+        header: "Status",
         accessor: "active",
         accessorFn: (r: boolean) => (
             <Text color={r ? "green" : "red"}>
-                {r ? "Active" : "Not active"}
+                {r ? "Active" : "Inactive"}
             </Text>
         ),
+        disableSort: true,
     },
 ];
 

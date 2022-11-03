@@ -29,13 +29,14 @@ const format: DynamicTableFormat[] = [
         accessor: "country.name",
     },
     {
-        header: "Active",
+        header: "Status",
         accessor: "active",
         accessorFn: (r: boolean) => (
             <Text color={r ? "green" : "red"}>
-                {r ? "Active" : "Not active"}
+                {r ? "Active" : "Inactive"}
             </Text>
         ),
+        disableSort: true,
     },
     {
         header: "Details",

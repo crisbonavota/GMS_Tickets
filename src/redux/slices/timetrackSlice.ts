@@ -207,18 +207,21 @@ export const slice = createSlice({
             action: PayloadAction<number | null>
         ) => {
             state.table.custom.project = action.payload;
+            state.table.custom.page = 0;
         },
         setCustomFiltersStartDate: (
             state: TimetrackState,
             action: PayloadAction<string>
         ) => {
             state.table.custom.startDate = action.payload;
+            state.table.custom.page = 0;
         },
         setCustomFiltersEndDate: (
             state: TimetrackState,
             action: PayloadAction<string>
         ) => {
             state.table.custom.endDate = action.payload;
+            state.table.custom.page = 0;
         },
     },
 });

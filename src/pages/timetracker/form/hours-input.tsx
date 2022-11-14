@@ -1,4 +1,4 @@
-import { useCallback, useRef } from "react";
+import { useRef } from "react";
 import {
     VStack,
     Heading,
@@ -63,11 +63,6 @@ const HoursInput = () => {
         }
     };
 
-    const onFocus = useCallback(
-        (e: React.ChangeEvent<HTMLInputElement>) => e.target.select(),
-        []
-    );
-
     return (
         <VStack alignItems={"flex-start"}>
             <Heading fontSize={"md"}>Hours</Heading>
@@ -80,7 +75,6 @@ const HoursInput = () => {
             >
                 <NumberInput
                     step={1}
-                    allowMouseWheel
                     onChange={onHoursChange}
                     value={hours.toString().padStart(2, "0")}
                     min={0}
@@ -89,28 +83,33 @@ const HoursInput = () => {
                     p={0}
                 >
                     <NumberInputField
+                        disabled={true}
+                        _disabled={{
+                            cursor: 'normal'
+                        }}
                         boxShadow={"none !important"}
                         border={"none"}
                         w={"20px"}
                         p={0}
-                        onFocus={onFocus}
                     />
                 </NumberInput>
                 <Text>:</Text>
                 <NumberInput
                     value={minutes.toString().padStart(2, "0")}
                     onChange={onMinutesChange}
-                    allowMouseWheel
                     min={-5}
                     max={60}
                     step={30}
                 >
                     <NumberInputField
+                        disabled={true}
+                        _disabled={{
+                            cursor: 'normal'
+                        }}
                         boxShadow={"none !important"}
                         border={"none"}
                         w={"50px"}
                         p={0}
-                        onFocus={onFocus}
                         ref={minutesRef}
                     />
                     <NumberInputStepper ps={2}>

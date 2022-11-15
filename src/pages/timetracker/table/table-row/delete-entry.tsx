@@ -16,7 +16,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { useMutation, useQueryClient } from "react-query";
 import { deleteResource } from "../../../../api/api";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { clearForm } from "../../../../redux/slices/timetrackSlice";
+import { setFormType } from "../../../../redux/slices/timetrackSlice";
 
 type Props = {
     id: number;
@@ -36,7 +36,7 @@ const DeleteEntry = ({ id }: Props) => {
             onSuccess: () => {
                 onClose();
                 dispatch({
-                    type: clearForm,
+                    type: setFormType,
                 });
                 queryClient.resetQueries(["owned-daily"]);
                 queryClient.resetQueries(["owned-weekly"]);

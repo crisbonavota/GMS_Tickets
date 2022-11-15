@@ -223,6 +223,12 @@ export const slice = createSlice({
             state.table.custom.endDate = action.payload;
             state.table.custom.page = 0;
         },
+        setFormType: (
+            state: TimetrackState,
+        ) => {
+            state.type = "create";
+            state.form = initialState.form;
+        }
     },
 });
 
@@ -250,6 +256,7 @@ export const {
     setCustomFiltersStartDate,
     setCustomFiltersEndDate,
     setCustomFiltersTotalPages,
+    setFormType
 } = slice.actions;
 
 export default slice.reducer;

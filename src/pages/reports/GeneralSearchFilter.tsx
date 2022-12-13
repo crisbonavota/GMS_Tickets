@@ -1,10 +1,13 @@
 import { Input } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { useAppDispatch } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { changeFilter } from "../../redux/slices/tt-reports";
 
 const GeneralSearchFilter = () => {
     const [internalValue, setInternalValue] = useState("");
+    const lastDispatchedValue = useAppSelector(
+        (state) => state.ttReports.filters.generalSearch
+    );
     const dispatch = useAppDispatch();
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,6 +17,7 @@ const GeneralSearchFilter = () => {
     // instead of dispatching on every input change, we wait for the user to stop typing for 750ms
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
+            if (internalValue === lastDispatchedValue) return;
             dispatch({
                 type: changeFilter,
                 payload: {

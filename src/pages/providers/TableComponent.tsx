@@ -17,7 +17,6 @@ const format: DynamicTableFormat[] = [
     {
         header: "File number",
         accessor: "fileNumber",
-        disableSort: true,
     },
     {
         header: "Name",

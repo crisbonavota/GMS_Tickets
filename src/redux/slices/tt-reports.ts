@@ -47,6 +47,7 @@ const slice = createSlice({
     reducers: {
         changeSort: (state: TTReportsState, action: PayloadAction<Sort>) => {
             state.sort = action.payload;
+            state.pagination.currentPage = 0;
         },
         changePage: (state: TTReportsState, action: PayloadAction<number>) => {
             state.pagination.currentPage = action.payload;
@@ -63,6 +64,7 @@ const slice = createSlice({
         ) => {
             // @ts-ignore
             state.filters[action.payload.key] = action.payload.value;
+            state.pagination.currentPage = 0;
         },
     },
 });

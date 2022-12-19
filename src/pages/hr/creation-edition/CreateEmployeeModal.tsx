@@ -19,7 +19,7 @@ const CreateEmployeeModal = ({ isOpen, onClose }: Props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent minW={"fit-content"}>
-                <ModalHeader>Create job</ModalHeader>
+                <ModalHeader>Create employee</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody w={"fit-content"} minW={"40vw"}>
                     <CreateEditEmployeeForm onClose={onClose} />

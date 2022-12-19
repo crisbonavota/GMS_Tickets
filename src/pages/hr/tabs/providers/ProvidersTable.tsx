@@ -35,7 +35,7 @@ const format: DynamicTableFormat[] = [
     {
         header: "Details",
         accessor: "id",
-        accessorFn: (id: number) => <DetailsCell resource="accounts" id={id} />,
+        accessorFn: (id: number) => <DetailsCell resource="providers" id={id} />,
         disableSort: true,
     },
 ];

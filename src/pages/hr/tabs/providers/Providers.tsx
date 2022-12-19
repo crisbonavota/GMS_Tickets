@@ -9,7 +9,7 @@ import ProvidersFilters from "./ProvidersFilters";
 import { getResourceListFilteredAndPaginated } from "../../../../api/api";
 import { Provider } from "../../../../api/types";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import { changeTotalPages, changeSearch } from "../../../../redux/slices/pm";
+import { changeTotalPages, changeSearch } from "../../../../redux/slices/hr";
 import { parseTotalPagesHeader } from "../../../../utils/query";
 import TabHeader from "../../../pm/tabs/TabHeader";
 import Loading from "../../../pm/tabs/Loading";
@@ -40,7 +40,7 @@ const Providers = () => {
                 "providers",
                 getAuthHeader(),
                 [
-                    { field: "name", value: state.search },
+                    { field: "fullName", value: state.search },
                     { field: "active", value: state.filters.active },
                 ],
                 [],

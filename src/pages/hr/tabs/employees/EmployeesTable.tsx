@@ -6,7 +6,7 @@ import {
     DynamicTable,
 } from "../../../../components/DynamicTable/DynamicTable";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import { changeSort, changePage } from "../../../../redux/slices/pm";
+import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
 
 interface Props {

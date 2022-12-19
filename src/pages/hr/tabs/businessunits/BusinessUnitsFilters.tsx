@@ -2,9 +2,9 @@ import { VStack } from "@chakra-ui/react";
 import StatusFilter from "../StatusFilter";
 import { useCallback } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
-import { changeFilter } from "../../../../redux/slices/pm";
+import { changeFilter } from "../../../../redux/slices/hr";
 
-const AccountsFilters = () => {
+const BusinessUnitsFilters = () => {
     const dispatch = useAppDispatch();
 
     const stateSetter = useCallback(
@@ -12,7 +12,7 @@ const AccountsFilters = () => {
             dispatch({
                 type: changeFilter,
                 payload: {
-                    module: "accounts",
+                    module: "businessUnits",
                     value: {
                         key: "active",
                         value: val,
@@ -30,4 +30,4 @@ const AccountsFilters = () => {
     );
 };
 
-export default AccountsFilters;
+export default BusinessUnitsFilters;

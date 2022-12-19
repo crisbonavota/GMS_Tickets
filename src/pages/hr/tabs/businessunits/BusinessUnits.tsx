@@ -9,7 +9,7 @@ import BusinessUnitsFilters from "./BusinessUnitsFilters";
 import { getResourceListFilteredAndPaginated } from "../../../../api/api";
 import { BusinessUnit } from "../../../../api/types";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import { changeTotalPages, changeSearch } from "../../../../redux/slices/pm";
+import { changeTotalPages, changeSearch } from "../../../../redux/slices/hr";
 import { parseTotalPagesHeader } from "../../../../utils/query";
 import TabHeader from "../../../pm/tabs/TabHeader";
 import Loading from "../../../pm/tabs/Loading";

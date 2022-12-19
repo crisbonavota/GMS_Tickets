@@ -51,6 +51,7 @@ export interface LegacyUserPublic {
 export interface BusinessUnit {
     id: number;
     name: string;
+    active: boolean;
 }
 
 export interface Account {

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { Button, Flex, VStack } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import { RiBuilding4Fill } from "react-icons/ri";
 import EmployeesTable from "./EmployeesTable";
 import { useCallback } from "react";

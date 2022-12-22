@@ -64,6 +64,11 @@ export interface Account {
     responsibleLegacyUser?: LegacyUserPublic;
 }
 
+export interface GenderTypes {
+    id: number;
+    label: string;
+}
+
 export interface Company {
     id: number;
     name: string;
@@ -223,6 +228,7 @@ export interface Employee {
     fileNumber: number;
     legacyUser: LegacyUserPublic;
     afipId: string;
+    dni: number;
     entryDate: string;
     position: Position;
     avatar: string;

@@ -36,7 +36,7 @@ const format: DynamicTableFormat[] = [
     },
 ];
 
-const AccountsTable = ({ businessUnits }: Props) => {
+const BusinessUnitsTable = ({ businessUnits }: Props) => {
     const state = useAppSelector((s) => s.hr.businessUnits);
     const dispatch = useAppDispatch();
 
@@ -71,4 +71,4 @@ const AccountsTable = ({ businessUnits }: Props) => {
     );
 };
 
-export default AccountsTable;
+export default BusinessUnitsTable;

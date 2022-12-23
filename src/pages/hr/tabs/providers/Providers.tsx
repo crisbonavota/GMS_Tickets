@@ -41,10 +41,9 @@ const Providers = () => {
         "providers",
         getAuthHeader(),
         [
-          { field: "firstName", value: state.search },
           { field: "active", value: state.filters.active },
         ],
-        [],
+        [{ name: "fullName", value: state.search }],
         state.sort,
         state.pagination.currentPage,
         10

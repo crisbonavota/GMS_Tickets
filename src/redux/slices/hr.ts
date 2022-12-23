@@ -37,7 +37,7 @@ const initialState: HumanResourcesState = {
         },
         sort: {
             field: "lastName",
-            isAscending: false,
+            isAscending: true,
         },
         search: "",
         filters: {
@@ -50,8 +50,8 @@ const initialState: HumanResourcesState = {
             totalPages: null,
         },
         sort: {
-            field: "creationDate",
-            isAscending: false,
+            field: "lastName",
+            isAscending: true,
         },
         search: "",
         filters: {
@@ -65,7 +65,7 @@ const initialState: HumanResourcesState = {
         },
         sort: {
             field: "name",
-            isAscending: false,
+            isAscending: true,
         },
         search: "",
         filters: {

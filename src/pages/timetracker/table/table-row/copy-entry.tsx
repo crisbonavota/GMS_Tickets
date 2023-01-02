@@ -5,6 +5,21 @@ import { TimetrackItem } from "../../../../api/types";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { clearForm, fillForm } from "../../../../redux/slices/timetrackSlice";
 
+const scrollToWithCallback = (offset: number, callback: () => void) => {
+    const onScroll = () => {
+        if (window.pageYOffset !== offset) return;
+        window.removeEventListener("scroll", onScroll);
+        callback();
+    };
+
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+    window.scrollTo({
+        top: offset,
+        behavior: "smooth",
+    });
+};
+
 export interface CopyEntryProps {
     item: TimetrackItem;
 }
@@ -24,17 +39,15 @@ export function CopyEntry({ item }: CopyEntryProps) {
             type: fillForm,
             payload: item,
         });
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth",
-        });
 
-        if ("showPicker" in HTMLInputElement.prototype) {
-            // @ts-ignore
-            dateInput.showPicker();
-        } else {
-            dateInput.focus();
-        }
+        scrollToWithCallback(0, () => {
+            if ("showPicker" in HTMLInputElement.prototype) {
+                // @ts-ignore
+                dateInput.showPicker();
+            } else {
+                dateInput.focus();
+            }
+        });
     };
 
     return (

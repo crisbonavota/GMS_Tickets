@@ -1,5 +1,7 @@
 import { Tabs, TabPanels, TabPanel } from "@chakra-ui/react";
-import CreateEditEmployeeForm from "./CreateEditEmployeeForm";
+import CreateEditEmployeeFormFirst from "./CreateEditEmployeeFormFirst";
+import CreateEditEmployeeFormSecond from "./CreateEditEmployeeFormSecond";
+import CreateEditEmployeeFormThird from "./CreateEditEmployeeFormThird";
 
 interface Props {
   tabIndex: number;
@@ -25,16 +27,16 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose }: Props) => {
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CreateEditEmployeeForm onClose={onClose} />
+          <CreateEditEmployeeFormFirst onClose={onClose} />
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeForm onClose={onClose} />{" "}
+          <CreateEditEmployeeFormSecond onClose={onClose} />{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeForm onClose={onClose} />{" "}
+          <CreateEditEmployeeFormThird onClose={onClose} />{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeForm onClose={onClose} />
+          <CreateEditEmployeeFormFirst onClose={onClose} />
         </TabPanel>
       </TabPanels>
     </Tabs>

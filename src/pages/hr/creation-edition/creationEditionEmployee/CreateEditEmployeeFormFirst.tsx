@@ -15,11 +15,9 @@ import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
-import { Employee, GenderTypes } from "../../../../api/types";
+import { Employee, GenderTypes, Country } from "../../../../api/types";
 import { patchResource } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
-import StatusField from "../../../pm/creation-edition/StatusField";
-import FormikTextInput from "../../../pm/creation-edition/FormikTextInput";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -39,27 +37,12 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  fileNumber: "",
   firstName: "",
   lastName: "",
   afipId: "",
-  dni: "",
   entryDate: "",
-  positionId: "",
   birthDate: "",
-  email: "",
-  mobilePhone: "",
-  salaryCurrencyId: "",
-  countryId: "",
   gender: "",
-  birthCountryId: "",
-  childs: "",
-  maritalStatus: "",
-  contact: "",
-  medicalCoverageId: "",
-  address: "",
-  cityId: "",
-  businessUnitId: "",
   active: true,
 };
 
@@ -206,35 +189,12 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
             onBlur={formik.handleBlur}
           />
         </GridItem>
-        {/* <GridItem colSpan={1}>
-                    <StatusField
-                        setter={(value: boolean) =>
-                            formik.setFieldValue("active", value, true)
-                        }
-                        value={formik.values.active === true ? 'active' : 'inactive'}
-                    />
-                </GridItem> */}
         <GridItem colSpan={1}>
           <FormLabel fontWeight={"bold"}>Status</FormLabel>
           <Select>
             <option>Active</option>
             <option>Inactive</option>
           </Select>
-        </GridItem>
-        <GridItem colSpan={1}>
-          <FormControl isInvalid={!!formik.errors.dni && !!formik.touched.dni}>
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              ID/DNI/Mexico/Spain/Brazil/Uru
-            </FormLabel>
-            <Input
-              name="dni"
-              id="dni"
-              value={formik.values.dni}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.dni}</FormErrorMessage>
-          </FormControl>
         </GridItem>
         <GridItem colSpan={1}>
           <FormControl
@@ -311,7 +271,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
               isDisabled={creationLoading || editLoading}
               minWidth={"8rem"}
             >
-              Submit
+              Next
             </Button>
           </HStack>
         </GridItem>
@@ -321,3 +281,5 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
 };
 
 export default CreateEditEmployeeForm;
+
+

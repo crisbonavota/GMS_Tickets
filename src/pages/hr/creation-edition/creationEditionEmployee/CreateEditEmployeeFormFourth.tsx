@@ -5,17 +5,23 @@ import {
   GridItem,
   HStack,
   Button,
+  FormControl,
+  FormErrorMessage,
   Input,
   FormLabel,
+  Select,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
-import { useMutation, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
-import { patchResource } from "../../../../api/api";
+import {
+  getCurrencies,
+  getMedicalCoverages,
+  patchResource,
+} from "../../../../api/api";
 import { postResource } from "../../../../api/api";
-import CountryField from "../../../pm/creation-edition/CountryField";
 
 interface Props {
   onClose: () => void;
@@ -24,14 +30,12 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  address: Yup.string().min(5, "At least 5 characters"),
+  childs: Yup.number().typeError("Must be a number type"),
 });
 
 const initialValues = {
-  countryId: 0,
-  birthCountryId: 0,
-  address: null,
-  city: "",
+  salaryCurrencyId: 0,
+  medicalCoverageId: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -42,8 +46,8 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
           ` (${editInitialValues.id})`,
           ""
         ),
-        birthCountryId: editInitialValues?.birthCountry.id,
-        countryId: editInitialValues?.country.id,
+        salaryCurrencyId: editInitialValues?.salaryCurrency.id,
+        medicalCoverageId: editInitialValues?.medicalCoverage.id,
         active: editInitialValues?.active,
       }
     : undefined;
@@ -107,60 +111,70 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     }
   );
 
+  const { data: currencies, isSuccess: successCurrencies } = useQuery(
+    "currency",
+    () => getCurrencies()
+  );
+
+  const { data: medicalCoverages, isSuccess: successMedCoverages } = useQuery(
+    "medicalCoverage",
+    () => getMedicalCoverages()
+  );
+
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Nationality</FormLabel>
-          <CountryField
-            name="birthCountryId"
-            id="birthCountryId"
-            value={formik.values.birthCountryId}
-            error={formik.errors.birthCountryId}
-            onChange={formik.handleChange}
-          />
+          <FormControl
+            isInvalid={
+              !!formik.errors.salaryCurrencyId &&
+              !!formik.touched.salaryCurrencyId
+            }
+          >
+            <FormLabel fontWeight={"bold"}>Marital Status</FormLabel>
+            <Select
+              placeholder="Select option"
+              name="salaryCurrencyId"
+              id="salaryCurrencyId"
+              value={formik.values.salaryCurrencyId}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              {successCurrencies &&
+                currencies.map((el) => (
+                  <option key={el.id}>{el.code}</option>
+                ))}
+            </Select>
+            <FormErrorMessage>
+              {formik.errors?.salaryCurrencyId}
+            </FormErrorMessage>
+          </FormControl>
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Country of Residence</FormLabel>
-          <CountryField
-            name="countryId"
-            value={formik.values.countryId}
-            error={formik.errors.countryId}
-            onChange={formik.handleChange}
-            id="countryId"
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Address Line 1</FormLabel>
-          <Input
-            name="address"
-            id="address"
-            value={formik.values.address?.street}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Address Line 2/Apartment</FormLabel>
-          <Input
-            name="address"
-            id="address"
-            value={formik.values.address?.floor}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-            City
-          </FormLabel>
-          <Input
-            name="city"
-            id="city"
-            value={formik.values.city}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <FormControl
+            isInvalid={
+              !!formik.errors.medicalCoverageId &&
+              !!formik.touched.medicalCoverageId
+            }
+          >
+            <FormLabel fontWeight={"bold"}>Medical Coverage</FormLabel>
+            <Select
+              placeholder="Select option"
+              name="medicalCoverageId"
+              id="medicalCoverageId"
+              value={formik.values.medicalCoverageId}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            >
+              {successMedCoverages &&
+                medicalCoverages.map((el) => (
+                  <option key={el.id}>{el.name}</option>
+                ))}
+            </Select>
+            <FormErrorMessage>
+              {formik.errors?.salaryCurrencyId}
+            </FormErrorMessage>
+          </FormControl>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <HStack

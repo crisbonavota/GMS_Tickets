@@ -14,11 +14,11 @@ import {
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
-import { useMutation, useQueryClient } from "react-query";
-import { Employee, GenderTypes, Country } from "../../../../api/types";
-import { patchResource } from "../../../../api/api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Employee } from "../../../../api/types";
+import { getGenders, patchResource } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 interface Props {
   onClose: () => void;
@@ -42,7 +42,7 @@ const initialValues = {
   afipId: "",
   entryDate: "",
   birthDate: "",
-  gender: "",
+  gender: null,
   active: true,
 };
 
@@ -62,7 +62,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const [gender, setGender] = useState<GenderTypes[]>();
+
 
   const formik = useFormik({
     initialValues:
@@ -70,7 +70,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     validationSchema,
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
-      else await createEmployee();
+      else handleSubmit();
     },
   });
 
@@ -94,14 +94,18 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     });
   };
 
-  const { mutateAsync: createEmployee, isLoading: creationLoading } =
-    useMutation(
-      () => postResource("employees", getAuthHeader(), formik.values),
-      {
-        onSuccess: onSuccess,
-        onError: onError,
-      }
-    );
+  // const { mutateAsync: createEmployee, isLoading: creationLoading } =
+  //   useMutation(
+  //     () => postResource("employees", getAuthHeader(), formik.values),
+  //     {
+  //       onSuccess: onSuccess,
+  //       onError: onError,
+  //     }
+  //   );
+
+  const handleSubmit = () => {
+    setFormValues(formik.values);
+  }
 
   const { mutateAsync: editEmployee, isLoading: editLoading } = useMutation(
     () =>
@@ -118,30 +122,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     }
   );
 
-  const genderOptions = [
-    {
-      id: 1,
-      label: "Male",
-    },
-    {
-      id: 0,
-      label: "Female",
-    },
-  ];
-
-  const handleGenres = () => {
-    const result = genderOptions.map((el) => {
-      return {
-        id: el.id,
-        label: el.label,
-      };
-    });
-    setGender(result);
-  };
-
-  useEffect(() => {
-    handleGenres();
-  }, []);
+  const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
@@ -219,16 +200,16 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
           >
             <FormLabel fontWeight={"bold"}>Gender</FormLabel>
             <Select
-              placeholder="Select option"
+              placeholder="Select genre"
               name="gender"
               id="gender"
               value={formik.values.gender}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
-              {gender &&
+              {isSuccess &&
                 gender.map((el) => (
-                  <option key={el.label} value={el.id === 1 ? true : false}>
+                  <option key={el.label} value={el.id}>
                     {el.label}
                   </option>
                 ))}
@@ -267,8 +248,8 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
             <Button
               type="submit"
               colorScheme={"orange"}
-              isLoading={creationLoading || editLoading}
-              isDisabled={creationLoading || editLoading}
+              // isLoading={creationLoading || editLoading}
+              // isDisabled={creationLoading || editLoading}
               minWidth={"8rem"}
             >
               Next

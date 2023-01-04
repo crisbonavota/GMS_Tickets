@@ -115,15 +115,28 @@ interface Action<T> {
   value: T;
 }
 
-interface FirstSpetValues {
-    firstName: string;
-    lastName: string;
-    afipId: string;
-    entryDate: string;
-    birthDate: string;
-    gender: boolean;
-    active: boolean;
+interface FirstStepValues {
+  firstName: string;
+  lastName: string;
+  afipId: string;
+  entryDate: string;
+  birthDate: string;
+  gender: boolean;
+  active: boolean;
 }
+
+interface SecondStepValues {
+  countryId: number;
+  birthCountryId: number;
+  address: string;
+  city: string;
+}
+interface ThirdStepValues {
+    childs: string,
+    maritalStatus: string,
+}
+
+
 
 const slice = createSlice({
   name: "humanResources",
@@ -167,18 +180,25 @@ const slice = createSlice({
     },
     crtEmployee1stStep: (
       state: HumanResourcesState,
-      action: PayloadAction<FirstSpetValues>
+      action: PayloadAction<FirstStepValues>
     ) => {
-      state.createEmployee = {...initialState, ...action.payload};
+      state.createEmployee = {
+        ...initialState.createEmployee,
+        ...action.payload,
+      };
     },
     crtEmployee2ndStep: (
       state: HumanResourcesState,
-      action: PayloadAction<CreateEmployeeValues>
-    ) => {},
+      action: PayloadAction<SecondStepValues>
+    ) => {
+        state.createEmployee = {...initialState.createEmployee, ...action.payload}
+    },
     crtEmployee3rdStep: (
       state: HumanResourcesState,
-      action: PayloadAction<CreateEmployeeValues>
-    ) => {},
+      action: PayloadAction<ThirdStepValues>
+    ) => {
+        state.createEmployee = {...initialState.createEmployee, ...action.payload}
+    },
   },
 });
 

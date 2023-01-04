@@ -17,6 +17,8 @@ import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { getGenders, patchResource } from "../../../../api/api";
+import crtEmployeeFirstStep from "../../../../redux/slices/hr"
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -70,7 +72,9 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  // const { setValues } = useContext(EmployeeContext);
+  const state = useAppSelector((e) => e.hr.createEmployee);
+  const dispatch = useAppDispatch();
+
 
 
   const formik = useFormik({
@@ -80,7 +84,10 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
       else {
-        // setValues(formik.values)
+        dispatch({
+          type: crtEmployeeFirstStep,
+          payload: formik.values
+        })
         setTabIndex(tabIndex + 1)
       }
     },

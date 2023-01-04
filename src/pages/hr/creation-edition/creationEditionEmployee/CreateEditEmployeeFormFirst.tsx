@@ -17,13 +17,13 @@ import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { getGenders, patchResource } from "../../../../api/api";
-import { postResource } from "../../../../api/api";
-import { useState } from "react";
 
 interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
   id?: number;
+  tabIndex: number;
+  setTabIndex: (tabIndex: number) => void;
 }
 
 const validationSchema = Yup.object().shape({
@@ -37,13 +37,21 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  firstName: "",
-  lastName: "",
-  afipId: "",
-  entryDate: "",
-  birthDate: "",
-  gender: null,
-  active: true,
+    firstName: "",
+    lastName: "",
+    afipId: "",
+    entryDate: "",
+    birthDate: "",
+    gender: true,
+    active: true,
+    countryId: 0,
+    birthCountryId: 0,
+    address: null,
+    city: "",
+    childs: "",
+    maritalStatus: "",
+    salaryCurrencyId: 0,
+    medicalCoverageId: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -58,10 +66,11 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
+  // const { setValues } = useContext(EmployeeContext);
 
 
   const formik = useFormik({
@@ -70,7 +79,10 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     validationSchema,
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
-      else handleSubmit();
+      else {
+        // setValues(formik.values)
+        setTabIndex(tabIndex + 1)
+      }
     },
   });
 
@@ -93,19 +105,6 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
       status: "error",
     });
   };
-
-  // const { mutateAsync: createEmployee, isLoading: creationLoading } =
-  //   useMutation(
-  //     () => postResource("employees", getAuthHeader(), formik.values),
-  //     {
-  //       onSuccess: onSuccess,
-  //       onError: onError,
-  //     }
-  //   );
-
-  const handleSubmit = () => {
-    setFormValues(formik.values);
-  }
 
   const { mutateAsync: editEmployee, isLoading: editLoading } = useMutation(
     () =>
@@ -200,16 +199,15 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
           >
             <FormLabel fontWeight={"bold"}>Gender</FormLabel>
             <Select
-              placeholder="Select genre"
               name="gender"
               id="gender"
-              value={formik.values.gender}
+              value={formik.values.gender.toString()}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             >
               {isSuccess &&
                 gender.map((el) => (
-                  <option key={el.label} value={el.id}>
+                  <option key={el.label} value={el.value.toString()}>
                     {el.label}
                   </option>
                 ))}
@@ -248,8 +246,8 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
             <Button
               type="submit"
               colorScheme={"orange"}
-              // isLoading={creationLoading || editLoading}
-              // isDisabled={creationLoading || editLoading}
+              isLoading={editLoading}
+              isDisabled={editLoading}
               minWidth={"8rem"}
             >
               Next

@@ -18,6 +18,7 @@ import BusinessUnitDetailedView from "./pages/hr/detailed/businessunits/Business
 import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
 import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
 
+
 const signInPath = "/sign-in";
 
 const App = () => {

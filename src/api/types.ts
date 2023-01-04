@@ -65,7 +65,7 @@ export interface Account {
 }
 
 export interface GenderTypes {
-    id: number;
+    value: boolean;
     label: string;
 }
 
@@ -245,11 +245,10 @@ export interface Employee {
     salaryCurrency: Currency;
     medicalCoverage: MedicalCoverage;
     address: Address;
-    city: City;
+    city: string;
     country: Country;
     active: boolean;
 }
-
 export interface Provider {
     id: number;
     legacyUserId: number;

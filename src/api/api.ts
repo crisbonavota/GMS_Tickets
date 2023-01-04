@@ -158,11 +158,11 @@ export const getUpdateResourceFromType = (updateType: number) => {
 export const getGenders: () => GenderTypes[] = () => {
     return [
         {
-            id: 0,
+            value: false,
             label: "Female",
         },
         {
-            id: 1,
+            value: true,
             label: "Male",
         },
     ];

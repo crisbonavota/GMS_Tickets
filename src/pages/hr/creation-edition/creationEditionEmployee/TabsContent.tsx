@@ -3,37 +3,14 @@ import CreateEditEmployeeFormFirst from "./CreateEditEmployeeFormFirst";
 import CreateEditEmployeeFormSecond from "./CreateEditEmployeeFormSecond";
 import CreateEditEmployeeFormThird from "./CreateEditEmployeeFormThird";
 import CreateEditEmployeeFormFourth from "./CreateEditEmployeeFormFourth";
-import { useState } from "react";
-
-interface FomValues {
-  firstName: "",
-  lastName: "",
-  afipId: "",
-  entryDate: "",
-  birthDate: "",
-  gender: null,
-  active: true,
-  countryId: 0,
-  birthCountryId: 0,
-  address: null,
-  city: "",
-  childs: "",
-  maritalStatus: "",
-  salaryCurrencyId: 0,
-  medicalCoverageId: 0,
-}
 
 interface Props {
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
   onClose: () => void;
-  setFormValues: FomValues;
-  formValues: Form
 }
 
-const TabsContent = ({ tabIndex, setTabIndex, onClose, formValues }: Props) => {
-  const [formValues, setFormValues] = useState<FomValues>();
-  localStorage.setItem("tabIndexHR", JSON.stringify(tabIndex));
+const TabsContent = ({ tabIndex, setTabIndex, onClose }: Props) => {
   return (
     <Tabs
       index={tabIndex}
@@ -50,16 +27,16 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose, formValues }: Props) => {
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CreateEditEmployeeFormFirst onClose={onClose} fValues={setFormValues}/>
+          <CreateEditEmployeeFormFirst onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormSecond onClose={onClose} />{" "}
+          <CreateEditEmployeeFormSecond onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormThird onClose={onClose} />{" "}
+          <CreateEditEmployeeFormThird onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormFourth onClose={onClose} />
+          <CreateEditEmployeeFormFourth onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

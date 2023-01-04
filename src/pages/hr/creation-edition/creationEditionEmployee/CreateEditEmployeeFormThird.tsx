@@ -16,13 +16,15 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { patchResource } from "../../../../api/api";
-import { postResource } from "../../../../api/api";
+
 
 
 interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
   id?: number;
+  tabIndex: number;
+  setTabIndex: (tabIndex: number) => void;
 }
 
 const validationSchema = Yup.object().shape({
@@ -46,10 +48,11 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
+  // const { values, setValues } = useContext(EmployeeContext);
 
   const formik = useFormik({
     initialValues:
@@ -57,7 +60,10 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
     validationSchema,
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
-      else await createEmployee();
+      else {
+        // setValues(formik.values)
+        setTabIndex(tabIndex + 1)
+      }
     },
   });
 
@@ -80,15 +86,6 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
       status: "error",
     });
   };
-
-  const { mutateAsync: createEmployee, isLoading: creationLoading } =
-    useMutation(
-      () => postResource("employees", getAuthHeader(), formik.values),
-      {
-        onSuccess: onSuccess,
-        onError: onError,
-      }
-    );
 
   const { mutateAsync: editEmployee, isLoading: editLoading } = useMutation(
     () =>
@@ -148,18 +145,18 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
           >
             <Button
               type="button"
-              onClick={onClose}
+              onClick={() => setTabIndex(tabIndex -1)}
               variant="outline"
               colorScheme={"orange"}
               minWidth={"8rem"}
             >
-              Cancel
+              Back
             </Button>
             <Button
               type="submit"
               colorScheme={"orange"}
-              isLoading={creationLoading || editLoading}
-              isDisabled={creationLoading || editLoading}
+              isLoading={editLoading}
+              isDisabled={editLoading}
               minWidth={"8rem"}
             >
               Next

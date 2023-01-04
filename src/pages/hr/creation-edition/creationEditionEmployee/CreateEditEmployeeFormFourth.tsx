@@ -27,6 +27,8 @@ interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
   id?: number;
+  tabIndex: number;
+  setTabIndex: (tabIndex: number) => void;
 }
 
 const validationSchema = Yup.object().shape({
@@ -52,10 +54,11 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
+  // const { values } = useContext(EmployeeContext);
 
   const formik = useFormik({
     initialValues:
@@ -185,12 +188,12 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id }: Props) => {
           >
             <Button
               type="button"
-              onClick={onClose}
+              onClick={() => setTabIndex(tabIndex -1)}
               variant="outline"
               colorScheme={"orange"}
               minWidth={"8rem"}
             >
-              Cancel
+              Back
             </Button>
             <Button
               type="submit"

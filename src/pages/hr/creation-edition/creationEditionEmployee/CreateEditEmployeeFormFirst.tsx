@@ -41,6 +41,7 @@ const validationSchema = Yup.object().shape({
 const initialValues = {
     firstName: "",
     lastName: "",
+    email: "",
     afipId: "",
     entryDate: "",
     birthDate: "",
@@ -163,6 +164,22 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
               onBlur={formik.handleBlur}
             />
             <FormErrorMessage>{formik.errors?.lastName}</FormErrorMessage>
+          </FormControl>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormControl
+            isRequired
+            isInvalid={!!formik.errors.email && !!formik.touched.email}
+          >
+            <FormLabel fontWeight={"bold"}>Email</FormLabel>
+            <Input
+              name="email"
+              id="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            <FormErrorMessage>{formik.errors?.email}</FormErrorMessage>
           </FormControl>
         </GridItem>
         <GridItem colSpan={1}>

@@ -26,6 +26,7 @@ interface BusinessUnitsFilter {
 interface CreateEmployeeValues {
   firstName: string;
   lastName: string;
+  email: string;
   afipId: string;
   entryDate: string;
   birthDate: string;
@@ -94,6 +95,7 @@ const initialState: HumanResourcesState = {
   createEmployee: {
     firstName: "",
     lastName: "",
+    email: "",
     afipId: "",
     entryDate: "",
     birthDate: "",
@@ -118,6 +120,7 @@ interface Action<T> {
 interface FirstStepValues {
   firstName: string;
   lastName: string;
+  email: string;
   afipId: string;
   entryDate: string;
   birthDate: string;

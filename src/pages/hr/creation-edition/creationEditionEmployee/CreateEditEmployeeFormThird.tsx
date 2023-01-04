@@ -16,8 +16,8 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { patchResource } from "../../../../api/api";
-
-
+import crtEmployeeFirstStep from "../../../../redux/slices/hr";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -48,11 +48,18 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
+const CreateEditEmployeeForm = ({
+  onClose,
+  editInitialValues,
+  id,
+  tabIndex,
+  setTabIndex,
+}: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  // const { values, setValues } = useContext(EmployeeContext);
+  const state = useAppSelector((e) => e.hr.createEmployee);
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues:
@@ -61,8 +68,11 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
       else {
-        // setValues(formik.values)
-        setTabIndex(tabIndex + 1)
+        dispatch({
+          type: crtEmployeeFirstStep,
+          payload: {...formik.values, ...state},
+        });
+        setTabIndex(tabIndex + 1);
       }
     },
   });
@@ -102,13 +112,14 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
     }
   );
 
-
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         <GridItem colSpan={1}>
           <FormControl
-            isInvalid={!!formik.errors.maritalStatus && !!formik.touched.maritalStatus}
+            isInvalid={
+              !!formik.errors.maritalStatus && !!formik.touched.maritalStatus
+            }
           >
             <FormLabel fontWeight={"bold"}>Marital Status</FormLabel>
             <Input
@@ -122,19 +133,19 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
           </FormControl>
         </GridItem>
         <GridItem colSpan={1}>
-        <FormControl
+          <FormControl
             isInvalid={!!formik.errors.childs && !!formik.touched.childs}
           >
-          <FormLabel fontWeight={"bold"}>Children</FormLabel>
-          <Input
-            name="childs"
-            id="childs"
-            value={formik.values.childs}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+            <FormLabel fontWeight={"bold"}>Children</FormLabel>
+            <Input
+              name="childs"
+              id="childs"
+              value={formik.values.childs}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
             <FormErrorMessage>{formik.errors?.childs}</FormErrorMessage>
-            </FormControl>
+          </FormControl>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <HStack
@@ -145,7 +156,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
           >
             <Button
               type="button"
-              onClick={() => setTabIndex(tabIndex -1)}
+              onClick={() => setTabIndex(tabIndex - 1)}
               variant="outline"
               colorScheme={"orange"}
               minWidth={"8rem"}

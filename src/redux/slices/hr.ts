@@ -135,11 +135,9 @@ interface SecondStepValues {
   city: string;
 }
 interface ThirdStepValues {
-    childs: string,
-    maritalStatus: string,
+  childs: string;
+  maritalStatus: string;
 }
-
-
 
 const slice = createSlice({
   name: "humanResources",
@@ -194,13 +192,19 @@ const slice = createSlice({
       state: HumanResourcesState,
       action: PayloadAction<SecondStepValues>
     ) => {
-        state.createEmployee = {...initialState.createEmployee, ...action.payload}
+      state.createEmployee = {
+        ...initialState.createEmployee,
+        ...action.payload,
+      };
     },
     crtEmployee3rdStep: (
       state: HumanResourcesState,
       action: PayloadAction<ThirdStepValues>
     ) => {
-        state.createEmployee = {...initialState.createEmployee, ...action.payload}
+      state.createEmployee = {
+        ...initialState.createEmployee,
+        ...action.payload,
+      };
     },
   },
 });

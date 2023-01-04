@@ -17,7 +17,7 @@ import { useFormik } from "formik";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { getGenders, patchResource } from "../../../../api/api";
-import crtEmployeeFirstStep from "../../../../redux/slices/hr"
+import crtEmployeeFirstStep from "../../../../redux/slices/hr";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
@@ -39,22 +39,22 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    afipId: "",
-    entryDate: "",
-    birthDate: "",
-    gender: true,
-    active: true,
-    countryId: 0,
-    birthCountryId: 0,
-    address: null,
-    city: "",
-    childs: "",
-    maritalStatus: "",
-    salaryCurrencyId: 0,
-    medicalCoverageId: 0,
+  firstName: "",
+  lastName: "",
+  email: "",
+  afipId: "",
+  entryDate: "",
+  birthDate: "",
+  gender: true,
+  active: true,
+  countryId: 0,
+  birthCountryId: 0,
+  address: null,
+  city: "",
+  childs: "",
+  maritalStatus: "",
+  salaryCurrencyId: 0,
+  medicalCoverageId: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -69,14 +69,18 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
+const CreateEditEmployeeForm = ({
+  onClose,
+  editInitialValues,
+  id,
+  tabIndex,
+  setTabIndex,
+}: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
   const state = useAppSelector((e) => e.hr.createEmployee);
   const dispatch = useAppDispatch();
-
-
 
   const formik = useFormik({
     initialValues:
@@ -87,9 +91,9 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
       else {
         dispatch({
           type: crtEmployeeFirstStep,
-          payload: formik.values
-        })
-        setTabIndex(tabIndex + 1)
+          payload: {...formik.values, ...state},
+        });
+        setTabIndex(tabIndex + 1);
       }
     },
   });
@@ -257,7 +261,12 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
           </FormControl>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
-          <HStack w="full" justifyContent={"space-between"} spacing={5} marginTop={"1rem"}>
+          <HStack
+            w="full"
+            justifyContent={"space-between"}
+            spacing={5}
+            marginTop={"1rem"}
+          >
             <Button
               type="button"
               onClick={onClose}
@@ -284,5 +293,3 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
 };
 
 export default CreateEditEmployeeForm;
-
-

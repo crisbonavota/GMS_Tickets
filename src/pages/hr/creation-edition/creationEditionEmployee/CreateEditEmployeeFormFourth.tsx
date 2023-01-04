@@ -22,6 +22,8 @@ import {
   patchResource,
 } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
+import crtEmployeeFirstStep from "../../../../redux/slices/hr";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -54,11 +56,18 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
+const CreateEditEmployeeForm = ({
+  onClose,
+  editInitialValues,
+  id,
+  tabIndex,
+  setTabIndex,
+}: Props) => {
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  // const { values } = useContext(EmployeeContext);
+  const state = useAppSelector((e) => e.hr.createEmployee);
+  const dispatch = useAppDispatch();
 
   const formik = useFormik({
     initialValues:
@@ -92,7 +101,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
 
   const { mutateAsync: createEmployee, isLoading: creationLoading } =
     useMutation(
-      () => postResource("employees", getAuthHeader(), formik.values),
+      () => postResource("employees", getAuthHeader(), {...formik.values, ...state}),
       {
         onSuccess: onSuccess,
         onError: onError,
@@ -144,9 +153,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
               onBlur={formik.handleBlur}
             >
               {successCurrencies &&
-                currencies.map((el) => (
-                  <option key={el.id}>{el.code}</option>
-                ))}
+                currencies.map((el) => <option key={el.id}>{el.code}</option>)}
             </Select>
             <FormErrorMessage>
               {formik.errors?.salaryCurrencyId}
@@ -188,7 +195,7 @@ const CreateEditEmployeeForm = ({ onClose, editInitialValues, id, tabIndex, setT
           >
             <Button
               type="button"
-              onClick={() => setTabIndex(tabIndex -1)}
+              onClick={() => setTabIndex(tabIndex - 1)}
               variant="outline"
               colorScheme={"orange"}
               minWidth={"8rem"}

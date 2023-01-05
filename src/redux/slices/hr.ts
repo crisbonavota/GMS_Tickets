@@ -165,33 +165,24 @@ const slice = createSlice({
         action.payload.value.value;
       state[action.payload.module].pagination.currentPage = 0;
     },
-    crtEmployeePersonalInfo: (
+    EmployeePersonalInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeePersonalInfoValues>
     ) => {
-      state.crtEmployeePersonalInfo = {
-        ...initialState.crtEmployeePersonalInfo,
-        ...action.payload,
-      };
+      state.crtEmployeePersonalInfo = action.payload;
     },
-    crtEmployeeLocationInfo: (
+    EmployeeLocationInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeeLocationValues>
     ) => {
-      state.crtEmployeeLocationInfo = {
-        ...initialState.crtEmployeeLocationInfo,
-        ...action.payload,
-      };
+      state.crtEmployeeLocationInfo = action.payload;
     },
-    crtEmployeeFamilyInfo: (
+    EmployeeFamilyInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeeFamilyValues>
     ) => {
-      state.crtEmployeeFamilyInfo = {
-        ...initialState.crtEmployeeFamilyInfo,
-        ...action.payload,
-      };
-    },
+      state.crtEmployeeFamilyInfo = action.payload;
+    }
   },
 });
 
@@ -201,6 +192,9 @@ export const {
   changeTotalPages,
   changeSearch,
   changeFilter,
+  EmployeePersonalInfo,
+  EmployeeLocationInfo,
+  EmployeeFamilyInfo
 } = slice.actions;
 
 export default slice.reducer;

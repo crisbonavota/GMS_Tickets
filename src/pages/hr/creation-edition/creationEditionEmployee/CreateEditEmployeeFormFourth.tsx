@@ -101,7 +101,7 @@ const CreateEditEmployeeForm = ({
 
   const { mutateAsync: createEmployee, isLoading: creationLoading } =
     useMutation(
-      () => postResource("employees", getAuthHeader(), {...formik.values, personalInfoState, locationInfoState, familyInfoState}),
+      () => postResource("employees", getAuthHeader(), {...formik.values, ...personalInfoState, ...locationInfoState, ...familyInfoState}),
       {
         onSuccess: onSuccess,
         onError: onError,
@@ -209,7 +209,7 @@ const CreateEditEmployeeForm = ({
               isDisabled={creationLoading || editLoading}
               minWidth={"8rem"}
             >
-              Next
+              Save
             </Button>
           </HStack>
         </GridItem>

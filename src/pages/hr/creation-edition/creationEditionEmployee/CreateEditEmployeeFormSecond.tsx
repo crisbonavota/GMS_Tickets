@@ -15,8 +15,8 @@ import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { patchResource } from "../../../../api/api";
 import CountryField from "../../../pm/creation-edition/CountryField";
-import crtEmployeeSlice from "../../../../redux/slices/hr";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { EmployeeLocationInfo } from "../../../../redux/slices/hr";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -61,7 +61,6 @@ const CreateEditEmployeeForm = ({
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const state = useAppSelector((e) => e.hr.crtEmployeeLocationInfo);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -72,8 +71,8 @@ const CreateEditEmployeeForm = ({
       if (editInitialValues) await editEmployee();
       else {
         dispatch({
-          type: crtEmployeeSlice,
-          payload: {...formik.values, state},
+          type: EmployeeLocationInfo,
+          payload: {...formik.values},
         });
         setTabIndex(tabIndex + 1);
       }
@@ -139,21 +138,11 @@ const CreateEditEmployeeForm = ({
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Address Line 1</FormLabel>
+          <FormLabel fontWeight={"bold"}>Address</FormLabel>
           <Input
             name="address"
             id="address"
             value={formik.values.address?.street}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-        </GridItem>
-        <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Address Line 2/Apartment</FormLabel>
-          <Input
-            name="address"
-            id="address"
-            value={formik.values.address?.floor}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />

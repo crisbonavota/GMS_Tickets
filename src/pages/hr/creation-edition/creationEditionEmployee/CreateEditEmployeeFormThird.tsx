@@ -28,11 +28,12 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  childs: Yup.number().typeError("Must be a number type"),
+  childs: Yup.number().nullable().typeError("Must be a number type"),
+  maritalStatus: Yup.string().nullable(),
 });
 
 const initialValues = {
-  childs: "",
+  childs: 0,
   maritalStatus: "",
 };
 
@@ -40,15 +41,10 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
         ...editInitialValues,
-        firstName: editInitialValues.firstName.replace(
-          ` (${editInitialValues.id})`,
-          ""
-        ),
-        active: editInitialValues?.active,
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({
+const CreateEditEmployeeFormThird = ({
   onClose,
   editInitialValues,
   id,
@@ -178,4 +174,4 @@ const CreateEditEmployeeForm = ({
   );
 };
 
-export default CreateEditEmployeeForm;
+export default CreateEditEmployeeFormThird;

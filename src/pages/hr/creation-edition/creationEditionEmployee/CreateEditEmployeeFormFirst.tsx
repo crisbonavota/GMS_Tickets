@@ -36,6 +36,8 @@ const validationSchema = Yup.object().shape({
   email: Yup.string()
     .required("Email is required")
     .email("Invalid email format"),
+  entryDate: Yup.string().nullable(),
+  afipid: Yup.string().nullable(),
 });
 
 const initialValues = {
@@ -43,8 +45,8 @@ const initialValues = {
   lastName: "",
   email: "",
   afipId: "",
-  entryDate: "",
-  birthDate: "",
+  entryDate: new Date().toISOString(),
+  birthDate: new Date().toISOString(),
   gender: true,
   active: true,
 };
@@ -61,7 +63,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({
+const CreateEditEmployeeFormFirst = ({
   onClose,
   editInitialValues,
   id,
@@ -283,4 +285,4 @@ const CreateEditEmployeeForm = ({
   );
 };
 
-export default CreateEditEmployeeForm;
+export default CreateEditEmployeeFormFirst;

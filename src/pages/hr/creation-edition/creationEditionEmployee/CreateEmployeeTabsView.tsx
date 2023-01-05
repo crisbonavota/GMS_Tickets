@@ -8,9 +8,7 @@ interface Props {
 }
 
 const CreateEmployeeTabsView = ({ onClose }: Props) => {
-  const [tabIndex, setTabIndex] = useState(
-    +localStorage.getItem("tabIndexHR")!
-  );
+  const [tabIndex, setTabIndex] = useState(0);
   return (
     <VStack
       w={"full"}

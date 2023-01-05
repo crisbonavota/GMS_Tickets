@@ -27,7 +27,10 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  address: Yup.string().min(5, "At least 5 characters"),
+  address: Yup.string().nullable(),
+  city: Yup.string().nullable(),
+  birthCountryId: Yup.string().nullable(),
+  countryId: Yup.string().nullable(),
 });
 
 const initialValues = {
@@ -51,7 +54,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({
+const CreateEditEmployeeFormSecond = ({
   onClose,
   editInitialValues,
   id,
@@ -191,4 +194,4 @@ const CreateEditEmployeeForm = ({
   );
 };
 
-export default CreateEditEmployeeForm;
+export default CreateEditEmployeeFormSecond;

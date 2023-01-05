@@ -7,7 +7,6 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
-  Input,
   FormLabel,
   Select,
 } from "@chakra-ui/react";
@@ -33,7 +32,8 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  childs: Yup.number().typeError("Must be a number type"),
+  salaryCurrencyId: Yup.string().nullable(),
+  medicalCoverageId: Yup.string().nullable(),
 });
 
 const initialValues = {
@@ -45,17 +45,12 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
         ...editInitialValues,
-        firstName: editInitialValues.firstName.replace(
-          ` (${editInitialValues.id})`,
-          ""
-        ),
         salaryCurrencyId: editInitialValues?.salaryCurrency.id,
         medicalCoverageId: editInitialValues?.medicalCoverage.id,
-        active: editInitialValues?.active,
       }
     : undefined;
 
-const CreateEditEmployeeForm = ({
+const CreateEditEmployeeFormFourth = ({
   onClose,
   editInitialValues,
   id,
@@ -182,7 +177,7 @@ const CreateEditEmployeeForm = ({
                 ))}
             </Select>
             <FormErrorMessage>
-              {formik.errors?.salaryCurrencyId}
+              {formik.errors?.medicalCoverageId}
             </FormErrorMessage>
           </FormControl>
         </GridItem>
@@ -218,4 +213,4 @@ const CreateEditEmployeeForm = ({
   );
 };
 
-export default CreateEditEmployeeForm;
+export default CreateEditEmployeeFormFourth;

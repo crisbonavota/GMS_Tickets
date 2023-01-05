@@ -15,7 +15,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import { patchResource } from "../../../../api/api";
 import CountryField from "../../../pm/creation-edition/CountryField";
-import crtEmployeeFirstStep from "../../../../redux/slices/hr";
+import crtEmployeeSlice from "../../../../redux/slices/hr";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
@@ -61,7 +61,7 @@ const CreateEditEmployeeForm = ({
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const state = useAppSelector((e) => e.hr.createEmployee);
+  const state = useAppSelector((e) => e.hr.crtEmployeeLocationInfo);
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -72,8 +72,8 @@ const CreateEditEmployeeForm = ({
       if (editInitialValues) await editEmployee();
       else {
         dispatch({
-          type: crtEmployeeFirstStep,
-          payload: {...formik.values, ...state},
+          type: crtEmployeeSlice,
+          payload: {...formik.values, state},
         });
         setTabIndex(tabIndex + 1);
       }

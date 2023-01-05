@@ -23,7 +23,7 @@ interface BusinessUnitsFilter {
   active: boolean;
 }
 
-interface CreateEmployeeValues {
+interface EmployeePersonalInfoValues {
   firstName: string;
   lastName: string;
   email: string;
@@ -32,21 +32,27 @@ interface CreateEmployeeValues {
   birthDate: string;
   gender: boolean;
   active: boolean;
+}
+
+interface EmployeeLocationValues {
   countryId: number;
   birthCountryId: number;
   address: string;
   city: string;
+}
+interface EmployeeFamilyValues {
   childs: string;
   maritalStatus: string;
-  salaryCurrencyId: number;
-  medicalCoverageId: number;
 }
+
 
 interface HumanResourcesState {
   employees: BasicModuleProps<EmployeesFilter>;
   providers: BasicModuleProps<ProvidersFilter>;
   businessUnits: BasicModuleProps<BusinessUnitsFilter>;
-  createEmployee: CreateEmployeeValues;
+  crtEmployeePersonalInfo: EmployeePersonalInfoValues;
+  crtEmployeeLocationInfo: EmployeeLocationValues;
+  crtEmployeeFamilyInfo: EmployeeFamilyValues;
 }
 
 const initialState: HumanResourcesState = {
@@ -92,7 +98,7 @@ const initialState: HumanResourcesState = {
       active: true,
     },
   },
-  createEmployee: {
+  crtEmployeePersonalInfo: {
     firstName: "",
     lastName: "",
     email: "",
@@ -101,42 +107,22 @@ const initialState: HumanResourcesState = {
     birthDate: "",
     gender: true,
     active: true,
+  },
+  crtEmployeeLocationInfo: {
     countryId: 0,
     birthCountryId: 0,
     address: "",
     city: "",
+  },
+  crtEmployeeFamilyInfo: {
     childs: "",
     maritalStatus: "",
-    salaryCurrencyId: 0,
-    medicalCoverageId: 0,
-  },
+  }
 };
 
 interface Action<T> {
   module: "employees" | "providers" | "businessUnits";
   value: T;
-}
-
-interface FirstStepValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  afipId: string;
-  entryDate: string;
-  birthDate: string;
-  gender: boolean;
-  active: boolean;
-}
-
-interface SecondStepValues {
-  countryId: number;
-  birthCountryId: number;
-  address: string;
-  city: string;
-}
-interface ThirdStepValues {
-  childs: string;
-  maritalStatus: string;
 }
 
 const slice = createSlice({
@@ -179,30 +165,30 @@ const slice = createSlice({
         action.payload.value.value;
       state[action.payload.module].pagination.currentPage = 0;
     },
-    crtEmployee1stStep: (
+    crtEmployeePersonalInfo: (
       state: HumanResourcesState,
-      action: PayloadAction<FirstStepValues>
+      action: PayloadAction<EmployeePersonalInfoValues>
     ) => {
-      state.createEmployee = {
-        ...initialState.createEmployee,
+      state.crtEmployeePersonalInfo = {
+        ...initialState.crtEmployeePersonalInfo,
         ...action.payload,
       };
     },
-    crtEmployee2ndStep: (
+    crtEmployeeLocationInfo: (
       state: HumanResourcesState,
-      action: PayloadAction<SecondStepValues>
+      action: PayloadAction<EmployeeLocationValues>
     ) => {
-      state.createEmployee = {
-        ...initialState.createEmployee,
+      state.crtEmployeeLocationInfo = {
+        ...initialState.crtEmployeeLocationInfo,
         ...action.payload,
       };
     },
-    crtEmployee3rdStep: (
+    crtEmployeeFamilyInfo: (
       state: HumanResourcesState,
-      action: PayloadAction<ThirdStepValues>
+      action: PayloadAction<EmployeeFamilyValues>
     ) => {
-      state.createEmployee = {
-        ...initialState.createEmployee,
+      state.crtEmployeeFamilyInfo = {
+        ...initialState.crtEmployeeFamilyInfo,
         ...action.payload,
       };
     },

@@ -22,8 +22,7 @@ import {
   patchResource,
 } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
-import crtEmployeeFirstStep from "../../../../redux/slices/hr";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { useAppSelector } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -66,8 +65,9 @@ const CreateEditEmployeeForm = ({
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const state = useAppSelector((e) => e.hr.createEmployee);
-  const dispatch = useAppDispatch();
+  const personalInfoState = useAppSelector((p) => p.hr.crtEmployeePersonalInfo);
+  const locationInfoState = useAppSelector((l) => l.hr.crtEmployeeLocationInfo);
+  const familyInfoState = useAppSelector((f) => f.hr.crtEmployeeFamilyInfo);
 
   const formik = useFormik({
     initialValues:
@@ -101,7 +101,7 @@ const CreateEditEmployeeForm = ({
 
   const { mutateAsync: createEmployee, isLoading: creationLoading } =
     useMutation(
-      () => postResource("employees", getAuthHeader(), {...formik.values, ...state}),
+      () => postResource("employees", getAuthHeader(), {...formik.values, personalInfoState, locationInfoState, familyInfoState}),
       {
         onSuccess: onSuccess,
         onError: onError,
@@ -143,7 +143,7 @@ const CreateEditEmployeeForm = ({
               !!formik.touched.salaryCurrencyId
             }
           >
-            <FormLabel fontWeight={"bold"}>Marital Status</FormLabel>
+            <FormLabel fontWeight={"bold"}>Salary Currency</FormLabel>
             <Select
               placeholder="Select option"
               name="salaryCurrencyId"

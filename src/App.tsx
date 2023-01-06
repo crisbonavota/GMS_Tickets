@@ -14,7 +14,6 @@ import Updates from "./pages/updates/Updates";
 import Timetracker from "./pages/timetracker/Timetracker";
 import Providers from "./pages/providers/Providers";
 import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
-import BusinessUnitDetailedView from "./pages/hr/detailed/businessunits/BusinessUnitDetailedView";
 import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
 import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
 
@@ -139,14 +138,6 @@ const App = () => {
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <ProviderDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/human-resources/businessUnits/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <BusinessUnitDetailedView />
                             </RequireAuth>
                         }
                     />

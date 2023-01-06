@@ -3,6 +3,7 @@ import StatusFilter from "../StatusFilter";
 import { useCallback } from "react";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { changeFilter } from "../../../../redux/slices/hr";
+import BusinessUnitFilter from "../BusinessUnitFilter";
 
 const ProvidersFilters = () => {
     const dispatch = useAppDispatch();
@@ -23,9 +24,26 @@ const ProvidersFilters = () => {
         [dispatch, changeFilter]
     );
 
+    const businessUnitSetter = useCallback(
+        (val: number | null) => {
+            dispatch({
+                type: changeFilter,
+                payload: {
+                    module: "providers",
+                    value: {
+                        key: "businessUnit",
+                        value: val,
+                    },
+                },
+            });
+        },
+        [dispatch, changeFilter]
+    );
+
     return (
         <VStack w={"full"} spacing={5}>
             <StatusFilter setter={stateSetter} />
+            <BusinessUnitFilter setter={businessUnitSetter} />
         </VStack>
     );
 };

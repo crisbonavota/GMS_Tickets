@@ -12,11 +12,13 @@ interface BasicModuleProps<Filter> {
 }
 
 interface EmployeesFilter {
-  active: boolean;
+    active: boolean;
+    businessUnit: number | null;
 }
 
 interface ProvidersFilter {
-  active: boolean;
+    active: boolean;
+    businessUnit: number | null;
 }
 
 interface BusinessUnitsFilter {
@@ -56,48 +58,50 @@ interface HumanResourcesState {
 }
 
 const initialState: HumanResourcesState = {
-  employees: {
-    pagination: {
-      currentPage: 0,
-      totalPages: null,
+    employees: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: "fileNumber",
+            isAscending: false,
+        },
+        search: "",
+        filters: {
+            active: true,
+            businessUnit: null,
+        },
     },
-    sort: {
-      field: "lastName",
-      isAscending: false,
+    providers: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: "fileNumber",
+            isAscending: false,
+        },
+        search: "",
+        filters: {
+            active: true,
+            businessUnit: null,
+        },
     },
-    search: "",
-    filters: {
-      active: true,
+    businessUnits: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: "name",
+            isAscending: true,
+        },
+        search: "",
+        filters: {
+            active: true,
+        },
     },
-  },
-  providers: {
-    pagination: {
-      currentPage: 0,
-      totalPages: null,
-    },
-    sort: {
-      field: "creationDate",
-      isAscending: false,
-    },
-    search: "",
-    filters: {
-      active: true,
-    },
-  },
-  businessUnits: {
-    pagination: {
-      currentPage: 0,
-      totalPages: null,
-    },
-    sort: {
-      field: "name",
-      isAscending: false,
-    },
-    search: "",
-    filters: {
-      active: true,
-    },
-  },
   crtEmployeePersonalInfo: {
     firstName: "",
     lastName: "",

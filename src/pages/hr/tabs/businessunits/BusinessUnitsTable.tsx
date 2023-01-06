@@ -7,36 +7,13 @@ import {
 } from "../../../../components/DynamicTable/DynamicTable";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
-import DetailsCell from "../../../pm/tabs/DetailsCell";
+import EditBusinessUnitButton from "../../creation-edition/EditBusinessUnitButton";
 
 interface Props {
     businessUnits: BusinessUnit[];
 }
 
-const format: DynamicTableFormat[] = [
-    {
-        header: "Business Unit",
-        accessor: "name",
-    },
-    {
-        header: "Status",
-        accessor: "active",
-        accessorFn: (r: boolean) => (
-            <Text color={r ? "green" : "red"}>
-                {r ? "Active" : "Inactive"}
-            </Text>
-        ),
-        disableSort: true,
-    },
-    {
-        header: "Details",
-        accessor: "id",
-        accessorFn: (id: number) => <DetailsCell resource="businessUnits" id={id} />,
-        disableSort: true,
-    },
-];
-
-const AccountsTable = ({ businessUnits }: Props) => {
+const BusinessUnitsTable = ({ businessUnits }: Props) => {
     const state = useAppSelector((s) => s.hr.businessUnits);
     const dispatch = useAppDispatch();
 
@@ -58,6 +35,32 @@ const AccountsTable = ({ businessUnits }: Props) => {
         [changePage, useAppDispatch]
     );
 
+    const format: DynamicTableFormat[] = [
+        {
+            header: "Business Unit",
+            accessor: "name",
+        },
+        {
+            header: "Status",
+            accessor: "active",
+            accessorFn: (r: boolean) => (
+                <Text color={r ? "green" : "red"}>
+                    {r ? "Active" : "Inactive"}
+                </Text>
+            ),
+            disableSort: true,
+        },
+        {
+            header: "Edit",
+            accessor: "id",
+            accessorFn: (id: number) => 
+                <EditBusinessUnitButton 
+                    businessUnit={businessUnits.filter(bu => bu.id === id)[0]} 
+                />,
+            disableSort: true,
+        },
+    ];
+
     return (
         <DynamicTable
             format={format}
@@ -71,4 +74,4 @@ const AccountsTable = ({ businessUnits }: Props) => {
     );
 };
 
-export default AccountsTable;
+export default BusinessUnitsTable;

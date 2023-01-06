@@ -21,7 +21,7 @@ const CreateEmployeeModal = ({ isOpen, onClose }: Props) => {
             <ModalContent minW={"fit-content"}>
                 <ModalHeader color={"#448F85"}>Create employee</ModalHeader>
                 <ModalCloseButton/>
-                <ModalBody w={"fit-content"} minW={"40vw"}>
+                <ModalBody w={"fit-content"} maxW={"44vw"}>
                     <CreateEmployeeTabsView onClose={onClose} />
                 </ModalBody>
             </ModalContent>

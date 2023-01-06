@@ -8,6 +8,7 @@ import {
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
+import EditEmployeeButton from "../../creation-edition/EditEmployeeButton";
 
 interface Props {
     employees: Employee[];
@@ -85,15 +86,15 @@ const EmployeesTable = ({ employees }: Props) => {
             accessorFn: (id: number) => <DetailsCell resource="employees" id={id} />,
             disableSort: true,
         },
-       /* {
+        {
             header: "Edit",
-            accessor: "id",
+            accessor: "id", 
             accessorFn: (id: number) => 
                 <EditEmployeeButton 
                     employee={employees.filter(e => e.id === id)[0]} 
                 />,
             disableSort: true,
-        },*/
+        },
     ];
     
 

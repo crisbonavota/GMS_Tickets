@@ -43,7 +43,7 @@ interface EmployeeLocationValues {
   city: string;
 }
 interface EmployeeFamilyValues {
-  childs: string;
+  childs: number;
   maritalStatus: string;
 }
 
@@ -119,7 +119,7 @@ const initialState: HumanResourcesState = {
     city: "",
   },
   crtEmployeeFamilyInfo: {
-    childs: "",
+    childs: 0,
     maritalStatus: "",
   }
 };

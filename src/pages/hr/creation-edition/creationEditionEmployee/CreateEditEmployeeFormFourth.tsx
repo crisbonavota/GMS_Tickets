@@ -45,8 +45,8 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
         ...editInitialValues,
-        salaryCurrencyId: editInitialValues?.salaryCurrency.id,
-        medicalCoverageId: editInitialValues?.medicalCoverage.id,
+        salaryCurrencyId: editInitialValues?.salaryCurrency?.id,
+        medicalCoverageId: editInitialValues?.medicalCoverage?.id,
       }
     : undefined;
 

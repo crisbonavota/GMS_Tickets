@@ -3,14 +3,17 @@ import CreateEditEmployeeFormFirst from "./CreateEditEmployeeFormFirst";
 import CreateEditEmployeeFormSecond from "./CreateEditEmployeeFormSecond";
 import CreateEditEmployeeFormThird from "./CreateEditEmployeeFormThird";
 import CreateEditEmployeeFormFourth from "./CreateEditEmployeeFormFourth";
+import { Employee } from "../../../../api/types";
 
 interface Props {
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
   onClose: () => void;
+  editInitialValues?: Employee;
+  id?: number;
 }
 
-const TabsContent = ({ tabIndex, setTabIndex, onClose }: Props) => {
+const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: Props) => {
   return (
     <Tabs
       index={tabIndex}
@@ -27,16 +30,16 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose }: Props) => {
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CreateEditEmployeeFormFirst onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>
+          <CreateEditEmployeeFormFirst onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormSecond onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>{" "}
+          <CreateEditEmployeeFormSecond onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormThird onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>{" "}
+          <CreateEditEmployeeFormThird onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CreateEditEmployeeFormFourth onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex}/>
+          <CreateEditEmployeeFormFourth onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

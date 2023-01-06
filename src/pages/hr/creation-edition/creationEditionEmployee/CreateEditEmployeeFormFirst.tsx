@@ -80,7 +80,13 @@ const CreateEditEmployeeFormFirst = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) await editEmployee();
+      if (editInitialValues) {
+        dispatch({
+          type: EmployeePersonalInfo,
+          payload: {...formik.values},
+        });
+        setTabIndex(tabIndex + 1);
+      }
       else {
         dispatch({
           type: EmployeePersonalInfo,
@@ -110,21 +116,6 @@ const CreateEditEmployeeFormFirst = ({
       status: "error",
     });
   };
-
-  const { mutateAsync: editEmployee, isLoading: editLoading } = useMutation(
-    () =>
-      patchResource(
-        "employees",
-        id || 0,
-        getAuthHeader(),
-        editInitialValuesToFormikValues(editInitialValues) || {},
-        formik.values
-      ),
-    {
-      onSuccess: onSuccess,
-      onError: onError,
-    }
-  );
 
   const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
 
@@ -272,8 +263,6 @@ const CreateEditEmployeeFormFirst = ({
             <Button
               type="submit"
               colorScheme={"orange"}
-              isLoading={editLoading}
-              isDisabled={editLoading}
               minWidth={"8rem"}
             >
               Next

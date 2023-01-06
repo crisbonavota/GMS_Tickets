@@ -44,13 +44,8 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
         ...editInitialValues,
-        firstName: editInitialValues.firstName.replace(
-          ` (${editInitialValues.id})`,
-          ""
-        ),
-        birthCountryId: editInitialValues?.birthCountry.id,
-        countryId: editInitialValues?.country.id,
-        active: editInitialValues?.active,
+        birthCountryId: editInitialValues?.birthCountry?.id,
+        countryId: editInitialValues?.country?.id,
       }
     : undefined;
 
@@ -71,7 +66,13 @@ const CreateEditEmployeeFormSecond = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) await editEmployee();
+      if (editInitialValues) {
+        dispatch({
+          type: EmployeeLocationInfo,
+          payload: {...formik.values},
+        });
+        setTabIndex(tabIndex + 1);
+      }
       else {
         dispatch({
           type: EmployeeLocationInfo,
@@ -101,21 +102,6 @@ const CreateEditEmployeeFormSecond = ({
       status: "error",
     });
   };
-
-  const { mutateAsync: editEmployee, isLoading: editLoading } = useMutation(
-    () =>
-      patchResource(
-        "employees",
-        id || 0,
-        getAuthHeader(),
-        editInitialValuesToFormikValues(editInitialValues) || {},
-        formik.values
-      ),
-    {
-      onSuccess: onSuccess,
-      onError: onError,
-    }
-  );
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
@@ -181,8 +167,6 @@ const CreateEditEmployeeFormSecond = ({
             <Button
               type="submit"
               colorScheme={"orange"}
-              isLoading={editLoading}
-              isDisabled={editLoading}
               minWidth={"8rem"}
             >
               Next

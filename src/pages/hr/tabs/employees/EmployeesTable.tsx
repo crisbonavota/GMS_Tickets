@@ -15,12 +15,37 @@ interface Props {
 
 const format: DynamicTableFormat[] = [
     {
+        header: "File Number",
+        accessor: "fileNumber",
+    },
+    {
         header: "firstName",
         accessor: "firstName",
     },
     {
         header: "lastName",
         accessor: "lastName",
+    },
+    {
+        header: "Email",
+        accessor: "email",
+    },
+    {
+        header: "Business Unit",
+        accessor: "legacyUser.businessUnit.name",
+        disableSort: true,
+    },
+    {
+        header: "CUIT",
+        accessor: "afipId",
+    },
+    {
+        header: "Birth Date",
+        accessor: "birthDate",
+        accessorFn: (birthDate: string) =>
+            birthDate && birthDate !== "0001-01-01T00:00:00"
+                ? new Date(birthDate).toLocaleDateString()
+                : "",
     },
     {
         header: "Status",

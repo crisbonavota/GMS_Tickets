@@ -13,10 +13,12 @@ interface BasicModuleProps<Filter> {
 
 interface EmployeesFilter {
     active: boolean;
+    businessUnit: number | null;
 }
 
 interface ProvidersFilter {
     active: boolean;
+    businessUnit: number | null;
 }
 
 interface BusinessUnitsFilter {
@@ -36,12 +38,13 @@ const initialState: HumanResourcesState = {
             totalPages: null,
         },
         sort: {
-            field: "lastName",
-            isAscending: true,
+            field: "fileNumber",
+            isAscending: false,
         },
         search: "",
         filters: {
             active: true,
+            businessUnit: null,
         },
     },
     providers: {
@@ -50,12 +53,13 @@ const initialState: HumanResourcesState = {
             totalPages: null,
         },
         sort: {
-            field: "lastName",
-            isAscending: true,
+            field: "fileNumber",
+            isAscending: false,
         },
         search: "",
         filters: {
             active: true,
+            businessUnit: null,
         },
     },
     businessUnits: {

@@ -42,6 +42,7 @@ const Providers = () => {
         getAuthHeader(),
         [
           { field: "active", value: state.filters.active },
+          { field: "legacyUser.businessUnit.id", value: state.filters.businessUnit },
         ],
         [{ name: "fullName", value: state.search }],
         state.sort,

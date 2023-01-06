@@ -15,12 +15,25 @@ interface Props {
 
 const format: DynamicTableFormat[] = [
     {
+        header: "File Number",
+        accessor: "fileNumber",
+    },
+    {
         header: "First name",
         accessor: "firstName",
     },
     {
         header: "Last name",
         accessor: "lastName",
+    },
+    {
+        header: "Email",
+        accessor: "email",
+    },
+    {
+        header: "Business Unit",
+        accessor: "legacyUser.businessUnit.name",
+        disableSort: true,
     },
     {
         header: "Status",

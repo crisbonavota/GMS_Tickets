@@ -43,7 +43,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Provider) =>
           }
         : undefined;
 
-const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
@@ -148,4 +148,4 @@ const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) =
     );
 };
 
-export default CreateEditBusinessUnitForm;
+export default CreateEditProviderForm;

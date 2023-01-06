@@ -6,7 +6,7 @@ import {
     ModalCloseButton,
     ModalBody,
 } from "@chakra-ui/react";
-import CreateEditEmployeeForm from "./CreateEditEmployeeForm";
+import CreateEmployeeTabsView from "./CreateEmployeeTabsView"
 
 interface Props {
     isOpen: boolean;
@@ -19,10 +19,10 @@ const CreateEmployeeModal = ({ isOpen, onClose }: Props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent minW={"fit-content"}>
-                <ModalHeader>Create employee</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody w={"fit-content"} minW={"40vw"}>
-                    <CreateEditEmployeeForm onClose={onClose} />
+                <ModalHeader color={"#448F85"}>Create employee</ModalHeader>
+                <ModalCloseButton/>
+                <ModalBody w={"fit-content"} maxW={"44vw"}>
+                    <CreateEmployeeTabsView onClose={onClose} />
                 </ModalBody>
             </ModalContent>
         </Modal>

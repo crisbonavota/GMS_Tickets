@@ -12,22 +12,22 @@ import { BrowserRouter } from "react-router-dom";
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-        <ReduxProvider store={store}>
-            <AuthProvider
-                authType={navigator.cookieEnabled ? "cookie" : "localstorage"}
-                authName={"_gms_auth"}
-                cookieDomain={window.location.hostname}
-                cookieSecure={window.location.protocol === "https:"}
-            >
-                <ChakraProvider theme={getTheme()}>
-                    <QueryClientProvider client={queryClient}>
-                        <BrowserRouter>
-                            <App />
-                        </BrowserRouter>
-                    </QueryClientProvider>
-                </ChakraProvider>
-            </AuthProvider>
-        </ReduxProvider>
-    </React.StrictMode>
+  <React.StrictMode>
+    <ReduxProvider store={store}>
+      <AuthProvider
+        authType={navigator.cookieEnabled ? "cookie" : "localstorage"}
+        authName={"_gms_auth"}
+        cookieDomain={window.location.hostname}
+        cookieSecure={window.location.protocol === "https:"}
+      >
+          <ChakraProvider theme={getTheme()}>
+            <QueryClientProvider client={queryClient}>
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </QueryClientProvider>
+          </ChakraProvider>
+      </AuthProvider>
+    </ReduxProvider>
+  </React.StrictMode>
 );

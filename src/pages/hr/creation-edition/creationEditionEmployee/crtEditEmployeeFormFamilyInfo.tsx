@@ -1,7 +1,6 @@
 import {
   chakra,
   SimpleGrid,
-  useToast,
   GridItem,
   HStack,
   Button,
@@ -11,11 +10,8 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
-import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
-import { patchResource } from "../../../../api/api";
 import { EmployeeFamilyInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 
@@ -44,16 +40,11 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeFormThird = ({
-  onClose,
+const crtEditEmployeeFormFamilyInfo = ({
   editInitialValues,
-  id,
   tabIndex,
   setTabIndex,
 }: Props) => {
-  const getAuthHeader = useAuthHeader();
-  const queryClient = useQueryClient();
-  const toast = useToast();
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -77,26 +68,6 @@ const CreateEditEmployeeFormThird = ({
       }
     },
   });
-
-  const onSuccess = () => {
-    queryClient.resetQueries("employees");
-    queryClient.resetQueries(`employee-${id}`);
-    toast({
-      title: editInitialValues ? "Employee updated" : "Employee created",
-      status: "success",
-      isClosable: true,
-    });
-    onClose();
-  };
-
-  const onError = (err: unknown) => {
-    console.log(err);
-    toast({
-      title: "Error",
-      description: "Try again later",
-      status: "error",
-    });
-  };
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
@@ -163,4 +134,4 @@ const CreateEditEmployeeFormThird = ({
   );
 };
 
-export default CreateEditEmployeeFormThird;
+export default crtEditEmployeeFormFamilyInfo;

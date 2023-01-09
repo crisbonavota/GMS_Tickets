@@ -1,7 +1,6 @@
 import {
   chakra,
   SimpleGrid,
-  useToast,
   GridItem,
   HStack,
   Button,
@@ -12,13 +11,13 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useQuery } from "react-query";
 import { Employee } from "../../../../api/types";
-import { getGenders, patchResource } from "../../../../api/api";
+import { getGenders } from "../../../../api/api";
 import { EmployeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
+import moment from "moment";
 
 interface Props {
   onClose: () => void;
@@ -59,20 +58,18 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
           ` (${editInitialValues.id})`,
           ""
         ),
+        entryDate: moment(editInitialValues.entryDate).format("yyyy-MM-DD"),
+        birthDate: moment(editInitialValues.birthDate).format("yyyy-MM-DD"),
         active: editInitialValues?.active,
       }
     : undefined;
 
-const CreateEditEmployeeFormFirst = ({
+const crtEditEmployeeFormPersonalInfo = ({
   onClose,
   editInitialValues,
-  id,
   tabIndex,
   setTabIndex,
 }: Props) => {
-  const getAuthHeader = useAuthHeader();
-  const queryClient = useQueryClient();
-  const toast = useToast();
   const dispatch = useAppDispatch();
 
   const formik = useFormik({
@@ -96,26 +93,6 @@ const CreateEditEmployeeFormFirst = ({
       }
     },
   });
-
-  const onSuccess = () => {
-    queryClient.resetQueries("employees");
-    queryClient.resetQueries(`employee-${id}`);
-    toast({
-      title: editInitialValues ? "Employee updated" : "Employee created",
-      status: "success",
-      isClosable: true,
-    });
-    onClose();
-  };
-
-  const onError = (err: unknown) => {
-    console.log(err);
-    toast({
-      title: "Error",
-      description: "Try again later",
-      status: "error",
-    });
-  };
 
   const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
 
@@ -274,4 +251,4 @@ const CreateEditEmployeeFormFirst = ({
   );
 };
 
-export default CreateEditEmployeeFormFirst;
+export default crtEditEmployeeFormPersonalInfo;

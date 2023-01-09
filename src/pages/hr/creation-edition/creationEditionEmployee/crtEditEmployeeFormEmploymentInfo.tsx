@@ -50,7 +50,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
       }
     : undefined;
 
-const CreateEditEmployeeFormFourth = ({
+const crtEditEmployeeFormEmploymentInfo = ({
   onClose,
   editInitialValues,
   id,
@@ -125,7 +125,8 @@ const CreateEditEmployeeFormFourth = ({
 
   const { data: medicalCoverages, isSuccess: successMedCoverages } = useQuery(
     "medicalCoverage",
-    () => getMedicalCoverages()
+    () => getMedicalCoverages(),
+    {select: (m) => m}
   );
 
   return (
@@ -148,7 +149,7 @@ const CreateEditEmployeeFormFourth = ({
               onBlur={formik.handleBlur}
             >
               {successCurrencies &&
-                currencies.map((el) => <option key={el.id}>{el.code}</option>)}
+                currencies.map((el) => <chakra.option key={el.id} value={el.id}>{el.code}</chakra.option>)}
             </Select>
             <FormErrorMessage>
               {formik.errors?.salaryCurrencyId}
@@ -173,7 +174,7 @@ const CreateEditEmployeeFormFourth = ({
             >
               {successMedCoverages &&
                 medicalCoverages.map((el) => (
-                  <option key={el.id}>{el.name}</option>
+                  <chakra.option key={el.id} value={el.id}>{el.name}</chakra.option>
                 ))}
             </Select>
             <FormErrorMessage>
@@ -213,4 +214,4 @@ const CreateEditEmployeeFormFourth = ({
   );
 };
 
-export default CreateEditEmployeeFormFourth;
+export default crtEditEmployeeFormEmploymentInfo;

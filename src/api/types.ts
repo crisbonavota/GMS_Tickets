@@ -46,6 +46,7 @@ export interface LegacyUserPublic {
   email: string;
   fullName: string;
   fileNumber: number;
+  businessUnit: BusinessUnit;
 }
 
 export interface BusinessUnit {
@@ -260,8 +261,7 @@ export interface Provider {
   email: string;
   phone: string;
   address: string;
-  cityId: number;
-  city: City;
+  city: string;
   creationDate: Date;
   active: boolean;
   fileNumber: number;

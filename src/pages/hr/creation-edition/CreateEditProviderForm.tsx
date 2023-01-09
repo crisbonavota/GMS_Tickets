@@ -17,6 +17,7 @@ import {
 } from "../../../api/api";
 import StatusField from "../../pm/creation-edition/StatusField";
 import FormikTextInput from "../../pm/creation-edition/FormikTextInput";
+import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
 
 interface Props {
     onClose: () => void;
@@ -26,11 +27,27 @@ interface Props {
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
+    lastName: Yup.string().required("Last name is required"),
+    email: Yup.string().required("Email is required").email("Invalid email format"),
+    businessUnitId: Yup.number().required("Business unit is required"),
+    afipId: Yup.string().nullable(),
+    businessName: Yup.string().nullable(),
+    phone: Yup.string().nullable(),
+    address: Yup.string().nullable(),
+    city: Yup.string().nullable(),
     active: Yup.bool(),
 });
 
 const initialValues = {
     firstName: "",
+    lastName: "",
+    afipId: "",
+    businessName: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    businessUnitId: null,
     active: true,
 };
 
@@ -39,6 +56,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Provider) =>
         ? {
               ...editInitialValues,
               firstName: editInitialValues.firstName.replace(` (${editInitialValues.id})`, ""),
+              businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
               active: editInitialValues?.active,
           }
         : undefined;
@@ -113,6 +131,100 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         error={formik.errors.firstName}
                         touched={formik.touched.firstName}
                         label="First name"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="lastName"
+                        id="lastName"
+                        value={formik.values.lastName}
+                        onChange={formik.handleChange}
+                        error={formik.errors.lastName}
+                        touched={formik.touched.lastName}
+                        label="Last name"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="afipId"
+                        id="afipId"
+                        value={formik.values.afipId}
+                        onChange={formik.handleChange}
+                        error={formik.errors.afipId}
+                        touched={formik.touched.afipId}
+                        label="DNI/CUIT/BRA/USA"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="businessName"
+                        id="businessName"
+                        value={formik.values.businessName}
+                        onChange={formik.handleChange}
+                        error={formik.errors.businessName}
+                        touched={formik.touched.businessName}
+                        label="Business name"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="email"
+                        id="email"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={formik.errors.email}
+                        touched={formik.touched.email}
+                        label="Email"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="phone"
+                        id="phone"
+                        value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        error={formik.errors.phone}
+                        touched={formik.touched.phone}
+                        label="Phone"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="address"
+                        id="address"
+                        value={formik.values.address}
+                        onChange={formik.handleChange}
+                        error={formik.errors.address}
+                        touched={formik.touched.address}
+                        label="Address"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikTextInput
+                        name="city"
+                        id="city"
+                        value={formik.values.city}
+                        onChange={formik.handleChange}
+                        error={formik.errors.city}
+                        touched={formik.touched.city}
+                        label="City"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <BusinessUnitField
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("businessUnitId", value, true)
+                        }
+                        error={formik.errors.businessUnitId}
+                        touched={formik.touched.businessUnitId}
+                        defaultValue={
+                            editInitialValues
+                                ? {
+                                      value: editInitialValues.legacyUser.businessUnit.id,
+                                      label: editInitialValues.legacyUser.businessUnit.name,
+                                  }
+                                : undefined
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={1}>

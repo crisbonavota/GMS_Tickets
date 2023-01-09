@@ -40,6 +40,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
+  fileNumber: "",
   firstName: "",
   lastName: "",
   email: "",
@@ -80,14 +81,13 @@ const crtEditEmployeeFormPersonalInfo = ({
       if (editInitialValues) {
         dispatch({
           type: EmployeePersonalInfo,
-          payload: {...formik.values},
+          payload: { ...formik.values },
         });
         setTabIndex(tabIndex + 1);
-      }
-      else {
+      } else {
         dispatch({
           type: EmployeePersonalInfo,
-          payload: {...formik.values},
+          payload: { ...formik.values },
         });
         setTabIndex(tabIndex + 1);
       }
@@ -99,6 +99,20 @@ const crtEditEmployeeFormPersonalInfo = ({
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+        {editInitialValues && (
+          <GridItem colSpan={1}>
+            <FormLabel fontWeight={"bold"}>File Number</FormLabel>
+            <Input
+              readOnly
+              variant='filled'
+              name="fileNumber"
+              id="fileNUmber"
+              value={editInitialValues?.fileNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </GridItem>
+        )}
         <GridItem colSpan={1}>
           <FormControl
             isRequired
@@ -237,11 +251,7 @@ const crtEditEmployeeFormPersonalInfo = ({
             >
               Cancel
             </Button>
-            <Button
-              type="submit"
-              colorScheme={"orange"}
-              minWidth={"8rem"}
-            >
+            <Button type="submit" colorScheme={"orange"} minWidth={"8rem"}>
               Next
             </Button>
           </HStack>

@@ -68,6 +68,7 @@ const crtEditEmployeeFormEmploymentInfo = ({
     initialValues:
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
+    enableReinitialize: true,
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
       else await createEmployee();
@@ -96,7 +97,13 @@ const crtEditEmployeeFormEmploymentInfo = ({
 
   const { mutateAsync: createEmployee, isLoading: creationLoading } =
     useMutation(
-      () => postResource("employees", getAuthHeader(), {...formik.values, ...personalInfoState, ...locationInfoState, ...familyInfoState}),
+      () =>
+        postResource("employees", getAuthHeader(), {
+          ...formik.values,
+          ...personalInfoState,
+          ...locationInfoState,
+          ...familyInfoState,
+        }),
       {
         onSuccess: onSuccess,
         onError: onError,
@@ -110,7 +117,7 @@ const crtEditEmployeeFormEmploymentInfo = ({
         id || 0,
         getAuthHeader(),
         editInitialValuesToFormikValues(editInitialValues) || {},
-        formik.values
+          formik.values
       ),
     {
       onSuccess: onSuccess,
@@ -126,7 +133,7 @@ const crtEditEmployeeFormEmploymentInfo = ({
   const { data: medicalCoverages, isSuccess: successMedCoverages } = useQuery(
     "medicalCoverage",
     () => getMedicalCoverages(),
-    {select: (m) => m}
+    { select: (m) => m }
   );
 
   return (
@@ -149,7 +156,11 @@ const crtEditEmployeeFormEmploymentInfo = ({
               onBlur={formik.handleBlur}
             >
               {successCurrencies &&
-                currencies.map((el) => <chakra.option key={el.id} value={el.id}>{el.code}</chakra.option>)}
+                currencies.map((el) => (
+                  <chakra.option key={el.id} value={el.id}>
+                    {el.code}
+                  </chakra.option>
+                ))}
             </Select>
             <FormErrorMessage>
               {formik.errors?.salaryCurrencyId}
@@ -174,7 +185,9 @@ const crtEditEmployeeFormEmploymentInfo = ({
             >
               {successMedCoverages &&
                 medicalCoverages.map((el) => (
-                  <chakra.option key={el.id} value={el.id}>{el.name}</chakra.option>
+                  <chakra.option key={el.id} value={el.id}>
+                    {el.name}
+                  </chakra.option>
                 ))}
             </Select>
             <FormErrorMessage>

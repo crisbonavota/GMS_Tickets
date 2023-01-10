@@ -116,7 +116,7 @@ const crtEditEmployeeFormEmploymentInfo = ({
         "employees",
         id || 0,
         getAuthHeader(),
-        editInitialValuesToFormikValues(editInitialValues) || {},
+        editInitialValuesToFormikValues(editInitialValues)!,
           formik.values
       ),
     {

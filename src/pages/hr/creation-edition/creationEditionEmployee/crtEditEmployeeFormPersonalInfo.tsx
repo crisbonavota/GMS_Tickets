@@ -103,8 +103,6 @@ const crtEditEmployeeFormPersonalInfo = ({
           <GridItem colSpan={1}>
             <FormLabel fontWeight={"bold"}>File Number</FormLabel>
             <Input
-              readOnly
-              variant='filled'
               name="fileNumber"
               id="fileNUmber"
               value={editInitialValues?.fileNumber}

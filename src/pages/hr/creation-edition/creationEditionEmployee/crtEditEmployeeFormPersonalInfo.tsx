@@ -28,6 +28,7 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
+  fileNumber: Yup.string().required("File number is required"),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
   birthDate: Yup.string().required("Date of Birth is required"),
@@ -40,7 +41,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  fileNumber: "",
+  fileNumber: 0,
   firstName: "",
   lastName: "",
   email: "",
@@ -101,14 +102,22 @@ const crtEditEmployeeFormPersonalInfo = ({
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         {editInitialValues && (
           <GridItem colSpan={1}>
-            <FormLabel fontWeight={"bold"}>File Number</FormLabel>
-            <Input
-              name="fileNumber"
-              id="fileNUmber"
-              value={editInitialValues?.fileNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <FormControl
+              isRequired
+              isInvalid={
+                !!formik.errors.fileNumber && !!formik.touched.fileNumber
+              }
+            >
+              <FormLabel fontWeight={"bold"}>File Number</FormLabel>
+              <Input
+                name="fileNumber"
+                id="fileNumber"
+                value={formik.values.fileNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              <FormErrorMessage>{formik.errors?.fileNumber}</FormErrorMessage>
+            </FormControl>
           </GridItem>
         )}
         <GridItem colSpan={1}>

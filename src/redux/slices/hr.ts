@@ -26,6 +26,7 @@ interface BusinessUnitsFilter {
 }
 
 interface EmployeePersonalInfoValues {
+  fileNumber: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -103,6 +104,7 @@ const initialState: HumanResourcesState = {
         },
     },
   crtEmployeePersonalInfo: {
+    fileNumber: 0,
     firstName: "",
     lastName: "",
     email: "",

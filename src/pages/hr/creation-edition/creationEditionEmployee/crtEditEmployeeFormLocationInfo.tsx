@@ -57,21 +57,12 @@ const crtEditEmployeeFormLocationInfo = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) {
-        dispatch({
-          type: EmployeeLocationInfo,
-          payload: {...formik.values},
-        });
-        setTabIndex(tabIndex + 1);
-      }
-      else {
-        dispatch({
-          type: EmployeeLocationInfo,
-          payload: {...formik.values},
-        });
-        setTabIndex(tabIndex + 1);
-      }
-    },
+      dispatch({
+        type: EmployeeLocationInfo,
+        payload: { ...formik.values },
+      });
+      setTabIndex(tabIndex + 1);
+  },
   });
 
   return (

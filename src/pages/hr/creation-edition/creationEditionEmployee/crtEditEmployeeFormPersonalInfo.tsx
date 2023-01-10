@@ -78,20 +78,12 @@ const crtEditEmployeeFormPersonalInfo = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) {
-        dispatch({
-          type: EmployeePersonalInfo,
-          payload: { ...formik.values },
-        });
-        setTabIndex(tabIndex + 1);
-      } else {
-        dispatch({
-          type: EmployeePersonalInfo,
-          payload: { ...formik.values },
-        });
-        setTabIndex(tabIndex + 1);
-      }
-    },
+      dispatch({
+        type: EmployeePersonalInfo,
+        payload: { ...formik.values },
+      });
+      setTabIndex(tabIndex + 1);
+  },
   });
 
   const { data: gender, isSuccess } = useQuery("genders", () => getGenders());

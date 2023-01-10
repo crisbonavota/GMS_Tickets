@@ -52,21 +52,12 @@ const crtEditEmployeeFormFamilyInfo = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) {
-        dispatch({
-          type: EmployeeFamilyInfo,
-          payload: {...formik.values},
-        });
-        setTabIndex(tabIndex + 1);
-      }
-      else {
-        dispatch({
-          type: EmployeeFamilyInfo,
-          payload: {...formik.values},
-        });
-        setTabIndex(tabIndex + 1);
-      }
-    },
+      dispatch({
+        type: EmployeeFamilyInfo,
+        payload: { ...formik.values },
+      });
+      setTabIndex(tabIndex + 1);
+  },
   });
 
   return (

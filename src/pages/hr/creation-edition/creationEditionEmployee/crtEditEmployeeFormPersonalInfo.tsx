@@ -18,7 +18,6 @@ import { getGenders } from "../../../../api/api";
 import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
-import { useDidMountEffect } from "../../../../hooks/useDidMountEffect";
 import { useEffect } from "react";
 
 interface Props {

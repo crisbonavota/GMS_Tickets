@@ -16,7 +16,7 @@ const onExport = (base64?: string) => {
 
 const ExportProviders = () => {
   const getAuthHeader = useAuthHeader();
-  const state = useAppSelector((s) => s.hr.providers);
+  const state = useAppSelector((s) => s.humanResources.providers);
   const reportQuery = useQuery(
     ["providerReport", state.filters, state.sort, state.search],
     () =>

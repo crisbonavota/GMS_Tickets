@@ -33,8 +33,8 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  salaryCurrencyId: Yup.string().nullable(),
-  medicalCoverageId: Yup.string().nullable(),
+  salaryCurrencyId: Yup.number().nullable(),
+  medicalCoverageId: Yup.number().nullable(),
   businessUnitId: Yup.number().required("Business unit is required"),
 });
 
@@ -47,14 +47,13 @@ const initialValues = {
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
-        ...editInitialValues,
         salaryCurrencyId: editInitialValues?.salaryCurrency?.id,
         medicalCoverageId: editInitialValues?.medicalCoverage?.id,
         businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
       }
     : undefined;
 
-const crtEditEmployeeFormEmploymentInfo = ({
+const CrtEditEmployeeFormEmploymentInfo = ({
   onClose,
   editInitialValues,
   id,
@@ -64,9 +63,9 @@ const crtEditEmployeeFormEmploymentInfo = ({
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const personalInfoState = useAppSelector((p) => p.hr.crtEmployeePersonalInfo);
-  const locationInfoState = useAppSelector((l) => l.hr.crtEmployeeLocationInfo);
-  const familyInfoState = useAppSelector((f) => f.hr.crtEmployeeFamilyInfo);
+  const personalInfoState = useAppSelector((p) => p.humanResources.crtEmployeePersonalInfo);
+  const locationInfoState = useAppSelector((l) => l.humanResources.crtEmployeeLocationInfo);
+  const familyInfoState = useAppSelector((f) => f.humanResources.crtEmployeeFamilyInfo);
 
   const formik = useFormik({
     initialValues:
@@ -256,4 +255,4 @@ const crtEditEmployeeFormEmploymentInfo = ({
   );
 };
 
-export default crtEditEmployeeFormEmploymentInfo;
+export default CrtEditEmployeeFormEmploymentInfo;

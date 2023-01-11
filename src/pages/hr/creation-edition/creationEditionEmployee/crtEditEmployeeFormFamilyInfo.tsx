@@ -12,8 +12,8 @@ import {
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Employee } from "../../../../api/types";
-import { EmployeeFamilyInfo } from "../../../../redux/slices/hr";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { employeeFamilyInfo } from "../../../../redux/slices/hr";
+import { useAppDispatch } from "../../../../redux/hooks";
 
 interface Props {
   onClose: () => void;
@@ -36,35 +36,28 @@ const initialValues = {
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
-        ...editInitialValues,
+        childs: editInitialValues.childs,
+        maritalStatus: editInitialValues.maritalStatus,
       }
     : undefined;
 
-const crtEditEmployeeFormFamilyInfo = ({
+const CrtEditEmployeeFormFamilyInfo = ({
   editInitialValues,
   tabIndex,
   setTabIndex,
 }: Props) => {
   const dispatch = useAppDispatch();
-  const personalInfoState = useAppSelector((p) => p.hr.crtEmployeePersonalInfo);
-  const locationInfoState = useAppSelector((l) => l.hr.crtEmployeeLocationInfo);
 
   const formik = useFormik({
     initialValues:
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if(editInitialValues) {
-        dispatch({
-          type: EmployeeFamilyInfo,
-          payload: { ...formik.values, ...personalInfoState, ...locationInfoState },
-        });
-      }
       dispatch({
-        type: EmployeeFamilyInfo,
+        type: employeeFamilyInfo,
         payload: { ...formik.values },
       });
-      setTabIndex(tabIndex + 1);
+    setTabIndex(tabIndex + 1);
   },
   });
 
@@ -133,4 +126,4 @@ const crtEditEmployeeFormFamilyInfo = ({
   );
 };
 
-export default crtEditEmployeeFormFamilyInfo;
+export default CrtEditEmployeeFormFamilyInfo;

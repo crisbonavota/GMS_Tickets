@@ -9,7 +9,7 @@ const store = configureStore({
     reducer: {
         projectManagement: projectManagementReducer,
         ttReports: timetrackerReportsReducer,
-        hr: humanResourcesReducer,
+        humanResources: humanResourcesReducer,
         hrUpdates: humanResourcesUpdatesReducer,
         timetrack: timetrackReducer,
     },

@@ -15,7 +15,7 @@ import TabHeader from "../../../pm/tabs/TabHeader";
 import Loading from "../../../pm/tabs/Loading";
 
 const BusinessUnits = () => {
-    const state = useAppSelector((s) => s.hr.businessUnits);
+    const state = useAppSelector((s) => s.humanResources.businessUnits);
     const getAuthHeader = useAuthHeader();
     const dispatch = useAppDispatch();
 

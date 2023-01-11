@@ -12,8 +12,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Country, Employee } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
-import { EmployeeLocationInfo } from "../../../../redux/slices/hr";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { employeeLocationInfo } from "../../../../redux/slices/hr";
+import { useAppDispatch } from "../../../../redux/hooks";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
 
@@ -28,8 +28,8 @@ interface Props {
 const validationSchema = Yup.object().shape({
   address: Yup.string().nullable(),
   city: Yup.string().nullable(),
-  birthCountryId: Yup.string().nullable(),
-  countryId: Yup.string().nullable(),
+  birthCountryId: Yup.number().nullable(),
+  countryId: Yup.number().nullable(),
 });
 
 const initialValues = {
@@ -42,39 +42,32 @@ const initialValues = {
 let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
-        ...editInitialValues,
         birthCountryId: editInitialValues?.birthCountry?.id,
         countryId: editInitialValues?.country?.id,
+        address: editInitialValues.address,
+        city: editInitialValues.city,
       }
     : undefined;
 
-const crtEditEmployeeFormLocationInfo = ({
+const CrtEditEmployeeFormLocationInfo = ({
   editInitialValues,
   tabIndex,
   setTabIndex,
 }: Props) => {
   const dispatch = useAppDispatch();
   const getAuthHeader = useAuthHeader();
-  const personalInfoState = useAppSelector((p) => p.hr.crtEmployeePersonalInfo);
 
   const formik = useFormik({
     initialValues:
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) {
-        dispatch({
-          type: EmployeeLocationInfo,
-          payload: { ...formik.values,  ...personalInfoState },
-        });
-      } else {
-        dispatch({
-          type: EmployeeLocationInfo,
-          payload: { ...formik.values },
-        });
-      }
-      setTabIndex(tabIndex + 1);
-    },
+      dispatch({
+        type: employeeLocationInfo,
+        payload: { ...formik.values },
+      });
+    setTabIndex(tabIndex + 1);
+  },
   });
 
   const { data: countries, isSuccess } = useQuery(
@@ -172,4 +165,4 @@ const crtEditEmployeeFormLocationInfo = ({
   );
 };
 
-export default crtEditEmployeeFormLocationInfo;
+export default CrtEditEmployeeFormLocationInfo;

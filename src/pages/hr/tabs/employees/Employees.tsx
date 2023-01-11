@@ -16,7 +16,7 @@ import Loading from "../../../pm/tabs/Loading";
 import ExportEmployees from "./ExportEmployees";
 
 const Employees = () => {
-  const state = useAppSelector((s) => s.hr.employees);
+  const state = useAppSelector((s) => s.humanResources.employees);
   const getAuthHeader = useAuthHeader();
   const dispatch = useAppDispatch();
 

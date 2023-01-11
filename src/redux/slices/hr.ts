@@ -171,19 +171,19 @@ const slice = createSlice({
         action.payload.value.value;
       state[action.payload.module].pagination.currentPage = 0;
     },
-    EmployeePersonalInfo: (
+    employeePersonalInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeePersonalInfoValues>
     ) => {
       state.crtEmployeePersonalInfo = action.payload;
     },
-    EmployeeLocationInfo: (
+    employeeLocationInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeeLocationValues>
     ) => {
       state.crtEmployeeLocationInfo = action.payload;
     },
-    EmployeeFamilyInfo: (
+    employeeFamilyInfo: (
       state: HumanResourcesState,
       action: PayloadAction<EmployeeFamilyValues>
     ) => {
@@ -198,9 +198,9 @@ export const {
   changeTotalPages,
   changeSearch,
   changeFilter,
-  EmployeePersonalInfo,
-  EmployeeLocationInfo,
-  EmployeeFamilyInfo
+  employeePersonalInfo,
+  employeeLocationInfo,
+  employeeFamilyInfo
 } = slice.actions;
 
 export default slice.reducer;

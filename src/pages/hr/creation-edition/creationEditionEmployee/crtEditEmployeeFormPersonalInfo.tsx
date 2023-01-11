@@ -15,7 +15,7 @@ import { useFormik } from "formik";
 import { useQuery } from "react-query";
 import { Employee } from "../../../../api/types";
 import { getGenders } from "../../../../api/api";
-import { EmployeePersonalInfo } from "../../../../redux/slices/hr";
+import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
 
@@ -28,15 +28,15 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  fileNumber: Yup.string().required("File number is required"),
+  fileNumber: Yup.number().required("File number is required"),
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
-  birthDate: Yup.string().required("Date of Birth is required"),
+  birthDate: Yup.date().required("Date of Birth is required"),
   gender: Yup.string().required("Gender is required"),
   email: Yup.string()
     .required("Email is required")
     .email("Invalid email format"),
-  entryDate: Yup.string().nullable(),
+  entryDate: Yup.date().nullable(),
   afipid: Yup.string().nullable(),
 });
 
@@ -55,7 +55,7 @@ const initialValues = {
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
-        ...editInitialValues,
+        lastName: editInitialValues.lastName,
         firstName: editInitialValues.firstName.replace(
           ` (${editInitialValues.id})`,
           ""
@@ -63,10 +63,14 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         entryDate: moment(editInitialValues.entryDate).format("yyyy-MM-DD"),
         birthDate: moment(editInitialValues.birthDate).format("yyyy-MM-DD"),
         active: editInitialValues?.active,
+        email: editInitialValues.email,
+        afipId: editInitialValues.afipId,
+        gender: editInitialValues.gender,
+        fileNumber: editInitialValues.fileNumber
       }
     : undefined;
 
-const crtEditEmployeeFormPersonalInfo = ({
+const CrtEditEmployeeFormPersonalInfo = ({
   onClose,
   editInitialValues,
   tabIndex,
@@ -79,17 +83,10 @@ const crtEditEmployeeFormPersonalInfo = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      if (editInitialValues) {
         dispatch({
-          type: EmployeePersonalInfo,
-          payload: { ...editInitialValues, ...formik.values },
-        });
-      } else {
-        dispatch({
-          type: EmployeePersonalInfo,
+          type: employeePersonalInfo,
           payload: { ...formik.values },
         });
-      }
       setTabIndex(tabIndex + 1);
     },
   });
@@ -267,4 +264,4 @@ const crtEditEmployeeFormPersonalInfo = ({
   );
 };
 
-export default crtEditEmployeeFormPersonalInfo;
+export default CrtEditEmployeeFormPersonalInfo;

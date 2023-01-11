@@ -14,7 +14,7 @@ interface Props {
 }
 
 const BusinessUnitsTable = ({ businessUnits }: Props) => {
-    const state = useAppSelector((s) => s.hr.businessUnits);
+    const state = useAppSelector((s) => s.humanResources.businessUnits);
     const dispatch = useAppDispatch();
 
     const setSort = useCallback(

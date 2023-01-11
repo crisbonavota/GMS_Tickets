@@ -68,7 +68,6 @@ const crtEditEmployeeFormEmploymentInfo = ({
     initialValues:
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
-    enableReinitialize: true,
     onSubmit: async () => {
       if (editInitialValues) await editEmployee();
       else await createEmployee();
@@ -117,7 +116,12 @@ const crtEditEmployeeFormEmploymentInfo = ({
         id || 0,
         getAuthHeader(),
         editInitialValuesToFormikValues(editInitialValues)!,
-          formik.values
+        {
+          ...formik.values,
+          ...personalInfoState,
+          ...locationInfoState,
+          ...familyInfoState,
+        }
       ),
     {
       onSuccess: onSuccess,
@@ -152,7 +156,9 @@ const crtEditEmployeeFormEmploymentInfo = ({
               name="salaryCurrencyId"
               id="salaryCurrencyId"
               value={formik.values.salaryCurrencyId}
-              onChange={formik.handleChange}
+              onChange={(event) => {
+                formik.setFieldValue("salaryCurrencyId", event.target.value);
+              }}
               onBlur={formik.handleBlur}
             >
               {successCurrencies &&
@@ -180,7 +186,9 @@ const crtEditEmployeeFormEmploymentInfo = ({
               name="medicalCoverageId"
               id="medicalCoverageId"
               value={formik.values.medicalCoverageId}
-              onChange={formik.handleChange}
+              onChange={(event) => {
+                formik.setFieldValue("medicalCoverageId", event.target.value);
+              }}
               onBlur={formik.handleBlur}
             >
               {successMedCoverages &&

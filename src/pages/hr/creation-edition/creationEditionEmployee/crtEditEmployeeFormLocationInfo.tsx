@@ -6,13 +6,16 @@ import {
   Button,
   Input,
   FormLabel,
+  Select,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Employee } from "../../../../api/types";
-import CountryField from "../../../pm/creation-edition/CountryField";
+import { Country, Employee } from "../../../../api/types";
+import { useAuthHeader } from "react-auth-kit";
 import { EmployeeLocationInfo } from "../../../../redux/slices/hr";
-import { useAppDispatch } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { useQuery } from "react-query";
+import { getResourceList } from "../../../../api/api";
 
 interface Props {
   onClose: () => void;
@@ -36,7 +39,7 @@ const initialValues = {
   city: "",
 };
 
-const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
+let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
         ...editInitialValues,
@@ -51,42 +54,75 @@ const crtEditEmployeeFormLocationInfo = ({
   setTabIndex,
 }: Props) => {
   const dispatch = useAppDispatch();
+  const getAuthHeader = useAuthHeader();
+  const personalInfoState = useAppSelector((p) => p.hr.crtEmployeePersonalInfo);
 
   const formik = useFormik({
     initialValues:
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-      dispatch({
-        type: EmployeeLocationInfo,
-        payload: { ...formik.values },
-      });
+      if (editInitialValues) {
+        dispatch({
+          type: EmployeeLocationInfo,
+          payload: { ...formik.values,  ...personalInfoState },
+        });
+      } else {
+        dispatch({
+          type: EmployeeLocationInfo,
+          payload: { ...formik.values },
+        });
+      }
       setTabIndex(tabIndex + 1);
-  },
+    },
   });
+
+  const { data: countries, isSuccess } = useQuery(
+    "countries",
+    () => getResourceList<Country>("employees/countries", getAuthHeader()),
+    { select: (r) => r.data }
+  );
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         <GridItem colSpan={1}>
           <FormLabel fontWeight={"bold"}>Nationality</FormLabel>
-          <CountryField
+          <Select
             name="birthCountryId"
             id="birthCountryId"
             value={formik.values.birthCountryId}
-            error={formik.errors.birthCountryId}
-            onChange={formik.handleChange}
-          />
+            onChange={(event) => {
+              formik.setFieldValue("birthCountryId", event.target.value);
+            }}
+            onBlur={formik.handleBlur}
+          >
+            {isSuccess &&
+              countries.map((el) => (
+                <option key={el.id} value={el.id}>
+                  {el.name}
+                </option>
+              ))}
+          </Select>
         </GridItem>
         <GridItem colSpan={1}>
           <FormLabel fontWeight={"bold"}>Country of Residence</FormLabel>
-          <CountryField
+          <Select
             name="countryId"
-            value={formik.values.countryId}
-            error={formik.errors.countryId}
-            onChange={formik.handleChange}
             id="countryId"
-          />
+            value={formik.values.countryId.toString()}
+            onChange={(event) => {
+              formik.setFieldValue("countryId", event.target.value);
+            }}
+            onBlur={formik.handleBlur}
+          >
+            {isSuccess &&
+              countries.map((el) => (
+                <option key={el.id} value={el.id.toString()}>
+                  {el.name}
+                </option>
+              ))}
+          </Select>
         </GridItem>
         <GridItem colSpan={1}>
           <FormLabel fontWeight={"bold"}>Address</FormLabel>
@@ -126,11 +162,7 @@ const crtEditEmployeeFormLocationInfo = ({
             >
               Back
             </Button>
-            <Button
-              type="submit"
-              colorScheme={"orange"}
-              minWidth={"8rem"}
-            >
+            <Button type="submit" colorScheme={"orange"} minWidth={"8rem"}>
               Next
             </Button>
           </HStack>

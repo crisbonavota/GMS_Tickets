@@ -22,6 +22,7 @@ import {
 } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
 import { useAppSelector } from "../../../../redux/hooks";
+import BusinessUnitField from "../../../pm/creation-edition/BusinessUnitField";
 
 interface Props {
   onClose: () => void;
@@ -34,11 +35,13 @@ interface Props {
 const validationSchema = Yup.object().shape({
   salaryCurrencyId: Yup.string().nullable(),
   medicalCoverageId: Yup.string().nullable(),
+  businessUnitId: Yup.number().required("Business unit is required"),
 });
 
 const initialValues = {
   salaryCurrencyId: 0,
   medicalCoverageId: 0,
+  businessUnitId: null,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -47,6 +50,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         ...editInitialValues,
         salaryCurrencyId: editInitialValues?.salaryCurrency?.id,
         medicalCoverageId: editInitialValues?.medicalCoverage?.id,
+        businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
       }
     : undefined;
 
@@ -202,6 +206,23 @@ const crtEditEmployeeFormEmploymentInfo = ({
               {formik.errors?.medicalCoverageId}
             </FormErrorMessage>
           </FormControl>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <BusinessUnitField
+            setter={(value: number | null) =>
+              formik.setFieldValue("businessUnitId", value, true)
+            }
+            error={formik.errors.businessUnitId}
+            touched={formik.touched.businessUnitId}
+            defaultValue={
+              editInitialValues
+              ? {
+                  value: editInitialValues.legacyUser.businessUnit.id,
+                  label: editInitialValues.legacyUser.businessUnit.name,
+                }
+              : undefined
+            }
+          />
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <HStack

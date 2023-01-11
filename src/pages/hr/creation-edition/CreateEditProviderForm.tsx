@@ -5,6 +5,10 @@ import {
     GridItem,
     HStack,
     Button,
+    FormControl,
+    Input,
+    FormLabel,
+    FormErrorMessage,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
@@ -39,6 +43,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
+    fileNumber: 0,
     firstName: "",
     lastName: "",
     afipId: "",
@@ -122,6 +127,26 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                {editInitialValues && (
+                    <GridItem colSpan={1}>
+                        <FormControl
+                            isRequired
+                            isInvalid={
+                                !!formik.errors.fileNumber && !!formik.touched.fileNumber
+                            }
+                        >
+                            <FormLabel fontWeight={"bold"}>File Number</FormLabel>
+                            <Input
+                                name="fileNumber"
+                                id="fileNumber"
+                                value={formik.values.fileNumber}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            <FormErrorMessage>{formik.errors?.fileNumber}</FormErrorMessage>
+                        </FormControl>
+                    </GridItem>
+                )}
                 <GridItem colSpan={1}>
                     <FormikTextInput
                         name="firstName"

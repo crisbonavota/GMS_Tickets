@@ -14,6 +14,7 @@ import { useFormik } from "formik";
 import { Employee } from "../../../../api/types";
 import { employeeFamilyInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
+import { useEffect } from "react";
 
 interface Props {
   onClose: () => void;
@@ -60,6 +61,15 @@ const CrtEditEmployeeFormFamilyInfo = ({
     setTabIndex(tabIndex + 1);
   },
   });
+
+  useEffect(() => {
+    if (tabIndex !== 2) {
+      dispatch({
+        type: employeeFamilyInfo,
+        payload: { ...formik.values },
+      });
+    }
+  }, [tabIndex]);
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>

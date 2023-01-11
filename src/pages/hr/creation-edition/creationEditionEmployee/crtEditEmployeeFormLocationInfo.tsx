@@ -76,6 +76,15 @@ const CrtEditEmployeeFormLocationInfo = ({
     { select: (r) => r.data }
   );
 
+  useEffect(() => {
+    if (tabIndex !== 1) {
+      dispatch({
+        type: employeeLocationInfo,
+        payload: { ...formik.values },
+      });
+    }
+  }, [tabIndex]);
+
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
@@ -166,3 +175,7 @@ const CrtEditEmployeeFormLocationInfo = ({
 };
 
 export default CrtEditEmployeeFormLocationInfo;
+function useEffect(arg0: () => void, arg1: number[]) {
+  throw new Error("Function not implemented.");
+}
+

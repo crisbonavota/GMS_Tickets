@@ -18,6 +18,8 @@ import { getGenders } from "../../../../api/api";
 import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
+import { useDidMountEffect } from "../../../../hooks/useDidMountEffect";
+import { useEffect } from "react";
 
 interface Props {
   onClose: () => void;
@@ -66,7 +68,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         email: editInitialValues.email,
         afipId: editInitialValues.afipId,
         gender: editInitialValues.gender,
-        fileNumber: editInitialValues.fileNumber
+        fileNumber: editInitialValues.fileNumber,
       }
     : undefined;
 
@@ -83,15 +85,24 @@ const CrtEditEmployeeFormPersonalInfo = ({
       editInitialValuesToFormikValues(editInitialValues) || initialValues,
     validationSchema,
     onSubmit: async () => {
-        dispatch({
-          type: employeePersonalInfo,
-          payload: { ...formik.values },
-        });
+      dispatch({
+        type: employeePersonalInfo,
+        payload: { ...formik.values },
+      });
       setTabIndex(tabIndex + 1);
     },
   });
 
   const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
+
+  useEffect(() => {
+    if (tabIndex !== 0) {
+      dispatch({
+        type: employeePersonalInfo,
+        payload: { ...formik.values },
+      });
+    }
+  }, [tabIndex]);
 
   return (
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>

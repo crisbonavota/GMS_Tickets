@@ -49,10 +49,20 @@ const FormConditionalFields = ({
                 </FormControl>
             )}
 
-            {updateTypesIds.monetaryUpdateTypes.includes(updateTypeId) && (
+            {(updateTypesIds.monetaryUpdateTypes.includes(updateTypeId) ||
+                updateTypesIds.structureUpdateTypes.includes(updateTypeId)) && (
                 <>
                     <FormControl isInvalid={errors.amount !== undefined}>
-                        <FormLabel htmlFor="amount">Amount</FormLabel>
+                        <FormLabel htmlFor="amount">
+                            Amount{" "}
+                            {`${
+                                updateTypesIds.structureUpdateTypes.includes(
+                                    updateTypeId
+                                )
+                                    ? "(%)"
+                                    : ""
+                            }`}
+                        </FormLabel>
                         <Field
                             as={Input}
                             type="number"
@@ -65,29 +75,36 @@ const FormConditionalFields = ({
                         />
                     </FormControl>
 
-                    <FormControl
-                        isInvalid={errors.amountCurrencyId !== undefined}
-                    >
-                        <FormLabel htmlFor="amountCurrencyId">
-                            Currency
-                        </FormLabel>
-                        <Field
-                            id="amountCurrencyId"
-                            name="amountCurrencyId"
-                            as={Select}
-                            type="number"
+                    {!updateTypesIds.structureUpdateTypes.includes(
+                        updateTypeId
+                    ) && (
+                        <FormControl
+                            isInvalid={errors.amountCurrencyId !== undefined}
                         >
-                            {getCurrencies().map((currency) => (
-                                <option key={currency.id} value={currency.id}>
-                                    {currency.code}
-                                </option>
-                            ))}
-                        </Field>
-                        <ErrorMessage
-                            name="amountCurrencyId"
-                            component={FormErrorMessage}
-                        />
-                    </FormControl>
+                            <FormLabel htmlFor="amountCurrencyId">
+                                Currency
+                            </FormLabel>
+                            <Field
+                                id="amountCurrencyId"
+                                name="amountCurrencyId"
+                                as={Select}
+                                type="number"
+                            >
+                                {getCurrencies().map((currency) => (
+                                    <option
+                                        key={currency.id}
+                                        value={currency.id}
+                                    >
+                                        {currency.code}
+                                    </option>
+                                ))}
+                            </Field>
+                            <ErrorMessage
+                                name="amountCurrencyId"
+                                component={FormErrorMessage}
+                            />
+                        </FormControl>
+                    )}
                 </>
             )}
 

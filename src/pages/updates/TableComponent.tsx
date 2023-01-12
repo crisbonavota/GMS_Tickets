@@ -34,6 +34,9 @@ const format: DynamicTableFormat[] = [
     {
         header: "Amount",
         accessor: "amount",
+        rawObject: true,
+        accessorFn: (update: Update) =>
+            update.updateType.id === 30 ? `${update.amount}%` : update.amount,
     },
     { header: "Currency", accessor: "amountCurrency.code" },
     { header: "Date Telegram", accessor: "dateTelegram" },

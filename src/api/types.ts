@@ -266,3 +266,17 @@ export interface Provider {
   active: boolean;
   fileNumber: number;
 }
+
+export interface Group {
+  id: number;
+  name: string;
+  description: string;
+  active: boolean;
+}
+
+export interface GroupLegacyUser {
+  id: number;
+  group: Group;
+  legacyUser: LegacyUserPublic;
+  businessUnit: BusinessUnit;
+}

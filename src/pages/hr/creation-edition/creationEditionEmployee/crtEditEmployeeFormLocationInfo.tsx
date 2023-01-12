@@ -16,6 +16,7 @@ import { employeeLocationInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
+import { useEffect } from "react";
 
 interface Props {
   onClose: () => void;
@@ -175,7 +176,5 @@ const CrtEditEmployeeFormLocationInfo = ({
 };
 
 export default CrtEditEmployeeFormLocationInfo;
-function useEffect(arg0: () => void, arg1: number[]) {
-  throw new Error("Function not implemented.");
-}
+
 

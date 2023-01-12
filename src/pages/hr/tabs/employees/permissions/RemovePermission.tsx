@@ -15,18 +15,18 @@ import { AxiosError } from "axios";
 import { deleteResource } from "../../../../../api/api";
 
 interface Props {
-    id: number;
+    groupId: number;
 }
 
-const RemovePermission = ({ id }: Props) => {
+const RemovePermission = ({ groupId }: Props) => {
     const queryClient = useQueryClient();
     const toast = useToast();
     const getAuthHeader = useAuthHeader();
     const { mutateAsync: removePermission, isLoading } = useMutation(
         () =>
             deleteResource(
-                `groups/${id}`,
-                id,
+                `groups`,
+                groupId,
                 getAuthHeader()
             ),
         {
@@ -37,7 +37,7 @@ const RemovePermission = ({ id }: Props) => {
                     duration: 3000,
                     isClosable: true,
                 });
-                queryClient.resetQueries(`group-${id}`);
+                queryClient.resetQueries(`group`);
             },
             onError: (err: AxiosError) => {
                 console.log(err);

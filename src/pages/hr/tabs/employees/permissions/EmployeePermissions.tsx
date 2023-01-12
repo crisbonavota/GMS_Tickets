@@ -16,15 +16,15 @@ import {
 } from "@chakra-ui/react";
 import { GrUserSettings } from "react-icons/gr";
 import { HiPuzzle } from "react-icons/hi";
-import { LegacyUserPublic } from "../../../../../api/types";
+import { GroupLegacyUser, LegacyUserPublic } from "../../../../../api/types";
 import AddPermission from "./AddPermission";
 import Permissions from "./Permissions";
 
 interface Props {
-    id: number;
+    group: GroupLegacyUser
 }
 
-const EmployeePermissions = ({ id }: Props) => {
+const EmployeePermissions = ({ group }: Props) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     return (
         <>
@@ -44,9 +44,9 @@ const EmployeePermissions = ({ id }: Props) => {
                     <ModalBody>
                         <VStack w={"full"} spacing={5}>
                             <Divider />
-                            <Permissions id={id} />
+                            <Permissions groupId={group?.id} legacyUserId={group?.legacyUser?.id} />
                             <Divider />
-                            <AddPermission id={id} />
+                            <AddPermission groupId={group?.id} legacyUserId={group?.legacyUser?.id} businessUnitId={group?.businessUnit?.id} />
                         </VStack>
                     </ModalBody>
                 </ModalContent>

@@ -100,7 +100,7 @@ const EmployeesTable = ({ employees }: Props) => {
             header: "permissions",
             accessor: "",
             accessorFn: (group: GroupLegacyUser) => (
-                <EmployeePermissions id={group.id}  />
+                <EmployeePermissions group={group}  />
             ),
             rawObject: true,
             disableSort: true,

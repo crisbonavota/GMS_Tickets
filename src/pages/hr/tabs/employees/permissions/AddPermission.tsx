@@ -5,24 +5,27 @@ import { useState, useRef } from "react";
 import { AiOutlineUserAdd } from "react-icons/ai";
 import { useMutation, useQueryClient } from "react-query";
 import { AxiosError } from "axios";
-import { getResourceList, postResource } from "../../../../../api/api";
+import { getResourceList, postResource, getResourceListFilteredAndPaginated } from '../../../../../api/api';
 import { GroupLegacyUser, LegacyUserPublic } from "../../../../../api/types";
 
 interface Props {
-    id: number;
+    groupId: number;
+    businessUnitId: number;
+    legacyUserId: number;
 }
 
-const AddPermission = ({ id }: Props) => {
+const AddPermission = ({ groupId, businessUnitId, legacyUserId }: Props) => {
     const ref = useRef<any>(null);
     const [selected, setSelected] = useState<number | null>(null);
     const queryClient = useQueryClient();
     const toast = useToast();
     const getAuthHeader = useAuthHeader();
 
-    const getUsers = async () => {
-        const res = await getResourceList<GroupLegacyUser>(
-            `/groups`,
-            getAuthHeader()
+    const getGroups = async (input: string) => {
+        const res = await getResourceListFilteredAndPaginated<GroupLegacyUser>(
+            "groups",
+            getAuthHeader(),
+            [{ field: "name", value: input }],
         );
 
         return res.data.map((permission) => ({
@@ -33,12 +36,12 @@ const AddPermission = ({ id }: Props) => {
 
     const { mutateAsync: addPermission, isLoading } = useMutation(
         () =>
-            postResource(`groups/${id}/`, getAuthHeader(), {
-                permissionId: selected,
+            postResource(`groups`, getAuthHeader(), {
+                groupId: selected,
             }),
         {
             onSuccess: () => {
-                queryClient.resetQueries(`group-${id}`);
+                queryClient.resetQueries(`group`);
                 toast({
                     title: "Permission added",
                     status: "success",
@@ -67,7 +70,7 @@ const AddPermission = ({ id }: Props) => {
                 <AsyncSelect
                     placeholder="Type for results..."
                     cacheOptions
-                    loadOptions={getUsers}
+                    loadOptions={getGroups}
                     isClearable
                     styles={{
                         container: (base) => ({

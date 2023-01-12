@@ -8,20 +8,21 @@ import Loading from "../../../../pm/tabs/Loading";
 import RemovePermission from "./RemovePermission";
 
 interface Props {
-    id: number;
+    legacyUserId: number;
+    groupId: number;
 }
 
-const Permissions = ({ id }: Props) => {
+const Permissions = ({ legacyUserId, groupId }: Props) => {
     const getAuthHeader = useAuthHeader();
     const {
         data: permissions,
         isLoading,
         isSuccess,
     } = useQuery(
-        `groups-${id}`,
+        `groups-${legacyUserId}`,
         () =>
             getResourceList<GroupLegacyUser>(
-                `/groups/${id}`,
+                `/groups/${legacyUserId}`,
                 getAuthHeader()
             ),
         { select: (r) => r.data }
@@ -45,7 +46,7 @@ const Permissions = ({ id }: Props) => {
                                 <HStack alignItems={"center"} w={"full"}>
                                     <Text>{p.group.name}</Text>
                                     <RemovePermission
-                                        id={id}
+                                        groupId={groupId}
                                     />
                                 </HStack>
                             </VStack>

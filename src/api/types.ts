@@ -278,5 +278,4 @@ export interface GroupLegacyUser {
   id: number;
   group: Group;
   legacyUser: LegacyUserPublic;
-  businessUnit: BusinessUnit;
 }

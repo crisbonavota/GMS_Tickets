@@ -25,7 +25,7 @@ const RemovePermission = ({ groupId }: Props) => {
     const { mutateAsync: removePermission, isLoading } = useMutation(
         () =>
             deleteResource(
-                `groups`,
+                "groups",
                 groupId,
                 getAuthHeader()
             ),
@@ -37,7 +37,7 @@ const RemovePermission = ({ groupId }: Props) => {
                     duration: 3000,
                     isClosable: true,
                 });
-                queryClient.resetQueries(`group`);
+                queryClient.resetQueries("groups");
             },
             onError: (err: AxiosError) => {
                 console.log(err);

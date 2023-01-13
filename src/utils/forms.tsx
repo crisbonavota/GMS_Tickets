@@ -81,6 +81,23 @@ export const generateDinamicYupSchema = (
         };
     }
 
+    if (updateTypesIds.structureUpdateTypes.includes(updateTypeId)) {
+        schema.properties.amount = {
+            type: "number",
+            required: true,
+            maximum: 100,
+            minimum: 0,
+        };
+
+        config.errMessages.amount = {
+            required: "Amount is required",
+            maximum: "Amount must be less than 100",
+            minimum: "Amount must be greater than 0",
+        };
+
+        config.errMessages;
+    }
+
     if (updateTypesIds.resignationUpdateTypes.includes(updateTypeId)) {
         schema.properties.dateTelegram = {
             type: "string",

@@ -29,9 +29,10 @@ import moment from "moment";
 interface Props {
     update: ImportUpdate;
     setUpdates: React.Dispatch<React.SetStateAction<ImportUpdate[]>>;
+    updateType: "monetary" | "structure" | null;
 }
 
-const ImportPreviewEdit = ({ update, setUpdates }: Props) => {
+const ImportPreviewEdit = ({ update, setUpdates, updateType }: Props) => {
     const getAuthHeader = useAuthHeader();
 
     const { data: employees, isSuccess } = useQuery(
@@ -60,18 +61,17 @@ const ImportPreviewEdit = ({ update, setUpdates }: Props) => {
     };
 
     const validationSchema = Yup.object().shape({
-        filenumber: Yup.number()
-            .required("File number is required")
-            .test("test-employee", "Employee not found", (value) =>
-                isSuccess
-                    ? employees.some((e) => e.fileNumber === value)
-                    : false
-            ),
-        currency: Yup.string()
-            .required("Currency is required")
-            .test("test-exists", "Currency does not exist", (value) =>
-                getCurrencies().find((c) => c.code === value) ? true : false
-            ),
+        filenumber: Yup.number().required("File number is required"),
+        currency:
+            updateType === "monetary"
+                ? Yup.string()
+                      .required("Currency is required")
+                      .test("test-exists", "Currency does not exist", (value) =>
+                          getCurrencies().find((c) => c.code === value)
+                              ? true
+                              : false
+                      )
+                : Yup.string().nullable(),
         date: Yup.date().required("Date is required"),
         amount: Yup.number().required("Amount is required"),
     });
@@ -119,15 +119,18 @@ const ImportPreviewEdit = ({ update, setUpdates }: Props) => {
                                     onChange={formik.handleChange}
                                     name={"filenumber"}
                                     touched={formik.touched.filenumber}
+                                    type={"number"}
                                 />
-                                <FormikInput
-                                    label="Currency"
-                                    value={formik.values.currency}
-                                    error={formik.errors.currency}
-                                    onChange={formik.handleChange}
-                                    name={"currency"}
-                                    touched={formik.touched.currency}
-                                />
+                                {updateType === "monetary" && (
+                                    <FormikInput
+                                        label="Currency"
+                                        value={formik.values.currency}
+                                        error={formik.errors.currency}
+                                        onChange={formik.handleChange}
+                                        name={"currency"}
+                                        touched={formik.touched.currency}
+                                    />
+                                )}
                                 <FormikInput
                                     label="Date"
                                     value={formik.values.date}

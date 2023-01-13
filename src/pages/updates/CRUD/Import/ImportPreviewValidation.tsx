@@ -1,56 +1,49 @@
 import { ImportUpdate } from "./ImportButton";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
-import {
-    getCurrencies,
-    getResourceListFilteredAndPaginated,
-} from "../../../../api/api";
-import { Employee } from "../../../../api/types";
+import { getCurrencies, getResource } from "../../../../api/api";
+import { LegacyUserPublic } from "../../../../api/types";
 import { Icon, Spinner } from "@chakra-ui/react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { MdOutlineError } from "react-icons/md";
-import { useMemo, useEffect } from "react";
 
 interface Props {
     update: ImportUpdate;
     setUpdates: React.Dispatch<React.SetStateAction<ImportUpdate[]>>;
+    updateType: "monetary" | "structure" | null;
+    setErrors: (errors: string[]) => void;
 }
 
-const ImportPreviewValidation = ({ update, setUpdates }: Props) => {
+const ImportPreviewValidation = ({
+    update,
+    setUpdates,
+    updateType,
+    setErrors,
+}: Props) => {
     const getAuthHeader = useAuthHeader();
+
     const {
-        data: employees,
+        data: validation,
         isSuccess,
         isLoading,
     } = useQuery(
-        ["employees"],
-        () =>
-            getResourceListFilteredAndPaginated<Employee>(
-                "employees",
-                getAuthHeader(),
-                [],
-                [],
-                { field: "legacyUser.fullName", isAscending: true },
-                0,
-                10000
-            ),
+        ["validation", update],
+        () => validateRow(update, getAuthHeader(), updateType),
         {
-            select: (r) => r.data,
+            onSuccess: (r) => {
+                if (r.isValid) {
+                    setUpdates((updates) =>
+                        updates.map((u) =>
+                            u === update ? { ...u, valid: true } : u
+                        )
+                    );
+                }
+                setErrors(r.errors);
+            },
+            retry: false,
+            refetchOnWindowFocus: false,
         }
     );
-
-    const validation = useMemo(
-        () => (isSuccess ? validateRow(update, employees) : null),
-        [isSuccess, update, employees]
-    );
-
-    useEffect(() => {
-        if (validation?.isValid) {
-            setUpdates((updates) =>
-                updates.map((u) => (u === update ? { ...u, valid: true } : u))
-            );
-        }
-    }, [validation]);
 
     return (
         <>
@@ -72,27 +65,37 @@ const ImportPreviewValidation = ({ update, setUpdates }: Props) => {
     );
 };
 
-const validateRow = (update: ImportUpdate, employees: Employee[]) => {
-    const employee = employees.find(
-        (e) => e.fileNumber.toString() === update.filenumber?.toString()
-    );
-    const currency = getCurrencies().find((c) => c.code === update.currency);
+const validateRow = async (
+    update: ImportUpdate,
+    authHeader: string,
+    updateType: "monetary" | "structure" | null
+) => {
     const errors: string[] = [];
 
-    if (!employee) errors.push("Employee not found");
-    if (!currency) errors.push("Currency not found");
+    try {
+        await getResource<LegacyUserPublic>(
+            `users/legacy/${update.filenumber}`,
+            authHeader
+        );
+    } catch (err) {
+        errors.push("Employee not found");
+    }
+
+    const currency = getCurrencies().find((c) => c.code === update.currency);
+    if (!currency && updateType === "monetary")
+        errors.push("Currency not found");
     if (!update.amount) errors.push("Amount is required");
+    if (
+        updateType === "structure" &&
+        update.amount !== undefined &&
+        (update.amount < 0 || update.amount > 100)
+    )
+        errors.push("Amount must be between 0 and 100");
     if (!update.date) errors.push("Date is required");
 
-    if (errors.length)
-        return {
-            isValid: false,
-            errors,
-        };
-
     return {
-        isValid: true,
-        errors: [],
+        isValid: !errors.length,
+        errors,
     };
 };
 

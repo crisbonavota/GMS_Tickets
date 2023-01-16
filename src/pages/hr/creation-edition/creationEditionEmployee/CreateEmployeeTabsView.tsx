@@ -29,7 +29,7 @@ const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Prop
         flexDir={{ base: "column", md: "row" }}
         gap={5}
       >
-        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
+        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} tabIdx={tabIdx}/>
       </Flex>
       <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id} tabIdx={tabIdx}/>
     </VStack>

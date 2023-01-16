@@ -33,7 +33,7 @@ export function Navbar() {
                     <Link href={"/"} h={"full"}>
                         <Image src={Tonic3Logo} alt={"Tonic3"} h={"full"} />
                     </Link>
-                    {currentUser.roles.includes("admin") && (
+                    {currentUser?.roles.includes("admin") && (
                         <CurrenciesExchangeModal />
                     )}
                 </HStack>

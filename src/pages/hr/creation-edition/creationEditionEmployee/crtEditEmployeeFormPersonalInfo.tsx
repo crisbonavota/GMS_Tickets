@@ -51,6 +51,7 @@ const initialValues = {
   birthDate: new Date().toISOString(),
   gender: true,
   active: true,
+  mobilePhone: "",
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -68,6 +69,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         afipId: editInitialValues.afipId,
         gender: editInitialValues.gender,
         fileNumber: editInitialValues.fileNumber,
+        mobilePhone: editInitialValues.mobilePhone,
       }
     : undefined;
 
@@ -197,7 +199,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
             isInvalid={!!formik.errors.afipId && !!formik.touched.afipId}
           >
             <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Social/CUIL/Mexico/Spain/Brazil/Uru
+              DNI/CUIT/CUIL/Social Number
             </FormLabel>
             <Input
               name="afipId"
@@ -246,6 +248,22 @@ const CrtEditEmployeeFormPersonalInfo = ({
               onBlur={formik.handleBlur}
             />
             <FormErrorMessage>{formik.errors?.birthDate}</FormErrorMessage>
+          </FormControl>
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormControl
+            isInvalid={!!formik.errors.mobilePhone && !!formik.touched.mobilePhone}
+          >
+            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+              Mobile Phone
+            </FormLabel>
+            <Input
+              name="mobilePhone"
+              id="mobilePhone"
+              value={formik.values.mobilePhone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
           </FormControl>
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>

@@ -249,6 +249,7 @@ export interface Employee {
   city: string;
   country: Country;
   active: boolean;
+  postalCode: string;
 }
 export interface Provider {
   id: number;

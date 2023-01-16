@@ -23,6 +23,7 @@ import {
 import { postResource } from "../../../../api/api";
 import { useAppSelector } from "../../../../redux/hooks";
 import BusinessUnitField from "../../../pm/creation-edition/BusinessUnitField";
+import PositionField from "./PositionField";
 
 interface Props {
   onClose: () => void;
@@ -42,6 +43,7 @@ const initialValues = {
   salaryCurrencyId: 0,
   medicalCoverageId: 0,
   businessUnitId: null,
+  positionId: null,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -50,6 +52,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         salaryCurrencyId: editInitialValues?.salaryCurrency?.id,
         medicalCoverageId: editInitialValues?.medicalCoverage?.id,
         businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
+        positionId: editInitialValues?.position?.id,
       }
     : undefined;
 
@@ -218,6 +221,23 @@ const CrtEditEmployeeFormEmploymentInfo = ({
               ? {
                   value: editInitialValues.legacyUser.businessUnit.id,
                   label: editInitialValues.legacyUser.businessUnit.name,
+                }
+              : undefined
+            }
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <PositionField
+            setter={(value: number | null) =>
+              formik.setFieldValue("positionId", value, true)
+            }
+            error={formik.errors.positionId}
+            touched={formik.touched.positionId}
+            defaultValue={
+              editInitialValues
+              ? {
+                  value: editInitialValues?.position?.id,
+                  label: editInitialValues?.position?.name,
                 }
               : undefined
             }

@@ -11,11 +11,7 @@ interface Props {
   employee?: Employee;
 }
 
-const TabsContent = ({
-  tabIndex,
-  setTabIndex,
-  employee
-}: Props) => {
+const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
   return (
     <Tabs
       index={tabIndex}
@@ -23,10 +19,18 @@ const TabsContent = ({
       w={{ base: "full", md: "100%" }}
     >
       <TabPanels p={1} w={"full"}>
-        <TabPanel><PersonalInfoDetailedView employee={employee}/></TabPanel>
-        <TabPanel><LocationInfoDetailedView/> </TabPanel>
-        <TabPanel><FamilyInfoDetailedView/> </TabPanel>
-        <TabPanel><EmploymentInfoDetailedView/></TabPanel>
+        <TabPanel>
+          <PersonalInfoDetailedView employee={employee} tabIndex={tabIndex}/>
+        </TabPanel>
+        <TabPanel>
+          <LocationInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+        </TabPanel>
+        <TabPanel>
+          <FamilyInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+        </TabPanel>
+        <TabPanel>
+          <EmploymentInfoDetailedView employee={employee} tabIndex={tabIndex} />
+        </TabPanel>
       </TabPanels>
     </Tabs>
   );

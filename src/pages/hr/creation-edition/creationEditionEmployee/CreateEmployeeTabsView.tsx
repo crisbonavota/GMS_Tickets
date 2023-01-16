@@ -8,9 +8,10 @@ interface Props {
     onClose: () => void;
     editInitialValues?: Employee;
     id?:number;
+    tabIdx?: number;
 }
 
-const CreateEmployeeTabsView = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Props) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <VStack
@@ -30,7 +31,7 @@ const CreateEmployeeTabsView = ({ onClose, editInitialValues, id }: Props) => {
       >
         <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id} />
+      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id} tabIdx={tabIdx}/>
     </VStack>
   );
 };

@@ -29,7 +29,7 @@ const EmployeeDetailsTabsView = ({ employee }: Props) => {
       >
         <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} employee={employee}/>
+      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} employee={employee} />
     </VStack>
   );
 };

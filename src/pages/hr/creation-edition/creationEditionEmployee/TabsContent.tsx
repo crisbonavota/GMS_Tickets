@@ -1,9 +1,9 @@
 import { Tabs, TabPanels, TabPanel } from "@chakra-ui/react";
 import { Employee } from "../../../../api/types";
-import CrtEditEmployeeFormEmploymentInfo from "./crtEditEmployeeFormEmploymentInfo";
-import CrtEditEmployeeFormFamilyInfo from "./crtEditEmployeeFormFamilyInfo";
-import CrtEditEmployeeFormLocationInfo from "./crtEditEmployeeFormLocationInfo";
-import CrtEditEmployeeFormPersonalInfo from "./crtEditEmployeeFormPersonalInfo";
+import CrtEditEmployeeFormEmploymentInfo from "./CrtEditEmployeeFormEmploymentInfo";
+import CrtEditEmployeeFormFamilyInfo from "./CrtEditEmployeeFormFamilyInfo";
+import CrtEditEmployeeFormLocationInfo from "./CrtEditEmployeeFormLocationInfo";
+import CrtEditEmployeeFormPersonalInfo from "./CrtEditEmployeeFormPersonalInfo";
 
 interface Props {
   tabIndex: number;
@@ -11,12 +11,13 @@ interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
   id?: number;
+  tabIdx?: number;
 }
 
-const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: Props) => {
+const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id, tabIdx }: Props) => {
   return (
     <Tabs
-      index={tabIndex}
+      index={tabIdx ? tabIdx : tabIndex}
       onChange={setTabIndex}
       w={{ base: "full", md: "100%" }}
     >
@@ -25,16 +26,16 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: 
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
+          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>
+          <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

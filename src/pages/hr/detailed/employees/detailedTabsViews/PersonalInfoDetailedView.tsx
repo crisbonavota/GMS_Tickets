@@ -1,77 +1,76 @@
 import moment from "moment";
 import { Employee } from "../../../../../api/types";
 import { SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
-import EmployeeDetailedViewCustomInput from "../../../../../components/EmployeeDetailedViewCustomInput";
+import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
+import UserDetailedViewHeaderComponent from "../../UserDetailedViewHeaderComponent";
+import EditEmployeeButton from "../../../creation-edition/EditEmployeeButton";
 
 interface Props {
+  tabIndex: number;
   employee?: Employee;
 }
 
-const PersonalInfoDetailedView = ({ employee }: Props) => {
+const PersonalInfoDetailedView = ({ employee, tabIndex }: Props) => {
   return (
-    <HStack
-      align={"center"}
-      justify={"center"}
-      bgColor={"gray.200"}
-      borderRadius={"10px"}
-      boxShadow={"2xl"}
-      padding={"2rem"}
-      marginLeft={"10%"}
-      marginRight={"10%"}
-    >
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.firstName}
-          label={"File Number"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.lastName}
-          label={"Last Name"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.email}
-          label={"Email"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={moment(employee?.entryDate).format("yyyy-MM-DD")}
-          label={"Date of Admission"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.active === true ? "Active" : "Inactive"}
-          label={"Status"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.afipId}
-          label={"Social/CUIL/Mexico/Spain/Brazil/Uru"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={employee?.gender === true ? "Male" : "Female"}
-          label={"Gender"}
-        />
-        <EmployeeDetailedViewCustomInput
-          resource={moment(employee?.birthDate).format("yyyy-MM-DD")}
-          label={"Date of Birth"}
-        />
-        <GridItem colSpan={{ base: 1, md: 2 }}>
-          <HStack
-            w="full"
-            justifyContent={"space-between"}
-            spacing={5}
-            marginTop={"1rem"}
-          >
-            <Button
-              type="button"
-              // onClick={}
-              variant="outline"
-              colorScheme={"orange"}
-              minWidth={"8rem"}
+    <>
+      <UserDetailedViewHeaderComponent resource={employee} />
+      <HStack
+        align={"center"}
+        justify={"center"}
+        bgColor={"#FFFFFF"}
+        borderBottomLeftRadius={"19px"}
+        borderBottomRightRadius={"19px"}
+        boxShadow={"2xl"}
+        padding={"2rem"}
+        marginLeft={"10%"}
+        marginRight={"10%"}
+      >
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
+          <UserDetailedViewBodyComponent
+            resource={employee?.firstName}
+            label={"File Number"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={employee?.lastName}
+            label={"Last Name"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={employee?.email}
+            label={"Email"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={moment(employee?.entryDate).format("yyyy-MM-DD")}
+            label={"Date of Admission"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={employee?.active === true ? "Active" : "Inactive"}
+            label={"Status"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={employee?.afipId}
+            label={"Social/CUIL/Mexico/Spain/Brazil/Uru"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={employee?.gender === true ? "Male" : "Female"}
+            label={"Gender"}
+          />
+          <UserDetailedViewBodyComponent
+            resource={moment(employee?.birthDate).format("yyyy-MM-DD")}
+            label={"Date of Birth"}
+          />
+          <GridItem colSpan={{ base: 1, md: 2 }}>
+            <HStack
+              w="full"
+              justifyContent={"space-between"}
+              spacing={5}
+              marginTop={"1rem"}
             >
-              Edit
-            </Button>
-          </HStack>
-        </GridItem>
-      </SimpleGrid>
-    </HStack>
+              {employee && <EditEmployeeButton employee={employee!} tabIdx={tabIndex}/>}
+            </HStack>
+          </GridItem>
+        </SimpleGrid>
+      </HStack>
+    </>
   );
 };
 

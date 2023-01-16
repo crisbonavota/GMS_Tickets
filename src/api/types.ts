@@ -27,6 +27,14 @@ export interface IndirectCost {
     date: string;
 }
 
+export interface CurrencyExchange {
+    id: number;
+    baseCurrency: Currency;
+    targetCurrency: Currency;
+    price: number;
+    date: string;
+}
+
 export interface ApplicationUserPublic {
     id: number;
     email: string;

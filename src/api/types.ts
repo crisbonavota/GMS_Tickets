@@ -18,6 +18,15 @@ export interface Sort {
     isAscending: boolean;
 }
 
+export interface IndirectCost {
+    id: number;
+    project: Project;
+    currency: Currency;
+    description: string;
+    amount: number;
+    date: string;
+}
+
 export interface ApplicationUserPublic {
     id: number;
     email: string;

@@ -20,6 +20,7 @@ interface DynamicTableProps {
     currentPage?: number;
     totalPages?: number | null;
     setCurrentPage?: (page: number) => void;
+    emptyMessage?: string;
 }
 
 export const DynamicTable = ({
@@ -30,6 +31,7 @@ export const DynamicTable = ({
     currentPage,
     totalPages,
     setCurrentPage,
+    emptyMessage,
 }: DynamicTableProps) => {
     return (
         <VStack w={"full"}>
@@ -71,7 +73,11 @@ export const DynamicTable = ({
                         ))}
                         {!data.length && (
                             <Tr>
-                                <Td>No data, try different filters</Td>
+                                <Td>
+                                    {" "}
+                                    {emptyMessage ||
+                                        "No data, try different filters"}
+                                </Td>
                             </Tr>
                         )}
                     </Tbody>

@@ -19,7 +19,6 @@ import { useEffect } from "react";
 interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
-  id?: number;
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
 }

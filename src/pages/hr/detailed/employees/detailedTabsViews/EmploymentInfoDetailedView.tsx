@@ -6,10 +6,9 @@ import EditEmployeeButton from "../../../creation-edition/EditEmployeeButton";
 
 interface Props {
   employee?: Employee;
-  tabIndex?: number;
 }
 
-const EMploymentInfoDetailedView = ({ employee, tabIndex }: Props) => {
+const EMploymentInfoDetailedView = ({ employee }: Props) => {
   return (
     <>
       <UserDetailedViewHeaderComponent resource={employee} />
@@ -40,7 +39,7 @@ const EMploymentInfoDetailedView = ({ employee, tabIndex }: Props) => {
               spacing={5}
               marginTop={"1rem"}
             >
-              {employee && <EditEmployeeButton employee={employee!} tabIdx={tabIndex}/>}
+              {employee && <EditEmployeeButton employee={employee}/>}
             </HStack>
           </GridItem>
         </SimpleGrid>

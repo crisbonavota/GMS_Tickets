@@ -1,15 +1,14 @@
 import { Employee } from "../../../../../api/types";
-import { SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
+import { SimpleGrid, GridItem, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 import UserDetailedViewHeaderComponent from "../../UserDetailedViewHeaderComponent";
 import EditEmployeeButton from "../../../creation-edition/EditEmployeeButton";
 
 interface Props {
   employee?: Employee;
-  tabIndex?: number;
 }
 
-const LocationInfoDetailedView = ({ employee, tabIndex }: Props) => {
+const LocationInfoDetailedView = ({ employee }: Props) => {
   return (
     <>
       <UserDetailedViewHeaderComponent resource={employee} />
@@ -48,7 +47,7 @@ const LocationInfoDetailedView = ({ employee, tabIndex }: Props) => {
               spacing={5}
               marginTop={"1rem"}
             >
-              {employee && <EditEmployeeButton employee={employee!} tabIdx={tabIndex}/>}
+              {employee && <EditEmployeeButton employee={employee} />}
             </HStack>
           </GridItem>
         </SimpleGrid>

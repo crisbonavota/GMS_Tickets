@@ -10,14 +10,13 @@ interface Props {
   setTabIndex: (tabIndex: number) => void;
   onClose: () => void;
   editInitialValues?: Employee;
-  id?: number;
-  tabIdx?: number;
+  id: number;
 }
 
-const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id, tabIdx }: Props) => {
+const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: Props) => {
   return (
     <Tabs
-      index={tabIdx ? tabIdx : tabIndex}
+      index={tabIndex}
       onChange={setTabIndex}
       w={{ base: "full", md: "100%" }}
     >
@@ -26,16 +25,16 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id, ta
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
+          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIdx ? tabIdx : tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>
+          <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

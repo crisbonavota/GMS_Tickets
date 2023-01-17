@@ -34,7 +34,6 @@ const EmployeeDetailedView = () => {
           <EmployeeDetailsTabsView employee={data} />
         </Flex>
       </VStack>
-      <div></div>
     </>
   );
 };

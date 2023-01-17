@@ -79,6 +79,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
 
   const onSuccess = () => {
     queryClient.resetQueries("employees");
+    queryClient.resetQueries("getEmployeeById");
     queryClient.resetQueries(`employee-${id}`);
     toast({
       title: editInitialValues ? "Employee updated" : "Employee created",

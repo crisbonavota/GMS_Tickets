@@ -5,11 +5,10 @@ import CreateEmployeeTabsView from './creationEditionEmployee/CreateEmployeeTabs
 
 interface Props {
     employee: Employee
-    tabIdx?: number;
 }
 
 
-const EditEmployeeButton = ({employee, tabIdx}: Props) => {
+const EditEmployeeButton = ({employee}: Props) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
@@ -19,7 +18,6 @@ const EditEmployeeButton = ({employee, tabIdx}: Props) => {
                 onClose={onClose}
                 id={employee.id}
                 editInitialValues={employee}
-                tabIdx={tabIdx}
             />
         }
         onClose={onClose}

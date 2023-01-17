@@ -7,11 +7,10 @@ import { Employee } from "../../../../api/types";
 interface Props {
     onClose: () => void;
     editInitialValues?: Employee;
-    id?:number;
-    tabIdx?: number;
+    id: number;
 }
 
-const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Props) => {
+const CreateEmployeeTabsView = ({ onClose, editInitialValues, id }: Props) => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <VStack
@@ -29,9 +28,9 @@ const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Prop
         flexDir={{ base: "column", md: "row" }}
         gap={5}
       >
-        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} tabIdx={tabIdx}/>
+        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex}/>
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id} tabIdx={tabIdx}/>
+      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id}/>
     </VStack>
   );
 };

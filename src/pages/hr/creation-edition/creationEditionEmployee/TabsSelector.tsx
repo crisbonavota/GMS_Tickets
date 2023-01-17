@@ -14,14 +14,13 @@ const commonTabProps = {
 interface Props {
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
-    tabIdx?: number;
 }
 
-const TabsSelector = ({ tabIndex, setTabIndex, tabIdx }: Props) => {
+const TabsSelector = ({ tabIndex, setTabIndex }: Props) => {
     return (
         <Tabs
             onChange={setTabIndex}
-            index={tabIdx ? tabIdx : tabIndex}
+            index={tabIndex}
             w={{ base: 'full', md: 'fit-content' }}
         >
             <TabList>

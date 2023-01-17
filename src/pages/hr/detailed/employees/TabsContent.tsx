@@ -20,16 +20,16 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
     >
       <TabPanels p={1} w={"full"}>
         <TabPanel>
-          <PersonalInfoDetailedView employee={employee} tabIndex={tabIndex}/>
+          <PersonalInfoDetailedView employee={employee} />
         </TabPanel>
         <TabPanel>
-          <LocationInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+          <LocationInfoDetailedView employee={employee} />{" "}
         </TabPanel>
         <TabPanel>
-          <FamilyInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+          <FamilyInfoDetailedView employee={employee} />{" "}
         </TabPanel>
         <TabPanel>
-          <EmploymentInfoDetailedView employee={employee} tabIndex={tabIndex} />
+          <EmploymentInfoDetailedView employee={employee} />
         </TabPanel>
       </TabPanels>
     </Tabs>

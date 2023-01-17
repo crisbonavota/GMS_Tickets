@@ -1,5 +1,4 @@
 import { VStack, Flex } from "@chakra-ui/react";
-import { useState } from "react";
 import TabsSelector from "./TabsSelector";
 import TabsContent from "./TabsContent";
 import { Employee } from "../../../../api/types";

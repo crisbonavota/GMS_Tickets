@@ -25,13 +25,13 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id}: P
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
+          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
+          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
         </TabPanel>
         <TabPanel>
           <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>

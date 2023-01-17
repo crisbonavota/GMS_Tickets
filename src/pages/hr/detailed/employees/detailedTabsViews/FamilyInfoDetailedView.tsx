@@ -26,7 +26,7 @@ const FamilyInfoDetailedView = ({ employee }: Props) => {
             label={"Marital Status"}
           />
           <UserDetailedViewBodyComponent
-            resource={employee?.childs.toString()}
+            resource={employee?.childs?.toString()}
             label={"Children"}
           />
         </SimpleGrid>

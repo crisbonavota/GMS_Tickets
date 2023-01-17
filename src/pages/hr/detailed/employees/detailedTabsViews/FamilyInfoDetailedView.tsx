@@ -26,7 +26,7 @@ const FamilyInfoDetailedView = ({ employee }: Props) => {
             label={"Marital Sstatus"}
           />
           <UserDetailedViewBodyComponent
-            resource={employee?.childs.toString()}
+            resource={employee?.childs?.toString()}
             label={"Children"}
           />
           <GridItem colSpan={{ base: 1, md: 2 }}>

@@ -22,11 +22,11 @@ const LocationInfoDetailedView = ({ employee}: Props) => {
       >
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
           <UserDetailedViewBodyComponent
-            resource={employee?.birthCountry.name}
+            resource={employee?.birthCountry?.name}
             label={"Nationality"}
           />
           <UserDetailedViewBodyComponent
-            resource={employee?.country.name}
+            resource={employee?.country?.name}
             label={"Country of Residence"}
           />
           <UserDetailedViewBodyComponent

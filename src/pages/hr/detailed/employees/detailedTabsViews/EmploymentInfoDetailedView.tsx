@@ -22,11 +22,11 @@ const EMploymentInfoDetailedView = ({ employee }: Props) => {
       >
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
           <UserDetailedViewBodyComponent
-            resource={employee?.salaryCurrency.code}
+            resource={employee?.salaryCurrency?.code}
             label={"Salary Currency"}
           />
           <UserDetailedViewBodyComponent
-            resource={employee?.medicalCoverage.name}
+            resource={employee?.medicalCoverage?.name}
             label={"MEdical Coverage"}
           />
           <GridItem colSpan={{ base: 1, md: 2 }}>

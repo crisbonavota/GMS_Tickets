@@ -10,10 +10,10 @@ interface Props {
   setTabIndex: (tabIndex: number) => void;
   onClose: () => void;
   editInitialValues?: Employee;
-  id: number;
+  id?: number;
 }
 
-const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: Props) => {
+const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id}: Props) => {
   return (
     <Tabs
       index={tabIndex}
@@ -25,13 +25,13 @@ const TabsContent = ({ tabIndex, setTabIndex, onClose, editInitialValues, id }: 
         w={"full"}
       >
         <TabPanel w={"full"}>
-          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />
+          <CrtEditEmployeeFormPersonalInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id} />
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
+          <CrtEditEmployeeFormLocationInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
-          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} />{" "}
+          <CrtEditEmployeeFormFamilyInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>{" "}
         </TabPanel>
         <TabPanel>
           <CrtEditEmployeeFormEmploymentInfo onClose={onClose} tabIndex={tabIndex} setTabIndex={setTabIndex} editInitialValues={editInitialValues} id={id}/>

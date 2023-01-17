@@ -5,12 +5,15 @@ import {
     Box,
   } from "@chakra-ui/react";
   import { Employee } from "../../../api/types";
+import EditEmployeeButton from "../creation-edition/EditEmployeeButton";
 
 type Props = {
-    resource?: Employee;
+    resource: Employee;
+    tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
 }
 
-const EmployeeDetailedViewHeaderComponent = ({ resource }: Props) => {
+const EmployeeDetailedViewHeaderComponent = ({ resource, tabIndex, setTabIndex }: Props) => {
   return (
     <HStack
     align={"center"}
@@ -102,6 +105,7 @@ const EmployeeDetailedViewHeaderComponent = ({ resource }: Props) => {
           {resource?.country.name}
         </Text>
       </Box>
+      <EditEmployeeButton employee={resource} tabIndex={tabIndex} setTabIndex={setTabIndex}/>
     </SimpleGrid>
   </HStack>
   )

@@ -31,7 +31,7 @@ const EmployeeDetailedView = () => {
         </Text>
         </HStack>
         <Flex justifyContent={"space-between"} width={"100%"}>
-          <EmployeeDetailsTabsView employee={data} />
+          {data && <EmployeeDetailsTabsView employee={data} />}
         </Flex>
       </VStack>
     </>
@@ -39,3 +39,7 @@ const EmployeeDetailedView = () => {
 };
 
 export default EmployeeDetailedView;
+
+
+
+

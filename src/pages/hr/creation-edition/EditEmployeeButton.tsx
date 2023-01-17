@@ -4,11 +4,13 @@ import EditButton from "../../pm/detailed/EditButton"
 import CreateEmployeeTabsView from './creationEditionEmployee/CreateEmployeeTabsView';
 
 interface Props {
-    employee: Employee
+    employee: Employee;
+    tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
 }
 
 
-const EditEmployeeButton = ({employee}: Props) => {
+const EditEmployeeButton = ({employee, tabIndex, setTabIndex}: Props) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
@@ -18,6 +20,8 @@ const EditEmployeeButton = ({employee}: Props) => {
                 onClose={onClose}
                 id={employee.id}
                 editInitialValues={employee}
+                tabIndex={tabIndex}
+                setTabIndex={setTabIndex}
             />
         }
         onClose={onClose}

@@ -16,7 +16,7 @@ interface Props {
     setTabIndex: (tabIndex: number) => void;
 }
 
-const TabsSelector = ({ tabIndex, setTabIndex }: Props) => {
+const TabsSelector = ({ tabIndex, setTabIndex}: Props) => {
     return (
         <Tabs
             onChange={setTabIndex}

@@ -1,5 +1,4 @@
 import { VStack, Flex } from "@chakra-ui/react";
-import { useState } from "react";
 import TabsSelector from "./TabsSelector";
 import TabsContent from "./TabsContent";
 import { Employee } from "../../../../api/types";
@@ -7,11 +6,12 @@ import { Employee } from "../../../../api/types";
 interface Props {
     onClose: () => void;
     editInitialValues?: Employee;
-    id: number;
+    id?:number;
+    tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
 }
 
-const CreateEmployeeTabsView = ({ onClose, editInitialValues, id }: Props) => {
-  const [tabIndex, setTabIndex] = useState(0);
+const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
   return (
     <VStack
       w={"full"}

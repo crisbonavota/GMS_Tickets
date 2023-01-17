@@ -13,12 +13,12 @@ const EMploymentInfoDetailedView = ({ employee }: Props) => {
         align={"center"}
         justify={"center"}
         bgColor={"#FFFFFF"}
-        borderBottomLeftRadius={"19px"}
-        borderBottomRightRadius={"19px"}
+        borderBottomLeftRadius={"1.18rem"}
+        borderBottomRightRadius={"1.18rem"}
         boxShadow={"2xl"}
         padding={"2rem"}
-        marginLeft={"10%"}
-        marginRight={"10%"}
+        marginLeft={"12rem"}
+        marginRight={"12rem"}
       >
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
           <UserDetailedViewBodyComponent
@@ -27,17 +27,8 @@ const EMploymentInfoDetailedView = ({ employee }: Props) => {
           />
           <UserDetailedViewBodyComponent
             resource={employee?.medicalCoverage.name}
-            label={"MEdical Coverage"}
+            label={"Medical Coverage"}
           />
-          <GridItem colSpan={{ base: 1, md: 2 }}>
-            <HStack
-              w="full"
-              justifyContent={"space-between"}
-              spacing={5}
-              marginTop={"1rem"}
-            >
-            </HStack>
-          </GridItem>
         </SimpleGrid>
       </HStack>
     </>

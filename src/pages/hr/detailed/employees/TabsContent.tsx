@@ -20,17 +20,17 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
       w={{ base: "full", md: "100%" }}
     >
       <UserDetailedViewHeaderComponent resource={employee} tabIndex={tabIndex} setTabIndex={setTabIndex} />
-      <TabPanels p={1} w={"full"}>
-        <TabPanel>
+      <TabPanels w={"full"}>
+        <TabPanel p={"0 !important"}>
           <PersonalInfoDetailedView employee={employee}/>
         </TabPanel>
-        <TabPanel>
+        <TabPanel p={"0 !important"}>
           <LocationInfoDetailedView employee={employee}/>{" "}
         </TabPanel>
-        <TabPanel>
+        <TabPanel p={"0 !important"}>
           <FamilyInfoDetailedView employee={employee}/>{" "}
         </TabPanel>
-        <TabPanel>
+        <TabPanel p={"0 !important"}>
           <EmploymentInfoDetailedView employee={employee}/>
         </TabPanel>
       </TabPanels>

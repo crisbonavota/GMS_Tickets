@@ -4,11 +4,12 @@ import LocationInfoDetailedView from "./detailedTabsViews/LocationInfoDetailedVi
 import FamilyInfoDetailedView from "./detailedTabsViews/FamilyInfoDetailedView";
 import EmploymentInfoDetailedView from "./detailedTabsViews/EmploymentInfoDetailedView";
 import { Employee } from "../../../../api/types";
+import UserDetailedViewHeaderComponent from "../UserDetailedViewHeaderComponent";
 
 interface Props {
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
-  employee?: Employee;
+  employee: Employee;
 }
 
 const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
@@ -18,18 +19,19 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
       onChange={setTabIndex}
       w={{ base: "full", md: "100%" }}
     >
+      <UserDetailedViewHeaderComponent resource={employee} tabIndex={tabIndex} setTabIndex={setTabIndex} />
       <TabPanels p={1} w={"full"}>
         <TabPanel>
-          <PersonalInfoDetailedView employee={employee} tabIndex={tabIndex}/>
+          <PersonalInfoDetailedView employee={employee}/>
         </TabPanel>
         <TabPanel>
-          <LocationInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+          <LocationInfoDetailedView employee={employee}/>{" "}
         </TabPanel>
         <TabPanel>
-          <FamilyInfoDetailedView employee={employee} tabIndex={tabIndex} />{" "}
+          <FamilyInfoDetailedView employee={employee}/>{" "}
         </TabPanel>
         <TabPanel>
-          <EmploymentInfoDetailedView employee={employee} tabIndex={tabIndex} />
+          <EmploymentInfoDetailedView employee={employee}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

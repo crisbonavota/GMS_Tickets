@@ -8,11 +8,11 @@ interface Props {
     onClose: () => void;
     editInitialValues?: Employee;
     id?:number;
-    tabIdx?: number;
+    tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
 }
 
-const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Props) => {
-  const [tabIndex, setTabIndex] = useState(0);
+const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
   return (
     <VStack
       w={"full"}
@@ -29,9 +29,9 @@ const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIdx }: Prop
         flexDir={{ base: "column", md: "row" }}
         gap={5}
       >
-        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} tabIdx={tabIdx}/>
+        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex}/>
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id} tabIdx={tabIdx}/>
+      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id}/>
     </VStack>
   );
 };

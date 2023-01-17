@@ -6,7 +6,7 @@ import { Employee } from "../../../../api/types";
 
 
 interface Props {
-    employee?: Employee;
+    employee: Employee;
 }
 
 const EmployeeDetailsTabsView = ({ employee }: Props) => {

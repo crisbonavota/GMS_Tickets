@@ -6,14 +6,12 @@ import UserDetailedViewHeaderComponent from "../../UserDetailedViewHeaderCompone
 import EditEmployeeButton from "../../../creation-edition/EditEmployeeButton";
 
 interface Props {
-  tabIndex: number;
-  employee?: Employee;
+  employee: Employee;
 }
 
-const PersonalInfoDetailedView = ({ employee, tabIndex }: Props) => {
+const PersonalInfoDetailedView = ({ employee}: Props) => {
   return (
     <>
-      <UserDetailedViewHeaderComponent resource={employee} />
       <HStack
         align={"center"}
         justify={"center"}
@@ -65,7 +63,6 @@ const PersonalInfoDetailedView = ({ employee, tabIndex }: Props) => {
               spacing={5}
               marginTop={"1rem"}
             >
-              {employee && <EditEmployeeButton employee={employee!} tabIdx={tabIndex}/>}
             </HStack>
           </GridItem>
         </SimpleGrid>

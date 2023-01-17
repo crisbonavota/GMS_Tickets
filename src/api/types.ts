@@ -118,6 +118,15 @@ export interface Project {
     active: boolean;
     sold: boolean;
     currency: Currency;
+    income: number;
+}
+
+export interface ProjectRevenueValues {
+    project: Project;
+    resourcesCost: number;
+    hoursReported: number;
+    indirectCost: number;
+    profit: number;
 }
 
 export interface ProjectCreation {

@@ -12,6 +12,7 @@ import LoadingOverlay from "../../../../components/LoadingOverlay";
 import EditButton from "../EditButton";
 import CreateEditJobForm from "../../creation-edition/CreateEditJobForm";
 import IndirectCostsModal from "./IndirectCosts/IndirectCostsModal";
+import RevenueCalculationsModal from "./RevenueCalculations/RevenueCalculationsModal";
 
 const JobDetailedView = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,6 +59,7 @@ const JobDetailedView = () => {
                             isOpen={isOpen}
                             onOpen={onOpen}
                         />
+                        <RevenueCalculationsModal projectId={job.id} />
                         <IndirectCostsModal projectId={job.id} />
                         <CloneButton
                             resource="projects"

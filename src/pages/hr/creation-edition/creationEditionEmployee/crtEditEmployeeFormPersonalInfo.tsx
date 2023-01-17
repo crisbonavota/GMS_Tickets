@@ -47,8 +47,8 @@ const initialValues = {
   lastName: "",
   email: "",
   afipId: "",
-  entryDate: new Date().toISOString(),
-  birthDate: new Date().toISOString(),
+  entryDate: "",
+  birthDate: "",
   gender: true,
   active: true,
 };

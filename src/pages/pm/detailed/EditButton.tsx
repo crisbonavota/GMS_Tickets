@@ -14,16 +14,20 @@ interface Props {
     onOpen: () => void;
     onClose: () => void;
     isOpen: boolean;
+    colour?: string;
+    variant?: string;
+    size?: string;
 }
 
-const EditButton = ({ modalBody, onOpen, onClose, isOpen }: Props) => {
+const EditButton = ({ modalBody, onOpen, onClose, isOpen, colour, variant, size }: Props) => {
     return (
         <>
             <Button
-                colorScheme={"orange"}
-                variant="ghost"
+                colorScheme={colour ? colour : "orange"}
+                variant={variant ? variant : "ghost"}
                 leftIcon={<BiPencil />}
                 onClick={onOpen}
+                size={size}
             >
                 Edit
             </Button>

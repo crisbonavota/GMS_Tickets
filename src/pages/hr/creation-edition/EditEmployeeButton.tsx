@@ -7,10 +7,13 @@ interface Props {
     employee: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
+    colour?: string;
+    variant?: string;
+    size?: string;
 }
 
 
-const EditEmployeeButton = ({employee, tabIndex, setTabIndex}: Props) => {
+const EditEmployeeButton = ({employee, tabIndex, setTabIndex, colour, variant, size}: Props) => {
     const {isOpen, onOpen, onClose} = useDisclosure();
 
     return (
@@ -27,6 +30,9 @@ const EditEmployeeButton = ({employee, tabIndex, setTabIndex}: Props) => {
         onClose={onClose}
         isOpen={isOpen}
         onOpen={onOpen}
+        colour={colour}
+        variant={variant}
+        size={size}
     />
     )
   }

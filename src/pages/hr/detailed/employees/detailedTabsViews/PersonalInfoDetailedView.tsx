@@ -7,7 +7,7 @@ interface Props {
   employee: Employee;
 }
 
-const PersonalInfoDetailedView = ({ employee}: Props) => {
+const PersonalInfoDetailedView = ({ employee }: Props) => {
   return (
     <>
       <HStack

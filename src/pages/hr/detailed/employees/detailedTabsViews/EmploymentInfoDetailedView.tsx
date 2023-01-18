@@ -1,5 +1,5 @@
 import { Employee } from "../../../../../api/types";
-import { SimpleGrid, GridItem, HStack} from "@chakra-ui/react";
+import { SimpleGrid, GridItem, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 
 interface Props {

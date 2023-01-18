@@ -1,14 +1,10 @@
-import {
-  SimpleGrid,
-  HStack,
-  Text,
-  Box,
-  VStack,
-  Flex,
-  Avatar,
-} from "@chakra-ui/react";
+import { HStack, Box, Avatar } from "@chakra-ui/react";
+import { useQuery } from "react-query";
+import { client } from "../../../api/api";
 import { Employee } from "../../../api/types";
 import EditEmployeeButton from "../creation-edition/EditEmployeeButton";
+import { useAuthHeader } from "react-auth-kit";
+import { InfoTitle } from "../../pm/detailed/InfoBox"; 
 
 type Props = {
   resource: Employee;
@@ -21,6 +17,17 @@ const EmployeeDetailedViewHeaderComponent = ({
   tabIndex,
   setTabIndex,
 }: Props) => {
+  const getAuthHeader = useAuthHeader();
+
+  const { data: employeeImage, isError } = useQuery(
+    ["getEmployeeImage", resource.id],
+    async () =>
+      await client.get<string>(`employees/${resource.legacyUser.id}/image`, {
+        headers: { Authorization: getAuthHeader() },
+      }),
+    { select: (r) => r.data },
+  );
+
   return (
     <Box>
       <HStack
@@ -35,60 +42,36 @@ const EmployeeDetailedViewHeaderComponent = ({
         marginRight={"12rem"}
       >
         <Box>
-          <Avatar variant={"circle"} size={"xl"} src={resource.avatar} />
+          <Avatar variant={"circle"} size={"xl"} src={employeeImage} />
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            File Number
-          </Text>
-          <Text fontWeight={"600"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.fileNumber}
-          </Text>
+          <InfoTitle title={"File Number"} content={resource?.fileNumber.toString()} colour={"#FFFFFF"}/>
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            First Name
-          </Text>
-          <Text fontWeight={"700"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.firstName}
-          </Text>
+          <InfoTitle title={"First Name"} content={resource?.firstName} colour={"#FFFFFF"}/>
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            Last Name
-          </Text>
-          <Text fontWeight={"700"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.lastName}
-          </Text>
+          <InfoTitle title={"Last Name"} content={resource?.lastName} colour={"#FFFFFF"}/>
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            Status
-          </Text>
-          <Text fontWeight={"700"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.active === true ? "Active" : "Inactive"}
-          </Text>
+          <InfoTitle title={"Status"} content={resource?.active === true ? "Active" : "Inactive"} colour={"#FFFFFF"}/>
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            Team
-          </Text>
-          <Text fontWeight={"700"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.legacyUser.businessUnit.name.split("(")[0]}
-          </Text>
+          <InfoTitle title={"Team"} content={resource?.legacyUser?.businessUnit?.name.split("(")[0]} colour={"#FFFFFF"}/>
         </Box>
         <Box>
-          <Text fontWeight={"400"} fontSize={"1rem"} color={"#FFFFFF"}>
-            Location
-          </Text>
-          <Text fontWeight={"700"} fontSize={"1.25rem"} color={"#FFFFFF"}>
-            {resource?.country.name}
-          </Text>
+          <InfoTitle title={"Role"} content={resource?.position?.name} colour={"#FFFFFF"}/>
+        </Box>
+        <Box>
+          <InfoTitle title={"Location"} content={resource?.country?.name} colour={"#FFFFFF"} />
         </Box>
         <EditEmployeeButton
           employee={resource}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
+          colour={"whiteAlpha"}
+          variant={"outline"}
+          size={"lg"}
         />
       </HStack>
     </Box>
@@ -96,3 +79,5 @@ const EmployeeDetailedViewHeaderComponent = ({
 };
 
 export default EmployeeDetailedViewHeaderComponent;
+
+

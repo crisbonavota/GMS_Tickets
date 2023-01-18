@@ -8,7 +8,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import FormikTextInput from "./FormikTextInput";
+import FormikInput from "../../../components/FormikInput";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import CountryField from "./CountryField";
@@ -105,13 +105,14 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
         },
     });
 
-    const alertText = "IMPORTANT: this will set inactive all accounts and jobs related to this client";
+    const alertText =
+        "IMPORTANT: this will set inactive all accounts and jobs related to this client";
 
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
-                    <FormikTextInput
+                    <FormikInput
                         id={"name"}
                         label={"Name"}
                         name={"name"}
@@ -122,7 +123,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         id={"address"}
                         label={"Address"}
                         name={"address"}
@@ -133,7 +134,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         id={"city"}
                         label={"City"}
                         name={"city"}
@@ -155,7 +156,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         label="Fiscal ID"
                         name="fiscalId"
                         value={formik.values.fiscalId}
@@ -166,7 +167,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         label="CUIT/CUIL"
                         name="afipId"
                         value={formik.values.afipId}
@@ -198,23 +199,21 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                     <StatusField
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
-                        }                     
-                        value={formik.values.active === true ? 'active' : 'inactive'}
-                        
+                        }
+                        value={
+                            formik.values.active === true
+                                ? "active"
+                                : "inactive"
+                        }
                     />
-                    <Text 
-                        paddingTop={2} 
-                        color={"red"}
-                    >
-                        {editInitialValues && formik.values.active === false ? alertText : ""}
+                    <Text paddingTop={2} color={"red"}>
+                        {editInitialValues && formik.values.active === false
+                            ? alertText
+                            : ""}
                     </Text>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
-                    <HStack
-                        w="full"
-                        justifyContent={"flex-end"}
-                        p={5}
-                    >
+                    <HStack w="full" justifyContent={"flex-end"} p={5}>
                         <Button type="button" onClick={onClose} variant="ghost">
                             Cancel
                         </Button>

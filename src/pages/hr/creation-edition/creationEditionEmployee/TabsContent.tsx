@@ -1,9 +1,9 @@
 import { Tabs, TabPanels, TabPanel } from "@chakra-ui/react";
 import { Employee } from "../../../../api/types";
-import CrtEditEmployeeFormEmploymentInfo from "./CrtEditEmployeeFormEmploymentInfo";
-import CrtEditEmployeeFormFamilyInfo from "./CrtEditEmployeeFormFamilyInfo";
-import CrtEditEmployeeFormLocationInfo from "./CrtEditEmployeeFormLocationInfo";
-import CrtEditEmployeeFormPersonalInfo from "./CrtEditEmployeeFormPersonalInfo";
+import CrtEditEmployeeFormEmploymentInfo from "./crtEditEmployeeFormEmploymentInfo"
+import CrtEditEmployeeFormFamilyInfo from "./crtEditEmployeeFormFamilyInfo";
+import CrtEditEmployeeFormLocationInfo from "./crtEditEmployeeFormLocationInfo";
+import CrtEditEmployeeFormPersonalInfo from "./crtEditEmployeeFormPersonalInfo"
 
 interface Props {
   tabIndex: number;

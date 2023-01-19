@@ -26,14 +26,12 @@ const ProviderHeader = ({ provider }: Props) => {
     <Box>
       <HStack
         justifyContent={"space-evenly"}
-        alignItems={"center"}
         bgColor={"#4F968C"}
         borderTopLeftRadius={"1.18rem"}
         borderTopRightRadius={"1.18rem"}
         boxShadow={"2xl"}
-        padding={"2rem"}
-        marginLeft={"12rem"}
-        marginRight={"12rem"}
+        padding={"1.5rem"}
+        width={"full"}
       >
         <Box>
           <Avatar bg={"teal.500"} variant={"circle"} size={"xl"} src={userImage} />

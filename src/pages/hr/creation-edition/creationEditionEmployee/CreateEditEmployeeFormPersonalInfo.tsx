@@ -23,7 +23,6 @@ import { useEffect } from "react";
 interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
-  id?: number;
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
 }
@@ -47,8 +46,8 @@ const initialValues = {
   lastName: "",
   email: "",
   afipId: "",
-  entryDate: new Date().toISOString(),
-  birthDate: new Date().toISOString(),
+  entryDate: "",
+  birthDate: "",
   gender: true,
   active: true,
   mobilePhone: "",

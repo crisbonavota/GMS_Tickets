@@ -1,6 +1,6 @@
 import { Text } from "@chakra-ui/react";
-import { useCallback } from "react";
-import { Employee, GroupLegacyUser, Sort } from "../../../../api/types";
+import { useCallback, useState } from "react";
+import { Employee, Sort, GroupLegacyUser } from "../../../../api/types";
 import {
     DynamicTableFormat,
     DynamicTable,
@@ -16,6 +16,7 @@ interface Props {
 }
 
 const EmployeesTable = ({ employees }: Props) => {
+    const [tabIndex, setTabIndex] = useState(0);
     const state = useAppSelector((s) => s.humanResources.employees);
     const dispatch = useAppDispatch();
 
@@ -92,7 +93,9 @@ const EmployeesTable = ({ employees }: Props) => {
             accessor: "id", 
             accessorFn: (id: number) => 
                 <EditEmployeeButton 
-                    employee={employees.filter(e => e.id === id)[0]} 
+                    employee={employees.filter(e => e.id === id)[0]}
+                    tabIndex={tabIndex}
+                    setTabIndex={setTabIndex} 
                 />,
             disableSort: true,
         },

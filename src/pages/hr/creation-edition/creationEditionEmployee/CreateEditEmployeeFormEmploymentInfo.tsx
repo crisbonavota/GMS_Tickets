@@ -66,9 +66,15 @@ const CrtEditEmployeeFormEmploymentInfo = ({
   const getAuthHeader = useAuthHeader();
   const queryClient = useQueryClient();
   const toast = useToast();
-  const personalInfoState = useAppSelector((p) => p.humanResources.crtEmployeePersonalInfo);
-  const locationInfoState = useAppSelector((l) => l.humanResources.crtEmployeeLocationInfo);
-  const familyInfoState = useAppSelector((f) => f.humanResources.crtEmployeeFamilyInfo);
+  const personalInfoState = useAppSelector(
+    (p) => p.humanResources.crtEmployeePersonalInfo
+  );
+  const locationInfoState = useAppSelector(
+    (l) => l.humanResources.crtEmployeeLocationInfo
+  );
+  const familyInfoState = useAppSelector(
+    (f) => f.humanResources.crtEmployeeFamilyInfo
+  );
 
   const formik = useFormik({
     initialValues:
@@ -82,6 +88,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
 
   const onSuccess = () => {
     queryClient.resetQueries("employees");
+    queryClient.resetQueries("getEmployeeById");
     queryClient.resetQueries(`employee-${id}`);
     toast({
       title: editInitialValues ? "Employee updated" : "Employee created",
@@ -218,11 +225,11 @@ const CrtEditEmployeeFormEmploymentInfo = ({
             touched={formik.touched.businessUnitId}
             defaultValue={
               editInitialValues
-              ? {
-                  value: editInitialValues.legacyUser.businessUnit.id,
-                  label: editInitialValues.legacyUser.businessUnit.name,
-                }
-              : undefined
+                ? {
+                    value: editInitialValues.legacyUser.businessUnit.id,
+                    label: editInitialValues.legacyUser.businessUnit.name,
+                  }
+                : undefined
             }
           />
         </GridItem>

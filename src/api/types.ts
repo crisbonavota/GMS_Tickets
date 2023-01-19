@@ -225,6 +225,7 @@ export interface Address {
 }
 
 export interface Employee {
+  map(arg0: (employee: any) => any): unknown;
   id: number;
   fileNumber: number;
   legacyUser: LegacyUserPublic;

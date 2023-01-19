@@ -1,31 +1,23 @@
 import { VStack, Flex } from "@chakra-ui/react";
-import TabsSelector from "./TabsSelector";
+import { useState } from "react";
+import TabsSelector from "./TabSelector";
 import TabsContent from "./TabsContent";
 import { Employee } from "../../../../api/types";
 
 interface Props {
-  onClose: () => void;
-  editInitialValues?: Employee;
-  id?: number;
-  tabIndex: number;
-  setTabIndex: (tabIndex: number) => void;
+  employee: Employee;
 }
 
-const CreateEmployeeTabsView = ({
-  onClose,
-  editInitialValues,
-  id,
-  tabIndex,
-  setTabIndex,
-}: Props) => {
+const EmployeeDetailsTabsView = ({ employee }: Props) => {
+  const [tabIndex, setTabIndex] = useState(0);
   return (
     <VStack
       w={"full"}
       h={"full"}
-      p={5}
-      py={10}
+      p={1}
+      py={1}
       alignItems={"center"}
-      spacing={8}
+      spacing={6}
     >
       <Flex
         w={"full"}
@@ -39,12 +31,10 @@ const CreateEmployeeTabsView = ({
       <TabsContent
         tabIndex={tabIndex}
         setTabIndex={setTabIndex}
-        onClose={onClose}
-        editInitialValues={editInitialValues}
-        id={id}
+        employee={employee}
       />
     </VStack>
   );
 };
 
-export default CreateEmployeeTabsView;
+export default EmployeeDetailsTabsView;

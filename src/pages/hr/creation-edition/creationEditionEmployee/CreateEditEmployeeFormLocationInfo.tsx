@@ -21,7 +21,6 @@ import { useEffect } from "react";
 interface Props {
   onClose: () => void;
   editInitialValues?: Employee;
-  id?: number;
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
 }
@@ -46,9 +45,9 @@ let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
     ? {
         birthCountryId: editInitialValues?.birthCountry?.id,
         countryId: editInitialValues?.country?.id,
-        address: editInitialValues.address,
-        city: editInitialValues.city,
-        postalCode: editInitialValues.postalCode,
+        address: editInitialValues.address || "",
+        city: editInitialValues.city || "",
+        postalCode: editInitialValues.postalCode || "",
       }
     : undefined;
 
@@ -69,8 +68,8 @@ const CrtEditEmployeeFormLocationInfo = ({
         type: employeeLocationInfo,
         payload: { ...formik.values },
       });
-    setTabIndex(tabIndex + 1);
-  },
+      setTabIndex(tabIndex + 1);
+    },
   });
 
   const { data: countries, isSuccess } = useQuery(
@@ -115,7 +114,7 @@ const CrtEditEmployeeFormLocationInfo = ({
           <Select
             name="countryId"
             id="countryId"
-            value={formik.values.countryId.toString()}
+            value={formik.values.countryId}
             onChange={(event) => {
               formik.setFieldValue("countryId", event.target.value);
             }}
@@ -123,7 +122,7 @@ const CrtEditEmployeeFormLocationInfo = ({
           >
             {isSuccess &&
               countries.map((el) => (
-                <option key={el.id} value={el.id.toString()}>
+                <option key={el.id} value={el.id}>
                   {el.name}
                 </option>
               ))}
@@ -190,5 +189,3 @@ const CrtEditEmployeeFormLocationInfo = ({
 };
 
 export default CrtEditEmployeeFormLocationInfo;
-
-

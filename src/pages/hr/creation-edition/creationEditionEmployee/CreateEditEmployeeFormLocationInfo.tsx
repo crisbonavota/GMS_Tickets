@@ -37,6 +37,7 @@ const initialValues = {
   birthCountryId: 0,
   address: null,
   city: "",
+  postalCode: "",
 };
 
 let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -46,6 +47,7 @@ let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
         countryId: editInitialValues?.country?.id,
         address: editInitialValues.address || "",
         city: editInitialValues.city || "",
+        postalCode: editInitialValues.postalCode || "",
       }
     : undefined;
 
@@ -144,6 +146,18 @@ const CrtEditEmployeeFormLocationInfo = ({
             name="city"
             id="city"
             value={formik.values.city}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormLabel fontWeight={"bold"} fontSize={"sm"}>
+            Zip Code
+          </FormLabel>
+          <Input
+            name="postalCode"
+            id="postalCode"
+            value={formik.values.postalCode}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
           />

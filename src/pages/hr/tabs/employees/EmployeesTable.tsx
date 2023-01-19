@@ -1,6 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { useCallback, useState } from "react";
-import { Employee, Sort } from "../../../../api/types";
+import { Employee, Sort, GroupLegacyUser } from "../../../../api/types";
 import {
     DynamicTableFormat,
     DynamicTable,
@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
 import EditEmployeeButton from "../../creation-edition/EditEmployeeButton";
+import EmployeePermissions from "./permissions/EmployeePermissions";
 
 interface Props {
     employees: Employee[];
@@ -96,6 +97,15 @@ const EmployeesTable = ({ employees }: Props) => {
                     tabIndex={tabIndex}
                     setTabIndex={setTabIndex} 
                 />,
+            disableSort: true,
+        },
+        {
+            header: "permissions",
+            accessor: "",
+            accessorFn: (group: GroupLegacyUser) => (
+                <EmployeePermissions group={group}  />
+            ),
+            rawObject: true,
             disableSort: true,
         },
     ];

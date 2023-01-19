@@ -1,6 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { Provider, Sort } from "../../../../api/types";
+import { GroupLegacyUser, Provider, Sort } from "../../../../api/types";
 import {
     DynamicTableFormat,
     DynamicTable,
@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
 import EditProviderButton from "../../creation-edition/EditProviderButton";
+import EmployeePermissions from "../employees/permissions/EmployeePermissions";
 
 interface Props {
     providers: Provider[];
@@ -81,6 +82,15 @@ const ProvidersTable = ({ providers }: Props) => {
                 <EditProviderButton 
                     provider={providers.filter(p => p.id === id)[0]} 
                 />,
+            disableSort: true,
+        },
+        {
+            header: "permissions",
+            accessor: "",
+            accessorFn: (group: GroupLegacyUser) => (
+                <EmployeePermissions group={group}  />
+            ),
+            rawObject: true,
             disableSort: true,
         },
     ];

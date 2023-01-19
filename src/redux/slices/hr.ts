@@ -35,6 +35,7 @@ interface EmployeePersonalInfoValues {
   birthDate: string;
   gender: boolean;
   active: boolean;
+  mobilePhone: string;
 }
 
 interface EmployeeLocationValues {
@@ -42,6 +43,7 @@ interface EmployeeLocationValues {
   birthCountryId: number;
   address: string;
   city: string;
+  postalCode: string;
 }
 interface EmployeeFamilyValues {
   childs: number;
@@ -113,12 +115,14 @@ const initialState: HumanResourcesState = {
     birthDate: "",
     gender: true,
     active: true,
+    mobilePhone: "",
   },
   crtEmployeeLocationInfo: {
     countryId: 0,
     birthCountryId: 0,
     address: "",
     city: "",
+    postalCode: "",
   },
   crtEmployeeFamilyInfo: {
     childs: 0,

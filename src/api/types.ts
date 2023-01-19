@@ -250,6 +250,7 @@ export interface Employee {
   city: string;
   country: Country;
   active: boolean;
+  postalCode: string;
 }
 export interface Provider {
   id: number;
@@ -266,4 +267,17 @@ export interface Provider {
   creationDate: Date;
   active: boolean;
   fileNumber: number;
+}
+
+export interface Group {
+  id: number;
+  name: string;
+  description: string;
+  active: boolean;
+}
+
+export interface GroupLegacyUser {
+  id: number;
+  group: Group;
+  legacyUser: LegacyUserPublic;
 }

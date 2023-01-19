@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { getResource } from "../../../../api/api";
 import { Provider } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
-import { Flex, VStack, Text, HStack, Box } from "@chakra-ui/react";
+import { VStack, Text, HStack, Box } from "@chakra-ui/react";
 import { BsFillPersonFill } from "react-icons/bs";
 import ProviderInfo from "./ProviderInfo";
 import ProviderHeader from "./ProviderHeader";
@@ -19,20 +19,20 @@ const ProviderDetailedView = () => {
   );
 
   return (
-    <>
-      <VStack w={"full"} alignItems={"center"}>
-        <HStack alignItems={"center"} fontSize={"3xl"} p={1}>
-          <BsFillPersonFill color={"#3B8A7F"} />
-          <Text color={"#448F85"} fontWeight={"bold"}>
-            PROVIDER DETAILS
-          </Text>
-        </HStack>
-        <Box>
+      <VStack w={"full"}>
+        <VStack alignItems={"flex-start"} w={"full"} >
+          <HStack alignItems={"center"} fontSize={"3xl"} p={1} marginLeft={"10%"}>
+            <BsFillPersonFill color={"#3B8A7F"} />
+            <Text color={"#448F85"} fontWeight={"bold"}>
+              PROVIDER DETAILS
+            </Text>
+          </HStack>
+        </VStack>
+        <Box alignItems={"center"} paddingTop={10} w={"80%"}>
         {isSuccess && <ProviderHeader provider={provider} />}
         {isSuccess && <ProviderInfo provider={provider} />}
         </Box>
       </VStack>
-    </>
   );
 };
 

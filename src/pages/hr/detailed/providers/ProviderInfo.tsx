@@ -59,7 +59,7 @@ const ProviderInfo = ({ provider }: Props) => {
         <UserDetailedViewBodyComponent
           resource={provider.legacyUser?.businessUnit?.name}
           label={"Business Unit"}
-        />
+        />         
       </SimpleGrid>
     </HStack>
   );

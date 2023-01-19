@@ -4,6 +4,7 @@ import { useAuthHeader } from "react-auth-kit";
 import { Provider } from "../../../../api/types";
 import { getResource } from "../../../../api/api";
 import { InfoTitle } from "../../../pm/detailed/InfoBox";
+import ProviderDetailedEditButton from "./ProviderDetailedEditButton";
 
 type Props = {
   provider: Provider;
@@ -71,6 +72,7 @@ const ProviderHeader = ({ provider }: Props) => {
             color={"#FFFFFF"}
           />
         </Box>
+        <ProviderDetailedEditButton provider={provider}/>
       </HStack>
     </Box>
   );

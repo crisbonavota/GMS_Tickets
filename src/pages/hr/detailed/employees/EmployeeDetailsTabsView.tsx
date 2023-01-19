@@ -4,9 +4,8 @@ import TabsSelector from "./TabSelector";
 import TabsContent from "./TabsContent";
 import { Employee } from "../../../../api/types";
 
-
 interface Props {
-    employee: Employee;
+  employee: Employee;
 }
 
 const EmployeeDetailsTabsView = ({ employee }: Props) => {
@@ -29,7 +28,11 @@ const EmployeeDetailsTabsView = ({ employee }: Props) => {
       >
         <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} employee={employee} />
+      <TabsContent
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        employee={employee}
+      />
     </VStack>
   );
 };

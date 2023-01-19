@@ -36,8 +36,8 @@ const initialValues = {
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
   editInitialValues
     ? {
-        childs: editInitialValues.childs,
-        maritalStatus: editInitialValues.maritalStatus,
+        childs: editInitialValues.childs || "",
+        maritalStatus: editInitialValues.maritalStatus || "",
       }
     : undefined;
 
@@ -57,8 +57,8 @@ const CrtEditEmployeeFormFamilyInfo = ({
         type: employeeFamilyInfo,
         payload: { ...formik.values },
       });
-    setTabIndex(tabIndex + 1);
-  },
+      setTabIndex(tabIndex + 1);
+    },
   });
 
   useEffect(() => {
@@ -121,11 +121,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
             >
               Back
             </Button>
-            <Button
-              type="submit"
-              colorScheme={"orange"}
-              minWidth={"8rem"}
-            >
+            <Button type="submit" colorScheme={"orange"} minWidth={"8rem"}>
               Next
             </Button>
           </HStack>

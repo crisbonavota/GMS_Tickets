@@ -1,10 +1,10 @@
 import { HStack, Box, Avatar } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { client } from "../../../api/api";
+import { getResource } from "../../../api/api";
 import { Employee } from "../../../api/types";
-import EditEmployeeButton from "../creation-edition/EditEmployeeButton";
+import EditDetailedButton from "./EditDetailedButton";
 import { useAuthHeader } from "react-auth-kit";
-import { InfoTitle } from "../../pm/detailed/InfoBox"; 
+import { InfoTitle } from "../../pm/detailed/InfoBox";
 
 type Props = {
   resource: Employee;
@@ -19,13 +19,14 @@ const EmployeeDetailedViewHeaderComponent = ({
 }: Props) => {
   const getAuthHeader = useAuthHeader();
 
-  const { data: employeeImage, isError } = useQuery(
-    ["getEmployeeImage", resource.id],
+  const { data: employeeImage } = useQuery(
+    ["employee-image", resource.id],
     async () =>
-      await client.get<string>(`employees/${resource.legacyUser.id}/image`, {
-        headers: { Authorization: getAuthHeader() },
-      }),
-    { select: (r) => r.data },
+      getResource<string>(
+        `users/${resource.legacyUser.id}/image`,
+        getAuthHeader()
+      ),
+    { select: (r) => r.data }
   );
 
   return (
@@ -42,36 +43,61 @@ const EmployeeDetailedViewHeaderComponent = ({
         marginRight={"12rem"}
       >
         <Box>
-          <Avatar variant={"circle"} size={"xl"} src={employeeImage} />
+          <Avatar bg={"teal.500"} variant={"circle"} size={"xl"} src={employeeImage} />
         </Box>
         <Box>
-          <InfoTitle title={"File Number"} content={resource?.fileNumber.toString()} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"File Number"}
+            content={resource.fileNumber.toString()}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"First Name"} content={resource?.firstName} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"First Name"}
+            content={resource.firstName}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"Last Name"} content={resource?.lastName} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"Last Name"}
+            content={resource.lastName}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"Status"} content={resource?.active === true ? "Active" : "Inactive"} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"Status"}
+            content={resource.active === true ? "Active" : "Inactive"}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"Team"} content={resource?.legacyUser?.businessUnit?.name.split("(")[0]} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"Team"}
+            content={resource.legacyUser?.businessUnit?.name.split("(")[0]}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"Role"} content={resource?.position?.name} colour={"#FFFFFF"}/>
+          <InfoTitle
+            title={"Role"}
+            content={resource.position?.name}
+            color={"#FFFFFF"}
+          />
         </Box>
         <Box>
-          <InfoTitle title={"Location"} content={resource?.country?.name} colour={"#FFFFFF"} />
+          <InfoTitle
+            title={"Location"}
+            content={resource.country?.name}
+            color={"#FFFFFF"}
+          />
         </Box>
-        <EditEmployeeButton
+        <EditDetailedButton
           employee={resource}
           tabIndex={tabIndex}
           setTabIndex={setTabIndex}
-          colour={"whiteAlpha"}
-          variant={"outline"}
-          size={"lg"}
         />
       </HStack>
     </Box>
@@ -79,5 +105,3 @@ const EmployeeDetailedViewHeaderComponent = ({
 };
 
 export default EmployeeDetailedViewHeaderComponent;
-
-

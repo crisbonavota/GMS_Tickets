@@ -19,19 +19,43 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
       onChange={setTabIndex}
       w={{ base: "full", md: "100%" }}
     >
-      <UserDetailedViewHeaderComponent resource={employee} tabIndex={tabIndex} setTabIndex={setTabIndex} />
+      <UserDetailedViewHeaderComponent
+        resource={employee}
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+      />
       <TabPanels w={"full"}>
         <TabPanel p={"0 !important"}>
-          <PersonalInfoDetailedView employee={employee}/>
+          <PersonalInfoDetailedView
+            firstName={employee.firstName}
+            lastName={employee.lastName}
+            email={employee.email}
+            entryDate={employee.entryDate}
+            status={employee.active}
+            afipId={employee.afipId}
+            birthDate={employee.birthDate}
+            gender={employee.gender}
+          />
         </TabPanel>
         <TabPanel p={"0 !important"}>
-          <LocationInfoDetailedView employee={employee}/>{" "}
+          <LocationInfoDetailedView
+            birthCountry={employee.birthCountry?.name}
+            country={employee.country?.name}
+            address={employee.address?.street}
+            city={employee.city}
+          />
         </TabPanel>
         <TabPanel p={"0 !important"}>
-          <FamilyInfoDetailedView employee={employee}/>{" "}
+          <FamilyInfoDetailedView
+            maritalStatus={employee.maritalStatus}
+            childs={employee.childs}
+          />
         </TabPanel>
         <TabPanel p={"0 !important"}>
-          <EmploymentInfoDetailedView employee={employee}/>
+          <EmploymentInfoDetailedView
+            salaryCurrency={employee.salaryCurrency?.code}
+            medicalCoverage={employee.medicalCoverage?.name}
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>

@@ -1,38 +1,39 @@
-import { Employee } from "../../../../../api/types";
-import { SimpleGrid, GridItem, HStack } from "@chakra-ui/react";
+import { SimpleGrid, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 
 interface Props {
-  employee: Employee;
+  salaryCurrency: string;
+  medicalCoverage: string;
 }
 
-const EMploymentInfoDetailedView = ({ employee }: Props) => {
+const EmploymentInfoDetailedView = ({
+  salaryCurrency,
+  medicalCoverage,
+}: Props) => {
   return (
-    <>
-      <HStack
-        align={"center"}
-        justify={"center"}
-        bgColor={"#FFFFFF"}
-        borderBottomLeftRadius={"1.18rem"}
-        borderBottomRightRadius={"1.18rem"}
-        boxShadow={"2xl"}
-        padding={"2rem"}
-        marginLeft={"12rem"}
-        marginRight={"12rem"}
-      >
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
-          <UserDetailedViewBodyComponent
-            resource={employee?.salaryCurrency?.code}
-            label={"Salary Currency"}
-          />
-          <UserDetailedViewBodyComponent
-            resource={employee?.medicalCoverage?.name}
-            label={"MEdical Coverage"}
-          />
-        </SimpleGrid>
-      </HStack>
-    </>
+    <HStack
+      align={"center"}
+      justify={"center"}
+      bgColor={"#FFFFFF"}
+      borderBottomLeftRadius={"1.18rem"}
+      borderBottomRightRadius={"1.18rem"}
+      boxShadow={"2xl"}
+      padding={"2rem"}
+      marginLeft={"12rem"}
+      marginRight={"12rem"}
+    >
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
+        <UserDetailedViewBodyComponent
+          resource={salaryCurrency}
+          label={"Salary Currency"}
+        />
+        <UserDetailedViewBodyComponent
+          resource={medicalCoverage}
+          label={"MEdical Coverage"}
+        />
+      </SimpleGrid>
+    </HStack>
   );
 };
 
-export default EMploymentInfoDetailedView;
+export default EmploymentInfoDetailedView;

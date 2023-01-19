@@ -4,14 +4,20 @@ import TabsContent from "./TabsContent";
 import { Employee } from "../../../../api/types";
 
 interface Props {
-    onClose: () => void;
-    editInitialValues?: Employee;
-    id?:number;
-    tabIndex: number;
-    setTabIndex: (tabIndex: number) => void;
+  onClose: () => void;
+  editInitialValues?: Employee;
+  id?: number;
+  tabIndex: number;
+  setTabIndex: (tabIndex: number) => void;
 }
 
-const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIndex, setTabIndex }: Props) => {
+const CreateEmployeeTabsView = ({
+  onClose,
+  editInitialValues,
+  id,
+  tabIndex,
+  setTabIndex,
+}: Props) => {
   return (
     <VStack
       w={"full"}
@@ -28,9 +34,15 @@ const CreateEmployeeTabsView = ({ onClose, editInitialValues, id, tabIndex, setT
         flexDir={{ base: "column", md: "row" }}
         gap={5}
       >
-        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex}/>
+        <TabsSelector tabIndex={tabIndex} setTabIndex={setTabIndex} />
       </Flex>
-      <TabsContent tabIndex={tabIndex} setTabIndex={setTabIndex} onClose={onClose} editInitialValues={editInitialValues} id={id}/>
+      <TabsContent
+        tabIndex={tabIndex}
+        setTabIndex={setTabIndex}
+        onClose={onClose}
+        editInitialValues={editInitialValues}
+        id={id}
+      />
     </VStack>
   );
 };

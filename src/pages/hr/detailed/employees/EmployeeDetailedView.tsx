@@ -1,7 +1,7 @@
 import EmployeeDetailsTabsView from "./EmployeeDetailsTabsView";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { client } from "../../../../api/api";
+import { client, getResource } from "../../../../api/api";
 import { Employee } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
 import { Flex, VStack, Text, HStack } from "@chakra-ui/react";
@@ -11,12 +11,9 @@ const EmployeeDetailedView = () => {
   const { id } = useParams();
   const getAuthHeader = useAuthHeader();
 
-  const { data } = useQuery(
+  const { data, isSuccess } = useQuery(
     "getEmployeeById",
-    async () =>
-      await client.get<Employee>(`employees/${id}`, {
-        headers: { Authorization: getAuthHeader() },
-      }),
+    async () => getResource<Employee>(`employees/${id}`, getAuthHeader()),
     { select: (r) => r.data }
   );
 
@@ -30,7 +27,7 @@ const EmployeeDetailedView = () => {
           </Text>
         </HStack>
         <Flex justifyContent={"space-between"} width={"100%"}>
-          {data && <EmployeeDetailsTabsView employee={data} />}
+          {isSuccess && <EmployeeDetailsTabsView employee={data} />}
         </Flex>
       </VStack>
     </>

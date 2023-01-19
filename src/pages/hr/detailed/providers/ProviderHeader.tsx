@@ -1,29 +1,22 @@
 import { HStack, Box, Avatar } from "@chakra-ui/react";
 import { useQuery } from "react-query";
-import { getResource } from "../../../api/api";
-import { Employee } from "../../../api/types";
-import EditDetailedButton from "./EditDetailedButton";
 import { useAuthHeader } from "react-auth-kit";
-import { InfoTitle } from "../../pm/detailed/InfoBox";
+import { Provider } from "../../../../api/types";
+import { getResource } from "../../../../api/api";
+import { InfoTitle } from "../../../pm/detailed/InfoBox";
 
-interface Props {
-  resource: Employee;
-  tabIndex: number;
-  setTabIndex: (tabIndex: number) => void;
+type Props = {
+  provider: Provider;
 };
 
-const EmployeeDetailedViewHeaderComponent = ({
-  resource,
-  tabIndex,
-  setTabIndex,
-}: Props) => {
+const ProviderHeader = ({ provider }: Props) => {
   const getAuthHeader = useAuthHeader();
 
   const { data: userImage } = useQuery(
-    ["user-image", resource.id],
+    ["user-image", provider.id],
     async () =>
       getResource<string>(
-        `users/${resource.legacyUser.id}/image`,
+        `users/${provider.legacyUser.id}/image`,
         getAuthHeader()
       ),
     { select: (r) => r.data }
@@ -48,60 +41,41 @@ const EmployeeDetailedViewHeaderComponent = ({
         <Box>
           <InfoTitle
             title={"File Number"}
-            content={resource.fileNumber.toString()}
+            content={provider.fileNumber.toString()}
             color={"#FFFFFF"}
           />
         </Box>
         <Box>
           <InfoTitle
             title={"First Name"}
-            content={resource.firstName}
+            content={provider.firstName}
             color={"#FFFFFF"}
           />
         </Box>
         <Box>
           <InfoTitle
             title={"Last Name"}
-            content={resource.lastName}
+            content={provider.lastName}
             color={"#FFFFFF"}
           />
         </Box>
         <Box>
           <InfoTitle
             title={"Status"}
-            content={resource.active === true ? "Active" : "Inactive"}
+            content={provider.active === true ? "Active" : "Inactive"}
             color={"#FFFFFF"}
           />
         </Box>
         <Box>
           <InfoTitle
             title={"Business Unit"}
-            content={resource.legacyUser?.businessUnit?.name.split("(")[0]}
+            content={provider.legacyUser?.businessUnit?.name.split("(")[0]}
             color={"#FFFFFF"}
           />
         </Box>
-        <Box>
-          <InfoTitle
-            title={"Role"}
-            content={resource.position?.name}
-            color={"#FFFFFF"}
-          />
-        </Box>
-        <Box>
-          <InfoTitle
-            title={"Location"}
-            content={resource.country?.name}
-            color={"#FFFFFF"}
-          />
-        </Box>
-        <EditDetailedButton
-          employee={resource}
-          tabIndex={tabIndex}
-          setTabIndex={setTabIndex}
-        />
       </HStack>
     </Box>
   );
 };
 
-export default EmployeeDetailedViewHeaderComponent;
+export default ProviderHeader;

@@ -1,7 +1,7 @@
 import EmployeeDetailsTabsView from "./EmployeeDetailsTabsView";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { client, getResource } from "../../../../api/api";
+import { getResource } from "../../../../api/api";
 import { Employee } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
 import { Flex, VStack, Text, HStack } from "@chakra-ui/react";
@@ -12,7 +12,7 @@ const EmployeeDetailedView = () => {
   const getAuthHeader = useAuthHeader();
 
   const { data, isSuccess } = useQuery(
-    "getEmployeeById",
+    "employee",
     async () => getResource<Employee>(`employees/${id}`, getAuthHeader()),
     { select: (r) => r.data }
   );

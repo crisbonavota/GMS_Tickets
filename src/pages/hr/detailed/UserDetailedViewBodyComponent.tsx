@@ -1,7 +1,7 @@
 import { Box, GridItem, Text } from "@chakra-ui/react";
 
 
-type Props = {
+interface Props {
   resource?: string;
   label: string;
 };

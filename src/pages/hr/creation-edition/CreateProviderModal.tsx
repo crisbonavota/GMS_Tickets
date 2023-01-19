@@ -19,7 +19,7 @@ const CreateProviderModal = ({ isOpen, onClose }: Props) => {
         <Modal isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent minW={"fit-content"}>
-                <ModalHeader>Create provider</ModalHeader>
+                <ModalHeader color={"#448F85"}>Create provider</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody w={"fit-content"} minW={"40vw"}>
                     <CreateEditProviderForm onClose={onClose} />

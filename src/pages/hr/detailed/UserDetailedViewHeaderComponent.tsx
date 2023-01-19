@@ -6,7 +6,7 @@ import EditDetailedButton from "./EditDetailedButton";
 import { useAuthHeader } from "react-auth-kit";
 import { InfoTitle } from "../../pm/detailed/InfoBox";
 
-type Props = {
+interface Props {
   resource: Employee;
   tabIndex: number;
   setTabIndex: (tabIndex: number) => void;
@@ -19,8 +19,8 @@ const EmployeeDetailedViewHeaderComponent = ({
 }: Props) => {
   const getAuthHeader = useAuthHeader();
 
-  const { data: employeeImage } = useQuery(
-    ["employee-image", resource.id],
+  const { data: userImage } = useQuery(
+    ["user-image", resource.id],
     async () =>
       getResource<string>(
         `users/${resource.legacyUser.id}/image`,
@@ -43,7 +43,7 @@ const EmployeeDetailedViewHeaderComponent = ({
         marginRight={"12rem"}
       >
         <Box>
-          <Avatar bg={"teal.500"} variant={"circle"} size={"xl"} src={employeeImage} />
+          <Avatar bg={"teal.500"} variant={"circle"} size={"xl"} src={userImage} />
         </Box>
         <Box>
           <InfoTitle
@@ -75,7 +75,7 @@ const EmployeeDetailedViewHeaderComponent = ({
         </Box>
         <Box>
           <InfoTitle
-            title={"Team"}
+            title={"Business Unit"}
             content={resource.legacyUser?.businessUnit?.name.split("(")[0]}
             color={"#FFFFFF"}
           />

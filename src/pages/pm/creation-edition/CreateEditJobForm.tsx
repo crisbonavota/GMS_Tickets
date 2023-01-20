@@ -13,7 +13,6 @@ import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
-import FormikTextInput from "./FormikTextInput";
 import { IoIosRocket } from "react-icons/io";
 import { RiSendBackward } from "react-icons/ri";
 import { Tooltip } from "@chakra-ui/react";
@@ -31,6 +30,7 @@ import {
     getCurrencies,
 } from "../../../api/api";
 import moment from "moment";
+import FormikInput from "../../../components/FormikInput";
 
 interface Props {
     onClose: () => void;
@@ -55,6 +55,7 @@ const validationSchema = Yup.object().shape({
     businessUnitId: Yup.number()
         .nullable()
         .required("Business Unit is required"),
+    income: Yup.number().min(0, "Income must be greater than 0").nullable(),
 });
 
 const initialValues = {
@@ -70,13 +71,17 @@ const initialValues = {
     leaderLegacyUserId: null,
     active: true,
     businessUnitId: null,
+    income: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Project) =>
     editInitialValues
         ? {
               ...editInitialValues,
-              name: editInitialValues.name.replace(` (${editInitialValues.id})`, ""),
+              name: editInitialValues.name.replace(
+                  ` (${editInitialValues.id})`,
+                  ""
+              ),
               accountId: editInitialValues?.proposal.account.id,
               leaderLegacyUserId:
                   editInitialValues?.leaderLegacyUser?.id ?? null,
@@ -95,14 +100,22 @@ const initialValuesIfPredefinedAccount = (predefinedAccount?: Account) =>
           }
         : undefined;
 
-const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, predefinedAccount }: Props) => {
+const CreateEditJobForm = ({
+    onClose,
+    editInitialValues,
+    id,
+    predefinedClient,
+    predefinedAccount,
+}: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
 
     const formik = useFormik({
         initialValues:
-            editInitialValuesToFormikValues(editInitialValues) || initialValuesIfPredefinedAccount(predefinedAccount) || initialValues,
+            editInitialValuesToFormikValues(editInitialValues) ||
+            initialValuesIfPredefinedAccount(predefinedAccount) ||
+            initialValues,
         validationSchema,
         onSubmit: async () => {
             if (editInitialValues) await editJob();
@@ -113,6 +126,8 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
     const onSuccess = () => {
         queryClient.resetQueries("projects");
         queryClient.resetQueries(`project-${id}`);
+        queryClient.resetQueries(["revenue", id]);
+
         toast({
             title: editInitialValues ? "Job updated" : "Job created",
             status: "success",
@@ -152,7 +167,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
             onError: onError,
         }
     );
-    
+
     const startDate = moment(formik.values.startDate).format("yyyy-MM-DD");
     const endDate = moment(formik.values.endDate).format("yyyy-MM-DD");
 
@@ -160,7 +175,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="name"
                         id="name"
                         value={formik.values.name}
@@ -208,12 +223,17 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                                       label: editInitialValues?.proposal.account
                                           .name,
                                   }
-                                  : predefinedAccount ? {
-                                    label:  predefinedAccount.name,
-                                    value: predefinedAccount.id,
-                                } : undefined
+                                : predefinedAccount
+                                ? {
+                                      label: predefinedAccount.name,
+                                      value: predefinedAccount.id,
+                                  }
+                                : undefined
                         }
-                        preset={predefinedClient !== undefined || predefinedAccount !== undefined }
+                        preset={
+                            predefinedClient !== undefined ||
+                            predefinedAccount !== undefined
+                        }
                         predefinedCompany={predefinedClient}
                         presetAccount={predefinedAccount !== undefined}
                     />
@@ -277,16 +297,21 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
-                        name="hours"
-                        id="hours"
-                        value={formik.values.hours}
-                        onChange={formik.handleChange}
-                        error={formik.errors.hours}
-                        touched={formik.touched.hours}
-                        label="Hours"
-                        type="number"
-                    />
+                    <VStack alignItems={"flex-start"}>
+                        <FormikInput
+                            name="income"
+                            id="income"
+                            value={formik.values.income}
+                            onChange={formik.handleChange}
+                            error={formik.errors.income}
+                            touched={formik.touched.income}
+                            label="Income"
+                            type="number"
+                        />
+                        <Text fontSize={"sm"}>
+                            ${formik.values.income.toLocaleString("es-ES")}
+                        </Text>
+                    </VStack>
                 </GridItem>
                 <GridItem colSpan={1}>
                     <HStack alignItems={"center"} spacing={5}>
@@ -313,7 +338,19 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                     </HStack>
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
+                        name="hours"
+                        id="hours"
+                        value={formik.values.hours}
+                        onChange={formik.handleChange}
+                        error={formik.errors.hours}
+                        touched={formik.touched.hours}
+                        label="Hours"
+                        type="number"
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
                         name="startDate"
                         id="startDate"
                         value={startDate}
@@ -325,7 +362,7 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="endDate"
                         id="endDate"
                         value={endDate}
@@ -341,9 +378,14 @@ const CreateEditJobForm = ({ onClose, editInitialValues, id, predefinedClient, p
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
                         }
-                        value={formik.values.active === true ? 'active' : 'inactive'}
+                        value={
+                            formik.values.active === true
+                                ? "active"
+                                : "inactive"
+                        }
                     />
                 </GridItem>
+
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"

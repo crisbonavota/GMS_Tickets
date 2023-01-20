@@ -1,9 +1,8 @@
 import { Text } from "@chakra-ui/react";
-import { useMemo } from "react";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
-import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { Employee } from "../../../../api/types";
+import { getResource } from "../../../../api/api";
+import { LegacyUserPublic } from "../../../../api/types";
 
 interface Props {
     fileNumber: number;
@@ -13,40 +12,29 @@ const ImportPreviewEmployee = ({ fileNumber }: Props) => {
     const getAuthHeader = useAuthHeader();
 
     const {
-        data: employees,
+        data: legacyUser,
         isSuccess,
         isLoading,
     } = useQuery(
-        ["employees"],
+        ["legacyUser", fileNumber],
         () =>
-            getResourceListFilteredAndPaginated<Employee>(
-                "employees",
-                getAuthHeader(),
-                [],
-                [],
-                { field: "legacyUser.fullName", isAscending: true },
-                0,
-                10000
+            getResource<LegacyUserPublic>(
+                `users/legacy/${fileNumber}`,
+                getAuthHeader()
             ),
         {
             select: (r) => r.data,
+            retry: false,
+            refetchOnWindowFocus: false,
         }
     );
 
-    const employee = useMemo(
-        () =>
-            isSuccess
-                ? employees.find((e) => e.fileNumber == fileNumber)
-                : null,
-        [isSuccess, employees, fileNumber]
-    );
-
     return (
-        <Text fontStyle={isLoading || !employee ? "italic" : "normal"}>
+        <Text fontStyle={isLoading || !isSuccess ? "italic" : "normal"}>
             {isLoading
                 ? "Loading..."
-                : employee
-                ? employee.legacyUser.fullName
+                : isSuccess
+                ? legacyUser.fullName
                 : "Not found"}
         </Text>
     );

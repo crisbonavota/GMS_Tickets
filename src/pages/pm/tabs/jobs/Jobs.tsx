@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { VStack } from "@chakra-ui/react";
+import { Flex, VStack } from "@chakra-ui/react";
 import TabHeader from "./../TabHeader";
 import { useCallback } from "react";
 import { BsFillBriefcaseFill } from "react-icons/bs";
@@ -13,6 +13,7 @@ import { Project } from "../../../../api/types";
 import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeTotalPages, changeSearch } from "../../../../redux/slices/pm";
 import { parseTotalPagesHeader } from "../../../../utils/query";
+import ExportJobs from "./ExportJobs";
 
 const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
     if (type.project && type.proposal) return undefined;
@@ -91,7 +92,10 @@ const Jobs = () => {
 
     return (
         <VStack w={"full"} alignItems={"flex-start"} spacing={3}>
-            <TabHeader label={"Jobs"} icon={BsFillBriefcaseFill} />
+            <Flex justifyContent={"space-between"} width={"100%"}>
+                <TabHeader label={"Jobs"} icon={BsFillBriefcaseFill} />
+                <ExportJobs />
+            </Flex>
             <FiltersBar
                 onSearchChange={onSearch}
                 search={state.search}

@@ -19,8 +19,6 @@ const EmploymentInfoDetailedView = ({
       borderBottomRightRadius={"1.18rem"}
       boxShadow={"2xl"}
       padding={"2rem"}
-      marginLeft={"12rem"}
-      marginRight={"12rem"}
     >
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
         <UserDetailedViewBodyComponent

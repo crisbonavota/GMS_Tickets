@@ -1,10 +1,9 @@
 import { Box, GridItem, Text } from "@chakra-ui/react";
 
-
 interface Props {
   resource?: string;
   label: string;
-};
+}
 
 const EmployeeDetailedViewBodyComponent = ({ resource, label }: Props) => {
   return (

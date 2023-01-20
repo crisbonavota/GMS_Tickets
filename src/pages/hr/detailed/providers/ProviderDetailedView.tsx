@@ -21,7 +21,7 @@ const ProviderDetailedView = () => {
   return (
       <VStack w={"full"}>
         <VStack alignItems={"flex-start"} w={"full"} >
-          <HStack alignItems={"center"} fontSize={"3xl"} p={1} marginLeft={"10%"}>
+          <HStack alignItems={"center"} fontSize={"3xl"} p={1} marginLeft={"10%"} marginTop={"2rem"}>
             <BsFillPersonFill color={"#3B8A7F"} />
             <Text color={"#448F85"} fontWeight={"bold"}>
               PROVIDER DETAILS

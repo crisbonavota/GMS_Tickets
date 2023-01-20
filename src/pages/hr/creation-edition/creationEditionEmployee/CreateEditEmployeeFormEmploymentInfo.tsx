@@ -36,7 +36,8 @@ interface Props {
 const validationSchema = Yup.object().shape({
   salaryCurrencyId: Yup.number().nullable(),
   medicalCoverageId: Yup.number().nullable(),
-  businessUnitId: Yup.number().required("Business unit is required"),
+  businessUnitId: Yup.number().nullable().required("Business unit is required"),
+  positionId: Yup.number().nullable(),
 });
 
 const initialValues = {

@@ -38,6 +38,7 @@ const validationSchema = Yup.object().shape({
     .email("Invalid email format"),
   entryDate: Yup.date().nullable(),
   afipid: Yup.string().nullable(),
+  mobilePhone: Yup.string().nullable(),
 });
 
 const initialValues = {
@@ -46,7 +47,7 @@ const initialValues = {
   lastName: "",
   email: "",
   afipId: "",
-  entryDate: "",
+  entryDate: moment().format("yyyy-MM-DD"),
   birthDate: "",
   gender: true,
   active: true,

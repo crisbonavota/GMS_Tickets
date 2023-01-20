@@ -30,6 +30,7 @@ const validationSchema = Yup.object().shape({
   city: Yup.string().nullable(),
   birthCountryId: Yup.number().nullable(),
   countryId: Yup.number().nullable(),
+  postalCode: Yup.string().nullable(),
 });
 
 const initialValues = {

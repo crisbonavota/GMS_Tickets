@@ -6,6 +6,8 @@ import {
     KeyValuePair,
     Currency,
     PatchDocumentItem,
+    MedicalCoverage,
+    GenderTypes,
 } from "./types";
 import {
     insertStandardFilters,
@@ -155,6 +157,43 @@ export const getUpdateResourceFromType = (updateType: number) => {
         return "updates/structure";
     }
     return "updates/unknown";
+};
+
+export const getGenders: () => GenderTypes[] = () => {
+    return [
+        {
+            value: false,
+            label: "Female",
+        },
+        {
+            value: true,
+            label: "Male",
+        },
+    ];
+};
+export const getMedicalCoverages: () => MedicalCoverage[] = () => {
+    return [
+        {
+            id: 1,
+            name: "OSDE(Con Pool)",
+        },
+        {
+            id: 2,
+            name: "OSDE(Sin Pool)",
+        },
+        {
+            id: 3,
+            name: "Galeno",
+        },
+        {
+            id: 4,
+            name: "Particular",
+        },
+        {
+            id: 5,
+            name: "Osecac",
+        },
+    ];
 };
 
 export const getCurrencies: () => Currency[] = () => {

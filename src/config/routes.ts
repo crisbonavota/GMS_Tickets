@@ -20,17 +20,10 @@ export const routes = [
         logo: TtReports,
     },
     {
-        label: "Employees",
+        label: "Human Resources",
         allowedRoles: ["hr-employees"],
-        description: "See a list of employees and edit their details",
-        path: "/human-resources/employees",
-        logo: HrEmployees,
-    },
-    {
-        label: "Providers",
-        allowedRoles: ["hr-employees"],
-        description: "See a list of providers and edit their details",
-        path: "/human-resources/providers",
+        description: "Manage users and teams",
+        path: "/human-resources",
         logo: HrEmployees,
     },
     {

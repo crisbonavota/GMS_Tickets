@@ -10,12 +10,13 @@ interface Props extends InputProps {
     label: string;
     error?: string;
     touched?: boolean;
+    isRequired?: boolean;
 }
 
 const FormikInput = (props: Props) => {
-    const { label, error, touched, ...rest } = props;
+    const { label, error, touched, isRequired, ...rest } = props;
     return (
-        <FormControl isInvalid={Boolean(error) && touched}>
+        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
             <FormLabel htmlFor={props.name}>{label}</FormLabel>
             <Input {...rest} id={props.id ? props.id : props.name} />
             <FormErrorMessage>{error}</FormErrorMessage>

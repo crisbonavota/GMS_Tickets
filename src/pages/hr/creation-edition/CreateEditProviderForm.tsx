@@ -16,12 +16,10 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Provider } from "../../../api/types";
 import { patchResource } from "../../../api/api";
-import {
-    postResource,
-} from "../../../api/api";
+import { postResource } from "../../../api/api";
 import StatusField from "../../pm/creation-edition/StatusField";
-import FormikTextInput from "../../pm/creation-edition/FormikTextInput";
 import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
+import FormikInput from "../../../components/FormikInput";
 
 interface Props {
     onClose: () => void;
@@ -32,7 +30,9 @@ interface Props {
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
-    email: Yup.string().required("Email is required").email("Invalid email format"),
+    email: Yup.string()
+        .required("Email is required")
+        .email("Invalid email format"),
     businessUnitId: Yup.number().required("Business unit is required"),
     afipId: Yup.string().nullable(),
     businessName: Yup.string().nullable(),
@@ -60,7 +60,10 @@ const editInitialValuesToFormikValues = (editInitialValues?: Provider) =>
     editInitialValues
         ? {
               ...editInitialValues,
-              firstName: editInitialValues.firstName.replace(` (${editInitialValues.id})`, ""),
+              firstName: editInitialValues.firstName.replace(
+                  ` (${editInitialValues.id})`,
+                  ""
+              ),
               businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
               active: editInitialValues?.active,
           }
@@ -101,13 +104,14 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
         });
     };
 
-    const { mutateAsync: createProvider, isLoading: creationLoading } = useMutation(
-        () => postResource("providers", getAuthHeader(), formik.values),
-        {
-            onSuccess: onSuccess,
-            onError: onError,
-        }
-    );
+    const { mutateAsync: createProvider, isLoading: creationLoading } =
+        useMutation(
+            () => postResource("providers", getAuthHeader(), formik.values),
+            {
+                onSuccess: onSuccess,
+                onError: onError,
+            }
+        );
 
     const { mutateAsync: editProvider, isLoading: editLoading } = useMutation(
         () =>
@@ -132,10 +136,13 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         <FormControl
                             isRequired
                             isInvalid={
-                                !!formik.errors.fileNumber && !!formik.touched.fileNumber
+                                !!formik.errors.fileNumber &&
+                                !!formik.touched.fileNumber
                             }
                         >
-                            <FormLabel fontWeight={"bold"}>File Number</FormLabel>
+                            <FormLabel fontWeight={"bold"}>
+                                File Number
+                            </FormLabel>
                             <Input
                                 name="fileNumber"
                                 id="fileNumber"
@@ -143,12 +150,14 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                             />
-                            <FormErrorMessage>{formik.errors?.fileNumber}</FormErrorMessage>
+                            <FormErrorMessage>
+                                {formik.errors?.fileNumber}
+                            </FormErrorMessage>
                         </FormControl>
                     </GridItem>
                 )}
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="firstName"
                         id="firstName"
                         value={formik.values.firstName}
@@ -159,7 +168,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="lastName"
                         id="lastName"
                         value={formik.values.lastName}
@@ -170,7 +179,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="afipId"
                         id="afipId"
                         value={formik.values.afipId}
@@ -181,7 +190,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="businessName"
                         id="businessName"
                         value={formik.values.businessName}
@@ -192,7 +201,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="email"
                         id="email"
                         value={formik.values.email}
@@ -203,7 +212,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="phone"
                         id="phone"
                         value={formik.values.phone}
@@ -214,7 +223,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="address"
                         id="address"
                         value={formik.values.address}
@@ -225,7 +234,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="city"
                         id="city"
                         value={formik.values.city}
@@ -245,8 +254,10 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         defaultValue={
                             editInitialValues
                                 ? {
-                                      value: editInitialValues.legacyUser.businessUnit.id,
-                                      label: editInitialValues.legacyUser.businessUnit.name,
+                                      value: editInitialValues.legacyUser
+                                          .businessUnit.id,
+                                      label: editInitialValues.legacyUser
+                                          .businessUnit.name,
                                   }
                                 : undefined
                         }
@@ -257,7 +268,11 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
                         }
-                        value={formik.values.active === true ? 'active' : 'inactive'}
+                        value={
+                            formik.values.active === true
+                                ? "active"
+                                : "inactive"
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

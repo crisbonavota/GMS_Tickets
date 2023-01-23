@@ -12,11 +12,9 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { BusinessUnit } from "../../../api/types";
 import { patchResource } from "../../../api/api";
-import {
-    postResource,
-} from "../../../api/api";
-import FormikTextInput from "../../pm/creation-edition/FormikTextInput";
+import { postResource } from "../../../api/api";
 import StatusField from "../../pm/creation-edition/StatusField";
+import FormikInput from "../../../components/FormikInput";
 
 interface Props {
     onClose: () => void;
@@ -38,12 +36,19 @@ const editInitialValuesToFormikValues = (editInitialValues?: BusinessUnit) =>
     editInitialValues
         ? {
               ...editInitialValues,
-              name: editInitialValues.name.replace(` (${editInitialValues.id})`, ""),
+              name: editInitialValues.name.replace(
+                  ` (${editInitialValues.id})`,
+                  ""
+              ),
               active: editInitialValues?.active,
           }
         : undefined;
 
-const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) => {
+const CreateEditBusinessUnitForm = ({
+    onClose,
+    editInitialValues,
+    id,
+}: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
@@ -62,7 +67,9 @@ const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) =
         queryClient.resetQueries("businessUnits");
         queryClient.resetQueries(`businessUnit-${id}`);
         toast({
-            title: editInitialValues ? "Business unit updated" : "Business unit created",
+            title: editInitialValues
+                ? "Business unit updated"
+                : "Business unit created",
             status: "success",
             isClosable: true,
         });
@@ -105,7 +112,7 @@ const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) =
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="name"
                         id="name"
                         value={formik.values.name}
@@ -120,7 +127,11 @@ const CreateEditBusinessUnitForm = ({ onClose, editInitialValues, id }: Props) =
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
                         }
-                        value={formik.values.active === true ? 'active' : 'inactive'}
+                        value={
+                            formik.values.active === true
+                                ? "active"
+                                : "inactive"
+                        }
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

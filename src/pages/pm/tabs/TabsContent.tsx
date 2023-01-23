@@ -2,7 +2,6 @@ import { Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 import Clients from './clients/Clients';
 import Accounts from './accounts/Accounts';
 import Jobs from './jobs/Jobs';
-import ExportJobs from './jobs/ExportJobs';
 
 interface Props {
     tabIndex: number;
@@ -34,7 +33,6 @@ const TabsContent = ({ tabIndex, setTabIndex }: Props) => {
                 </TabPanel>
                 <TabPanel>
                     <Jobs />
-                    <ExportJobs />
                 </TabPanel>
             </TabPanels>
         </Tabs>

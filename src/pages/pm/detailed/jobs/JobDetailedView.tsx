@@ -11,6 +11,8 @@ import { Project } from "../../../../api/types";
 import LoadingOverlay from "../../../../components/LoadingOverlay";
 import EditButton from "../EditButton";
 import CreateEditJobForm from "../../creation-edition/CreateEditJobForm";
+import IndirectCostsModal from "./IndirectCosts/IndirectCostsModal";
+import RevenueCalculationsModal from "./RevenueCalculations/RevenueCalculationsModal";
 
 const JobDetailedView = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -40,7 +42,11 @@ const JobDetailedView = () => {
             >
                 <HStack w={"full"} justifyContent={"space-between"}>
                     <Heading>{job.name}</Heading>
-                    <HStack spacing={2}>
+                    <Flex
+                        gap={2}
+                        flexDir={{ base: "column", md: "row" }}
+                        alignItems={{ base: "flex-start", md: "center" }}
+                    >
                         <EditButton
                             modalBody={
                                 <CreateEditJobForm
@@ -53,8 +59,14 @@ const JobDetailedView = () => {
                             isOpen={isOpen}
                             onOpen={onOpen}
                         />
-                        <CloneButton resource="projects" id={job.id} route="jobs"/>
-                    </HStack>
+                        <RevenueCalculationsModal projectId={job.id} />
+                        <IndirectCostsModal projectId={job.id} />
+                        <CloneButton
+                            resource="projects"
+                            id={job.id}
+                            route="jobs"
+                        />
+                    </Flex>
                 </HStack>
                 <Flex
                     w={"full"}

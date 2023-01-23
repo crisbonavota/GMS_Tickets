@@ -137,6 +137,7 @@ export const updateTypesIds = {
     monetaryUpdateTypes: [12, 14, 20, 21, 22],
     resignationUpdateTypes: [16],
     workAccidentUpdateTypes: [2],
+    structureUpdateTypes: [30],
 };
 
 export const getUpdateResourceFromType = (updateType: number) => {
@@ -152,6 +153,9 @@ export const getUpdateResourceFromType = (updateType: number) => {
         return "updates/resignation";
     if (updateTypesIds.workAccidentUpdateTypes.includes(updateType))
         return "updates/work-accident";
+    if (updateTypesIds.structureUpdateTypes.includes(updateType)) {
+        return "updates/structure";
+    }
     return "updates/unknown";
 };
 

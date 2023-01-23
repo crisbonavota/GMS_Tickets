@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import FormikTextInput from "./FormikTextInput";
+import FormikInput from "../../../components/FormikInput";
 import ClientField from "./ClientField";
 import CountryField from "./CountryField";
 import LeadField from "./LeadField";
@@ -50,7 +50,10 @@ const editInitialValuesToFormikValues = (editInitialValues?: Account) =>
     editInitialValues
         ? {
               ...editInitialValues,
-              name: editInitialValues.name.replace(` (${editInitialValues.id})`, ""),
+              name: editInitialValues.name.replace(
+                  ` (${editInitialValues.id})`,
+                  ""
+              ),
               countryId: editInitialValues?.country.id,
               responsibleLegacyUserId:
                   editInitialValues?.responsibleLegacyUser?.id ?? null,
@@ -59,20 +62,27 @@ const editInitialValuesToFormikValues = (editInitialValues?: Account) =>
         : undefined;
 
 const initialValuesIfPredefinedClient = (predefinedClient?: Company) =>
-          initialValues
-          ? {
-            ...initialValues,
-            companyId: predefinedClient?.id,
+    initialValues
+        ? {
+              ...initialValues,
+              companyId: predefinedClient?.id,
           }
-          : undefined;
+        : undefined;
 
-const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClient }: Props) => {
+const CreateEditAccountForm = ({
+    onClose,
+    editInitialValues,
+    id,
+    predefinedClient,
+}: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
     const formik = useFormik({
         initialValues:
-            editInitialValuesToFormikValues(editInitialValues) || initialValuesIfPredefinedClient(predefinedClient) || initialValues,
+            editInitialValuesToFormikValues(editInitialValues) ||
+            initialValuesIfPredefinedClient(predefinedClient) ||
+            initialValues,
         validationSchema,
         onSubmit: async () => {
             if (editInitialValues) await editAccount();
@@ -123,15 +133,16 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
             onError: onError,
         }
     );
-    const alertText = "IMPORTANT: This will set inactive all the jobs related to this account";
+    const alertText =
+        "IMPORTANT: This will set inactive all the jobs related to this account";
 
-    if(predefinedClient) formik.values.companyId === predefinedClient.id;
+    if (predefinedClient) formik.values.companyId === predefinedClient.id;
 
     return (
         <chakra.form onSubmit={formik.handleSubmit} w={"full"}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormikTextInput
+                    <FormikInput
                         name="name"
                         id="name"
                         value={formik.values.name}
@@ -156,10 +167,12 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
                                       label: editInitialValues.company.name,
                                       value: editInitialValues.company.id,
                                   }
-                                : predefinedClient ? {
-                                    label:  predefinedClient.name,
-                                    value: predefinedClient.id,
-                                } : undefined
+                                : predefinedClient
+                                ? {
+                                      label: predefinedClient.name,
+                                      value: predefinedClient.id,
+                                  }
+                                : undefined
                         }
                         preset={predefinedClient !== undefined}
                     />
@@ -200,7 +213,7 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
-                    <FormikTextInput
+                    <FormikInput
                         name="notes"
                         id="notes"
                         value={formik.values.notes}
@@ -215,13 +228,16 @@ const CreateEditAccountForm = ({ onClose, editInitialValues, id, predefinedClien
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
                         }
-                        value={formik.values.active === true ? 'active' : 'inactive'}
+                        value={
+                            formik.values.active === true
+                                ? "active"
+                                : "inactive"
+                        }
                     />
-                    <Text 
-                        paddingTop={2} 
-                        color={"red"}
-                    >
-                        {editInitialValues && formik.values.active === false ? alertText : ""}
+                    <Text paddingTop={2} color={"red"}>
+                        {editInitialValues && formik.values.active === false
+                            ? alertText
+                            : ""}
                     </Text>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

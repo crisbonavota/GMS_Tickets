@@ -21,8 +21,10 @@ import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
 import moment from "moment";
 import { postResource } from "../../../../api/api";
-import ImportFormatPreview from "./ImportFormatPreview";
+import MonetaryFormat from "./MonetaryFormat";
 import ImportPreview from "./ImportPreview";
+import StructureFormat from "./StructureFormat";
+import FormatNotes from "./FormatNotes";
 
 export interface ImportUpdate {
     currency?: string;
@@ -34,6 +36,9 @@ export interface ImportUpdate {
 
 export function ImportButton() {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [updateType, setUpdateType] = useState<
+        "monetary" | "structure" | null
+    >(null);
     const [updates, setUpdates] = useState<ImportUpdate[]>([]);
     const toast = useToast();
     const getAuthHeader = useAuthHeader();
@@ -44,9 +49,16 @@ export function ImportButton() {
             header: true,
             skipEmptyLines: "greedy",
             transformHeader: (h) => h.trim().toLowerCase().replace(/\s/g, ""),
-            transform: (r) => r.replace(",", ".").replace(/-/g, "/"),
-            complete: (results) =>
-                setUpdates(results.data.map((u) => ({ ...u, valid: false }))),
+            transform: (r) =>
+                r.replace(",", ".").replace(/-/g, "/").replace("%", ""),
+            complete: (results) => {
+                setUpdates(results.data.map((u) => ({ ...u, valid: false })));
+                setUpdateType(
+                    results.data.some((u) => u.currency)
+                        ? "monetary"
+                        : "structure"
+                );
+            },
             error: (error) => {
                 toast({
                     title: "Error parsing the file, try again",
@@ -63,7 +75,7 @@ export function ImportButton() {
     const { mutateAsync: createUpdates, isLoading } = useMutation(
         async () =>
             await postResource(
-                "updates/bulk",
+                `updates/${updateType}/bulk`,
                 getAuthHeader(),
                 updates.map((u) => {
                     return {
@@ -90,7 +102,6 @@ export function ImportButton() {
                 queryClient.resetQueries("updatesReport");
             },
             onError: (err: any) => {
-                onClose();
                 toast({
                     title: "Error importing, try again later",
                     description: err.message | err,
@@ -124,7 +135,9 @@ export function ImportButton() {
             <Modal isOpen={isOpen} onClose={onClose} scrollBehavior="inside">
                 <ModalOverlay />
                 <ModalContent maxW={"fit-content"}>
-                    <ModalHeader>Upload file</ModalHeader>
+                    <ModalHeader>
+                        Bulk import hourly cost/structure updates
+                    </ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
                         <VStack spacing={5} alignItems={"flex-start"}>
@@ -138,9 +151,16 @@ export function ImportButton() {
                                 <ImportPreview
                                     updates={updates}
                                     setUpdates={setUpdates}
+                                    updateType={updateType}
                                 />
                             )}
-                            {!updates.length && <ImportFormatPreview />}
+                            {!updates.length && (
+                                <VStack w="full" spacing={5}>
+                                    <MonetaryFormat />
+                                    <StructureFormat />
+                                    <FormatNotes />
+                                </VStack>
+                            )}
                         </VStack>
                     </ModalBody>
                     <ModalFooter>

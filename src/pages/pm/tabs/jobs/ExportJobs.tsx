@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { useAuthHeader } from "react-auth-kit";
+import { BiExport } from "react-icons/bi";
 import { useQuery } from "react-query";
 import { getReportFiltered } from "../../../../api/api";
 import { useAppSelector } from "../../../../redux/hooks";
@@ -55,15 +56,16 @@ const ExportJobs = () => {
     return (
         <>
             <Button
-                color={"white"}
-                bgColor={"#FF4500"}
-                _hover={{bg: 'FF4500'}}
-                w={"full"}
+                leftIcon={<BiExport color={"#3B8A7F"} size={"2rem"} />}
+                variant={"ghost"}
+                boxShadow={"none !important"}
+                fontSize={"0.8rem"}
+                textAlign={"center"}
                 isLoading={reportQuery.isLoading}
                 disabled={reportQuery.isError}
                 onClick={() => onExport(reportQuery.data?.data)}
             >
-                Export
+                Export Project List
             </Button>
         </>
     );

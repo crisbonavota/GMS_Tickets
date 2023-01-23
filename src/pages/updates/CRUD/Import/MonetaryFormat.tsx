@@ -9,10 +9,12 @@ import {
     Td,
 } from "@chakra-ui/react";
 
-const ImportFormatPreview = () => {
+const MonetaryFormat = () => {
     return (
-        <VStack alignItems={"flex-start"}>
-            <Text fontSize={"sm"}>Expected format</Text>
+        <VStack alignItems={"flex-start"} w="full">
+            <Text fontSize={"sm"}>
+                Expected format for hourly cost updates{" "}
+            </Text>
             <Table>
                 <Thead>
                     <Tr>
@@ -43,19 +45,8 @@ const ImportFormatPreview = () => {
                     </Tr>
                 </Tbody>
             </Table>
-            <Text fontSize={"sm"}>Colums can be in any order</Text>
-            <Text fontSize={"sm"}>
-                Headers are case insensitive (they can be on upper/lower case)
-            </Text>
-            <Text fontSize={"sm"}>
-                Date must follow DD/MM/YYYY format, separators can either be an
-                slash(/) or a middle dash(-)
-            </Text>
-            <Text fontSize={"sm"}>
-                Amount decimal separator can be either a point(.) or a comma(,)
-            </Text>
         </VStack>
     );
 };
 
-export default ImportFormatPreview;
+export default MonetaryFormat;

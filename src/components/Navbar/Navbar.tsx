@@ -5,6 +5,7 @@ import NavbarUser from "./NavbarUser";
 import { routes } from "../../config/routes";
 import { ApplicationUserPrivate } from "../../api/types";
 import Tonic3Logo from "../../assets/images/tonic3-logo.webp";
+import CurrenciesExchangeModal from "./CurrenciesExchange/CurrenciesExchangeModal";
 
 export function Navbar() {
     const currentUser = useAuthUser()() as ApplicationUserPrivate;
@@ -28,9 +29,14 @@ export function Navbar() {
                 justifyContent={"space-evenly"}
                 alignItems={"center"}
             >
-                <Link href={"/"} h={"full"}>
-                    <Image src={Tonic3Logo} alt={"Tonic3"} h={"full"} />
-                </Link>
+                <HStack spacing={5} h="full" alignItems={"center"}>
+                    <Link href={"/"} h={"full"}>
+                        <Image src={Tonic3Logo} alt={"Tonic3"} h={"full"} />
+                    </Link>
+                    {currentUser?.roles.includes("admin") && (
+                        <CurrenciesExchangeModal />
+                    )}
+                </HStack>
                 <Hide below="md">
                     <HStack h={"full"}>
                         {navRoutes.map((route) => (

@@ -219,9 +219,9 @@ export interface City {
 
 export interface Address {
   street: string;
-  number: string;
+  altura: string;
   floor: string;
-  department: string;
+  number: string;
 }
 
 export interface Employee {

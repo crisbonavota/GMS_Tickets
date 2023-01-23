@@ -17,6 +17,7 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
 import { useEffect } from "react";
+import FormikInput from "../../../../components/FormikInput";
 
 interface Props {
   onClose: () => void;
@@ -36,7 +37,10 @@ const validationSchema = Yup.object().shape({
 const initialValues = {
   countryId: 0,
   birthCountryId: 0,
-  address: null,
+  street: "",
+  department: "",
+  floor: "",
+  number: "",
   city: "",
   postalCode: "",
 };
@@ -46,7 +50,10 @@ let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
     ? {
         birthCountryId: editInitialValues?.birthCountry?.id,
         countryId: editInitialValues?.country?.id,
-        address: editInitialValues.address || "",
+        street: editInitialValues.address?.street,
+        department: editInitialValues.address?.number,
+        floor: editInitialValues.address?.floor,
+        number: editInitialValues.address?.altura,
         city: editInitialValues.city || "",
         postalCode: editInitialValues.postalCode || "",
       }
@@ -92,7 +99,7 @@ const CrtEditEmployeeFormLocationInfo = ({
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Nationality</FormLabel>
+          <FormLabel>Nationality</FormLabel>
           <Select
             name="birthCountryId"
             id="birthCountryId"
@@ -111,7 +118,7 @@ const CrtEditEmployeeFormLocationInfo = ({
           </Select>
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Country of Residence</FormLabel>
+          <FormLabel>Country of Residence</FormLabel>
           <Select
             name="countryId"
             id="countryId"
@@ -130,37 +137,75 @@ const CrtEditEmployeeFormLocationInfo = ({
           </Select>
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Address</FormLabel>
-          <Input
-            name="address"
-            id="address"
-            value={formik.values.address?.street}
+          <FormikInput
+            label="Address Line 1 / Street"
+            isRequired={false}
+            name={"street"}
+            id={"street"}
+            value={formik.values.street}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            touched={formik.touched.street}
+            error={formik.errors.street}
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-            City
-          </FormLabel>
-          <Input
-            name="city"
-            id="city"
+          <FormikInput
+            label="Address Line 2 / Number"
+            isRequired={false}
+            name={"number"}
+            id={"number"}
+            value={formik.values.number}
+            onChange={formik.handleChange}
+            touched={formik.touched.number}
+            error={formik.errors.number}
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormikInput
+            label="Address Line 3 / Floor"
+            isRequired={false}
+            name={"floor"}
+            id={"floor"}
+            value={formik.values.floor}
+            onChange={formik.handleChange}
+            touched={formik.touched.floor}
+            error={formik.errors.floor}
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormikInput
+            label="Address Line 4 / Department"
+            isRequired={false}
+            name={"department"}
+            id={"department"}
+            value={formik.values.department}
+            onChange={formik.handleChange}
+            touched={formik.touched.department}
+            error={formik.errors.department}
+          />
+        </GridItem>
+        <GridItem colSpan={1}>
+          <FormikInput
+            label="City"
+            isRequired={false}
+            name={"city"}
+            id={"city"}
             value={formik.values.city}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            touched={formik.touched.city}
+            error={formik.errors.city}
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-            Zip Code
-          </FormLabel>
-          <Input
-            name="postalCode"
-            id="postalCode"
+          <FormikInput
+            label="Zip Code"
+            isRequired={false}
+            name={"postalCode"}
+            id={"postalCode"}
             value={formik.values.postalCode}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            touched={formik.touched.postalCode}
+            error={formik.errors.postalCode}
           />
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>

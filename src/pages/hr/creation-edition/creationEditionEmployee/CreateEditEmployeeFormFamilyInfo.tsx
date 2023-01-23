@@ -15,6 +15,7 @@ import { Employee } from "../../../../api/types";
 import { employeeFamilyInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import { useEffect } from "react";
+import FormikInput from "../../../../components/FormikInput";
 
 interface Props {
   onClose: () => void;
@@ -74,36 +75,28 @@ const CrtEditEmployeeFormFamilyInfo = ({
     <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         <GridItem colSpan={1}>
-          <FormControl
-            isInvalid={
-              !!formik.errors.maritalStatus && !!formik.touched.maritalStatus
-            }
-          >
-            <FormLabel fontWeight={"bold"}>Marital Status</FormLabel>
-            <Input
-              name="maritalStatus"
-              id="maritalStatus"
-              value={formik.values.maritalStatus}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.maritalStatus}</FormErrorMessage>
-          </FormControl>
+          <FormikInput
+            label="Marital Status"
+            isRequired={false}
+            name={"maritalStatus"}
+            id={"maritalStatus"}
+            value={formik.values.maritalStatus}
+            onChange={formik.handleChange}
+            touched={formik.touched.maritalStatus}
+            error={formik.errors.maritalStatus}
+          />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormControl
-            isInvalid={!!formik.errors.childs && !!formik.touched.childs}
-          >
-            <FormLabel fontWeight={"bold"}>Children</FormLabel>
-            <Input
-              name="childs"
-              id="childs"
-              value={formik.values.childs}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.childs}</FormErrorMessage>
-          </FormControl>
+          <FormikInput
+            label="Children"
+            isRequired={false}
+            name={"childs"}
+            id={"childs"}
+            value={formik.values.childs}
+            onChange={formik.handleChange}
+            touched={formik.touched.childs}
+            error={formik.errors.childs}
+          />
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <HStack

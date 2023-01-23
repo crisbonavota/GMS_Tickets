@@ -19,6 +19,7 @@ import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
 import { useEffect } from "react";
+import FormikInput from "../../../../components/FormikInput";
 
 interface Props {
   onClose: () => void;
@@ -110,74 +111,56 @@ const CrtEditEmployeeFormPersonalInfo = ({
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
         {editInitialValues && (
           <GridItem colSpan={1}>
-            <FormControl
-              isRequired
-              isInvalid={
-                !!formik.errors.fileNumber && !!formik.touched.fileNumber
-              }
-            >
-              <FormLabel fontWeight={"bold"}>File Number</FormLabel>
-              <Input
-                name="fileNumber"
-                id="fileNumber"
-                value={formik.values.fileNumber}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-              <FormErrorMessage>{formik.errors?.fileNumber}</FormErrorMessage>
-            </FormControl>
+            <FormikInput
+              label="File Number"
+              isRequired={true}
+              name={"fileNumber"}
+              id={"fileNumber"}
+              value={formik.values.fileNumber}
+              onChange={formik.handleChange}
+              touched={formik.touched.fileNumber}
+              error={formik.errors.fileNumber}
+            />
           </GridItem>
         )}
         <GridItem colSpan={1}>
-          <FormControl
-            isRequired
-            isInvalid={!!formik.errors.firstName && !!formik.touched.firstName}
-          >
-            <FormLabel fontWeight={"bold"}>First Name</FormLabel>
-            <Input
-              name="firstName"
-              id="firstName"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.firstName}</FormErrorMessage>
-          </FormControl>
+          <FormikInput
+            label={"Name(s)"}
+            isRequired={true}
+            name="firstName"
+            id="firstName"
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            touched={formik.touched.firstName}
+            error={formik.errors.firstName}
+          />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormControl
-            isRequired
-            isInvalid={!!formik.errors.lastName && !!formik.touched.lastName}
-          >
-            <FormLabel fontWeight={"bold"}>Last Name</FormLabel>
-            <Input
-              name="lastName"
-              id="lastName"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.lastName}</FormErrorMessage>
-          </FormControl>
+          <FormikInput
+            label={"Last Name(s)"}
+            isRequired={true}
+            name="lastName"
+            id="lastName"
+            value={formik.values.lastName}
+            onChange={formik.handleChange}
+            touched={formik.touched.lastName}
+            error={formik.errors.lastName}
+          />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormControl
-            isRequired
-            isInvalid={!!formik.errors.email && !!formik.touched.email}
-          >
-            <FormLabel fontWeight={"bold"}>Email</FormLabel>
-            <Input
-              name="email"
-              id="email"
-              value={formik.values.email}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-            <FormErrorMessage>{formik.errors?.email}</FormErrorMessage>
-          </FormControl>
+          <FormikInput
+            label={"Email"}
+            isRequired={true}
+            name="email"
+            id="email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            touched={formik.touched.email}
+            error={formik.errors.email}
+          />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Date of Admission</FormLabel>
+          <FormLabel>Date of Admission</FormLabel>
           <Input
             type="date"
             name="entryDate"
@@ -188,34 +171,30 @@ const CrtEditEmployeeFormPersonalInfo = ({
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <FormLabel fontWeight={"bold"}>Status</FormLabel>
+          <FormLabel>Status</FormLabel>
           <Select>
             <option>Active</option>
             <option>Inactive</option>
           </Select>
         </GridItem>
         <GridItem colSpan={1}>
-          <FormControl
-            isInvalid={!!formik.errors.afipId && !!formik.touched.afipId}
-          >
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              DNI/CUIT/CUIL/Social Number
-            </FormLabel>
-            <Input
-              name="afipId"
-              id="afipId"
-              value={formik.values.afipId}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-          </FormControl>
+          <FormikInput
+            label={"DNI/CUIT/CUIL/Social Nº"}
+            isRequired={false}
+            name="afipId"
+            id="afipId"
+            value={formik.values.afipId}
+            onChange={formik.handleChange}
+            touched={formik.touched.afipId}
+            error={formik.errors.afipId}
+          />
         </GridItem>
         <GridItem colSpan={1}>
           <FormControl
             isRequired
             isInvalid={!!formik.errors.gender && !!formik.touched.gender}
           >
-            <FormLabel fontWeight={"bold"}>Gender</FormLabel>
+            <FormLabel>Gender</FormLabel>
             <Select
               name="gender"
               id="gender"
@@ -238,7 +217,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
             isRequired
             isInvalid={!!formik.errors.birthDate && !!formik.touched.birthDate}
           >
-            <FormLabel fontWeight={"bold"}>Date of Birth</FormLabel>
+            <FormLabel>Date of Birth</FormLabel>
             <Input
               type="date"
               name="birthDate"
@@ -251,20 +230,16 @@ const CrtEditEmployeeFormPersonalInfo = ({
           </FormControl>
         </GridItem>
         <GridItem colSpan={1}>
-          <FormControl
-            isInvalid={!!formik.errors.mobilePhone && !!formik.touched.mobilePhone}
-          >
-            <FormLabel fontWeight={"bold"} fontSize={"sm"}>
-              Mobile Phone
-            </FormLabel>
-            <Input
-              name="mobilePhone"
-              id="mobilePhone"
-              value={formik.values.mobilePhone}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
-          </FormControl>
+          <FormikInput
+            label={"Mobile Phone"}
+            isRequired={false}
+            name="mobilePhone"
+            id="mobilePhone"
+            value={formik.values.mobilePhone}
+            onChange={formik.handleChange}
+            touched={formik.touched.mobilePhone}
+            error={formik.errors.mobilePhone}
+          />
         </GridItem>
         <GridItem colSpan={{ base: 1, md: 2 }}>
           <HStack

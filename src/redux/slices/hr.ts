@@ -41,7 +41,10 @@ interface EmployeePersonalInfoValues {
 interface EmployeeLocationValues {
   countryId: number;
   birthCountryId: number;
-  address: string;
+  street: string,
+  department: string,
+  floor: string,
+  number: string,
   city: string;
   postalCode: string;
 }
@@ -120,7 +123,10 @@ const initialState: HumanResourcesState = {
   crtEmployeeLocationInfo: {
     countryId: 0,
     birthCountryId: 0,
-    address: "",
+    street: "",
+    department: "",
+    floor: "",
+    number: "",
     city: "",
     postalCode: "",
   },

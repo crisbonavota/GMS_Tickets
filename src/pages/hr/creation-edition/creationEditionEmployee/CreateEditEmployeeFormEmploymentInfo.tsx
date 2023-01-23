@@ -164,7 +164,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
               !!formik.touched.salaryCurrencyId
             }
           >
-            <FormLabel fontWeight={"bold"}>Salary Currency</FormLabel>
+            <FormLabel>Salary Currency</FormLabel>
             <Select
               placeholder="Select option"
               name="salaryCurrencyId"
@@ -194,7 +194,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
               !!formik.touched.medicalCoverageId
             }
           >
-            <FormLabel fontWeight={"bold"}>Medical Coverage</FormLabel>
+            <FormLabel>Medical Coverage</FormLabel>
             <Select
               placeholder="Select option"
               name="medicalCoverageId"
@@ -243,11 +243,11 @@ const CrtEditEmployeeFormEmploymentInfo = ({
             touched={formik.touched.positionId}
             defaultValue={
               editInitialValues
-              ? {
-                  value: editInitialValues?.position?.id,
-                  label: editInitialValues?.position?.name,
-                }
-              : undefined
+                ? {
+                    value: editInitialValues?.position?.id,
+                    label: editInitialValues?.position?.name,
+                  }
+                : undefined
             }
           />
         </GridItem>

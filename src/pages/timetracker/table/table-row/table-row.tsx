@@ -65,8 +65,8 @@ export function TableRow({ item, index, withDay }: TableRowProps) {
                 <Heading fontSize={"sm"}>{hoursMinutes}</Heading>
                 {withDay && (
                     <Text fontSize={"sm"}>
-                        {moment(item.date)
-                            .locale(navigator.language)
+                        {moment
+                            .utc(item.date)
                             .format(
                                 navigator.language.includes("en")
                                     ? "MM-DD-YY"

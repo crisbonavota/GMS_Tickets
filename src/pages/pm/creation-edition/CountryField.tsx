@@ -26,7 +26,7 @@ const CountryField = (props: Props) => {
                 <>
                     <option value={0}>Select a country</option>
                     {countries?.map((c) => (
-                        <chakra.option value={c.id}>{c.name}</chakra.option>
+                        <chakra.option key={c.id} value={c.id}>{c.name}</chakra.option>
                     ))}
                 </>
             }

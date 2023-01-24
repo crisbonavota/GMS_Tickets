@@ -9,10 +9,12 @@ import { Box, VStack } from "@chakra-ui/react";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/home/Home";
 import Reports from "./pages/reports/Reports";
-import Employees from "./pages/employees/Employees";
 import Updates from "./pages/updates/Updates";
 import Timetracker from "./pages/timetracker/Timetracker";
-import Providers from "./pages/providers/Providers";
+import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
+import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
+import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
+
 
 const signInPath = "/sign-in";
 
@@ -55,24 +57,6 @@ const App = () => {
                     />
 
                     <Route
-                        path="/human-resources/employees"
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Employees />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route
-                        path="/human-resources/providers"
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Providers />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route
                         path="/human-resources/updates"
                         element={
                             <RequireAuth loginPath={signInPath}>
@@ -110,6 +94,31 @@ const App = () => {
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <JobDetailedView />
+                            </RequireAuth>
+                        }
+                    />
+                    
+                     <Route
+                        path={"/human-resources"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <HumanResourcesTabView />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"/human-resources/employees/:id"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <EmployeeDetailedView />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"/human-resources/providers/:id"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <ProviderDetailedView />
                             </RequireAuth>
                         }
                     />

@@ -9,7 +9,6 @@ import {
 import moment from "moment";
 import { TimetrackItem } from "../../../../api/types";
 import {
-    momentToLocaleMoment,
     momentToLocaleDateString,
     hoursToHHMMstring,
 } from "../../../../utils/datetime";
@@ -34,11 +33,9 @@ const WeeklyTabAccordionItem = ({ dayOfWeek }: Props) => {
                 >
                     <HStack justifyContent={"space-between"} w={"full"} pe={2}>
                         <Text as={"span"}>
-                            {momentToLocaleMoment(day)
-                                .format("ddd")
-                                .toUpperCase()}
+                            {moment.utc(day).format("ddd").toUpperCase()}
                             &nbsp;-&nbsp;
-                            {momentToLocaleDateString(day)}
+                            {momentToLocaleDateString(moment.utc(day))}
                         </Text>
                         <Text fontSize={"md"} fontWeight={"bold"}>
                             {hoursToHHMMstring(

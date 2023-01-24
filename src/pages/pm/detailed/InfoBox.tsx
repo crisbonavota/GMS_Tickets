@@ -7,12 +7,13 @@ const InfoBox = (props: BoxProps) => {
 interface InfoTitleProps {
     title: string;
     content?: string;
+    color?: string;
 }
 
-export const InfoTitle = ({ title, content }: InfoTitleProps) => {
+export const InfoTitle = ({ title, content, color }: InfoTitleProps) => {
     return (
         <VStack alignItems={'flex-start'} spacing={2}>
-            <Text fontSize={'md'} color={'#FBEAC0'}>
+            <Text fontSize={'md'} color={color ||'#FBEAC0'}>
                 {title}
             </Text>
             <Text fontSize={'lg'} color={'white'} fontWeight={'bold'}>

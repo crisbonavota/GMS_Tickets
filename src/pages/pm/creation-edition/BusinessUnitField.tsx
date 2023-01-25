@@ -15,9 +15,10 @@ interface Props {
     error?: string;
     touched?: boolean;
     defaultValue?: { label: string; value: number };
+    isRequired?: boolean;
 }
 
-const BusinessUnitField = ({ setter, error, touched, defaultValue }: Props) => {
+const BusinessUnitField = ({ setter, error, touched, defaultValue, isRequired }: Props) => {
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
         const res = await getResourceListFilteredAndPaginated<BusinessUnit>(
@@ -38,7 +39,7 @@ const BusinessUnitField = ({ setter, error, touched, defaultValue }: Props) => {
     };
 
     return (
-        <FormControl isInvalid={Boolean(error) && touched}>
+        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
             <FormLabel htmlFor={"businessUnitId"}>Business Unit</FormLabel>
             <HStack spacing={1}>
                 <AsyncSelect

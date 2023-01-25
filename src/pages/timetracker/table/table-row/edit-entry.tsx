@@ -2,6 +2,8 @@ import { Icon } from "@chakra-ui/react";
 import { MdModeEditOutline } from "react-icons/md";
 import { TimetrackItem } from "../../../../api/types";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { momentToLocaleMoment } from "../../../../utils/datetime";
+import moment from "moment";
 import {
     clearForm,
     clearSelectedForEdit,
@@ -26,7 +28,10 @@ export function EditEntry({ item }: EditEntryProps) {
         } else {
             dispatch({
                 type: setForEdit,
-                payload: item,
+                payload: {
+                    ...item,
+                    date: moment.utc(item.date).format("YYYY-MM-DD"),
+                },
             });
 
             window.scrollTo({

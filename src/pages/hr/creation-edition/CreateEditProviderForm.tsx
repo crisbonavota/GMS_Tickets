@@ -5,10 +5,6 @@ import {
     GridItem,
     HStack,
     Button,
-    FormControl,
-    Input,
-    FormLabel,
-    FormErrorMessage,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
@@ -20,6 +16,7 @@ import { postResource } from "../../../api/api";
 import StatusField from "../../pm/creation-edition/StatusField";
 import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
 import FormikInput from "../../../components/FormikInput";
+import { AxiosError } from "axios";
 
 interface Props {
     onClose: () => void;
@@ -33,7 +30,9 @@ const validationSchema = Yup.object().shape({
     email: Yup.string()
         .required("Email is required")
         .email("Invalid email format"),
-    businessUnitId: Yup.number().required("Business unit is required"),
+    businessUnitId: Yup.number()
+        .nullable()
+        .required("Business unit is required"),
     afipId: Yup.string().nullable(),
     businessName: Yup.string().nullable(),
     phone: Yup.string().nullable(),
@@ -43,7 +42,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-    fileNumber: 0,
+    fileNumber: "",
     firstName: "",
     lastName: "",
     afipId: "",
@@ -86,6 +85,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
 
     const onSuccess = () => {
         queryClient.resetQueries("providers");
+        queryClient.resetQueries("provider");
         queryClient.resetQueries(`provider-${id}`);
         toast({
             title: editInitialValues ? "Provider updated" : "Provider created",
@@ -95,11 +95,11 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
         onClose();
     };
 
-    const onError = (err: unknown) => {
+    const onError = (err: AxiosError) => {
         console.log(err);
         toast({
             title: "Error",
-            description: "Try again later",
+            description: <>{err?.response?.data || "Try again later"}</>,
             status: "error",
         });
     };
@@ -131,35 +131,23 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
     return (
         <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
-                {editInitialValues && (
-                    <GridItem colSpan={1}>
-                        <FormControl
-                            isRequired
-                            isInvalid={
-                                !!formik.errors.fileNumber &&
-                                !!formik.touched.fileNumber
-                            }
-                        >
-                            <FormLabel fontWeight={"bold"}>
-                                File Number
-                            </FormLabel>
-                            <Input
-                                name="fileNumber"
-                                id="fileNumber"
-                                value={formik.values.fileNumber}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                            />
-                            <FormErrorMessage>
-                                {formik.errors?.fileNumber}
-                            </FormErrorMessage>
-                        </FormControl>
-                    </GridItem>
-                )}
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="File Number"
+                        isRequired={true}
+                        name={"fileNumber"}
+                        id={"fileNumber"}
+                        value={formik.values.fileNumber}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.fileNumber}
+                        error={formik.errors.fileNumber}
+                    />
+                </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput
                         name="firstName"
                         id="firstName"
+                        isRequired={true}
                         value={formik.values.firstName}
                         onChange={formik.handleChange}
                         error={formik.errors.firstName}
@@ -171,6 +159,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     <FormikInput
                         name="lastName"
                         id="lastName"
+                        isRequired={true}
                         value={formik.values.lastName}
                         onChange={formik.handleChange}
                         error={formik.errors.lastName}
@@ -204,6 +193,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     <FormikInput
                         name="email"
                         id="email"
+                        isRequired={true}
                         value={formik.values.email}
                         onChange={formik.handleChange}
                         error={formik.errors.email}
@@ -251,6 +241,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         }
                         error={formik.errors.businessUnitId}
                         touched={formik.touched.businessUnitId}
+                        isRequired
                         defaultValue={
                             editInitialValues
                                 ? {

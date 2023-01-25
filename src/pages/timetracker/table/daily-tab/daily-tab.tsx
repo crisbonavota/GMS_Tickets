@@ -33,7 +33,7 @@ const DailyTab = () => {
             getAuthHeader(),
             [
                 {
-                    field: "date",
+                    field: "date_date",
                     value: dailyDate.format("YYYY-MM-DD"),
                 },
             ],

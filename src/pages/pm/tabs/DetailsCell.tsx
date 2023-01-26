@@ -11,7 +11,7 @@ const DetailsCell = ({ id, resource }: Props) => {
     return (
         <Link as={RouterLink} to={`${resource}/${id}`} w={'fit-content'}>
             <HStack w={'fit-content'}>
-                <BsSearch color={'#3B8A7F'} />
+                <BsSearch color={'#3B8A7F'} size={"1.5rem"} />
                 <Text>See Details</Text>
             </HStack>
         </Link>

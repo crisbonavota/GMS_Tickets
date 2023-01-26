@@ -25,6 +25,11 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
+    fileNumber: Yup.number()
+        .typeError("Must be a number")
+        .required("File number is required")
+        .positive("Only positive numbers")
+        .integer("Format not allowed"),
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
     email: Yup.string()
@@ -42,7 +47,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-    fileNumber: "",
+    fileNumber: 0,
     firstName: "",
     lastName: "",
     afipId: "",

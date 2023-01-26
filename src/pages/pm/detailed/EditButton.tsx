@@ -27,10 +27,9 @@ const EditButton = ({
       <Button
         colorScheme={"orange"}
         variant={"ghost"}
-        leftIcon={<BiPencil />}
+        leftIcon={<BiPencil size={"1.5rem"}/>}
         onClick={onOpen}
-      >
-        Edit
+      > Edit
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

@@ -8,6 +8,7 @@ import {
     PatchDocumentItem,
     MedicalCoverage,
     GenderTypes,
+    StatusTypes,
 } from "./types";
 import {
     insertStandardFilters,
@@ -171,6 +172,20 @@ export const getGenders: () => GenderTypes[] = () => {
         },
     ];
 };
+
+export const getStauts: () => StatusTypes[] = () => {
+    return [
+        {
+            value: false,
+            label: "Inactive",
+        },
+        {
+            value: true,
+            label: "Active",
+        },
+    ];
+};
+
 export const getMedicalCoverages: () => MedicalCoverage[] = () => {
     return [
         {

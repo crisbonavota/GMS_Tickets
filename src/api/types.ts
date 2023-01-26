@@ -87,6 +87,11 @@ export interface GenderTypes {
   label: string;
 }
 
+export interface StatusTypes {
+  value: boolean;
+  label: string;
+}
+
 export interface Company {
   id: number;
   name: string;

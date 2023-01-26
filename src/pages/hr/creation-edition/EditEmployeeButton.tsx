@@ -12,14 +12,7 @@ interface Props {
     size?: string;
 }
 
-const EditEmployeeButton = ({
-    employee,
-    tabIndex,
-    setTabIndex,
-    color,
-    variant,
-    size,
-}: Props) => {
+const EditEmployeeButton = ({ employee, tabIndex, setTabIndex }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     return (

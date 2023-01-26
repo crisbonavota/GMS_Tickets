@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useQuery } from "react-query";
 import { Employee } from "../../../../api/types";
-import { getGenders } from "../../../../api/api";
+import { getGenders, getStauts } from "../../../../api/api";
 import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
@@ -29,7 +29,11 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-    fileNumber: Yup.number().required("File number is required"),
+    fileNumber: Yup.number()
+        .typeError("Must be a number")
+        .required("File number is required")
+        .positive("Only positive numbers")
+        .integer("Format not allowed"),
     firstName: Yup.string().required("First name is required"),
     lastName: Yup.string().required("Last name is required"),
     birthDate: Yup.date().required("Date of Birth is required"),
@@ -43,7 +47,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-    fileNumber: "",
+    fileNumber: 0,
     firstName: "",
     lastName: "",
     email: "",
@@ -100,6 +104,10 @@ const CrtEditEmployeeFormPersonalInfo = ({
     });
 
     const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
+
+    const { data: status, isSuccess: statusSuccess } = useQuery("status", () =>
+        getStauts()
+    );
 
     useEffect(() => {
         if (tabIndex !== 0) {
@@ -174,11 +182,33 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormLabel>Status</FormLabel>
-                    <Select>
-                        <option>Active</option>
-                        <option>Inactive</option>
-                    </Select>
+                    <FormControl
+                        isInvalid={
+                            !!formik.errors.active && !!formik.touched.active
+                        }
+                    >
+                        <FormLabel>Status</FormLabel>
+                        <Select
+                            name="active"
+                            id="active"
+                            value={formik.values.active.toString()}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur}
+                        >
+                            {statusSuccess &&
+                                status.map((el) => (
+                                    <option
+                                        key={el.label}
+                                        value={el.value.toString()}
+                                    >
+                                        {el.label}
+                                    </option>
+                                ))}
+                        </Select>
+                        <FormErrorMessage>
+                            {formik.errors?.gender}
+                        </FormErrorMessage>
+                    </FormControl>
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput

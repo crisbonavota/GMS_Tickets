@@ -121,7 +121,7 @@ const CustomTab = () => {
                         maxH={{ base: "35vh", md: "40vh" }}
                         overflowY={"auto"}
                     >
-                        {axiosResponse?.data.map((item, index) => (
+                        {axiosResponse.data.map((item, index) => (
                             <TableRow
                                 key={item.id}
                                 index={index}

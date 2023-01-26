@@ -7,8 +7,6 @@ import {
     Currency,
     PatchDocumentItem,
     MedicalCoverage,
-    GenderTypes,
-    StatusTypes,
 } from "./types";
 import {
     insertStandardFilters,
@@ -160,7 +158,7 @@ export const getUpdateResourceFromType = (updateType: number) => {
     return "updates/unknown";
 };
 
-export const getGenders: () => GenderTypes[] = () => {
+export const getGenders = () => {
     return [
         {
             value: false,
@@ -173,7 +171,7 @@ export const getGenders: () => GenderTypes[] = () => {
     ];
 };
 
-export const getStauts: () => StatusTypes[] = () => {
+export const getStatus = () => {
     return [
         {
             value: false,

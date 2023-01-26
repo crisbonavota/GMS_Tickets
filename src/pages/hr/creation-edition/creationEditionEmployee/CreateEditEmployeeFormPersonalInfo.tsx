@@ -14,7 +14,7 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useQuery } from "react-query";
 import { Employee } from "../../../../api/types";
-import { getGenders, getStauts } from "../../../../api/api";
+import { getGenders, getStatus } from "../../../../api/api";
 import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { useAppDispatch } from "../../../../redux/hooks";
 import moment from "moment";
@@ -103,11 +103,10 @@ const CrtEditEmployeeFormPersonalInfo = ({
         },
     });
 
-    const { data: gender, isSuccess } = useQuery("genders", () => getGenders());
+    const genders = getGenders();
 
-    const { data: status, isSuccess: statusSuccess } = useQuery("status", () =>
-        getStauts()
-    );
+    const status = getStatus();
+
 
     useEffect(() => {
         if (tabIndex !== 0) {
@@ -195,7 +194,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         >
-                            {statusSuccess &&
+                            {status &&
                                 status.map((el) => (
                                     <option
                                         key={el.label}
@@ -237,8 +236,8 @@ const CrtEditEmployeeFormPersonalInfo = ({
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                         >
-                            {isSuccess &&
-                                gender.map((el) => (
+                            {genders &&
+                                genders.map((el) => (
                                     <option
                                         key={el.label}
                                         value={el.value.toString()}

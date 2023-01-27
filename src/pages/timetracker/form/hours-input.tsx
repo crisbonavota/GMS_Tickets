@@ -58,8 +58,13 @@ const HoursInput = () => {
             setHours(hours + 1);
         }
         if (valueAsNumber < 0) {
-            setMinutes(15);
-            hours > 0 && setHours(hours - 1);
+            if (hours > 0) {
+                setMinutes(45)
+                setHours(hours - 1)
+            } else {
+                    setMinutes(0)
+            }
+
         }
     };
 
@@ -99,7 +104,7 @@ const HoursInput = () => {
                     onChange={onMinutesChange}
                     min={-5}
                     max={60}
-                    step={15}
+                    step={10}
                 >
                     <NumberInputField
                         disabled={true}

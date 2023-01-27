@@ -7,7 +7,6 @@ import {
     Currency,
     PatchDocumentItem,
     MedicalCoverage,
-    GenderTypes,
 } from "./types";
 import {
     insertStandardFilters,
@@ -159,7 +158,7 @@ export const getUpdateResourceFromType = (updateType: number) => {
     return "updates/unknown";
 };
 
-export const getGenders: () => GenderTypes[] = () => {
+export const getGenders = () => {
     return [
         {
             value: false,
@@ -171,6 +170,20 @@ export const getGenders: () => GenderTypes[] = () => {
         },
     ];
 };
+
+export const getStatus = () => {
+    return [
+        {
+            value: false,
+            label: "Inactive",
+        },
+        {
+            value: true,
+            label: "Active",
+        },
+    ];
+};
+
 export const getMedicalCoverages: () => MedicalCoverage[] = () => {
     return [
         {

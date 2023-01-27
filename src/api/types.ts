@@ -82,11 +82,6 @@ export interface Account {
   responsibleLegacyUser?: LegacyUserPublic;
 }
 
-export interface GenderTypes {
-  value: boolean;
-  label: string;
-}
-
 export interface Company {
   id: number;
   name: string;

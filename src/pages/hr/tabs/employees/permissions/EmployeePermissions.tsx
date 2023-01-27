@@ -10,7 +10,7 @@ import {
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
-import { HiPuzzle } from "react-icons/hi";
+import { BsPuzzle } from "react-icons/bs";
 import { GroupLegacyUser } from "../../../../../api/types";
 import AddPermission from "./AddPermission";
 import Permissions from "./Permissions";
@@ -24,12 +24,11 @@ const EmployeePermissions = ({ group }: Props) => {
     return (
         <>
             <Button
-                onClick={onOpen}
+                colorScheme={"orange"}
                 variant={"ghost"}
-                leftIcon={<HiPuzzle />}
-                color={"#3B8A7F"}
-            >
-                Permissions
+                leftIcon={<BsPuzzle size={"1.2rem"}/>}
+                onClick={onOpen}
+            > Permissions
             </Button>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

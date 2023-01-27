@@ -27,7 +27,7 @@ const EmploymentInfoDetailedView = ({
                 />
                 <UserDetailedViewBodyComponent
                     resource={medicalCoverage}
-                    label={"MEdical Coverage"}
+                    label={"Medical Coverage"}
                 />
             </SimpleGrid>
         </HStack>

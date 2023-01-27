@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
 import EditEmployeeButton from "../../creation-edition/EditEmployeeButton";
+import DeleteEmployeeButton from "../../detailed/employees/DeleteEmployeeButton";
 import EmployeePermissions from "./permissions/EmployeePermissions";
 
 interface Props {
@@ -85,31 +86,43 @@ const EmployeesTable = ({ employees }: Props) => {
         {
             header: "Details",
             accessor: "id",
-            accessorFn: (id: number) => <DetailsCell resource="employees" id={id} />,
+            accessorFn: (id: number) => (
+                <DetailsCell resource="employees" id={id} />
+            ),
             disableSort: true,
         },
         {
             header: "Edit",
-            accessor: "id", 
-            accessorFn: (id: number) => 
-                <EditEmployeeButton 
-                    employee={employees.filter(e => e.id === id)[0]}
+            accessor: "id",
+            accessorFn: (id: number) => (
+                <EditEmployeeButton
+                    employee={employees.filter((e) => e.id === id)[0]}
                     tabIndex={tabIndex}
-                    setTabIndex={setTabIndex} 
-                />,
+                    setTabIndex={setTabIndex}
+                />
+            ),
             disableSort: true,
         },
+        // {
+        //     header: "Delete",
+        //     accessor: "id",
+        //     accessorFn: (id: number) => (
+        //         <DeleteEmployeeButton
+        //             employee={employees.filter((e) => e.id === id)[0]}
+        //         />
+        //     ),
+        //     disableSort: true,
+        // },
         {
             header: "permissions",
             accessor: "",
             accessorFn: (group: GroupLegacyUser) => (
-                <EmployeePermissions group={group}  />
+                <EmployeePermissions group={group} />
             ),
             rawObject: true,
             disableSort: true,
         },
     ];
-    
 
     return (
         <DynamicTable

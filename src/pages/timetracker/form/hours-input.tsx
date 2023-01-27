@@ -104,7 +104,7 @@ const HoursInput = () => {
                     onChange={onMinutesChange}
                     min={-5}
                     max={60}
-                    step={10}
+                    step={15}
                 >
                     <NumberInputField
                         disabled={true}

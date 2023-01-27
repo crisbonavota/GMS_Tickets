@@ -26,7 +26,7 @@ const EmployeePermissions = ({ group }: Props) => {
             <Button
                 colorScheme={"orange"}
                 variant={"ghost"}
-                leftIcon={<BsPuzzle size={"1.5rem"}/>}
+                leftIcon={<BsPuzzle size={"1.2rem"}/>}
                 onClick={onOpen}
             > Permissions
             </Button>

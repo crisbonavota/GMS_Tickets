@@ -27,7 +27,7 @@ const EditButton = ({
       <Button
         colorScheme={"orange"}
         variant={"ghost"}
-        leftIcon={<BiPencil size={"1.5rem"}/>}
+        leftIcon={<BiPencil size={"1.2rem"}/>}
         onClick={onOpen}
       > Edit
       </Button>

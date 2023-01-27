@@ -103,16 +103,16 @@ const EmployeesTable = ({ employees }: Props) => {
             ),
             disableSort: true,
         },
-        {
-            header: "Delete",
-            accessor: "id",
-            accessorFn: (id: number) => (
-                <DeleteEmployeeButton
-                    employee={employees.filter((e) => e.id === id)[0]}
-                />
-            ),
-            disableSort: true,
-        },
+        // {
+        //     header: "Delete",
+        //     accessor: "id",
+        //     accessorFn: (id: number) => (
+        //         <DeleteEmployeeButton
+        //             employee={employees.filter((e) => e.id === id)[0]}
+        //         />
+        //     ),
+        //     disableSort: true,
+        // },
         {
             header: "permissions",
             accessor: "",

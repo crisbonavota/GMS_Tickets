@@ -1,6 +1,6 @@
-import { HStack, Link, Text } from '@chakra-ui/react';
-import { BsSearch } from 'react-icons/bs';
-import { Link as RouterLink } from 'react-router-dom';
+import { Button, HStack, Link, Text } from "@chakra-ui/react";
+import { BsSearch } from "react-icons/bs";
+import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
     id: number;
@@ -9,11 +9,13 @@ interface Props {
 
 const DetailsCell = ({ id, resource }: Props) => {
     return (
-        <Link as={RouterLink} to={`${resource}/${id}`} w={'fit-content'}>
-            <HStack w={'fit-content'}>
-                <BsSearch color={'#3B8A7F'} size={"1.5rem"} />
-                <Text>See Details</Text>
-            </HStack>
+        <Link as={RouterLink} to={`${resource}/${id}`} w={"fit-content"} textDecoration={"none !important"}>
+            <Button
+                colorScheme={"orange"}
+                variant={"ghost"}
+                leftIcon={<BsSearch size={"1.2rem"} />}
+            >Details
+            </Button>
         </Link>
     );
 };

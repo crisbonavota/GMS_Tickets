@@ -70,10 +70,9 @@ const DeleteEmployeeButton = ({ employee }: Props) => {
             <Button
                 colorScheme={"orange"}
                 variant={"ghost"}
-                leftIcon={<AiOutlineDelete size={"1.5rem"} />}
+                leftIcon={<AiOutlineDelete size={"1.2rem"} />}
                 onClick={onOpen}
             >
-                {" "}
                 Delete
             </Button>
             <AlertDialog

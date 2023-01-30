@@ -2,6 +2,7 @@ import { Td } from "@chakra-ui/react";
 import * as lodash from "lodash";
 import { useMemo } from "react";
 import { DynamicTableFormat } from "./DynamicTable";
+import { Text, Tooltip } from "@chakra-ui/react";
 
 interface Props {
     format: DynamicTableFormat;
@@ -14,12 +15,30 @@ const DynamicTableCell = ({ item, format }: Props) => {
         [item, format]
     );
     return (
-        <Td>
-            {format.accessorFn
-                ? format.accessorFn(format.rawObject ? item : nestedProp)
-                : format.rawObject
-                ? item
-                : nestedProp}
+        <Td
+            overflow={"hidden"}
+            textOverflow={"ellipsis"}
+            whiteSpace={"nowrap"}
+            maxWidth={"7rem"}
+        >
+            {format.withTooltip ? (
+                <Tooltip hasArrow label={nestedProp} bg={"teal.500"}>
+                    <Text
+                        overflow={"hidden"}
+                        textOverflow={"ellipsis"}
+                        whiteSpace={"nowrap"}
+                        cursor={"default"}
+                    >
+                        {format.rawObject ? item : nestedProp}
+                    </Text>
+                </Tooltip>
+            ) : format.accessorFn ? (
+                format.accessorFn(format.rawObject ? item : nestedProp)
+            ) : format.rawObject ? (
+                item
+            ) : (
+                nestedProp
+            )}
         </Td>
     );
 };

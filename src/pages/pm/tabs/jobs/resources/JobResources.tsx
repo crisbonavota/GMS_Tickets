@@ -13,9 +13,10 @@ import {
     useDisclosure,
     VStack,
     Text,
+    Tooltip,
 } from "@chakra-ui/react";
 import { GrUserSettings } from "react-icons/gr";
-import { HiPuzzle } from "react-icons/hi";
+import { BsPuzzle } from "react-icons/bs";
 import { LegacyUserPublic } from "../../../../../api/types";
 import AddMember from "./AddMember";
 import Members from "./Members";
@@ -29,14 +30,14 @@ const JobResources = ({ id, leader }: Props) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     return (
         <>
-            <Button
-                onClick={onOpen}
-                variant={"ghost"}
-                leftIcon={<HiPuzzle />}
-                color={"#3B8A7F"}
-            >
-                Resources
-            </Button>
+            <Tooltip hasArrow label={"Resources"} bg={"teal.500"}>
+                <Button
+                    colorScheme={"orange"}
+                    variant={"ghost"}
+                    leftIcon={<BsPuzzle size={"1.2rem"} />}
+                    onClick={onOpen}
+                ></Button>
+            </Tooltip>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent pb={3}>

@@ -21,10 +21,12 @@ const format: DynamicTableFormat[] = [
     {
         header: "job",
         accessor: "name",
+        withTooltip: true,
     },
     {
         header: "account",
         accessor: "proposal.account.name",
+        withTooltip: true,
     },
     {
         header: "type",
@@ -55,9 +57,7 @@ const format: DynamicTableFormat[] = [
         header: "Status",
         accessor: "active",
         accessorFn: (r: boolean) => (
-            <Text color={r ? "green" : "red"}>
-                {r ? "Active" : "Inactive"}
-            </Text>
+            <Text color={r ? "green" : "red"}>{r ? "Active" : "Inactive"}</Text>
         ),
         disableSort: true,
     },

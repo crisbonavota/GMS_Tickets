@@ -9,7 +9,7 @@ import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/hr";
 import DetailsCell from "../../../pm/tabs/DetailsCell";
 import EditEmployeeButton from "../../creation-edition/EditEmployeeButton";
-import DeleteEmployeeButton from "../../detailed/employees/DeleteEmployeeButton";
+// import DeleteEmployeeButton from "../../detailed/employees/DeleteEmployeeButton";
 import EmployeePermissions from "./permissions/EmployeePermissions";
 
 interface Props {
@@ -55,15 +55,18 @@ const EmployeesTable = ({ employees }: Props) => {
         {
             header: "Email",
             accessor: "email",
+            withTooltip: true,
         },
         {
             header: "Business Unit",
             accessor: "legacyUser.businessUnit.name",
             disableSort: true,
+            withTooltip: true,
         },
         {
             header: "CUIT",
             accessor: "afipId",
+            withTooltip: true,
         },
         {
             header: "Birth Date",
@@ -114,7 +117,7 @@ const EmployeesTable = ({ employees }: Props) => {
         //     disableSort: true,
         // },
         {
-            header: "permissions",
+            header: "Permissions",
             accessor: "",
             accessorFn: (group: GroupLegacyUser) => (
                 <EmployeePermissions group={group} />

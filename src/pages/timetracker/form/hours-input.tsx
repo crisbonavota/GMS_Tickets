@@ -59,12 +59,11 @@ const HoursInput = () => {
         }
         if (valueAsNumber < 0) {
             if (hours > 0) {
-                setMinutes(45)
-                setHours(hours - 1)
+                setMinutes(45);
+                setHours(hours - 1);
             } else {
-                    setMinutes(0)
+                setMinutes(0);
             }
-
         }
     };
 
@@ -90,7 +89,7 @@ const HoursInput = () => {
                     <NumberInputField
                         disabled={true}
                         _disabled={{
-                            cursor: 'normal'
+                            cursor: "normal",
                         }}
                         boxShadow={"none !important"}
                         border={"none"}
@@ -109,7 +108,7 @@ const HoursInput = () => {
                     <NumberInputField
                         disabled={true}
                         _disabled={{
-                            cursor: 'normal'
+                            cursor: "normal",
                         }}
                         boxShadow={"none !important"}
                         border={"none"}

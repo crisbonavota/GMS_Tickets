@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Text, Tooltip } from "@chakra-ui/react";
 import { useCallback } from "react";
 import { GroupLegacyUser, Provider, Sort } from "../../../../api/types";
 import {
@@ -53,11 +53,13 @@ const ProvidersTable = ({ providers }: Props) => {
         {
             header: "Email",
             accessor: "email",
+            withTooltip: true,
         },
         {
             header: "Business Unit",
             accessor: "legacyUser.businessUnit.name",
             disableSort: true,
+            withTooltip: true,
         },
         {
             header: "Status",
@@ -72,29 +74,31 @@ const ProvidersTable = ({ providers }: Props) => {
         {
             header: "Details",
             accessor: "id",
-            accessorFn: (id: number) => <DetailsCell resource="providers" id={id} />,
+            accessorFn: (id: number) => (
+                <DetailsCell resource="providers" id={id} />
+            ),
             disableSort: true,
         },
         {
             header: "Edit",
             accessor: "id",
-            accessorFn: (id: number) => 
-                <EditProviderButton 
-                    provider={providers.filter(p => p.id === id)[0]} 
-                />,
+            accessorFn: (id: number) => (
+                <EditProviderButton
+                    provider={providers.filter((p) => p.id === id)[0]}
+                />
+            ),
             disableSort: true,
         },
         {
             header: "permissions",
             accessor: "",
             accessorFn: (group: GroupLegacyUser) => (
-                <EmployeePermissions group={group}  />
+                <EmployeePermissions group={group} />
             ),
             rawObject: true,
             disableSort: true,
         },
     ];
-    
 
     return (
         <DynamicTable

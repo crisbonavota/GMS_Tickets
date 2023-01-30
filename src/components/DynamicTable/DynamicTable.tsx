@@ -10,6 +10,7 @@ export interface DynamicTableFormat {
     accessorFn?: (row: any) => any;
     disableSort?: boolean;
     rawObject?: boolean;
+    withTooltip?: boolean;
 }
 
 interface DynamicTableProps {
@@ -44,7 +45,12 @@ export const DynamicTable = ({
                         totalPages={totalPages}
                     />
                 )}
-            <Box w={"full"} maxW={"full"} overflowX={"auto"}>
+            <Box
+                w={"full"}
+                maxW={"full"}
+                overflowX={"auto"}
+                borderRadius={"1rem !important"}
+            >
                 <Table bgColor={"white"} w={"full"}>
                     <Thead bgColor={"#FBEAC0"} py={"10px"}>
                         <Tr>
@@ -74,7 +80,6 @@ export const DynamicTable = ({
                         {!data.length && (
                             <Tr>
                                 <Td>
-                                    {" "}
                                     {emptyMessage ||
                                         "No data, try different filters"}
                                 </Td>

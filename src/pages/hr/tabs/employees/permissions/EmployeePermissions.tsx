@@ -7,6 +7,7 @@ import {
     ModalContent,
     ModalHeader,
     ModalOverlay,
+    Tooltip,
     useDisclosure,
     VStack,
 } from "@chakra-ui/react";
@@ -16,20 +17,21 @@ import AddPermission from "./AddPermission";
 import Permissions from "./Permissions";
 
 interface Props {
-    group: GroupLegacyUser
+    group: GroupLegacyUser;
 }
 
 const EmployeePermissions = ({ group }: Props) => {
     const { isOpen, onClose, onOpen } = useDisclosure();
     return (
         <>
-            <Button
-                colorScheme={"orange"}
-                variant={"ghost"}
-                leftIcon={<BsPuzzle size={"1.2rem"}/>}
-                onClick={onOpen}
-            > Permissions
-            </Button>
+            <Tooltip hasArrow label={"Permissions"} bg={"teal.500"}>
+                <Button
+                    colorScheme={"orange"}
+                    variant={"ghost"}
+                    leftIcon={<BsPuzzle size={"1.2rem"} />}
+                    onClick={onOpen}
+                ></Button>
+            </Tooltip>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent pb={3}>

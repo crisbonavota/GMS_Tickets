@@ -25,7 +25,7 @@ interface BusinessUnitsFilter {
   active: boolean;
 }
 
-interface EmployeePersonalInfoValues {
+export interface EmployeePersonalInfoValues {
   fileNumber: number;
   firstName: string;
   lastName: string;
@@ -38,7 +38,7 @@ interface EmployeePersonalInfoValues {
   mobilePhone: string;
 }
 
-interface EmployeeLocationValues {
+export interface EmployeeLocationValues {
   countryId: number;
   birthCountryId: number;
   street: string,
@@ -48,7 +48,7 @@ interface EmployeeLocationValues {
   city: string;
   postalCode: string;
 }
-interface EmployeeFamilyValues {
+export interface EmployeeFamilyValues {
   childs: number;
   maritalStatus: string;
 }

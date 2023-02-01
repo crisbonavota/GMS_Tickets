@@ -32,6 +32,9 @@ interface Props {
     id?: number;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
+    personalInfoFormikErrors: boolean;
+    locationInfoFormikErrors: boolean;
+    familyInfoFormikErrors: boolean;
 }
 
 const validationSchema = Yup.object().shape({
@@ -66,6 +69,9 @@ const CrtEditEmployeeFormEmploymentInfo = ({
     id,
     tabIndex,
     setTabIndex,
+    personalInfoFormikErrors,
+    locationInfoFormikErrors,
+    familyInfoFormikErrors,
 }: Props) => {
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
@@ -80,13 +86,30 @@ const CrtEditEmployeeFormEmploymentInfo = ({
         (f) => f.humanResources.crtEmployeeFamilyInfo
     );
 
-    const formik = useFormik({
+    const formikEmploymentInfo = useFormik({
         initialValues:
             editInitialValuesToFormikValues(editInitialValues) || initialValues,
         validationSchema,
         onSubmit: async () => {
-            if (editInitialValues) await editEmployee();
-            else await createEmployee();
+            if (
+                personalInfoFormikErrors &&
+                locationInfoFormikErrors &&
+                familyInfoFormikErrors
+            ) {
+                if (editInitialValues) {
+                    await editEmployee();
+                } else await createEmployee();
+            } else {
+                if (!personalInfoFormikErrors) {
+                    setTabIndex(0);
+                }
+                if (!locationInfoFormikErrors) {
+                    setTabIndex(1);
+                }
+                if (!familyInfoFormikErrors) {
+                    setTabIndex(2);
+                }
+            }
         },
     });
 
@@ -100,13 +123,14 @@ const CrtEditEmployeeFormEmploymentInfo = ({
             isClosable: true,
         });
         onClose();
+        setTabIndex(0);
     };
 
     const onError = (err: AxiosError) => {
         console.log(err);
         toast({
             title: "Error",
-            description: <>{err?.response?.data || "Try again later"}</>,
+            description: "Internal server error",
             status: "error",
         });
     };
@@ -115,7 +139,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
         useMutation(
             () =>
                 postResource("employees", getAuthHeader(), {
-                    ...formik.values,
+                    ...formikEmploymentInfo.values,
                     ...personalInfoState,
                     ...locationInfoState,
                     ...familyInfoState,
@@ -134,7 +158,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                 getAuthHeader(),
                 editInitialValuesToFormikValues(editInitialValues)!,
                 {
-                    ...formik.values,
+                    ...formikEmploymentInfo.values,
                     ...personalInfoState,
                     ...locationInfoState,
                     ...familyInfoState,
@@ -158,13 +182,13 @@ const CrtEditEmployeeFormEmploymentInfo = ({
     );
 
     return (
-        <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
+        <chakra.form w={"full"} onSubmit={formikEmploymentInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
                     <FormControl
                         isInvalid={
-                            !!formik.errors.salaryCurrencyId &&
-                            !!formik.touched.salaryCurrencyId
+                            !!formikEmploymentInfo.errors.salaryCurrencyId &&
+                            !!formikEmploymentInfo.touched.salaryCurrencyId
                         }
                     >
                         <FormLabel>Salary Currency</FormLabel>
@@ -172,14 +196,14 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                             placeholder="Select option"
                             name="salaryCurrencyId"
                             id="salaryCurrencyId"
-                            value={formik.values.salaryCurrencyId}
+                            value={formikEmploymentInfo.values.salaryCurrencyId}
                             onChange={(event) => {
-                                formik.setFieldValue(
+                                formikEmploymentInfo.setFieldValue(
                                     "salaryCurrencyId",
                                     event.target.value
                                 );
                             }}
-                            onBlur={formik.handleBlur}
+                            onBlur={formikEmploymentInfo.handleBlur}
                         >
                             {successCurrencies &&
                                 currencies.map((el) => (
@@ -189,15 +213,15 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                                 ))}
                         </Select>
                         <FormErrorMessage>
-                            {formik.errors?.salaryCurrencyId}
+                            {formikEmploymentInfo.errors?.salaryCurrencyId}
                         </FormErrorMessage>
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormControl
                         isInvalid={
-                            !!formik.errors.medicalCoverageId &&
-                            !!formik.touched.medicalCoverageId
+                            !!formikEmploymentInfo.errors.medicalCoverageId &&
+                            !!formikEmploymentInfo.touched.medicalCoverageId
                         }
                     >
                         <FormLabel>Medical Coverage</FormLabel>
@@ -205,14 +229,16 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                             placeholder="Select option"
                             name="medicalCoverageId"
                             id="medicalCoverageId"
-                            value={formik.values.medicalCoverageId}
+                            value={
+                                formikEmploymentInfo.values.medicalCoverageId
+                            }
                             onChange={(event) => {
-                                formik.setFieldValue(
+                                formikEmploymentInfo.setFieldValue(
                                     "medicalCoverageId",
                                     event.target.value
                                 );
                             }}
-                            onBlur={formik.handleBlur}
+                            onBlur={formikEmploymentInfo.handleBlur}
                         >
                             {successMedCoverages &&
                                 medicalCoverages.map((el) => (
@@ -222,17 +248,21 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                                 ))}
                         </Select>
                         <FormErrorMessage>
-                            {formik.errors?.medicalCoverageId}
+                            {formikEmploymentInfo.errors?.medicalCoverageId}
                         </FormErrorMessage>
                     </FormControl>
                 </GridItem>
                 <GridItem colSpan={1}>
                     <BusinessUnitField
                         setter={(value: number | null) =>
-                            formik.setFieldValue("businessUnitId", value, true)
+                            formikEmploymentInfo.setFieldValue(
+                                "businessUnitId",
+                                value,
+                                true
+                            )
                         }
-                        error={formik.errors.businessUnitId}
-                        touched={formik.touched.businessUnitId}
+                        error={formikEmploymentInfo.errors.businessUnitId}
+                        touched={formikEmploymentInfo.touched.businessUnitId}
                         isRequired
                         defaultValue={
                             editInitialValues
@@ -249,10 +279,14 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                 <GridItem colSpan={1}>
                     <PositionField
                         setter={(value: number | null) =>
-                            formik.setFieldValue("positionId", value, true)
+                            formikEmploymentInfo.setFieldValue(
+                                "positionId",
+                                value,
+                                true
+                            )
                         }
-                        error={formik.errors.positionId}
-                        touched={formik.touched.positionId}
+                        error={formikEmploymentInfo.errors.positionId}
+                        touched={formikEmploymentInfo.touched.positionId}
                         defaultValue={
                             editInitialValues
                                 ? {

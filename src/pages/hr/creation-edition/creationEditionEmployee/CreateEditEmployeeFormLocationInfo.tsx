@@ -1,24 +1,15 @@
-import {
-    chakra,
-    SimpleGrid,
-    GridItem,
-    HStack,
-    Button,
-    FormLabel,
-    Select,
-} from "@chakra-ui/react";
+import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
 import { FormikProps } from "formik";
-import { Country, Employee } from "../../../../api/types";
+import { Country } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
-import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeLocationValues } from "../../../../redux/slices/hr";
+import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
-    editInitialValues?: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
     formik: FormikProps<EmployeeLocationValues>;
@@ -39,58 +30,50 @@ const CrtEditEmployeeFormLocationInfo = ({
         { select: (r) => r.data }
     );
 
-    // useEffect(() => {
-    //     if (tabIndex !== 1 && !formikLocationInfo.isValid) {
-    //         formikLocationInfo.handleSubmit();
-    //     }
-    // }, [tabIndex]);
-
     return (
         <chakra.form w={"full"} onSubmit={formikLocationInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormLabel>Nationality</FormLabel>
-                    <Select
+                    <LabeledReactSelectInput
+                        label="Nationality"
                         name="birthCountryId"
-                        id="birthCountryId"
-                        value={formikLocationInfo.values.birthCountryId}
-                        onChange={(event) => {
-                            formikLocationInfo.setFieldValue(
-                                "birthCountryId",
-                                event.target.value
-                            );
-                        }}
-                        onBlur={formikLocationInfo.handleBlur}
-                    >
-                        {isSuccess &&
-                            countries.map((el) => (
-                                <option key={el.id} value={el.id}>
-                                    {el.name}
-                                </option>
-                            ))}
-                    </Select>
+                        value={formik.values.birthCountryId}
+                        error={formik.errors.birthCountryId}
+                        touched={formik.touched.birthCountryId}
+                        options={
+                            isSuccess
+                                ? countries.map((c) => ({
+                                      value: c.id,
+                                      label: c.name,
+                                  }))
+                                : []
+                        }
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("birthCountryId", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormLabel>Country of Residence</FormLabel>
-                    <Select
+                    <LabeledReactSelectInput
+                        label="Country of residence"
                         name="countryId"
-                        id="countryId"
-                        value={formikLocationInfo.values.countryId}
-                        onChange={(event) => {
-                            formikLocationInfo.setFieldValue(
-                                "countryId",
-                                event.target.value
-                            );
-                        }}
-                        onBlur={formikLocationInfo.handleBlur}
-                    >
-                        {isSuccess &&
-                            countries.map((el) => (
-                                <option key={el.id} value={el.id}>
-                                    {el.name}
-                                </option>
-                            ))}
-                    </Select>
+                        value={formik.values.countryId}
+                        error={formik.errors.countryId}
+                        touched={formik.touched.countryId}
+                        options={
+                            isSuccess
+                                ? countries.map((c) => ({
+                                      value: c.id,
+                                      label: c.name,
+                                  }))
+                                : []
+                        }
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("countryId", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput

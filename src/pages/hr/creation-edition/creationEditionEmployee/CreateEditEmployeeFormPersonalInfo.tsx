@@ -1,27 +1,14 @@
-import {
-    chakra,
-    SimpleGrid,
-    GridItem,
-    HStack,
-    Button,
-    Select,
-    FormControl,
-    FormErrorMessage,
-    Input,
-    FormLabel,
-} from "@chakra-ui/react";
-import { Employee } from "../../../../api/types";
+import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
 import { getGenders, getStatus } from "../../../../api/api";
 import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
 import { FormikProps } from "formik";
 import { EmployeePersonalInfoValues } from "../../../../redux/slices/hr";
+import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
 
 interface Props {
     onClose: () => void;
-    editInitialValues?: Employee;
     tabIndex: number;
-    setTabIndex: (tabIndex: number) => void;
     formik: FormikProps<EmployeePersonalInfoValues>;
 }
 
@@ -93,45 +80,36 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormLabel>Date of Admission</FormLabel>
-                    <Input
+                    <FormikInput
                         type="date"
                         name="entryDate"
                         id="entryDate"
                         value={formikPersonalInfo.values.entryDate}
                         onChange={formikPersonalInfo.handleChange}
                         onBlur={formikPersonalInfo.handleBlur}
+                        touched={formikPersonalInfo.touched.entryDate}
+                        error={formikPersonalInfo.errors.entryDate}
+                        label={"Entry Date"}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormControl
-                        isInvalid={
-                            !!formikPersonalInfo.errors.active &&
-                            !!formikPersonalInfo.touched.active
+                    <FormikSelectInput
+                        label={"Status"}
+                        isRequired={true}
+                        name="status"
+                        id="status"
+                        value={formikPersonalInfo.values.active.toString()}
+                        onChange={(v) =>
+                            formik.setFieldValue("active", v.target.value)
                         }
-                    >
-                        <FormLabel>Status</FormLabel>
-                        <Select
-                            name="active"
-                            id="active"
-                            value={formikPersonalInfo.values.active.toString()}
-                            onChange={formikPersonalInfo.handleChange}
-                            onBlur={formikPersonalInfo.handleBlur}
-                        >
-                            {status &&
-                                status.map((el) => (
-                                    <option
-                                        key={el.label}
-                                        value={el.value.toString()}
-                                    >
-                                        {el.label}
-                                    </option>
-                                ))}
-                        </Select>
-                        <FormErrorMessage>
-                            {formikPersonalInfo.errors?.gender}
-                        </FormErrorMessage>
-                    </FormControl>
+                        touched={formikPersonalInfo.touched.active}
+                        error={formikPersonalInfo.errors.active}
+                        children={status.map((s) => (
+                            <option key={s.label} value={s.value.toString()}>
+                                {s.label}
+                            </option>
+                        ))}
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput
@@ -146,57 +124,36 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormControl
-                        isRequired
-                        isInvalid={
-                            !!formikPersonalInfo.errors.gender &&
-                            !!formikPersonalInfo.touched.gender
+                    <FormikSelectInput
+                        label={"Gender"}
+                        isRequired={true}
+                        name="gender"
+                        id="gender"
+                        value={formikPersonalInfo.values.gender.toString()}
+                        onChange={(v) =>
+                            formik.setFieldValue("gender", v.target.value)
                         }
-                    >
-                        <FormLabel>Gender</FormLabel>
-                        <Select
-                            name="gender"
-                            id="gender"
-                            value={formikPersonalInfo.values.gender.toString()}
-                            onChange={formikPersonalInfo.handleChange}
-                            onBlur={formikPersonalInfo.handleBlur}
-                        >
-                            {genders &&
-                                genders.map((el) => (
-                                    <option
-                                        key={el.label}
-                                        value={el.value.toString()}
-                                    >
-                                        {el.label}
-                                    </option>
-                                ))}
-                        </Select>
-                        <FormErrorMessage>
-                            {formikPersonalInfo.errors?.gender}
-                        </FormErrorMessage>
-                    </FormControl>
+                        touched={formikPersonalInfo.touched.gender}
+                        error={formikPersonalInfo.errors.gender}
+                        children={genders.map((s) => (
+                            <option key={s.label} value={s.value.toString()}>
+                                {s.label}
+                            </option>
+                        ))}
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormControl
-                        isRequired
-                        isInvalid={
-                            !!formikPersonalInfo.errors.birthDate &&
-                            !!formikPersonalInfo.touched.birthDate
-                        }
-                    >
-                        <FormLabel>Date of Birth</FormLabel>
-                        <Input
-                            type="date"
-                            name="birthDate"
-                            id="birthDate"
-                            value={formikPersonalInfo.values.birthDate}
-                            onChange={formikPersonalInfo.handleChange}
-                            onBlur={formikPersonalInfo.handleBlur}
-                        />
-                        <FormErrorMessage>
-                            {formikPersonalInfo.errors?.birthDate}
-                        </FormErrorMessage>
-                    </FormControl>
+                    <FormikInput
+                        type="date"
+                        name="birthDate"
+                        id="birthDate"
+                        value={formikPersonalInfo.values.birthDate}
+                        onChange={formikPersonalInfo.handleChange}
+                        onBlur={formikPersonalInfo.handleBlur}
+                        touched={formikPersonalInfo.touched.birthDate}
+                        error={formikPersonalInfo.errors.birthDate}
+                        label={"Birth Date"}
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput

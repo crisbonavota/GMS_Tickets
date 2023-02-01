@@ -31,6 +31,10 @@ export const getResourceList = async <T>(
 ) => {
     return await client.get<Array<T>>(resource, {
         headers: { Authorization: authHeader },
+        params: {
+            "range.Start": 0,
+            "range.End": 10000,
+        },
     });
 };
 

@@ -1,84 +1,28 @@
-import {
-    chakra,
-    SimpleGrid,
-    GridItem,
-    HStack,
-    Button,
-    Input,
-    FormLabel,
-    Select,
-} from "@chakra-ui/react";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import { Country, Employee } from "../../../../api/types";
+import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
+import { FormikProps } from "formik";
+import { Country } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
-import { employeeLocationInfo } from "../../../../redux/slices/hr";
-import { useAppDispatch } from "../../../../redux/hooks";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
-import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
+import { EmployeeLocationValues } from "../../../../redux/slices/hr";
+import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
-    editInitialValues?: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
+    formik: FormikProps<EmployeeLocationValues>;
 }
 
-const validationSchema = Yup.object().shape({
-    address: Yup.string().nullable(),
-    city: Yup.string().nullable(),
-    birthCountryId: Yup.number().nullable(),
-    countryId: Yup.number().nullable(),
-    postalCode: Yup.string().nullable(),
-});
-
-const initialValues = {
-    countryId: 1,
-    birthCountryId: 1,
-    street: "",
-    department: "",
-    floor: "",
-    number: "",
-    city: "",
-    postalCode: "",
-};
-
-let editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
-    editInitialValues
-        ? {
-              birthCountryId: editInitialValues?.birthCountry?.id,
-              countryId: editInitialValues?.country?.id,
-              street: editInitialValues.address?.street,
-              department: editInitialValues.address?.number,
-              floor: editInitialValues.address?.floor,
-              number: editInitialValues.address?.altura,
-              city: editInitialValues.city || "",
-              postalCode: editInitialValues.postalCode || "",
-          }
-        : undefined;
-
 const CrtEditEmployeeFormLocationInfo = ({
-    editInitialValues,
     tabIndex,
     setTabIndex,
+    formik,
 }: Props) => {
-    const dispatch = useAppDispatch();
     const getAuthHeader = useAuthHeader();
 
-    const formik = useFormik({
-        initialValues:
-            editInitialValuesToFormikValues(editInitialValues) || initialValues,
-        validationSchema,
-        onSubmit: async () => {
-            dispatch({
-                type: employeeLocationInfo,
-                payload: { ...formik.values },
-            });
-            setTabIndex(tabIndex + 1);
-        },
-    });
+    const formikLocationInfo = formik;
 
     const { data: countries, isSuccess } = useQuery(
         "countries",
@@ -86,61 +30,50 @@ const CrtEditEmployeeFormLocationInfo = ({
         { select: (r) => r.data }
     );
 
-    useEffect(() => {
-        if (tabIndex !== 1) {
-            dispatch({
-                type: employeeLocationInfo,
-                payload: { ...formik.values },
-            });
-        }
-    }, [tabIndex]);
-
     return (
-        <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
+        <chakra.form w={"full"} onSubmit={formikLocationInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormLabel>Nationality</FormLabel>
-                    <Select
+                    <LabeledReactSelectInput
+                        label="Nationality"
                         name="birthCountryId"
-                        id="birthCountryId"
                         value={formik.values.birthCountryId}
-                        onChange={(event) => {
-                            formik.setFieldValue(
-                                "birthCountryId",
-                                event.target.value
-                            );
-                        }}
-                        onBlur={formik.handleBlur}
-                    >
-                        {isSuccess &&
-                            countries.map((el) => (
-                                <option key={el.id} value={el.id}>
-                                    {el.name}
-                                </option>
-                            ))}
-                    </Select>
+                        error={formik.errors.birthCountryId}
+                        touched={formik.touched.birthCountryId}
+                        options={
+                            isSuccess
+                                ? countries.map((c) => ({
+                                      value: c.id,
+                                      label: c.name,
+                                  }))
+                                : []
+                        }
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("birthCountryId", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormLabel>Country of Residence</FormLabel>
-                    <Select
+                    <LabeledReactSelectInput
+                        label="Country of residence"
                         name="countryId"
-                        id="countryId"
                         value={formik.values.countryId}
-                        onChange={(event) => {
-                            formik.setFieldValue(
-                                "countryId",
-                                event.target.value
-                            );
-                        }}
-                        onBlur={formik.handleBlur}
-                    >
-                        {isSuccess &&
-                            countries.map((el) => (
-                                <option key={el.id} value={el.id}>
-                                    {el.name}
-                                </option>
-                            ))}
-                    </Select>
+                        error={formik.errors.countryId}
+                        touched={formik.touched.countryId}
+                        options={
+                            isSuccess
+                                ? countries.map((c) => ({
+                                      value: c.id,
+                                      label: c.name,
+                                  }))
+                                : []
+                        }
+                        setter={(value: number | null) =>
+                            formik.setFieldValue("countryId", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput
@@ -148,10 +81,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"street"}
                         id={"street"}
-                        value={formik.values.street}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.street}
-                        error={formik.errors.street}
+                        value={formikLocationInfo.values.street}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.street}
+                        error={formikLocationInfo.errors.street}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -160,10 +93,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"number"}
                         id={"number"}
-                        value={formik.values.number}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.number}
-                        error={formik.errors.number}
+                        value={formikLocationInfo.values.number}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.number}
+                        error={formikLocationInfo.errors.number}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -172,10 +105,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"floor"}
                         id={"floor"}
-                        value={formik.values.floor}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.floor}
-                        error={formik.errors.floor}
+                        value={formikLocationInfo.values.floor}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.floor}
+                        error={formikLocationInfo.errors.floor}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -184,10 +117,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"department"}
                         id={"department"}
-                        value={formik.values.department}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.department}
-                        error={formik.errors.department}
+                        value={formikLocationInfo.values.department}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.department}
+                        error={formikLocationInfo.errors.department}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -196,10 +129,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"city"}
                         id={"city"}
-                        value={formik.values.city}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.city}
-                        error={formik.errors.city}
+                        value={formikLocationInfo.values.city}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.city}
+                        error={formikLocationInfo.errors.city}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -208,10 +141,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                         isRequired={false}
                         name={"postalCode"}
                         id={"postalCode"}
-                        value={formik.values.postalCode}
-                        onChange={formik.handleChange}
-                        touched={formik.touched.postalCode}
-                        error={formik.errors.postalCode}
+                        value={formikLocationInfo.values.postalCode}
+                        onChange={formikLocationInfo.handleChange}
+                        touched={formikLocationInfo.touched.postalCode}
+                        error={formikLocationInfo.errors.postalCode}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

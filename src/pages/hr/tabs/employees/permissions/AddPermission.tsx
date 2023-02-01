@@ -3,9 +3,9 @@ import { HStack, IconButton, Text, VStack, useToast } from "@chakra-ui/react";
 import { useState, useRef } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { AxiosError } from "axios";
-import { postResource } from '../../../../../api/api';
-import AsyncSingleDropdownFilter from "../../../../../components/AsyncSingleDropdownFilter";
+import { postResource } from "../../../../../api/api";
 import { IoMdAdd } from "react-icons/io";
+import SyncSingleValueDropdownFilter from "../../../../../components/SyncSingleValueDropdownFilter";
 
 interface Props {
     legacyUserId: number;
@@ -22,7 +22,7 @@ const AddPermission = ({ legacyUserId }: Props) => {
         () =>
             postResource("groups", getAuthHeader(), {
                 groupId: selected,
-                legacyUserId
+                legacyUserId,
             }),
         {
             onSuccess: () => {
@@ -51,23 +51,23 @@ const AddPermission = ({ legacyUserId }: Props) => {
     return (
         <VStack w={"full"} alignItems={"flex-start"}>
             <HStack w={"full"} spacing={3}>
-                
-            <AsyncSingleDropdownFilter
-            setter={setSelected}
-            nameProp="name"
-            valueProp="id"
-            resource="groups"
-            label="Add new permission"
-        />
-        <HStack paddingTop={8}>
-                <IconButton
-                    icon={<IoMdAdd size={20} />}
-                    colorScheme={"green"}
-                    disabled={!selected || isLoading}
-                    isLoading={isLoading}
-                    onClick={() => addPermission()}
-                    aria-label="Add new permission"
+                <SyncSingleValueDropdownFilter
+                    setter={setSelected}
+                    title="Add new permission"
+                    valueProp="id"
+                    resource="groups"
+                    labelProp="name"
+                    isClearable
                 />
+                <HStack paddingTop={8}>
+                    <IconButton
+                        icon={<IoMdAdd size={20} />}
+                        colorScheme={"green"}
+                        disabled={!selected || isLoading}
+                        isLoading={isLoading}
+                        onClick={() => addPermission()}
+                        aria-label="Add new permission"
+                    />
                 </HStack>
             </HStack>
         </VStack>

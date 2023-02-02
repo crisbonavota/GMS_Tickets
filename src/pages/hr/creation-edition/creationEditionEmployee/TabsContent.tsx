@@ -123,7 +123,8 @@ const TabsContent = ({
             lastName: Yup.string().required("Last name is required"),
             birthDate: Yup.date().required("Date of Birth is required"),
             gender: Yup.string().required("Gender is required"),
-            email: Yup.string().nullable()
+            email: Yup.string()
+                .nullable()
                 .required("Email is required")
                 .email("Invalid email format"),
             entryDate: Yup.date().nullable(),
@@ -135,7 +136,6 @@ const TabsContent = ({
                 type: employeePersonalInfo,
                 payload: { ...formikPersonalInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
 
@@ -155,7 +155,6 @@ const TabsContent = ({
                 type: employeeLocationInfo,
                 payload: { ...formikLocationInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
 
@@ -172,7 +171,6 @@ const TabsContent = ({
                 type: employeeFamilyInfo,
                 payload: { ...formikFamilyInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
 
@@ -187,6 +185,7 @@ const TabsContent = ({
                     <CreateEditEmployeeFormPersonalInfo
                         onClose={onClose}
                         tabIndex={tabIndex}
+                        setTabIndex={setTabIndex}
                         formik={formikPersonalInfo}
                     />
                 </TabPanel>

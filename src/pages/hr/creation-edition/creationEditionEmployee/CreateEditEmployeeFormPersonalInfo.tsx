@@ -1,40 +1,27 @@
 import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
 import { getGenders, getStatus } from "../../../../api/api";
-import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
 import { FormikProps } from "formik";
 import { EmployeePersonalInfoValues } from "../../../../redux/slices/hr";
 import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { employeePersonalInfo } from "../../../../redux/slices/hr";
 
 interface Props {
     onClose: () => void;
     tabIndex: number;
+    setTabIndex: (tabIndex: number) => void;
     formik: FormikProps<EmployeePersonalInfoValues>;
 }
 
 const CrtEditEmployeeFormPersonalInfo = ({
     onClose,
     tabIndex,
+    setTabIndex,
     formik,
 }: Props) => {
-    const dispatch = useAppDispatch();
     const formikPersonalInfo = formik;
 
     const genders = getGenders();
     const status = getStatus();
-
-    useEffect(() => {
-        if (tabIndex !== 0) {
-            if (formikPersonalInfo.isValid) {
-                dispatch({
-                    type: employeePersonalInfo,
-                    payload: { ...formikPersonalInfo.values },
-                });
-            }
-        }
-    }, [tabIndex]);
 
     return (
         <chakra.form w={"full"} onSubmit={formikPersonalInfo.handleSubmit}>
@@ -155,6 +142,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         type="date"
                         name="birthDate"
                         id="birthDate"
+                        isRequired={true}
                         value={formikPersonalInfo.values.birthDate}
                         onChange={formikPersonalInfo.handleChange}
                         onBlur={formikPersonalInfo.handleBlur}
@@ -192,9 +180,10 @@ const CrtEditEmployeeFormPersonalInfo = ({
                             Cancel
                         </Button>
                         <Button
-                            type="submit"
+                            type="button"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
+                            onClick={() => setTabIndex(tabIndex + 1)}
                         >
                             Next
                         </Button>

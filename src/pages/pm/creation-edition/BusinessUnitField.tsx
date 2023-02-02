@@ -6,14 +6,16 @@ interface Props {
     error?: string;
     touched?: boolean;
     defaultValue?: { label: string; value: number };
+    isRequired?: boolean;
 }
 
-const BusinessUnitField = ({ setter, error, touched, defaultValue }: Props) => {
+const BusinessUnitField = ({ setter, error, touched, defaultValue, isRequired }: Props) => {
+
     return (
-        <FormControl isInvalid={Boolean(error) && touched}>
+        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
             <SyncSingleValueDropdownFilter
                 resource="businessUnits"
-                title="Business units"
+                title="Business Units"
                 labelProp="name"
                 valueProp="id"
                 setter={setter}

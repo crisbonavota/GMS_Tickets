@@ -5,15 +5,11 @@ import {
     GridItem,
     HStack,
     Button,
-    FormControl,
-    FormErrorMessage,
-    FormLabel,
-    Select,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
 import { useFormik, FormikErrors } from "formik";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import {
     getCurrencies,
@@ -120,24 +116,22 @@ const CrtEditEmployeeFormEmploymentInfo = ({
             const familyInfoFormValid =
                 Object.keys(familyInfoFormErrors).length === 0;
 
+            personalInfoForm.onSubmit();
+            locationInfoForm.onSubmit();
+            familyInfoForm.onSubmit();
+
             if (!personalInfoFormValid) {
-                personalInfoForm.onSubmit();
                 setTabIndex(0);
                 return;
             }
-
             if (!locationInfoFormValid) {
-                locationInfoForm.onSubmit();
                 setTabIndex(1);
                 return;
             }
-
             if (!familyInfoFormValid) {
-                familyInfoForm.onSubmit();
                 setTabIndex(2);
                 return;
             }
-
             if (editInitialValues) {
                 editEmployee();
             } else {
@@ -259,6 +253,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         }
                         error={formikEmploymentInfo.errors.businessUnitId}
                         touched={formikEmploymentInfo.touched.businessUnitId}
+                        isRequired={true}
                         defaultValue={
                             editInitialValues
                                 ? {

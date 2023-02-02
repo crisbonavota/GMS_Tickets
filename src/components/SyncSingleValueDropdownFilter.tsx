@@ -1,4 +1,4 @@
-import { VStack, Text } from "@chakra-ui/react";
+import { VStack, FormLabel } from "@chakra-ui/react";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
 import Select, { SingleValue } from "react-select";
@@ -31,7 +31,7 @@ const SyncSingleValueDropdownFilter = (props: Props) => {
 
     return (
         <VStack alignItems={"flex-start"} w={"full"}>
-            {title && <Text>{title}</Text>}
+            {title && <FormLabel>{title}</FormLabel>}
             <Select
                 isLoading={isLoading}
                 options={

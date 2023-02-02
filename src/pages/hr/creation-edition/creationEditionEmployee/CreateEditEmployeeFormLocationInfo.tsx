@@ -7,9 +7,6 @@ import { getResourceList } from "../../../../api/api";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeLocationValues } from "../../../../redux/slices/hr";
 import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { employeeLocationInfo } from "../../../../redux/slices/hr";
-import { useEffect } from "react";
 
 interface Props {
     onClose: () => void;
@@ -24,7 +21,6 @@ const CrtEditEmployeeFormLocationInfo = ({
     formik,
 }: Props) => {
     const getAuthHeader = useAuthHeader();
-    const dispatch = useAppDispatch();
 
     const formikLocationInfo = formik;
 
@@ -33,17 +29,6 @@ const CrtEditEmployeeFormLocationInfo = ({
         () => getResourceList<Country>("employees/countries", getAuthHeader()),
         { select: (r) => r.data }
     );
-
-    useEffect(() => {
-        if (tabIndex !== 1) {
-            if (formikLocationInfo.isValid) {
-                dispatch({
-                    type: employeeLocationInfo,
-                    payload: { ...formikLocationInfo.values },
-                });
-            }
-        }
-    }, [tabIndex]);
 
     return (
         <chakra.form w={"full"} onSubmit={formikLocationInfo.handleSubmit}>
@@ -64,7 +49,11 @@ const CrtEditEmployeeFormLocationInfo = ({
                                 : []
                         }
                         setter={(value: number | null) =>
-                            formikLocationInfo.setFieldValue("birthCountryId", value, true)
+                            formikLocationInfo.setFieldValue(
+                                "birthCountryId",
+                                value,
+                                true
+                            )
                         }
                         placeholder=""
                     />
@@ -85,7 +74,11 @@ const CrtEditEmployeeFormLocationInfo = ({
                                 : []
                         }
                         setter={(value: number | null) =>
-                            formikLocationInfo.setFieldValue("countryId", value, true)
+                            formikLocationInfo.setFieldValue(
+                                "countryId",
+                                value,
+                                true
+                            )
                         }
                         placeholder=""
                     />
@@ -179,9 +172,10 @@ const CrtEditEmployeeFormLocationInfo = ({
                             Back
                         </Button>
                         <Button
-                            type="submit"
+                            type="button"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
+                            onClick={() => setTabIndex(tabIndex + 1)}
                         >
                             Next
                         </Button>

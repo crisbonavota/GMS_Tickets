@@ -5,6 +5,8 @@ import FormikInput from "../../../../components/FormikInput";
 import { FormikProps } from "formik";
 import { EmployeePersonalInfoValues } from "../../../../redux/slices/hr";
 import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { employeePersonalInfo } from "../../../../redux/slices/hr";
 
 interface Props {
     onClose: () => void;
@@ -17,14 +19,20 @@ const CrtEditEmployeeFormPersonalInfo = ({
     tabIndex,
     formik,
 }: Props) => {
+    const dispatch = useAppDispatch();
     const formikPersonalInfo = formik;
 
     const genders = getGenders();
     const status = getStatus();
 
     useEffect(() => {
-        if (tabIndex !== 0 && !formikPersonalInfo.isValid) {
-            formikPersonalInfo.handleSubmit();
+        if (tabIndex !== 0) {
+            if (formikPersonalInfo.isValid) {
+                dispatch({
+                    type: employeePersonalInfo,
+                    payload: { ...formikPersonalInfo.values },
+                });
+            }
         }
     }, [tabIndex]);
 

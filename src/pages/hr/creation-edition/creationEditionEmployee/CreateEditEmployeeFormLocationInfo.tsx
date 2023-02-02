@@ -7,6 +7,9 @@ import { getResourceList } from "../../../../api/api";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeLocationValues } from "../../../../redux/slices/hr";
 import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { employeeLocationInfo } from "../../../../redux/slices/hr";
+import { useEffect } from "react";
 
 interface Props {
     onClose: () => void;
@@ -21,6 +24,7 @@ const CrtEditEmployeeFormLocationInfo = ({
     formik,
 }: Props) => {
     const getAuthHeader = useAuthHeader();
+    const dispatch = useAppDispatch();
 
     const formikLocationInfo = formik;
 
@@ -30,6 +34,17 @@ const CrtEditEmployeeFormLocationInfo = ({
         { select: (r) => r.data }
     );
 
+    useEffect(() => {
+        if (tabIndex !== 1) {
+            if (formikLocationInfo.isValid) {
+                dispatch({
+                    type: employeeLocationInfo,
+                    payload: { ...formikLocationInfo.values },
+                });
+            }
+        }
+    }, [tabIndex]);
+
     return (
         <chakra.form w={"full"} onSubmit={formikLocationInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
@@ -37,9 +52,9 @@ const CrtEditEmployeeFormLocationInfo = ({
                     <LabeledReactSelectInput
                         label="Nationality"
                         name="birthCountryId"
-                        value={formik.values.birthCountryId}
-                        error={formik.errors.birthCountryId}
-                        touched={formik.touched.birthCountryId}
+                        value={formikLocationInfo.values.birthCountryId}
+                        error={formikLocationInfo.errors.birthCountryId}
+                        touched={formikLocationInfo.touched.birthCountryId}
                         options={
                             isSuccess
                                 ? countries.map((c) => ({
@@ -49,7 +64,7 @@ const CrtEditEmployeeFormLocationInfo = ({
                                 : []
                         }
                         setter={(value: number | null) =>
-                            formik.setFieldValue("birthCountryId", value, true)
+                            formikLocationInfo.setFieldValue("birthCountryId", value, true)
                         }
                         placeholder=""
                     />
@@ -58,9 +73,9 @@ const CrtEditEmployeeFormLocationInfo = ({
                     <LabeledReactSelectInput
                         label="Country of residence"
                         name="countryId"
-                        value={formik.values.countryId}
-                        error={formik.errors.countryId}
-                        touched={formik.touched.countryId}
+                        value={formikLocationInfo.values.countryId}
+                        error={formikLocationInfo.errors.countryId}
+                        touched={formikLocationInfo.touched.countryId}
                         options={
                             isSuccess
                                 ? countries.map((c) => ({
@@ -70,7 +85,7 @@ const CrtEditEmployeeFormLocationInfo = ({
                                 : []
                         }
                         setter={(value: number | null) =>
-                            formik.setFieldValue("countryId", value, true)
+                            formikLocationInfo.setFieldValue("countryId", value, true)
                         }
                         placeholder=""
                     />

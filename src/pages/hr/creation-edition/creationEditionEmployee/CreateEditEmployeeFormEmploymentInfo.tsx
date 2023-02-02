@@ -163,7 +163,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
         console.log(err);
         toast({
             title: "Error",
-            description: "Internal server error",
+            description: <>{err?.response?.data || "Try again later"}</>,
             status: "error",
         });
     };

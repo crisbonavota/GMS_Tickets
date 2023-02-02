@@ -1,8 +1,11 @@
 import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
 import { FormikProps } from "formik";
+import { useEffect } from "react";
 import { Employee } from "../../../../api/types";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { employeeFamilyInfo } from "../../../../redux/slices/hr";
 
 interface Props {
     onClose: () => void;
@@ -17,7 +20,19 @@ const CrtEditEmployeeFormFamilyInfo = ({
     setTabIndex,
     formik,
 }: Props) => {
+    const dispatch = useAppDispatch();
     const formikFamilyInfo = formik;
+
+    useEffect(() => {
+        if (tabIndex !== 2) {
+            if (formikFamilyInfo.isValid) {
+                dispatch({
+                    type: employeeFamilyInfo,
+                    payload: { ...formikFamilyInfo.values },
+                });
+            } 
+        }
+    }, [tabIndex]);
 
     return (
         <chakra.form w={"full"} onSubmit={formikFamilyInfo.handleSubmit}>

@@ -1,8 +1,6 @@
 import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
-
 import { FormikProps } from "formik";
 import { Employee } from "../../../../api/types";
-import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
 
@@ -20,13 +18,6 @@ const CrtEditEmployeeFormFamilyInfo = ({
     formik,
 }: Props) => {
     const formikFamilyInfo = formik;
-
-    // useEffect(() => {
-    //     if (tabIndex !== 2) {
-    //         if(!formik.isValid)
-    //         formikFamilyInfo.handleSubmit();
-    //     }
-    // }, [tabIndex]);
 
     return (
         <chakra.form w={"full"} onSubmit={formikFamilyInfo.handleSubmit}>
@@ -64,17 +55,18 @@ const CrtEditEmployeeFormFamilyInfo = ({
                     >
                         <Button
                             type="button"
-                            onClick={() => setTabIndex(tabIndex - 1)}
                             variant="outline"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
+                            onClick={() => setTabIndex(tabIndex - 1)}
                         >
                             Back
                         </Button>
                         <Button
-                            type="submit"
+                            type="button"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
+                            onClick={() => setTabIndex(tabIndex - 1)}
                         >
                             Next
                         </Button>

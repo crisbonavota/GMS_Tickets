@@ -139,13 +139,28 @@ const TabsContent = ({
         initialValues:
             editInitialValuesToFormikPersonalInfoValues(editInitialValues) ||
             personalInfoInitialValues,
-        validationSchema,
+        validationSchema: Yup.object().shape({
+            fileNumber: Yup.number()
+                .typeError("Must be a number")
+                .required("File number is required")
+                .positive("Only positive numbers")
+                .integer("Format not allowed"),
+            firstName: Yup.string().required("First name is required"),
+            lastName: Yup.string().required("Last name is required"),
+            birthDate: Yup.date().required("Date of Birth is required"),
+            gender: Yup.string().required("Gender is required"),
+            email: Yup.string()
+                .nullable()
+                .required("Email is required")
+                .email("Invalid email format"),
+            entryDate: Yup.date().nullable(),
+            afipid: Yup.string().nullable(),
+        }),
         onSubmit: async () => {
             dispatch({
                 type: employeePersonalInfo,
                 payload: { ...formikPersonalInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
 
@@ -153,13 +168,18 @@ const TabsContent = ({
         initialValues:
             editInitialValuesToFormikLocationInfoValues(editInitialValues) ||
             locationInfoInitialValues,
-        validationSchema,
+        validationSchema: Yup.object().shape({
+            address: Yup.string().nullable(),
+            city: Yup.string().nullable(),
+            birthCountryId: Yup.number().nullable(),
+            countryId: Yup.number().nullable(),
+            postalCode: Yup.string().nullable(),
+        }),
         onSubmit: async () => {
             dispatch({
                 type: employeeLocationInfo,
                 payload: { ...formikLocationInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
 
@@ -167,16 +187,17 @@ const TabsContent = ({
         initialValues:
             editInitialValuesToFormikFamilyInfoValues(editInitialValues) ||
             familyInfoInitialValues,
-        validationSchema,
+        validationSchema: Yup.object().shape({
+            childs: Yup.number().nullable().typeError("Must be a number type"),
+            maritalStatus: Yup.string().nullable(),
+        }),
         onSubmit: async () => {
             dispatch({
                 type: employeeFamilyInfo,
                 payload: { ...formikFamilyInfo.values },
             });
-            setTabIndex(tabIndex + 1);
         },
     });
-
 
     return (
         <Tabs
@@ -219,9 +240,18 @@ const TabsContent = ({
                         setTabIndex={setTabIndex}
                         editInitialValues={editInitialValues}
                         id={id}
-                        personalInfoFormikErrors={formikPersonalInfo.isValid}
-                        locationInfoFormikErrors={formikLocationInfo.isValid}
-                        familyInfoFormikErrors={formikFamilyInfo.isValid}
+                        personalInfoForm={{
+                            onSubmit: formikPersonalInfo.submitForm,
+                            validateForm: formikPersonalInfo.validateForm,
+                        }}
+                        locationInfoForm={{
+                            onSubmit: formikLocationInfo.submitForm,
+                            validateForm: formikLocationInfo.validateForm,
+                        }}
+                        familyInfoForm={{
+                            onSubmit: formikFamilyInfo.submitForm,
+                            validateForm: formikFamilyInfo.validateForm,
+                        }}
                     />
                 </TabPanel>
             </TabPanels>

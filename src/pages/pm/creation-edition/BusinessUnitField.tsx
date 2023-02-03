@@ -1,14 +1,5 @@
-import AsyncSelect from "react-select/async";
-import { useAuthHeader } from "react-auth-kit";
-import {
-    FormErrorMessage,
-    FormControl,
-    FormLabel,
-    HStack,
-} from "@chakra-ui/react";
-import { SingleValue } from "react-select";
-import { getResourceListFilteredAndPaginated } from "../../../api/api";
-import { BusinessUnit } from "../../../api/types";
+import { FormErrorMessage, FormControl } from "@chakra-ui/react";
+import SyncSingleValueDropdownFilter from "../../../components/SyncSingleValueDropdownFilter";
 
 interface Props {
     setter: (value: number | null) => void;
@@ -18,52 +9,27 @@ interface Props {
     isRequired?: boolean;
 }
 
-const BusinessUnitField = ({ setter, error, touched, defaultValue, isRequired }: Props) => {
-    const getAuthHeader = useAuthHeader();
-    const getOptions = async (input: string) => {
-        const res = await getResourceListFilteredAndPaginated<BusinessUnit>(
-            "businessUnits",
-            getAuthHeader(),
-            [{ field: "name", value: input }],
-            [],
-            { field: "name", isAscending: true }
-        );
-        return res.data.map((c) => ({
-            label: c.name,
-            value: c.id,
-        }));
-    };
-
-    const onChange = (bu: SingleValue<{ label: string; value: number }>) => {
-        setter(bu ? bu.value : null);
-    };
-
+const BusinessUnitField = ({
+    setter,
+    error,
+    touched,
+    defaultValue,
+    isRequired,
+}: Props) => {
     return (
-        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
-            <FormLabel htmlFor={"businessUnitId"}>Business Unit</FormLabel>
-            <HStack spacing={1}>
-                <AsyncSelect
-                    id="businessUnitId"
-                    name="businessUnitId"
-                    placeholder="Type for results..."
-                    cacheOptions
-                    loadOptions={getOptions}
-                    isClearable
-                    styles={{
-                        container: (base) => ({
-                            ...base,
-                            width: "100%",
-                        }),
-                    }}
-                    noOptionsMessage={(props) =>
-                        props.inputValue !== ""
-                            ? "No results found, try different keywords"
-                            : "Start typing to search for business units"
-                    }
-                    onChange={onChange}
-                    defaultValue={defaultValue}
-                />
-            </HStack>
+        <FormControl
+            isRequired={isRequired}
+            isInvalid={Boolean(error) && touched}
+        >
+            <SyncSingleValueDropdownFilter
+                resource="businessUnits"
+                title="Business Units"
+                labelProp="name"
+                valueProp="id"
+                setter={setter}
+                defaultValue={defaultValue}
+                placeholder=""
+            />
             <FormErrorMessage>{error}</FormErrorMessage>
         </FormControl>
     );

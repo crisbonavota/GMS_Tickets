@@ -1,10 +1,4 @@
-import {
-    chakra,
-    SimpleGrid,
-    GridItem,
-    HStack,
-    Button,
-} from "@chakra-ui/react";
+import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
 import { FormikProps } from "formik";
 import { Country } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
@@ -40,7 +34,7 @@ const CrtEditEmployeeFormLocationInfo = ({
         <chakra.form w={"full"} onSubmit={formikLocationInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                <LabeledReactSelectInput
+                    <LabeledReactSelectInput
                         label="Nationality"
                         name="birthCountryId"
                         value={formikLocationInfo.values.birthCountryId}
@@ -65,7 +59,7 @@ const CrtEditEmployeeFormLocationInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                <LabeledReactSelectInput
+                    <LabeledReactSelectInput
                         label="Country of Residence"
                         name="countryId"
                         value={formikLocationInfo.values.countryId}

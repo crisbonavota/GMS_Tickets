@@ -14,7 +14,6 @@ import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
 
 interface Props {
     onClose: () => void;
-    editInitialValues?: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
     formik: FormikProps<EmployeePersonalInfoValues>;

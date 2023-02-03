@@ -11,7 +11,6 @@ import { useAppDispatch } from "../../../../redux/hooks";
 import { employeePersonalInfo } from "../../../../redux/slices/hr";
 import { employeeLocationInfo } from "../../../../redux/slices/hr";
 import { employeeFamilyInfo } from "../../../../redux/slices/hr";
-import { useEffect } from "react";
 
 interface Props {
     tabIndex: number;
@@ -20,31 +19,6 @@ interface Props {
     editInitialValues?: Employee;
     id?: number;
 }
-
-const validationSchema = Yup.object().shape({
-    fileNumber: Yup.number()
-        .typeError("Must be a number")
-        .required("File number is required")
-        .positive("Only positive numbers")
-        .integer("Format not allowed"),
-    firstName: Yup.string().required("First name is required"),
-    lastName: Yup.string().required("Last name is required"),
-    birthDate: Yup.date().required("Date of Birth is required"),
-    gender: Yup.string().required("Gender is required"),
-    email: Yup.string()
-        .required("Email is required")
-        .email("Invalid email format"),
-    entryDate: Yup.date().nullable(),
-    afipid: Yup.string().nullable(),
-    mobilePhone: Yup.string().nullable(),
-    address: Yup.string().nullable(),
-    city: Yup.string().nullable(),
-    birthCountryId: Yup.number().nullable(),
-    countryId: Yup.number().nullable(),
-    postalCode: Yup.string().nullable(),
-    childs: Yup.number().nullable().typeError("Must be a number type"),
-    maritalStatus: Yup.string().nullable(),
-});
 
 const editInitialValuesToFormikPersonalInfoValues = (
     editInitialValues?: Employee
@@ -211,7 +185,6 @@ const TabsContent = ({
                         onClose={onClose}
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
-                        editInitialValues={editInitialValues}
                         formik={formikPersonalInfo}
                     />
                 </TabPanel>
@@ -220,7 +193,6 @@ const TabsContent = ({
                         onClose={onClose}
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
-                        editInitialValues={editInitialValues}
                         formik={formikLocationInfo}
                     />
                 </TabPanel>

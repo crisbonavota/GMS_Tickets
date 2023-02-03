@@ -6,7 +6,7 @@ import {
     Button,
 } from "@chakra-ui/react";
 import { FormikProps } from "formik";
-import { Country, Employee } from "../../../../api/types";
+import { Country } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getResourceList } from "../../../../api/api";
@@ -16,7 +16,6 @@ import LabeledReactSelectInput from "../../../../components/LabeledReactSelectIn
 
 interface Props {
     onClose: () => void;
-    editInitialValues?: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
     formik: FormikProps<EmployeeLocationValues>;

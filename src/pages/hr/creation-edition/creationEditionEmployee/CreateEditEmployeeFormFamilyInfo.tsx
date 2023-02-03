@@ -1,26 +1,78 @@
-import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
-import { FormikProps } from "formik";
+import {
+    chakra,
+    SimpleGrid,
+    GridItem,
+    HStack,
+    Button,
+    FormControl,
+    FormErrorMessage,
+    Input,
+    FormLabel,
+} from "@chakra-ui/react";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import { Employee } from "../../../../api/types";
+import { employeeFamilyInfo } from "../../../../redux/slices/hr";
+import { useAppDispatch } from "../../../../redux/hooks";
+import { useEffect } from "react";
 import FormikInput from "../../../../components/FormikInput";
-import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
 
 interface Props {
     onClose: () => void;
     editInitialValues?: Employee;
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
-    formik: FormikProps<EmployeeFamilyValues>;
 }
 
+const validationSchema = Yup.object().shape({
+    childs: Yup.number().nullable().typeError("Must be a number type"),
+    maritalStatus: Yup.string().nullable(),
+});
+
+const initialValues = {
+    childs: 0,
+    maritalStatus: "",
+};
+
+const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
+    editInitialValues
+        ? {
+              childs: editInitialValues.childs || "",
+              maritalStatus: editInitialValues.maritalStatus || "",
+          }
+        : undefined;
+
 const CrtEditEmployeeFormFamilyInfo = ({
+    editInitialValues,
     tabIndex,
     setTabIndex,
-    formik,
 }: Props) => {
-    const formikFamilyInfo = formik;
+    const dispatch = useAppDispatch();
+
+    const formik = useFormik({
+        initialValues:
+            editInitialValuesToFormikValues(editInitialValues) || initialValues,
+        validationSchema,
+        onSubmit: async () => {
+            dispatch({
+                type: employeeFamilyInfo,
+                payload: { ...formik.values },
+            });
+            setTabIndex(tabIndex + 1);
+        },
+    });
+
+    useEffect(() => {
+        if (tabIndex !== 2) {
+            dispatch({
+                type: employeeFamilyInfo,
+                payload: { ...formik.values },
+            });
+        }
+    }, [tabIndex]);
 
     return (
-        <chakra.form w={"full"} onSubmit={formikFamilyInfo.handleSubmit}>
+        <chakra.form w={"full"} onSubmit={formik.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
                     <FormikInput
@@ -28,10 +80,10 @@ const CrtEditEmployeeFormFamilyInfo = ({
                         isRequired={false}
                         name={"maritalStatus"}
                         id={"maritalStatus"}
-                        value={formikFamilyInfo.values.maritalStatus}
-                        onChange={formikFamilyInfo.handleChange}
-                        touched={formikFamilyInfo.touched.maritalStatus}
-                        error={formikFamilyInfo.errors.maritalStatus}
+                        value={formik.values.maritalStatus}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.maritalStatus}
+                        error={formik.errors.maritalStatus}
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -40,10 +92,10 @@ const CrtEditEmployeeFormFamilyInfo = ({
                         isRequired={false}
                         name={"childs"}
                         id={"childs"}
-                        value={formikFamilyInfo.values.childs}
-                        onChange={formikFamilyInfo.handleChange}
-                        touched={formikFamilyInfo.touched.childs}
-                        error={formikFamilyInfo.errors.childs}
+                        value={formik.values.childs}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.childs}
+                        error={formik.errors.childs}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
@@ -66,7 +118,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
                             type="button"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
-                            onClick={() => setTabIndex(tabIndex - 1)}
+                            onClick={() => setTabIndex(tabIndex + 1)}
                         >
                             Next
                         </Button>

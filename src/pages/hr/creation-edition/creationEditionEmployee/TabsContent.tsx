@@ -4,13 +4,6 @@ import CreateEditEmployeeFormEmploymentInfo from "./CreateEditEmployeeFormEmploy
 import CreateEditEmployeeFormFamilyInfo from "./CreateEditEmployeeFormFamilyInfo";
 import CreateEditEmployeeFormLocationInfo from "./CreateEditEmployeeFormLocationInfo";
 import CreateEditEmployeeFormPersonalInfo from "./CreateEditEmployeeFormPersonalInfo";
-import * as Yup from "yup";
-import { useFormik } from "formik";
-import moment from "moment";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { employeePersonalInfo } from "../../../../redux/slices/hr";
-import { employeeLocationInfo } from "../../../../redux/slices/hr";
-import { employeeFamilyInfo } from "../../../../redux/slices/hr";
 
 interface Props {
     tabIndex: number;
@@ -19,86 +12,6 @@ interface Props {
     editInitialValues?: Employee;
     id?: number;
 }
-
-const editInitialValuesToFormikPersonalInfoValues = (
-    editInitialValues?: Employee
-) =>
-    editInitialValues
-        ? {
-              lastName: editInitialValues.lastName,
-              firstName: editInitialValues.firstName.replace(
-                  ` (${editInitialValues.id})`,
-                  ""
-              ),
-              entryDate: moment(editInitialValues.entryDate).format(
-                  "yyyy-MM-DD"
-              ),
-              birthDate: moment(editInitialValues.birthDate).format(
-                  "yyyy-MM-DD"
-              ),
-              active: editInitialValues.active,
-              email: editInitialValues.email,
-              afipId: editInitialValues.afipId,
-              gender: editInitialValues.gender,
-              fileNumber: editInitialValues.fileNumber,
-              mobilePhone: editInitialValues.mobilePhone,
-          }
-        : undefined;
-
-const editInitialValuesToFormikLocationInfoValues = (
-    editInitialValues?: Employee
-) =>
-    editInitialValues
-        ? {
-              birthCountryId: editInitialValues?.birthCountry?.id,
-              countryId: editInitialValues?.country?.id,
-              street: editInitialValues.address?.street,
-              department: editInitialValues.address?.number,
-              floor: editInitialValues.address?.floor,
-              number: editInitialValues.address?.altura,
-              city: editInitialValues.city || "",
-              postalCode: editInitialValues.postalCode || "",
-          }
-        : undefined;
-
-const editInitialValuesToFormikFamilyInfoValues = (
-    editInitialValues?: Employee
-) =>
-    editInitialValues
-        ? {
-              childs: editInitialValues.childs || 0,
-              maritalStatus: editInitialValues.maritalStatus || "",
-          }
-        : undefined;
-
-const personalInfoInitialValues = {
-    fileNumber: 0,
-    firstName: "",
-    lastName: "",
-    email: "",
-    afipId: "",
-    entryDate: moment().format("yyyy-MM-DD"),
-    birthDate: "",
-    gender: true,
-    active: true,
-    mobilePhone: "",
-};
-
-const locationInfoInitialValues = {
-    countryId: 1,
-    birthCountryId: 1,
-    street: "",
-    department: "",
-    floor: "",
-    number: "",
-    city: "",
-    postalCode: "",
-};
-
-const familyInfoInitialValues = {
-    childs: 0,
-    maritalStatus: "",
-};
 
 const TabsContent = ({
     tabIndex,
@@ -194,8 +107,8 @@ const TabsContent = ({
                         onClose={onClose}
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
-                        formik={formikLocationInfo}
-                    />
+                        editInitialValues={editInitialValues}
+                    />{" "}
                 </TabPanel>
                 <TabPanel>
                     <CreateEditEmployeeFormFamilyInfo
@@ -203,8 +116,7 @@ const TabsContent = ({
                         tabIndex={tabIndex}
                         setTabIndex={setTabIndex}
                         editInitialValues={editInitialValues}
-                        formik={formikFamilyInfo}
-                    />
+                    />{" "}
                 </TabPanel>
                 <TabPanel>
                     <CreateEditEmployeeFormEmploymentInfo
@@ -213,18 +125,6 @@ const TabsContent = ({
                         setTabIndex={setTabIndex}
                         editInitialValues={editInitialValues}
                         id={id}
-                        personalInfoForm={{
-                            onSubmit: formikPersonalInfo.submitForm,
-                            validateForm: formikPersonalInfo.validateForm,
-                        }}
-                        locationInfoForm={{
-                            onSubmit: formikLocationInfo.submitForm,
-                            validateForm: formikLocationInfo.validateForm,
-                        }}
-                        familyInfoForm={{
-                            onSubmit: formikFamilyInfo.submitForm,
-                            validateForm: formikFamilyInfo.validateForm,
-                        }}
                     />
                 </TabPanel>
             </TabPanels>

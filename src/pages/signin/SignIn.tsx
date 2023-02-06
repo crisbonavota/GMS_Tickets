@@ -5,19 +5,12 @@ import {
     Heading,
     VStack,
     Button,
-    useToast,
     Center,
     Link,
 } from "@chakra-ui/react";
 import { RiGoogleLine } from "react-icons/ri";
-import { useSignIn } from "react-auth-kit";
-import { useMutation } from "react-query";
-import { client } from "../../api/api";
-import { AuthResponse } from "../../api/types";
-import { AxiosError } from "axios";
 import LoginBackground from "../../assets/images/login-background.png";
 import Tonic3Logo from "../../assets/images/tonic3-logo.webp";
-import { useNavigate } from "react-router-dom";
 
 const googleData = {
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
@@ -31,40 +24,6 @@ const googleData = {
 };
 
 const SignIn = () => {
-    const signIn = useSignIn();
-    const toast = useToast();
-    const navigate = useNavigate();
-
-    /*const { mutateAsync: loginAsync, isLoading } = useMutation(
-        () =>
-            client.post<AuthResponse>("/users/auth/sign-in-external", {
-                provider: "google",
-                idToken: res.getAuthResponse().id_token,
-            }),
-        {
-            onSuccess: (res) => {
-                signIn({
-                    token: res.data.authToken.token,
-                    expiresIn: res.data.authToken.expiresIn,
-                    tokenType: res.data.tokenType,
-                    authState: res.data.authState,
-                });
-                navigate("/");
-            },
-            onError: (err: AxiosError) => {
-                console.log(err);
-                toast({
-                    title: "Error signing in, try again later",
-                    // @ts-ignore
-                    description: err.message || err,
-                    status: "error",
-                    position: "top",
-                    duration: 2000,
-                });
-            },
-        }
-    );*/
-
     return (
         <Box minW={"full"} minH={"100vh"}>
             <Box

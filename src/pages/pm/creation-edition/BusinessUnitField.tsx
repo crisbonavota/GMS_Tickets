@@ -1,14 +1,5 @@
-import AsyncSelect from "react-select/async";
-import { useAuthHeader } from "react-auth-kit";
-import {
-    FormErrorMessage,
-    FormControl,
-    FormLabel,
-    HStack,
-} from "@chakra-ui/react";
-import { SingleValue } from "react-select";
-import { getResourceListFilteredAndPaginated } from "../../../api/api";
-import { BusinessUnit } from "../../../api/types";
+import { FormErrorMessage, FormControl } from "@chakra-ui/react";
+import SyncSingleValueDropdownFilter from "../../../components/SyncSingleValueDropdownFilter";
 
 interface Props {
     setter: (value: number | null) => void;

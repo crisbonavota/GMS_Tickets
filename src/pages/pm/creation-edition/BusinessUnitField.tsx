@@ -18,9 +18,18 @@ interface Props {
     isRequired?: boolean;
 }
 
-const BusinessUnitField = ({ setter, error, touched, defaultValue, isRequired }: Props) => {
+const BusinessUnitField = ({
+    setter,
+    error,
+    touched,
+    defaultValue,
+    isRequired,
+}: Props) => {
     return (
-        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
+        <FormControl
+            isRequired={isRequired}
+            isInvalid={Boolean(error) && touched}
+        >
             <SyncSingleValueDropdownFilter
                 resource="businessUnits"
                 title="Business Units"

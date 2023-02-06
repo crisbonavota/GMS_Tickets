@@ -42,9 +42,8 @@ const TabsContent = ({
                 .email("Invalid email format"),
             entryDate: Yup.date().nullable(),
             afipid: Yup.string().nullable(),
-            mobilePhone: Yup.string().nullable(),
         }),
-        onSubmit: async () => {
+        onSubmit: () => {
             dispatch({
                 type: employeePersonalInfo,
                 payload: { ...formikPersonalInfo.values },
@@ -63,7 +62,7 @@ const TabsContent = ({
             countryId: Yup.number().nullable(),
             postalCode: Yup.string().nullable(),
         }),
-        onSubmit: async () => {
+        onSubmit: () => {
             dispatch({
                 type: employeeLocationInfo,
                 payload: { ...formikLocationInfo.values },
@@ -79,7 +78,7 @@ const TabsContent = ({
             childs: Yup.number().nullable().typeError("Must be a number type"),
             maritalStatus: Yup.string().nullable(),
         }),
-        onSubmit: async () => {
+        onSubmit: () => {
             dispatch({
                 type: employeeFamilyInfo,
                 payload: { ...formikFamilyInfo.values },

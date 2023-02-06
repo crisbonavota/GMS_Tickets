@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
-import { useFormik, FormikErrors } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import {
@@ -85,12 +85,10 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                 await personalInfoForm.validateForm();
             const personalInfoFormValid =
                 Object.keys(personalInfoFormErrors).length === 0;
-
             const locationInfoFormErrors =
                 await locationInfoForm.validateForm();
             const locationInfoFormValid =
                 Object.keys(locationInfoFormErrors).length === 0;
-
             const familyInfoFormErrors = await familyInfoForm.validateForm();
             const familyInfoFormValid =
                 Object.keys(familyInfoFormErrors).length === 0;

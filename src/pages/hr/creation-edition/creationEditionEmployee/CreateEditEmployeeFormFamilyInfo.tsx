@@ -107,10 +107,10 @@ const CrtEditEmployeeFormFamilyInfo = ({
                     >
                         <Button
                             type="button"
-                            onClick={() => setTabIndex(tabIndex - 1)}
                             variant="outline"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
+                            onClick={() => setTabIndex(tabIndex - 1)}
                         >
                             Back
                         </Button>

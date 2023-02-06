@@ -124,8 +124,8 @@ const CrtEditEmployeeFormLocationInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormLabel>Country of Residence</FormLabel>
-                    <Select
+                    <LabeledReactSelectInput
+                        label="Country of Residence"
                         name="countryId"
                         value={formikLocationInfo.values.countryId}
                         error={formikLocationInfo.errors.countryId}

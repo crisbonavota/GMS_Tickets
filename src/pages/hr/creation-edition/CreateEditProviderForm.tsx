@@ -246,6 +246,7 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                         }
                         error={formik.errors.businessUnitId}
                         touched={formik.touched.businessUnitId}
+                        isRequired
                         defaultValue={
                             editInitialValues
                                 ? {

@@ -1,5 +1,4 @@
 import {
-    Button,
     Divider,
     Heading,
     HStack,
@@ -16,10 +15,11 @@ import {
     Tooltip,
 } from "@chakra-ui/react";
 import { GrUserSettings } from "react-icons/gr";
-import { BsPuzzle } from "react-icons/bs";
 import { LegacyUserPublic } from "../../../../../api/types";
 import AddMember from "./AddMember";
 import Members from "./Members";
+import { IconButton } from "@chakra-ui/react";
+import { IoExtensionPuzzleSharp } from "react-icons/io5";
 
 interface Props {
     id: number;
@@ -31,12 +31,13 @@ const JobResources = ({ id, leader }: Props) => {
     return (
         <>
             <Tooltip hasArrow label={"Resources"} bg={"teal.500"}>
-                <Button
+                <IconButton
                     colorScheme={"orange"}
                     variant={"ghost"}
-                    leftIcon={<BsPuzzle size={"1.2rem"} />}
+                    icon={<IoExtensionPuzzleSharp size={"1.2rem"} />}
                     onClick={onOpen}
-                ></Button>
+                    aria-label="Open project resources modal"
+                />
             </Tooltip>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />

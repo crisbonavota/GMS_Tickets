@@ -14,7 +14,7 @@ import Timetracker from "./pages/timetracker/Timetracker";
 import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
 import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
 import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
-
+import GoogleRedirect from "./pages/signin/GoogleRedirect";
 
 const signInPath = "/sign-in";
 
@@ -28,6 +28,10 @@ const App = () => {
             <Box w={"full"} flex={1} bgColor={"whitesmoke"}>
                 <Routes>
                     <Route path={signInPath} element={<SignIn />} />
+                    <Route
+                        path={`${signInPath}/redirect`}
+                        element={<GoogleRedirect />}
+                    />
 
                     <Route
                         path={"/"}
@@ -97,8 +101,8 @@ const App = () => {
                             </RequireAuth>
                         }
                     />
-                    
-                     <Route
+
+                    <Route
                         path={"/human-resources"}
                         element={
                             <RequireAuth loginPath={signInPath}>

@@ -19,6 +19,11 @@ interface Props {
 
 const format: DynamicTableFormat[] = [
     {
+        header: "id",
+        accessor: "id",
+        withTooltip: true,
+    },
+    {
         header: "job",
         accessor: "name",
         withTooltip: true,

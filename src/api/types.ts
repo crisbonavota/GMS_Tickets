@@ -259,7 +259,7 @@ export interface Employee {
   gender: boolean;
   birthDate: string;
   birthCountry: Country;
-  childs: number;
+  childs: Array<ChildCreation>;
   maritalStatus: string;
   email: string;
   contact: Array<Contact>;
@@ -301,4 +301,15 @@ export interface GroupLegacyUser {
   id: number;
   group: Group;
   legacyUser: LegacyUserPublic;
+}
+
+export interface Child {
+  id: number;
+  birthDate: Date;
+  employee: Employee;
+  employeeId: number;
+}
+
+export interface ChildCreation {
+  birthDate: string;
 }

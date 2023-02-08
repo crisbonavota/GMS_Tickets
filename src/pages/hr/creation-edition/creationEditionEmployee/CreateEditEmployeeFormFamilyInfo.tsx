@@ -3,6 +3,7 @@ import { FormikProps } from "formik";
 import { Employee } from "../../../../api/types";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
+import AddChildInFormButton from "./AddChildInFormButton";
 
 interface Props {
     onClose: () => void;
@@ -34,18 +35,12 @@ const CrtEditEmployeeFormFamilyInfo = ({
                         error={formikFamilyInfo.errors.maritalStatus}
                     />
                 </GridItem>
-                <GridItem colSpan={1}>
-                    <FormikInput
-                        label="Children"
-                        isRequired={false}
-                        name={"childs"}
-                        id={"childs"}
+                    <AddChildInFormButton 
                         value={formikFamilyInfo.values.childs}
                         onChange={formikFamilyInfo.handleChange}
                         touched={formikFamilyInfo.touched.childs}
                         error={formikFamilyInfo.errors.childs}
                     />
-                </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"

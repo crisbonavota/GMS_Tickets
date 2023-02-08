@@ -47,7 +47,6 @@ const Jobs = () => {
                 "projects",
                 getAuthHeader(),
                 [
-                    { field: "name", value: state.search },
                     { field: "active", value: state.filters.active },
                     { field: "client", value: state.filters.client },
                     {
@@ -59,7 +58,9 @@ const Jobs = () => {
                         value: translateTypeFilter(state.filters.type),
                     },
                 ],
-                [],
+                [
+                    { name: "search", value: state.search },
+                ],
                 state.sort,
                 state.pagination.currentPage,
                 10

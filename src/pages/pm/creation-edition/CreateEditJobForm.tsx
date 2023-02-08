@@ -305,7 +305,7 @@ const CreateEditJobForm = ({
                             onChange={formik.handleChange}
                             error={formik.errors.income}
                             touched={formik.touched.income}
-                            label="Income"
+                            label="Sold for"
                             type="number"
                         />
                         <Text fontSize={"sm"}>

@@ -35,15 +35,15 @@ interface Props {
     tabIndex: number;
     setTabIndex: (tabIndex: number) => void;
     personalInfoForm: {
-        onSubmit: () => void;
+        onSubmit: () => Promise<any>;
         validateForm: () => Promise<FormikErrors<EmployeePersonalInfoValues>>;
     };
     locationInfoForm: {
-        onSubmit: () => void;
+        onSubmit: () => Promise<any>;
         validateForm: () => Promise<FormikErrors<EmployeeLocationValues>>;
     };
     familyInfoForm: {
-        onSubmit: () => void;
+        onSubmit: () => Promise<any>;
         validateForm: () => Promise<FormikErrors<EmployeeFamilyValues>>;
     };
 }
@@ -114,9 +114,9 @@ const CrtEditEmployeeFormEmploymentInfo = ({
             const familyInfoFormValid =
                 Object.keys(familyInfoFormErrors).length === 0;
 
-            personalInfoForm.onSubmit();
-            locationInfoForm.onSubmit();
-            familyInfoForm.onSubmit();
+            await personalInfoForm.onSubmit();
+            await locationInfoForm.onSubmit();
+            await familyInfoForm.onSubmit();
 
             if (!personalInfoFormValid) {
                 setTabIndex(0);
@@ -131,9 +131,9 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                 return;
             }
             if (editInitialValues) {
-                editEmployee();
+                await editEmployee();
             } else {
-                createEmployee();
+                await createEmployee();
             }
         },
     });

@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Sort } from "../../api/types";
+import moment from "moment";
+import { ChildCreation, Sort } from "../../api/types";
 
 interface BasicModuleProps<Filter> {
     pagination: {
@@ -49,7 +50,7 @@ export interface EmployeeLocationValues {
     postalCode: string;
 }
 export interface EmployeeFamilyValues {
-    childs: number;
+    children: Array<ChildCreation>;
     maritalStatus: string;
 }
 
@@ -130,7 +131,12 @@ const initialState: HumanResourcesState = {
         postalCode: "",
     },
     crtEmployeeFamilyInfo: {
-        childs: 0,
+        children: [
+            {
+                birthDate: moment().format("yyyy-MM-DD"),
+                name: "",
+            },
+        ],
         maritalStatus: "",
     },
 };

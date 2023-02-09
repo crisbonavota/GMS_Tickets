@@ -1,9 +1,20 @@
-import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
+import {
+    chakra,
+    SimpleGrid,
+    GridItem,
+    HStack,
+    Button,
+    VStack,
+    FormLabel,
+    Text,
+} from "@chakra-ui/react";
 import { FormikProps } from "formik";
-import { Employee } from "../../../../api/types";
+import { ChildCreation, Employee } from "../../../../api/types";
 import FormikInput from "../../../../components/FormikInput";
 import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
-import AddChildInFormButton from "./AddChildInFormButton";
+import moment from "moment";
+import ChildItem from "./ChildItem";
+import AddChildPopover from "./AddChildPopover";
 
 interface Props {
     onClose: () => void;
@@ -35,12 +46,42 @@ const CrtEditEmployeeFormFamilyInfo = ({
                         error={formikFamilyInfo.errors.maritalStatus}
                     />
                 </GridItem>
-                    <AddChildInFormButton 
-                        value={formikFamilyInfo.values.childs}
-                        onChange={formikFamilyInfo.handleChange}
-                        touched={formikFamilyInfo.touched.childs}
-                        error={formikFamilyInfo.errors.childs}
-                    />
+                <GridItem colSpan={1}>
+                    <VStack alignItems={"flex-start"} spacing={1}>
+                        <HStack alignItems={"flex-start"} spacing={1}>
+                            <FormLabel>Children</FormLabel>
+                            <AddChildPopover
+                                addChild={(c: ChildCreation) =>
+                                    formik.setFieldValue("children", [
+                                        ...formik.values.children,
+                                        c,
+                                    ])
+                                }
+                            />
+                        </HStack>
+                        {formikFamilyInfo.values.children.length < 1 && (
+                            <Text color="gray.500">
+                                No childrens in database
+                            </Text>
+                        )}
+                        <VStack alignItems={"flex-start"} spacing={3}>
+                            {formikFamilyInfo.values.children.map((c, _i) => (
+                                <ChildItem
+                                    key={_i}
+                                    child={c}
+                                    removeChild={() =>
+                                        formik.setFieldValue(
+                                            "children",
+                                            formik.values.children.filter(
+                                                (c, i) => i !== _i
+                                            )
+                                        )
+                                    }
+                                />
+                            ))}
+                        </VStack>
+                    </VStack>
+                </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"
@@ -61,7 +102,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
                             type="button"
                             colorScheme={"orange"}
                             minWidth={"8rem"}
-                            onClick={() => setTabIndex(tabIndex - 1)}
+                            onClick={() => setTabIndex(tabIndex + 1)}
                         >
                             Next
                         </Button>

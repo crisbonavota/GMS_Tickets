@@ -50,7 +50,7 @@ export interface EmployeeLocationValues {
     postalCode: string;
 }
 export interface EmployeeFamilyValues {
-    childs: Array<ChildCreation>;
+    children: Array<ChildCreation>;
     maritalStatus: string;
 }
 
@@ -131,13 +131,13 @@ const initialState: HumanResourcesState = {
         postalCode: "",
     },
     crtEmployeeFamilyInfo: {
-        childs: 
-            [ 
-                {
-                    birthDate: moment().format("yyyy-MM-DD"),
-                },
-            ],
-        maritalStatus: "",   
+        children: [
+            {
+                birthDate: moment().format("yyyy-MM-DD"),
+                name: "",
+            },
+        ],
+        maritalStatus: "",
     },
 };
 

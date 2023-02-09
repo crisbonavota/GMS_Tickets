@@ -66,8 +66,8 @@ const editInitialValuesToFormikFamilyInfoValues = (
 ) =>
     editInitialValues
         ? {
-            childs: editInitialValues.childs,
-            maritalStatus: editInitialValues.maritalStatus || "",
+              children: editInitialValues.children,
+              maritalStatus: editInitialValues.maritalStatus || "",
           }
         : undefined;
 
@@ -96,7 +96,7 @@ const locationInfoInitialValues = {
 };
 
 const familyInfoInitialValues = {
-    childs: [],
+    children: [],
     maritalStatus: "",
 };
 
@@ -148,6 +148,12 @@ const TabsContent = ({
             birthCountryId: Yup.number().nullable(),
             countryId: Yup.number().nullable(),
             postalCode: Yup.string().nullable(),
+            children: Yup.array().of(
+                Yup.object().shape({
+                    name: Yup.string().required("Name is required"),
+                    birthDate: Yup.date().required("Birth date is required"),
+                })
+            ),
         }),
         onSubmit: () => {
             dispatch({
@@ -163,9 +169,12 @@ const TabsContent = ({
             familyInfoInitialValues,
         validationSchema: Yup.object().shape({
             maritalStatus: Yup.string().nullable(),
-            childs: Yup.array().of(Yup.object().shape({
-                birthDate: Yup.date().required("Birth date is required"),
-            })), 
+            children: Yup.array().of(
+                Yup.object().shape({
+                    birthDate: Yup.date().required("Birth date is required"),
+                    name: Yup.string().required("Name is required"),
+                })
+            ),
         }),
         onSubmit: () => {
             dispatch({

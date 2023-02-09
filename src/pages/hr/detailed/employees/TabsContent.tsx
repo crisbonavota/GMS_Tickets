@@ -48,7 +48,7 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
                 <TabPanel p={"0 !important"}>
                     <FamilyInfoDetailedView
                         maritalStatus={employee.maritalStatus}
-                        childs={employee.childs}
+                        employee={employee}
                     />
                 </TabPanel>
                 <TabPanel p={"0 !important"}>

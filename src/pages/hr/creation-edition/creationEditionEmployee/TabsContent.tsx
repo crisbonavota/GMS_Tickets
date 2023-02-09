@@ -1,5 +1,5 @@
 import { Tabs, TabPanels, TabPanel } from "@chakra-ui/react";
-import { Employee } from "../../../../api/types";
+import { Employee, MaritalStatus } from "../../../../api/types";
 import CreateEditEmployeeFormEmploymentInfo from "./CreateEditEmployeeFormEmploymentInfo";
 import CreateEditEmployeeFormFamilyInfo from "./CreateEditEmployeeFormFamilyInfo";
 import CreateEditEmployeeFormLocationInfo from "./CreateEditEmployeeFormLocationInfo";
@@ -97,7 +97,7 @@ const locationInfoInitialValues = {
 
 const familyInfoInitialValues = {
     children: [],
-    maritalStatus: "",
+    maritalStatus: MaritalStatus[0].toString(),
 };
 
 const TabsContent = ({

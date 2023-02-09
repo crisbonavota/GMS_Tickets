@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
-import { ChildCreation, Sort } from "../../api/types";
+import { ChildCreation, Sort, MaritalStatus } from "../../api/types";
 
 interface BasicModuleProps<Filter> {
     pagination: {
@@ -137,7 +137,7 @@ const initialState: HumanResourcesState = {
                 name: "",
             },
         ],
-        maritalStatus: "",
+        maritalStatus: MaritalStatus[0].toString(),
     },
 };
 

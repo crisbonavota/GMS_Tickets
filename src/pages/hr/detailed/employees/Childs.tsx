@@ -17,7 +17,7 @@ const Childs = ({ employeeId }: Props) => {
         [`children-${employeeId}`],
         () =>
             getResourceListFilteredAndPaginated<Child>(
-                `children/${employeeId}`,
+                `employees/children/${employeeId}`,
                 getAuthHeader()
             ),
         { select: (r) => r.data }
@@ -29,7 +29,7 @@ const Childs = ({ employeeId }: Props) => {
                 children?.map((child) => (
                     <GridItem colSpan={1}>
                         <Text fontWeight={"bold"}>
-                            Child #{children.indexOf(child) + 1}
+                            {child.name } Birth Date
                         </Text>
                         <HStack
                             background={"#F5F5F5"}
@@ -45,11 +45,6 @@ const Childs = ({ employeeId }: Props) => {
                             <Text>
                                 {moment(child.birthDate).format("yyyy-MM-DD")}
                             </Text>
-                            <DeleteButton
-                                id={child.id}
-                                resetQueries={`children-${employeeId}`}
-                                resource={"children"}
-                            />
                         </HStack>
                     </GridItem>
                 ))}

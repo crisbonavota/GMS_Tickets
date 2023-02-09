@@ -51,7 +51,7 @@ export interface EmployeeLocationValues {
 }
 export interface EmployeeFamilyValues {
     children: Array<ChildCreation>;
-    maritalStatus: string;
+    maritalStatus: number;
 }
 
 interface HumanResourcesState {
@@ -137,7 +137,7 @@ const initialState: HumanResourcesState = {
                 name: "",
             },
         ],
-        maritalStatus: MaritalStatus[0].toString(),
+        maritalStatus: 0,
     },
 };
 

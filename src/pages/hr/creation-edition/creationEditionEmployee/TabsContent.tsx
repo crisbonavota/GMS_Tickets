@@ -67,7 +67,7 @@ const editInitialValuesToFormikFamilyInfoValues = (
     editInitialValues
         ? {
               children: editInitialValues.children,
-              maritalStatus: editInitialValues.maritalStatus || "",
+              maritalStatus: editInitialValues.maritalStatus || 0,
           }
         : undefined;
 
@@ -97,7 +97,7 @@ const locationInfoInitialValues = {
 
 const familyInfoInitialValues = {
     children: [],
-    maritalStatus: MaritalStatus[0].toString(),
+    maritalStatus: 0,
 };
 
 const TabsContent = ({

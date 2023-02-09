@@ -246,7 +246,6 @@ export interface Address {
 }
 
 export interface Employee {
-<<<<<<< Updated upstream
     map(arg0: (employee: any) => any): unknown;
     id: number;
     fileNumber: number;
@@ -261,7 +260,7 @@ export interface Employee {
     birthDate: string;
     birthCountry: Country;
     children: Array<ChildCreation>;
-    maritalStatus: string;
+    maritalStatus: MaritalStatus;
     email: string;
     contact: Array<Contact>;
     homePhone: string;
@@ -273,34 +272,6 @@ export interface Employee {
     country: Country;
     active: boolean;
     postalCode: string;
-=======
-  map(arg0: (employee: any) => any): unknown;
-  id: number;
-  fileNumber: number;
-  legacyUser: LegacyUserPublic;
-  afipId: string;
-  entryDate: string;
-  position: Position;
-  avatar: string;
-  firstName: string;
-  lastName: string;
-  gender: boolean;
-  birthDate: string;
-  birthCountry: Country;
-  childs: number;
-  maritalStatus: MaritalStatus;
-  email: string;
-  contact: Array<Contact>;
-  homePhone: string;
-  mobilePhone: string;
-  salaryCurrency: Currency;
-  medicalCoverage: MedicalCoverage;
-  address: Address;
-  city: string;
-  country: Country;
-  active: boolean;
-  postalCode: string;
->>>>>>> Stashed changes
 }
 export interface Provider {
     id: number;

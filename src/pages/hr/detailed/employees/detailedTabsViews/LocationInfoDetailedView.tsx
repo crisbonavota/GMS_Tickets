@@ -4,15 +4,23 @@ import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 interface Props {
     birthCountry: string;
     country: string;
-    address: string;
+    addressLine1: string;
+    addressLine2: string;
+    addressLine3: string;
+    addressLine4: string;
     city: string;
+    postalCode: string;
 }
 
 const LocationInfoDetailedView = ({
     birthCountry,
     country,
-    address,
+    addressLine1,
+    addressLine2,
+    addressLine3,
+    addressLine4,
     city,
+    postalCode,
 }: Props) => {
     return (
         <HStack
@@ -34,10 +42,26 @@ const LocationInfoDetailedView = ({
                     label={"Country of Residence"}
                 />
                 <UserDetailedViewBodyComponent
-                    resource={address}
-                    label={"Address"}
+                    resource={addressLine1}
+                    label={"Address Line 1 / Street"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={addressLine2}
+                    label={"Address Line 2 / Number"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={addressLine3}
+                    label={"Address Line 3 / Floor"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={addressLine4}
+                    label={"Address Line 4 / Department"}
                 />
                 <UserDetailedViewBodyComponent resource={city} label={"City"} />
+                <UserDetailedViewBodyComponent
+                    resource={postalCode}
+                    label={"Zip Code"}
+                />
             </SimpleGrid>
         </HStack>
     );

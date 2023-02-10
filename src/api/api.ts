@@ -7,6 +7,7 @@ import {
     Currency,
     PatchDocumentItem,
     MedicalCoverage,
+    MaritalStatus,
 } from "./types";
 import {
     insertStandardFilters,
@@ -212,6 +213,15 @@ export const getMedicalCoverages: () => MedicalCoverage[] = () => {
         },
     ];
 };
+
+export const getMaritalStatus = [
+    { value: MaritalStatus.Single, label: "Single" },
+    { value: MaritalStatus.Married, label: "Married" },
+    { value: MaritalStatus.Cohabiting, label: "Cohabiting" },
+    { value: MaritalStatus.Divorced, label: "Divorced" },
+    { value: MaritalStatus.Separated, label: "Separated" },
+    { value: MaritalStatus.Widowed, label: "Widowed" },
+];
 
 export const getCurrencies: () => Currency[] = () => {
     return [

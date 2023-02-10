@@ -260,7 +260,7 @@ export interface Employee {
     birthDate: string;
     birthCountry: Country;
     children: Array<ChildCreation>;
-    maritalStatus: string;
+    maritalStatus: MaritalStatus;
     email: string;
     contact: Array<Contact>;
     homePhone: string;
@@ -314,4 +314,13 @@ export interface Child {
 export interface ChildCreation {
     birthDate: string;
     name: string;
+}
+
+export enum MaritalStatus {
+  Single,
+  Married,
+  Cohabiting,
+  Divorced,
+  Separated,
+  Widowed
 }

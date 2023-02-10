@@ -27,6 +27,7 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
             <TabPanels w={"full"}>
                 <TabPanel p={"0 !important"}>
                     <PersonalInfoDetailedView
+                        fileNumber={employee.fileNumber.toString()}
                         firstName={employee.firstName}
                         lastName={employee.lastName}
                         email={employee.email}
@@ -35,26 +36,33 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
                         afipId={employee.afipId}
                         birthDate={employee.birthDate}
                         gender={employee.gender}
+                        mobilePhone={employee.mobilePhone}
                     />
                 </TabPanel>
                 <TabPanel p={"0 !important"}>
                     <LocationInfoDetailedView
                         birthCountry={employee.birthCountry?.name}
                         country={employee.country?.name}
-                        address={employee.address?.street}
+                        addressLine1={employee.address?.street}
+                        addressLine2={employee.address?.altura}
+                        addressLine3={employee.address?.floor}
+                        addressLine4={employee.address?.number}
                         city={employee.city}
+                        postalCode={employee.postalCode}
                     />
                 </TabPanel>
                 <TabPanel p={"0 !important"}>
                     <FamilyInfoDetailedView
                         maritalStatus={employee.maritalStatus}
-                        employee={employee}
+                        children={employee.children}
                     />
                 </TabPanel>
                 <TabPanel p={"0 !important"}>
                     <EmploymentInfoDetailedView
                         salaryCurrency={employee.salaryCurrency?.code}
                         medicalCoverage={employee.medicalCoverage?.name}
+                        businessUnit={employee.legacyUser.businessUnit.name}
+                        position={employee.position?.name}
                     />
                 </TabPanel>
             </TabPanels>

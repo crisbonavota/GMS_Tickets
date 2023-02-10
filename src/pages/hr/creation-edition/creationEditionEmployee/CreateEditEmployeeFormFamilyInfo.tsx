@@ -7,14 +7,15 @@ import {
     VStack,
     FormLabel,
     Text,
+    FormControl,
 } from "@chakra-ui/react";
-import { FormikProps } from "formik";
 import { ChildCreation, Employee } from "../../../../api/types";
-import FormikInput from "../../../../components/FormikInput";
 import { EmployeeFamilyValues } from "../../../../redux/slices/hr";
-import moment from "moment";
 import ChildItem from "./ChildItem";
 import AddChildPopover from "./AddChildPopover";
+import { FormikProps } from "formik";
+import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
+import { getMaritalStatus } from "../../../../api/api";
 
 interface Props {
     onClose: () => void;
@@ -35,16 +36,31 @@ const CrtEditEmployeeFormFamilyInfo = ({
         <chakra.form w={"full"} onSubmit={formikFamilyInfo.handleSubmit}>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
                 <GridItem colSpan={1}>
-                    <FormikInput
-                        label="Marital Status"
-                        isRequired={false}
-                        name={"maritalStatus"}
-                        id={"maritalStatus"}
-                        value={formikFamilyInfo.values.maritalStatus}
-                        onChange={formikFamilyInfo.handleChange}
-                        touched={formikFamilyInfo.touched.maritalStatus}
-                        error={formikFamilyInfo.errors.maritalStatus}
-                    />
+                    <FormControl
+                        isInvalid={!formikFamilyInfo.errors.maritalStatus}
+                    >
+                        <FormikSelectInput
+                            label="Marital Status"
+                            name="maritalStatus"
+                            value={formikFamilyInfo.values.maritalStatus.toString()}
+                            error={formikFamilyInfo.errors.maritalStatus}
+                            touched={formikFamilyInfo.touched.maritalStatus}
+                            onChange={(v) =>
+                                formik.setFieldValue(
+                                    "maritalStatus",
+                                    v.target.value
+                                )
+                            }
+                            children={getMaritalStatus.map((s) => (
+                                <option
+                                    key={s.label}
+                                    value={s.value.toString()}
+                                >
+                                    {s.label}
+                                </option>
+                            ))}
+                        />
+                    </FormControl>
                 </GridItem>
                 <GridItem colSpan={1}>
                     <VStack alignItems={"flex-start"} spacing={1}>

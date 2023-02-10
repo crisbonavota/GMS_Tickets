@@ -1,5 +1,4 @@
 import { chakra, SimpleGrid, GridItem, HStack, Button } from "@chakra-ui/react";
-import { Employee } from "../../../../api/types";
 import { getGenders, getStatus } from "../../../../api/api";
 import FormikInput from "../../../../components/FormikInput";
 import { FormikProps } from "formik";

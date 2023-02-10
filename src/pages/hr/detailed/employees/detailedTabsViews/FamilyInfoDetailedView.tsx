@@ -2,6 +2,7 @@ import { SimpleGrid, HStack } from "@chakra-ui/react";
 import moment from "moment";
 import { ChildCreation, MaritalStatus } from "../../../../../api/types";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
+import Childs from "../Childs";
 
 
 interface Props {
@@ -38,9 +39,6 @@ const FamilyInfoDetailedView = ({ maritalStatus, children }: Props) => {
                     label={"Child"}
                 />  
                 )}
-                
-
-              
             </SimpleGrid>
         </HStack>
     );

@@ -4,11 +4,15 @@ import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 interface Props {
     salaryCurrency: string;
     medicalCoverage: string;
+    businessUnit: string;
+    position: string;
 }
 
 const EmploymentInfoDetailedView = ({
     salaryCurrency,
     medicalCoverage,
+    businessUnit,
+    position,
 }: Props) => {
     return (
         <HStack
@@ -28,6 +32,14 @@ const EmploymentInfoDetailedView = ({
                 <UserDetailedViewBodyComponent
                     resource={medicalCoverage}
                     label={"Medical Coverage"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={businessUnit}
+                    label={"Business Unit"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={position}
+                    label={"Position"}
                 />
             </SimpleGrid>
         </HStack>

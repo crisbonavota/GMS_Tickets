@@ -3,6 +3,7 @@ import { SimpleGrid, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
 
 interface Props {
+    fileNumber: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -11,9 +12,11 @@ interface Props {
     afipId: string;
     gender: boolean;
     birthDate: string;
+    mobilePhone: string;
 }
 
 const PersonalInfoDetailedView = ({
+    fileNumber,
     firstName,
     lastName,
     email,
@@ -22,6 +25,7 @@ const PersonalInfoDetailedView = ({
     afipId,
     gender,
     birthDate,
+    mobilePhone,
 }: Props) => {
     return (
         <HStack
@@ -34,6 +38,10 @@ const PersonalInfoDetailedView = ({
             padding={"2rem"}
         >
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5} width={"80%"}>
+                <UserDetailedViewBodyComponent
+                    resource={fileNumber}
+                    label={"File Number"}
+                />
                 <UserDetailedViewBodyComponent
                     resource={firstName}
                     label={"First Name"}
@@ -56,7 +64,7 @@ const PersonalInfoDetailedView = ({
                 />
                 <UserDetailedViewBodyComponent
                     resource={afipId}
-                    label={"Social/CUIL/Mexico/Spain/Brazil/Uru"}
+                    label={"DNI/CUIT/CUIL/Social Nº"}
                 />
                 <UserDetailedViewBodyComponent
                     resource={gender === true ? "Male" : "Female"}
@@ -65,6 +73,10 @@ const PersonalInfoDetailedView = ({
                 <UserDetailedViewBodyComponent
                     resource={moment(birthDate).format("yyyy-MM-DD")}
                     label={"Date of Birth"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={mobilePhone}
+                    label={"Mobile Phone"}
                 />
             </SimpleGrid>
         </HStack>

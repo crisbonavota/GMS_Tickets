@@ -85,6 +85,7 @@ const HoursInput = () => {
                     max={99}
                     w={"fit-content"}
                     p={0}
+                    size={"lg"}
                 >
                     <NumberInputField
                         disabled={true}
@@ -97,13 +98,14 @@ const HoursInput = () => {
                         p={0}
                     />
                 </NumberInput>
-                <Text>:</Text>
+                <Text fontSize={"lg"}>:</Text>
                 <NumberInput
                     value={minutes.toString().padStart(2, "0")}
                     onChange={onMinutesChange}
                     min={-5}
                     max={60}
                     step={15}
+                    size={"lg"}
                 >
                     <NumberInputField
                         disabled={true}
@@ -116,7 +118,7 @@ const HoursInput = () => {
                         p={0}
                         ref={minutesRef}
                     />
-                    <NumberInputStepper ps={2}>
+                    <NumberInputStepper width={"55%"} ps={2}>
                         <NumberIncrementStepper />
                         <NumberDecrementStepper />
                     </NumberInputStepper>

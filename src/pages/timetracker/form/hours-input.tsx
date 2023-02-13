@@ -94,7 +94,7 @@ const HoursInput = () => {
                         }}
                         boxShadow={"none !important"}
                         border={"none"}
-                        w={"20px"}
+                        w={"23px"}
                         p={0}
                     />
                 </NumberInput>

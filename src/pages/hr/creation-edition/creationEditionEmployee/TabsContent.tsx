@@ -30,10 +30,10 @@ const editInitialValuesToFormikPersonalInfoValues = (
                   ` (${editInitialValues.id})`,
                   ""
               ),
-              entryDate: moment(editInitialValues.entryDate).format(
+              entryDate: moment.utc(editInitialValues.entryDate).format(
                   "yyyy-MM-DD"
               ),
-              birthDate: moment(editInitialValues.birthDate).format(
+              birthDate: moment.utc(editInitialValues.birthDate).format(
                   "yyyy-MM-DD"
               ),
               active: editInitialValues.active,

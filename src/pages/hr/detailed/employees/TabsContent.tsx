@@ -5,6 +5,7 @@ import FamilyInfoDetailedView from "./detailedTabsViews/FamilyInfoDetailedView";
 import EmploymentInfoDetailedView from "./detailedTabsViews/EmploymentInfoDetailedView";
 import { Employee } from "../../../../api/types";
 import UserDetailedViewHeaderComponent from "../UserDetailedViewHeaderComponent";
+import moment from "moment";
 
 interface Props {
     tabIndex: number;
@@ -31,10 +32,10 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
                         firstName={employee.firstName}
                         lastName={employee.lastName}
                         email={employee.email}
-                        entryDate={employee.entryDate}
+                        entryDate={moment.utc(employee.entryDate).format("yyyy-MM-DD")}
                         status={employee.active}
                         afipId={employee.afipId}
-                        birthDate={employee.birthDate}
+                        birthDate={moment.utc(employee.birthDate).format("yyyy-MM-DD")}
                         gender={employee.gender}
                         mobilePhone={employee.mobilePhone}
                     />

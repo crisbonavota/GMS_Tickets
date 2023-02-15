@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import moment from "moment";
 import { useCallback, useState } from "react";
 import { Employee, Sort, GroupLegacyUser } from "../../../../api/types";
 import {
@@ -73,7 +74,7 @@ const EmployeesTable = ({ employees }: Props) => {
             accessor: "birthDate",
             accessorFn: (birthDate: string) =>
                 birthDate && birthDate !== "0001-01-01T00:00:00"
-                    ? new Date(birthDate).toLocaleDateString()
+                    ? moment.utc(birthDate).format("yyyy-MM-DD")
                     : "",
         },
         {

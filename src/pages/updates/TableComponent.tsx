@@ -9,6 +9,7 @@ import { changeSort, changePage } from "../../redux/slices/hr-updates";
 import EditButton from "./CRUD/EditButton";
 import DeleteButton from "./CRUD/DeleteButton";
 import { HStack } from "@chakra-ui/react";
+import moment from "moment";
 
 const format: DynamicTableFormat[] = [
     {
@@ -23,13 +24,13 @@ const format: DynamicTableFormat[] = [
         header: "Date",
         accessor: "date",
         accessorFn: (date?: string) =>
-            date && new Date(date).toLocaleDateString(),
+            date && moment.utc(date).format("DD/MM/YYYY"),
     },
     {
         header: "End Date",
         accessor: "endDate",
         accessorFn: (date?: string) =>
-            date && new Date(date).toLocaleDateString(),
+            date && moment.utc(date).format("DD/MM/YYYY"),
     },
     {
         header: "Amount",
@@ -45,7 +46,7 @@ const format: DynamicTableFormat[] = [
         header: "New Date",
         accessor: "newDate",
         accessorFn: (date?: string) =>
-            date && new Date(date).toLocaleDateString(),
+            date && moment.utc(date).format("DD/MM/YYYY"),
     },
     { header: "Notes", accessor: "notes" },
     {

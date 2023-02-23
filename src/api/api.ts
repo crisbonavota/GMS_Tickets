@@ -8,6 +8,7 @@ import {
     PatchDocumentItem,
     MedicalCoverage,
     MaritalStatus,
+    StatusTraining,
 } from "./types";
 import {
     insertStandardFilters,
@@ -222,6 +223,13 @@ export const getMaritalStatus = [
     { value: MaritalStatus.Separated, label: "Separated" },
     { value: MaritalStatus.Widowed, label: "Widowed" },
 ];
+
+export const getTrainingsStates = [
+    {value: StatusTraining.Not_Started_Yet, label: "Not Started Yet"},
+    {value: StatusTraining.In_Progress, label: "In Progress"},
+    {value: StatusTraining.Abandoned, label: "Abandoned"},
+    {value: StatusTraining.Finished, label: "Finished"}
+]
 
 export const getCurrencies: () => Currency[] = () => {
     return [

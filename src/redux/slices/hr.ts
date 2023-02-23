@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
-import { ChildCreation, Sort, MaritalStatus } from "../../api/types";
+import { ChildCreation, Sort, StatusTraining } from "../../api/types";
 
 interface BasicModuleProps<Filter> {
     pagination: {
@@ -24,6 +24,11 @@ interface ProvidersFilter {
 
 interface BusinessUnitsFilter {
     active: boolean;
+}
+
+interface TrainingsFilter {
+    status: StatusTraining;
+    legacyUser: number | null;
 }
 
 export interface EmployeePersonalInfoValues {
@@ -58,6 +63,7 @@ interface HumanResourcesState {
     employees: BasicModuleProps<EmployeesFilter>;
     providers: BasicModuleProps<ProvidersFilter>;
     businessUnits: BasicModuleProps<BusinessUnitsFilter>;
+    trainings: BasicModuleProps<TrainingsFilter>;
     crtEmployeePersonalInfo: EmployeePersonalInfoValues;
     crtEmployeeLocationInfo: EmployeeLocationValues;
     crtEmployeeFamilyInfo: EmployeeFamilyValues;
@@ -108,6 +114,21 @@ const initialState: HumanResourcesState = {
             active: true,
         },
     },
+    trainings: {
+        pagination: {
+            currentPage: 0,
+            totalPages: null,
+        },
+        sort: {
+            field: "name",
+            isAscending: true,
+        },
+        search: "",
+        filters: {
+            status: 1,
+            legacyUser: null,
+        },
+    },
     crtEmployeePersonalInfo: {
         fileNumber: 0,
         firstName: "",
@@ -142,7 +163,7 @@ const initialState: HumanResourcesState = {
 };
 
 interface Action<T> {
-    module: "employees" | "providers" | "businessUnits";
+    module: "employees" | "providers" | "businessUnits" | "trainings";
     value: T;
 }
 

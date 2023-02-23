@@ -27,6 +27,7 @@ const TabsSelector = ({ tabIndex, setTabIndex }: Props) => {
                 <Tab {...commonTabProps}>Employees</Tab>
                 <Tab {...commonTabProps}>Providers</Tab>
                 <Tab {...commonTabProps}>Business Units</Tab>
+                <Tab {...commonTabProps}>Trainings</Tab>
             </TabList>
         </Tabs>
     );

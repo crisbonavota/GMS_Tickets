@@ -6,7 +6,7 @@ import {
     ModalCloseButton,
     ModalBody,
 } from "@chakra-ui/react";
-import CreateEditProviderForm from "./CreateEditProviderForm";
+import CreateEditTrainingForm from "./CreateEditTrainingForm";
 
 interface Props {
     isOpen: boolean;
@@ -22,8 +22,7 @@ const CreateTrainingModal = ({ isOpen, onClose }: Props) => {
                 <ModalHeader color={"#448F85"}>Create Training</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody w={"fit-content"} minW={"40vw"}>
-                    {/* <CreateEditProviderForm onClose={onClose} /> */}
-                    holis
+                    <CreateEditTrainingForm onClose={onClose} />
                 </ModalBody>
             </ModalContent>
         </Modal>

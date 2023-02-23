@@ -318,8 +318,8 @@ export interface ChildCreation {
 
 export interface Training {
     id: number;
-    trainingName: string;
-    trainingCompanyName: string;
+    name: string;
+    companyName: string;
     numberOfHours: number;
     startDate: Date;
     endDate: Date;

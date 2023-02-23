@@ -9,6 +9,7 @@ import {
     MedicalCoverage,
     MaritalStatus,
     StatusTraining,
+    SatisfactionLevel,
 } from "./types";
 import {
     insertStandardFilters,
@@ -225,11 +226,24 @@ export const getMaritalStatus = [
 ];
 
 export const getTrainingsStates = [
-    {value: StatusTraining.Not_Started_Yet, label: "Not Started Yet"},
-    {value: StatusTraining.In_Progress, label: "In Progress"},
-    {value: StatusTraining.Abandoned, label: "Abandoned"},
-    {value: StatusTraining.Finished, label: "Finished"}
-]
+    { value: StatusTraining.Not_Started_Yet, label: "Not Started Yet" },
+    { value: StatusTraining.In_Progress, label: "In Progress" },
+    { value: StatusTraining.Abandoned, label: "Abandoned" },
+    { value: StatusTraining.Finished, label: "Finished" },
+];
+
+export const getSatisfactionLevels = [
+    {
+        value: SatisfactionLevel.Not_at_all_satisfied,
+        label: "Not at all Satisfied",
+    },
+    { value: SatisfactionLevel.Partly_satified, label: "Partly Satisfied" },
+    {
+        value: SatisfactionLevel.More_than_satisfied,
+        label: "More then Satisfied",
+    },
+    { value: SatisfactionLevel.Very_satisfied, label: "Very Satisfied" },
+];
 
 export const getCurrencies: () => Currency[] = () => {
     return [

@@ -10,13 +10,14 @@ interface Props extends SelectProps {
     error?: string;
     touched?: boolean;
     label?: string;
+    isRequired?: boolean;
 }
 
 const FormikSelectInput = (props: Props) => {
     return (
-        <FormControl isInvalid={props.touched && Boolean(props.error)}>
+        <FormControl isRequired={props.isRequired} isInvalid={props.touched && Boolean(props.error)}>
             <FormLabel htmlFor={props.id}>{props.label}</FormLabel>
-            <Select {...props} />
+            <Select placeholder='Select' {...props} />
             <FormErrorMessage>{props.error}</FormErrorMessage>
         </FormControl>
     );

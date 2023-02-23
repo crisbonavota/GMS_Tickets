@@ -17,12 +17,8 @@ const format: DynamicTableFormat[] = [
         accessor: "id",
     },
     {
-        header: "name(s)",
-        accessor: "employee.firstName",
-    },
-    {
-        header: "last name(s)",
-        accessor: "employee.lastName",
+        header: "User full name",
+        accessor: "legacyUser.fullName",
     },
     {
         header: "training name",

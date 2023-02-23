@@ -7,8 +7,9 @@ interface Props {
 
 const TrainingsStatusFilter = ({ setter }: Props) => {
     const states = getTrainingsStates;
-    const onChange = (states: { label: string; value: number }) => {
-        setter(states ? states.value : null);
+    const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedValue = event.target.value ? parseInt(event.target.value) : null;
+        setter(selectedValue);
     };
 
     return (

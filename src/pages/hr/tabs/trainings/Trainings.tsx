@@ -39,7 +39,10 @@ const Trainings = () => {
             getResourceListFilteredAndPaginated<Training>(
                 "trainings",
                 getAuthHeader(),
-                [{ field: "status", value: state.filters.status }],
+                [
+                    { field: "status", value: state.filters.status },
+                    { field: "legacyUserId", value: state.filters.legacyUserId }
+                ],
                 [{ name: "search", value: state.search }],
                 state.sort,
                 state.pagination.currentPage,

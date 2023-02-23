@@ -25,13 +25,15 @@ const TrainingsFilter = () => {
     );
 
     const setLegacyUser = useCallback(
-        (user: number | null) =>
+        (legacyUserId: number | null) =>
             dispatch({
                 type: changeFilter,
                 payload: {
                     module: "trainings",
-                    key: "legacyUser",
-                    value: user,
+                    value: {
+                        key: "legacyUserId",
+                        value: legacyUserId,
+                    },  
                 },
             }),
         [dispatch, changeFilter]
@@ -45,7 +47,7 @@ const TrainingsFilter = () => {
             nameProp="fullName"
             valueProp="id"
             resource="users/legacy"
-            label="Employee"
+            label="User"
         />
         </VStack>
     );

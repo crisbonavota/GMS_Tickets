@@ -325,8 +325,8 @@ export interface Training {
     endDate: Date;
     status: StatusTraining;
     satisfactionLevel: SatisfactionLevel;
-    employee: Employee;
-    employeeId: number;
+    legacyUser: LegacyUserPublic;
+    legacyUserId: number;
 }
 
 export enum MaritalStatus {

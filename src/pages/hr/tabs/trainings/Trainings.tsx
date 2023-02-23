@@ -41,7 +41,7 @@ const Trainings = () => {
                 getAuthHeader(),
                 [
                     { field: "status", value: state.filters.status },
-                    { field: "employee.legacyUser.id", value: state.filters.legacyUserId }
+                    { field: "legacyUserId", value: state.filters.legacyUserId }
                 ],
                 [{ name: "search", value: state.search }],
                 state.sort,

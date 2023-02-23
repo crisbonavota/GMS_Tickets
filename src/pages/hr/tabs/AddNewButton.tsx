@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import CreateBusinessUnitModal from "../creation-edition/CreateBusinessUnitModal";
 import CreateEmployeeModal from "../creation-edition/creationEditionEmployee/CreateEmployeeModal";
 import CreateProviderModal from "../creation-edition/CreateProviderModal";
+import CreateTrainingModal from "../creation-edition/CreateTrainingModal";
 
 interface Props {
     tabIndex: number;
@@ -39,6 +40,13 @@ const AddNewButton = ({ tabIndex }: Props) => {
             )}
             {tabIndex === 2 && (
                 <CreateBusinessUnitModal
+                    isOpen={isOpen}
+                    onOpen={onOpen}
+                    onClose={onClose}
+                />
+            )}
+            {tabIndex === 3 && (
+                <CreateTrainingModal
                     isOpen={isOpen}
                     onOpen={onOpen}
                     onClose={onClose}

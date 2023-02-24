@@ -6,39 +6,12 @@ import { changeSort, changePage } from "../../../../redux/slices/pm";
 import { Text } from "@chakra-ui/react";
 import { momentToLocaleDateString } from "../../../../utils/datetime";
 import moment from "moment";
+import EditTrainingsButton from "../../creation-edition/EditTrainingsButton";
+import DetailsCell from "../../../pm/tabs/DetailsCell";
 
 interface Props {
     trainings: Training[];
 }
-
-const format: DynamicTableFormat[] = [
-    {
-        header: "id",
-        accessor: "id",
-    },
-    {
-        header: "User full name",
-        accessor: "legacyUser.fullName",
-    },
-    {
-        header: "training name",
-        accessor: "name",
-    },
-    {
-        header: "company name",
-        accessor: "companyName",
-    },
-    {
-        header: "start date",
-        accessor: "startDate",
-        accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
-    },
-    {
-        header: "status",
-        accessor: "status",
-        accessorFn: (s: number) => (<Text>{s ? StatusTraining[s] : "" }</Text>)
-    },
-];
 
 const TrainingsTable = ({ trainings }: Props) => {
     const state = useAppSelector((s) => s.humanResources.trainings);
@@ -61,6 +34,54 @@ const TrainingsTable = ({ trainings }: Props) => {
             }),
         [changePage, useAppDispatch]
     );
+
+    const format: DynamicTableFormat[] = [
+        {
+            header: "id",
+            accessor: "id",
+        },
+        {
+            header: "User full name",
+            accessor: "legacyUser.fullName",
+        },
+        {
+            header: "training name",
+            accessor: "name",
+        },
+        {
+            header: "company name",
+            accessor: "companyName",
+        },
+        {
+            header: "start date",
+            accessor: "startDate",
+            accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
+        },
+        {
+            header: "status",
+            accessor: "status",
+            accessorFn: (s: number) => (<Text>{s === 0 ? "Not Started Yet" : StatusTraining[s] }</Text>)
+        },
+        {
+            header: "Details",
+            accessor: "id",
+            accessorFn: (id: number) => (
+                <DetailsCell resource="trainings" id={id} />
+            ),
+            disableSort: true,
+        },
+        {
+            header: "Edit",
+            accessor: "id",
+            accessorFn: (id: number) => (
+                <EditTrainingsButton
+                    training={trainings.filter((p) => p.id === id)[0]}
+                />
+            ),
+            disableSort: true,
+        },
+
+    ];
 
     return (
         <DynamicTable

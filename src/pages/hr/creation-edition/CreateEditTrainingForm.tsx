@@ -36,13 +36,11 @@ const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     companyName: Yup.string().required("Company name is required"),
     numberOfHours: Yup.number().nullable(),
-    startDate: Yup.date().nullable(),
+    startDate: Yup.date(),
     endDate: Yup.date().nullable(),
-    status: Yup.string().required("Status is required"),
+    status: Yup.number().required("Status is required"),
     satisfactionLevel: Yup.string().nullable(),
-    legacyUserId: Yup.number()
-        .nullable()
-        .required("Employee/Provider is required"),
+    legacyUserId: Yup.number().required("Employee/Provider is required"),
 });
 
 const initialValues = {
@@ -198,7 +196,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                             isRequired={true}
                             label="Status"
                             name="status"
-                            value={formik.values.status.toString()}
+                            value={formik.values.status}
                             error={formik.errors.status}
                             touched={formik.touched.status}
                             onChange={(v) =>

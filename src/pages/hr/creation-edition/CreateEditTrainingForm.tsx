@@ -243,14 +243,14 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         }
                         error={formik.errors.legacyUserId}
                         touched={formik.touched.legacyUserId}
+                        name="legacyUserId"
                         defaultValue={
                             editInitialValues
                                 ? {
-                                      value: editInitialValues?.legacyUser?.id,
-                                      label: editInitialValues?.legacyUser
-                                          ?.fullName,
+                                    value: editInitialValues?.legacyUser?.id,
+                                    label: editInitialValues?.legacyUser?.fullName,
                                   }
-                                : undefined
+                            : undefined
                         }
                     />
                 </GridItem>

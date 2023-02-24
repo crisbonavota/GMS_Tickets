@@ -42,7 +42,7 @@ const TrainingInfo = ({ training }: Props) => {
           label={"Number of Hours"}
         />
         <UserDetailedViewBodyComponent
-          resource={SatisfactionLevel[training.satisfactionLevel]}
+          resource={training.satisfactionLevel ? SatisfactionLevel[training.satisfactionLevel] : "N/A"}
           label={"Satisfaction Level"}
         />
         <UserDetailedViewBodyComponent

@@ -29,6 +29,7 @@ interface BusinessUnitsFilter {
 interface TrainingsFilter {
     status: StatusTraining;
     legacyUserId: number | null;
+    year: number;
 }
 
 export interface EmployeePersonalInfoValues {
@@ -125,8 +126,9 @@ const initialState: HumanResourcesState = {
         },
         search: "",
         filters: {
-            status: 1,
+            status: 0,
             legacyUserId: null,
+            year: new Date().getFullYear(),
         },
     },
     crtEmployeePersonalInfo: {

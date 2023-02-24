@@ -27,7 +27,7 @@ interface BusinessUnitsFilter {
 }
 
 interface TrainingsFilter {
-    status: StatusTraining | null;
+    status: StatusTraining;
     legacyUserId: number | null;
     year: number;
 }
@@ -126,7 +126,7 @@ const initialState: HumanResourcesState = {
         },
         search: "",
         filters: {
-            status: null,
+            status: 0,
             legacyUserId: null,
             year: new Date().getFullYear(),
         },

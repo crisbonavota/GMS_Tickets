@@ -18,8 +18,6 @@ import {
     patchResource,
 } from "../../../api/api";
 import { postResource } from "../../../api/api";
-import StatusField from "../../pm/creation-edition/StatusField";
-import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
 import FormikInput from "../../../components/FormikInput";
 import { AxiosError } from "axios";
 import moment from "moment";
@@ -40,7 +38,7 @@ const validationSchema = Yup.object().shape({
     endDate: Yup.date().nullable(),
     status: Yup.number().required("Status is required"),
     satisfactionLevel: Yup.string().nullable(),
-    legacyUserId: Yup.number().required("Employee/Provider is required"),
+    legacyUserId: Yup.number().nullable().required("Employee/Provider is required"),
 });
 
 const initialValues = {
@@ -84,7 +82,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
 
     const onSuccess = () => {
         queryClient.resetQueries("trainings");
-        // queryClient.resetQueries("provider");
+        queryClient.resetQueries("training");
         // queryClient.resetQueries(`provider-${id}`);
         toast({
             title: editInitialValues ? "Training updated" : "Training created",
@@ -218,7 +216,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         <FormikSelectInput
                             label="Stisfaction Level"
                             name="satisfactionLevel"
-                            value={formik.values.satisfactionLevel.toString()}
+                            value={formik.values.satisfactionLevel}
                             error={formik.errors.satisfactionLevel}
                             touched={formik.touched.satisfactionLevel}
                             onChange={(v) =>

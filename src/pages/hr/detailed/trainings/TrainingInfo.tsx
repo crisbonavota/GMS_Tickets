@@ -34,7 +34,7 @@ const TrainingInfo = ({ training }: Props) => {
             label={"Start Date"} 
         />
         <UserDetailedViewBodyComponent
-          resource={moment.utc(training.endDate).format("yyyy-MM-DD")}
+          resource={training.endDate ? moment.utc(training.endDate).format("yyyy-MM-DD") : "N/A"}
           label={"End Date"}
         />
         <UserDetailedViewBodyComponent

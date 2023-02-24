@@ -4,6 +4,7 @@ import AsyncSingleDropdownFilter from "../../../../components/AsyncSingleDropdow
 import { useAppDispatch } from "../../../../redux/hooks";
 import { changeFilter } from "../../../../redux/slices/hr";
 import TrainingsStatusFilter from "../TrainingsStatusFilter";
+import YearFilter from "../YearFilter";
 
 const TrainingsFilter = () => {
     const dispatch = useAppDispatch();
@@ -43,12 +44,13 @@ const TrainingsFilter = () => {
         <VStack w={"full"} spacing={5}>
             <TrainingsStatusFilter setter={stateSetter} />
             <AsyncSingleDropdownFilter
-            setter={setLegacyUser}
-            nameProp="fullName"
-            valueProp="id"
-            resource="users/legacy"
-            label="User"
-        />
+                setter={setLegacyUser}
+                nameProp="fullName"
+                valueProp="id"
+                resource="users/legacy"
+                label="User"
+            />
+            <YearFilter />
         </VStack>
     );
 }

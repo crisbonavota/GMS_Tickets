@@ -11,6 +11,7 @@ import { parseTotalPagesHeader } from "../../../../utils/query";
 import Loading from "../../../pm/tabs/Loading";
 import TabHeader from "../../../pm/tabs/TabHeader";
 import FiltersBar from "../FiltersBar";
+import ExportTrainings from "./ExportTrainings";
 import TrainingsFilter from "./TrainingsFilter";
 import TrainingsTable from "./TrainingsTable";
 
@@ -43,7 +44,13 @@ const Trainings = () => {
                     { field: "status", value: state.filters.status },
                     { field: "legacyUserId", value: state.filters.legacyUserId }
                 ],
-                [{ name: "search", value: state.search }],
+                [
+                    { name: "search", value: state.search },
+                    {
+                        name: "year",
+                        value: state.filters.year,
+                    },
+                ],
                 state.sort,
                 state.pagination.currentPage,
                 10
@@ -78,7 +85,7 @@ const Trainings = () => {
         <VStack>
             <Flex justifyContent={"space-between"} width={"100%"}>
                 <TabHeader label={"Trainings"} icon={RiBuilding4Fill} />
-                {/* <ExportProviders /> */}
+                {<ExportTrainings />}
             </Flex>
             <FiltersBar
                 search={state.search}

@@ -203,7 +203,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                             children={getTrainingsStates.map((s) => (
                                 <option
                                     key={s.label}
-                                    value={s.value.toString()}
+                                    value={s.value}
                                 >
                                     {s.label}
                                 </option>
@@ -228,7 +228,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                             children={getSatisfactionLevels.map((s) => (
                                 <option
                                     key={s.label}
-                                    value={s.value.toString()}
+                                    value={s.value}
                                 >
                                     {s.label}
                                 </option>

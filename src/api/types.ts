@@ -339,16 +339,16 @@ export enum MaritalStatus {
 }
 
 export enum StatusTraining {
-    Not_Started_Yet,
-    In_Progress,
+    NotStartedYet,
+    InProgress,
     Abandoned,
     Finished,
 }
 
 export enum SatisfactionLevel {
-    Not_at_all_satisfied,
-    Partly_satified,
+    NotAtAllSatisfied,
+    PartlySatified,
     Satisfied,
-    More_than_satisfied,
-    Very_satisfied,
+    MoreThanSatisfied,
+    VerySatisfied,
 }

@@ -1,26 +1,63 @@
-import { FormErrorMessage, FormControl } from "@chakra-ui/react";
-import SyncSingleValueDropdownFilter from "../../../components/SyncSingleValueDropdownFilter";
-
+import AsyncSelect from "react-select/async";
+import { useAuthHeader } from "react-auth-kit";
+import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
+import { SingleValue } from "react-select";
+import { getResourceListFilteredAndPaginated } from "../../../api/api";
+import { LegacyUserPublic } from "../../../api/types";
 
 interface Props {
     setter: (value: number | null) => void;
     error?: string;
     touched?: boolean;
+    name: string;
     defaultValue?: { label: string; value: number };
-    isRequired?: boolean;
 }
 
-const TrainingUserField = ({ setter, error, touched, defaultValue, isRequired }: Props) => {
+const TrainingUserField = ({ setter, error, touched, name, defaultValue }: Props) => {
+    const getAuthHeader = useAuthHeader();
+    const getOptions = async (input: string) => {
+        const res = await getResourceListFilteredAndPaginated<LegacyUserPublic>(
+            "users/legacy",
+            getAuthHeader(),
+            [{ field: "fullName", value: input }],
+            [],
+            { field: "fullName", isAscending: true }
+        );
+        return res.data.map((c) => ({
+            label: c.fullName,
+            value: c.id,
+        }));
+    };
+
+    const onChange = (
+        client: SingleValue<{ label: string; value: number }>
+    ) => {
+        setter(client ? client.value : null);
+    };
+
     return (
-        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
-            <SyncSingleValueDropdownFilter
-                resource="users/legacy"
-                title="Employee / Provider"
-                labelProp="fullName"
-                valueProp="id"
-                setter={setter}
+        <FormControl isInvalid={Boolean(error) && touched}>
+            <FormLabel htmlFor={name}>User</FormLabel>
+            <AsyncSelect
+                id={name}
+                name={name}
+                placeholder="Type for results..."
+                cacheOptions
+                loadOptions={getOptions}
+                isClearable
+                styles={{
+                    container: (base) => ({
+                        ...base,
+                        width: "100%",
+                    }),
+                }}
+                noOptionsMessage={(props) =>
+                    props.inputValue !== ""
+                        ? "No results found, try different keywords"
+                        : "Start typing to search for users"
+                }
+                onChange={onChange}
                 defaultValue={defaultValue}
-                placeholder=""
             />
             <FormErrorMessage>{error}</FormErrorMessage>
         </FormControl>

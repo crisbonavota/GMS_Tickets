@@ -1,6 +1,9 @@
 import { useCallback } from "react";
 import { Sort, StatusTraining, Training } from "../../../../api/types";
-import { DynamicTable, DynamicTableFormat } from "../../../../components/DynamicTable/DynamicTable";
+import {
+    DynamicTable,
+    DynamicTableFormat,
+} from "../../../../components/DynamicTable/DynamicTable";
 import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { changeSort, changePage } from "../../../../redux/slices/pm";
 import { Text } from "@chakra-ui/react";
@@ -60,7 +63,9 @@ const TrainingsTable = ({ trainings }: Props) => {
         {
             header: "status",
             accessor: "status",
-            accessorFn: (s: number) => (<Text>{s === 0 ? "Not Started Yet" : StatusTraining[s] }</Text>)
+            accessorFn: (s: number) => (
+                <Text>{s === 0 ? "Not Started Yet" : StatusTraining[s]}</Text>
+            ),
         },
         {
             header: "Details",
@@ -73,14 +78,14 @@ const TrainingsTable = ({ trainings }: Props) => {
         {
             header: "Edit",
             accessor: "id",
-            accessorFn: (id: number) => (
+            accessorFn: (training: Training) => (
                 <EditTrainingsButton
-                    training={trainings.filter((p) => p.id === id)[0]}
+                    training={training}
                 />
             ),
+            rawObject: true,
             disableSort: true,
         },
-
     ];
 
     return (

@@ -13,8 +13,8 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Training } from "../../../api/types";
 import {
-    getSatisfactionLevels,
-    getTrainingsStates,
+    satisfactionLevelValues,
+    trainingsStatesValues,
     patchResource,
 } from "../../../api/api";
 import { postResource } from "../../../api/api";
@@ -38,7 +38,9 @@ const validationSchema = Yup.object().shape({
     endDate: Yup.date().nullable(),
     status: Yup.number().required("Status is required"),
     satisfactionLevel: Yup.string().nullable(),
-    legacyUserId: Yup.number().nullable().required("Employee/Provider is required"),
+    legacyUserId: Yup.number()
+        .nullable()
+        .required("Employee/Provider is required"),
 });
 
 const initialValues = {
@@ -200,11 +202,8 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                             onChange={(v) =>
                                 formik.setFieldValue("status", v.target.value)
                             }
-                            children={getTrainingsStates.map((s) => (
-                                <option
-                                    key={s.label}
-                                    value={s.value}
-                                >
+                            children={trainingsStatesValues.map((s) => (
+                                <option key={s.label} value={s.value}>
                                     {s.label}
                                 </option>
                             ))}
@@ -225,11 +224,8 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                                     v.target.value
                                 )
                             }
-                            children={getSatisfactionLevels.map((s) => (
-                                <option
-                                    key={s.label}
-                                    value={s.value}
-                                >
+                            children={satisfactionLevelValues.map((s) => (
+                                <option key={s.label} value={s.value}>
                                     {s.label}
                                 </option>
                             ))}
@@ -247,10 +243,11 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         defaultValue={
                             editInitialValues
                                 ? {
-                                    value: editInitialValues?.legacyUser?.id,
-                                    label: editInitialValues?.legacyUser?.fullName,
+                                      value: editInitialValues?.legacyUser?.id,
+                                      label: editInitialValues?.legacyUser
+                                          ?.fullName,
                                   }
-                            : undefined
+                                : undefined
                         }
                     />
                 </GridItem>

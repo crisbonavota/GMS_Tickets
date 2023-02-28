@@ -34,7 +34,7 @@ const TrainingsFilter = () => {
                     value: {
                         key: "legacyUserId",
                         value: legacyUserId,
-                    },  
+                    },
                 },
             }),
         [dispatch, changeFilter]
@@ -53,6 +53,6 @@ const TrainingsFilter = () => {
             <YearFilter />
         </VStack>
     );
-}
+};
 
 export default TrainingsFilter;

@@ -216,7 +216,7 @@ export const getMedicalCoverages: () => MedicalCoverage[] = () => {
     ];
 };
 
-export const getMaritalStatus = [
+export const maritalStatusValues = [
     { value: MaritalStatus.Single, label: "Single" },
     { value: MaritalStatus.Married, label: "Married" },
     { value: MaritalStatus.Cohabiting, label: "Cohabiting" },
@@ -225,24 +225,24 @@ export const getMaritalStatus = [
     { value: MaritalStatus.Widowed, label: "Widowed" },
 ];
 
-export const getTrainingsStates = [
-    { value: StatusTraining.Not_Started_Yet, label: "Not Started Yet" },
-    { value: StatusTraining.In_Progress, label: "In Progress" },
+export const trainingsStatesValues = [
+    { value: StatusTraining.NotStartedYet, label: "Not Started Yet" },
+    { value: StatusTraining.InProgress, label: "In Progress" },
     { value: StatusTraining.Abandoned, label: "Abandoned" },
     { value: StatusTraining.Finished, label: "Finished" },
 ];
 
-export const getSatisfactionLevels = [
+export const satisfactionLevelValues = [
     {
-        value: SatisfactionLevel.Not_at_all_satisfied,
+        value: SatisfactionLevel.NotAtAllSatisfied,
         label: "Not at all Satisfied",
     },
-    { value: SatisfactionLevel.Partly_satified, label: "Partly Satisfied" },
+    { value: SatisfactionLevel.PartlySatified, label: "Partly Satisfied" },
     {
-        value: SatisfactionLevel.More_than_satisfied,
+        value: SatisfactionLevel.MoreThanSatisfied,
         label: "More then Satisfied",
     },
-    { value: SatisfactionLevel.Very_satisfied, label: "Very Satisfied" },
+    { value: SatisfactionLevel.VerySatisfied, label: "Very Satisfied" },
 ];
 
 export const getCurrencies: () => Currency[] = () => {

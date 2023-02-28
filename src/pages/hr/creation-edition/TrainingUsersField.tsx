@@ -13,7 +13,13 @@ interface Props {
     defaultValue?: { label: string; value: number };
 }
 
-const TrainingUserField = ({ setter, error, touched, name, defaultValue }: Props) => {
+const TrainingUserField = ({
+    setter,
+    error,
+    touched,
+    name,
+    defaultValue,
+}: Props) => {
     const getAuthHeader = useAuthHeader();
     const getOptions = async (input: string) => {
         const res = await getResourceListFilteredAndPaginated<LegacyUserPublic>(

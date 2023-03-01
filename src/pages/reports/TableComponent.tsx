@@ -44,7 +44,15 @@ const format: DynamicTableFormat[] = [
         header: "Date",
         accessor: "date",
         accessorFn: (date: string) =>
-            date ? momentToLocaleDateString(moment(date)) : "",
+            date
+                ? moment
+                      .utc(date)
+                      .format(
+                          navigator.language.includes("en")
+                              ? "MM-DD-YY"
+                              : "DD/MM/YY"
+                      )
+                : "",
     },
     {
         header: "Hours",

@@ -2,8 +2,6 @@ import { SimpleGrid, HStack } from "@chakra-ui/react";
 import moment from "moment";
 import { ChildCreation, MaritalStatus } from "../../../../../api/types";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
-import Childs from "../Childs";
-
 
 interface Props {
     maritalStatus: MaritalStatus;
@@ -27,17 +25,20 @@ const FamilyInfoDetailedView = ({ maritalStatus, children }: Props) => {
                     resource={MaritalStatus[maritalStatus]}
                     label={"Marital Status"}
                 />
-                {children ? children.map((child) => (
+                {children ? (
+                    children.map((child) => (
+                        <UserDetailedViewBodyComponent
+                            resource={moment(child.birthDate).format(
+                                "yyyy-MM-DD"
+                            )}
+                            label={child.name + " Birth Date"}
+                        />
+                    ))
+                ) : (
                     <UserDetailedViewBodyComponent
-                        resource={moment(child.birthDate).format("yyyy-MM-DD")}
-                        label={child.name + " Birth Date"}
+                        resource={"This user has no children added"}
+                        label={"Child"}
                     />
-
-                )) : (
-                    <UserDetailedViewBodyComponent
-                    resource={"This user has no children added"}
-                    label={"Child"}
-                />  
                 )}
             </SimpleGrid>
         </HStack>

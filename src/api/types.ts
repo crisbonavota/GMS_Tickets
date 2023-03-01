@@ -316,11 +316,39 @@ export interface ChildCreation {
     name: string;
 }
 
+export interface Training {
+    id: number;
+    name: string;
+    companyName: string;
+    numberOfHours: number;
+    startDate: Date;
+    endDate: Date;
+    status: StatusTraining;
+    satisfactionLevel: SatisfactionLevel;
+    legacyUser: LegacyUserPublic;
+    legacyUserId: number;
+}
+
 export enum MaritalStatus {
-  Single,
-  Married,
-  Cohabiting,
-  Divorced,
-  Separated,
-  Widowed
+    Single,
+    Married,
+    Cohabiting,
+    Divorced,
+    Separated,
+    Widowed,
+}
+
+export enum StatusTraining {
+    NotStartedYet,
+    InProgress,
+    Abandoned,
+    Finished,
+}
+
+export enum SatisfactionLevel {
+    NotAtAllSatisfied,
+    PartlySatified,
+    Satisfied,
+    MoreThanSatisfied,
+    VerySatisfied,
 }

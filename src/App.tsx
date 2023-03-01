@@ -15,6 +15,7 @@ import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
 import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
 import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
 import GoogleRedirect from "./pages/signin/GoogleRedirect";
+import TrainingDetailedView from "./pages/hr/detailed/trainings/TrainingDetailedView";
 
 const signInPath = "/sign-in";
 
@@ -123,6 +124,14 @@ const App = () => {
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <ProviderDetailedView />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"/human-resources/trainings/:id"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <TrainingDetailedView />
                             </RequireAuth>
                         }
                     />

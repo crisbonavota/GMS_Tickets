@@ -85,7 +85,6 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
     const onSuccess = () => {
         queryClient.resetQueries("trainings");
         queryClient.resetQueries("training");
-        // queryClient.resetQueries(`provider-${id}`);
         toast({
             title: editInitialValues ? "Training updated" : "Training created",
             status: "success",

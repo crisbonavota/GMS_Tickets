@@ -16,6 +16,56 @@ interface Props {
     trainings: Training[];
 }
 
+const format: DynamicTableFormat[] = [
+    {
+        header: "id",
+        accessor: "id",
+    },
+    {
+        header: "User full name",
+        accessor: "legacyUser.fullName",
+    },
+    {
+        header: "training name",
+        accessor: "name",
+    },
+    {
+        header: "company name",
+        accessor: "companyName",
+    },
+    {
+        header: "start date",
+        accessor: "startDate",
+        accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
+    },
+    {
+        header: "status",
+        accessor: "status",
+        accessorFn: (s: number) => (
+            <Text>{s === 0 ? "Not Started Yet" : StatusTraining[s]}</Text>
+        ),
+    },
+    {
+        header: "Details",
+        accessor: "id",
+        accessorFn: (id: number) => (
+            <DetailsCell resource="trainings" id={id} />
+        ),
+        disableSort: true,
+    },
+    {
+        header: "Edit",
+        accessor: "id",
+        accessorFn: (training: Training) => (
+            <EditTrainingsButton
+                training={training}
+            />
+        ),
+        rawObject: true,
+        disableSort: true,
+    },
+];
+
 const TrainingsTable = ({ trainings }: Props) => {
     const state = useAppSelector((s) => s.humanResources.trainings);
     const dispatch = useAppDispatch();
@@ -37,56 +87,6 @@ const TrainingsTable = ({ trainings }: Props) => {
             }),
         [changePage, useAppDispatch]
     );
-
-    const format: DynamicTableFormat[] = [
-        {
-            header: "id",
-            accessor: "id",
-        },
-        {
-            header: "User full name",
-            accessor: "legacyUser.fullName",
-        },
-        {
-            header: "training name",
-            accessor: "name",
-        },
-        {
-            header: "company name",
-            accessor: "companyName",
-        },
-        {
-            header: "start date",
-            accessor: "startDate",
-            accessorFn: (r: string) => momentToLocaleDateString(moment(r)),
-        },
-        {
-            header: "status",
-            accessor: "status",
-            accessorFn: (s: number) => (
-                <Text>{s === 0 ? "Not Started Yet" : StatusTraining[s]}</Text>
-            ),
-        },
-        {
-            header: "Details",
-            accessor: "id",
-            accessorFn: (id: number) => (
-                <DetailsCell resource="trainings" id={id} />
-            ),
-            disableSort: true,
-        },
-        {
-            header: "Edit",
-            accessor: "id",
-            accessorFn: (training: Training) => (
-                <EditTrainingsButton
-                    training={training}
-                />
-            ),
-            rawObject: true,
-            disableSort: true,
-        },
-    ];
 
     return (
         <DynamicTable

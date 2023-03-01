@@ -8,6 +8,8 @@ import {
     PatchDocumentItem,
     MedicalCoverage,
     MaritalStatus,
+    StatusTraining,
+    SatisfactionLevel,
 } from "./types";
 import {
     insertStandardFilters,
@@ -214,13 +216,33 @@ export const getMedicalCoverages: () => MedicalCoverage[] = () => {
     ];
 };
 
-export const getMaritalStatus = [
+export const maritalStatusValues = [
     { value: MaritalStatus.Single, label: "Single" },
     { value: MaritalStatus.Married, label: "Married" },
     { value: MaritalStatus.Cohabiting, label: "Cohabiting" },
     { value: MaritalStatus.Divorced, label: "Divorced" },
     { value: MaritalStatus.Separated, label: "Separated" },
     { value: MaritalStatus.Widowed, label: "Widowed" },
+];
+
+export const trainingsStatesValues = [
+    { value: StatusTraining.NotStartedYet, label: "Not Started Yet" },
+    { value: StatusTraining.InProgress, label: "In Progress" },
+    { value: StatusTraining.Abandoned, label: "Abandoned" },
+    { value: StatusTraining.Finished, label: "Finished" },
+];
+
+export const satisfactionLevelValues = [
+    {
+        value: SatisfactionLevel.NotAtAllSatisfied,
+        label: "Not at all Satisfied",
+    },
+    { value: SatisfactionLevel.PartlySatified, label: "Partly Satisfied" },
+    {
+        value: SatisfactionLevel.MoreThanSatisfied,
+        label: "More then Satisfied",
+    },
+    { value: SatisfactionLevel.VerySatisfied, label: "Very Satisfied" },
 ];
 
 export const getCurrencies: () => Currency[] = () => {

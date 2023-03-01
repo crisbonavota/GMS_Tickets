@@ -15,7 +15,7 @@ import ChildItem from "./ChildItem";
 import AddChildPopover from "./AddChildPopover";
 import { FormikProps } from "formik";
 import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
-import { getMaritalStatus } from "../../../../api/api";
+import { maritalStatusValues } from "../../../../api/api";
 
 interface Props {
     onClose: () => void;
@@ -51,7 +51,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
                                     v.target.value
                                 )
                             }
-                            children={getMaritalStatus.map((s) => (
+                            children={maritalStatusValues.map((s) => (
                                 <option
                                     key={s.label}
                                     value={s.value.toString()}

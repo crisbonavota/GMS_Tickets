@@ -63,6 +63,13 @@ const TrainingHeader = ({ training }: Props) => {
                         color={"#FFFFFF"}
                     />
                 </Box>
+                <Box>
+                    <InfoTitle
+                        title={"Cost"}
+                        content={`$ ${training.courseCost}`}
+                        color={"#FFFFFF"}
+                    />
+                </Box>
                 <TrainingDetailedEditButton training={training} />
             </HStack>
         </Box>

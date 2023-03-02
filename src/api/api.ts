@@ -10,6 +10,7 @@ import {
     MaritalStatus,
     StatusTraining,
     SatisfactionLevel,
+    EffectivenessLevel,
 } from "./types";
 import {
     insertStandardFilters,
@@ -216,7 +217,7 @@ export const getMedicalCoverages: () => MedicalCoverage[] = () => {
     ];
 };
 
-export const maritalStatusValues = [
+export const getMaritalStatus = () => [
     { value: MaritalStatus.Single, label: "Single" },
     { value: MaritalStatus.Married, label: "Married" },
     { value: MaritalStatus.Cohabiting, label: "Cohabiting" },
@@ -225,14 +226,20 @@ export const maritalStatusValues = [
     { value: MaritalStatus.Widowed, label: "Widowed" },
 ];
 
-export const trainingsStatesValues = [
+export const getTrainingsStates = () => [
     { value: StatusTraining.NotStartedYet, label: "Not Started Yet" },
     { value: StatusTraining.InProgress, label: "In Progress" },
     { value: StatusTraining.Abandoned, label: "Abandoned" },
     { value: StatusTraining.Finished, label: "Finished" },
 ];
 
-export const satisfactionLevelValues = [
+export const getEffectivenessLevels = () => [
+    { value: EffectivenessLevel.Low, label: "Low" },
+    { value: EffectivenessLevel.Meduim, label: "Medium" },
+    { value: EffectivenessLevel.High, label: "High" },
+];
+
+export const getSatisfactionLevels = () => [
     {
         value: SatisfactionLevel.NotAtAllSatisfied,
         label: "Not at all Satisfied",

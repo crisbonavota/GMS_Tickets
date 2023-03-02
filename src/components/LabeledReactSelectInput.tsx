@@ -2,14 +2,15 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
 import ReactSelect from "react-select";
 
 interface Props {
-    value: number | null;
-    options: { value: number; label: string }[];
-    setter: (value: number | null) => void;
+    value: number | string | null;
+    options: { value: number | string; label: string }[];
+    setter: (value: number | string | null) => void;
     label: string;
     error?: string;
     touched?: boolean;
     name: string;
     placeholder?: string;
+    isRequired?: boolean;
 }
 
 const LabeledReactSelectInput = ({
@@ -21,9 +22,10 @@ const LabeledReactSelectInput = ({
     touched,
     name,
     placeholder,
+    isRequired,
 }: Props) => {
     return (
-        <FormControl isInvalid={Boolean(error) && touched}>
+        <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
             <FormLabel htmlFor={name}>{label}</FormLabel>
             <ReactSelect
                 value={options.find((option) => option.value === value)}

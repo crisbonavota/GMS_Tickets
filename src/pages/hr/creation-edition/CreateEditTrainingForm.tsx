@@ -13,16 +13,17 @@ import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Training } from "../../../api/types";
 import {
-    satisfactionLevelValues,
-    trainingsStatesValues,
+    getSatisfactionLevels,
+    getTrainingsStates,
     patchResource,
+    getEffectivenessLevels,
 } from "../../../api/api";
 import { postResource } from "../../../api/api";
 import FormikInput from "../../../components/FormikInput";
 import { AxiosError } from "axios";
 import moment from "moment";
-import FormikSelectInput from "../../pm/creation-edition/FormikSelectInput";
 import TrainingUserField from "./TrainingUsersField";
+import LabeledReactSelectInput from "../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
@@ -41,6 +42,7 @@ const validationSchema = Yup.object().shape({
     legacyUserId: Yup.number()
         .nullable()
         .required("Employee/Provider is required"),
+    courseCost: Yup.number().nullable().required("Course cost is required"),
 });
 
 const initialValues = {
@@ -52,6 +54,13 @@ const initialValues = {
     status: 0,
     satisfactionLevel: "",
     legacyUserId: null,
+    typeOfTraining: "",
+    points: 0,
+    sepyme: "",
+    courseCost: 0,
+    attendance: "",
+    typeOfRequest: "",
+    effectivenessLevel: "",
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Training) =>
@@ -61,9 +70,14 @@ const editInitialValuesToFormikValues = (editInitialValues?: Training) =>
               startDate: moment
                   .utc(editInitialValues.startDate)
                   .format("yyyy-MM-DD"),
-              endDate: moment
-                  .utc(editInitialValues.endDate)
-                  .format("yyyy-MM-DD"),
+              endDate:
+                  editInitialValues.endDate !== null
+                      ? moment
+                            .utc(editInitialValues.endDate)
+                            .format("yyyy-MM-DD")
+                      : null,
+              status: editInitialValues.status || 0,
+              typeOfRequest: editInitialValues.typeOfRequest,
           }
         : undefined;
 
@@ -143,6 +157,18 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput
+                        label="Type of Training"
+                        placeholder="Online course, webinar, English, etc."
+                        name={"typeOfTraining"}
+                        id={"typeOfTraining"}
+                        value={formik.values.typeOfTraining}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.typeOfTraining}
+                        error={formik.errors.typeOfTraining}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
                         name="companyName"
                         id="companyName"
                         isRequired={true}
@@ -171,7 +197,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         type="date"
                         name="endDate"
                         id="endDate"
-                        value={formik.values.endDate}
+                        value={formik.values.endDate!}
                         onChange={formik.handleChange}
                         error={formik.errors.endDate}
                         touched={formik.touched.endDate}
@@ -190,47 +216,66 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormControl isInvalid={!formik.errors.status}>
-                        <FormikSelectInput
-                            isRequired={true}
-                            label="Status"
-                            name="status"
-                            value={formik.values.status}
-                            error={formik.errors.status}
-                            touched={formik.touched.status}
-                            onChange={(v) =>
-                                formik.setFieldValue("status", v.target.value)
-                            }
-                            children={trainingsStatesValues.map((s) => (
-                                <option key={s.label} value={s.value}>
-                                    {s.label}
-                                </option>
-                            ))}
-                        />
-                    </FormControl>
+                    <LabeledReactSelectInput
+                        isRequired={true}
+                        label="Status"
+                        name="status"
+                        value={formik.values.status}
+                        error={formik.errors.status}
+                        touched={formik.touched.status}
+                        options={getTrainingsStates().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: number | string | null) =>
+                            formik.setFieldValue("status", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormControl isInvalid={!formik.errors.status}>
-                        <FormikSelectInput
-                            label="Stisfaction Level"
-                            name="satisfactionLevel"
-                            value={formik.values.satisfactionLevel}
-                            error={formik.errors.satisfactionLevel}
-                            touched={formik.touched.satisfactionLevel}
-                            onChange={(v) =>
-                                formik.setFieldValue(
-                                    "satisfactionLevel",
-                                    v.target.value
-                                )
-                            }
-                            children={satisfactionLevelValues.map((s) => (
-                                <option key={s.label} value={s.value}>
-                                    {s.label}
-                                </option>
-                            ))}
-                        />
-                    </FormControl>
+                    <LabeledReactSelectInput
+                        label="Stisfaction Level"
+                        name="satisfactionLevel"
+                        value={formik.values.satisfactionLevel}
+                        error={formik.errors.satisfactionLevel}
+                        touched={formik.touched.satisfactionLevel}
+                        options={getSatisfactionLevels().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: number | string | null) =>
+                            formik.setFieldValue(
+                                "satisfactionLevel",
+                                value,
+                                true
+                            )
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
+                <GridItem colSpan={1}>
+                    <LabeledReactSelectInput
+                        label="Effectiveness Level"
+                        name="effectivenessLevel"
+                        value={formik.values.effectivenessLevel}
+                        error={formik.errors.effectivenessLevel}
+                        touched={formik.touched.effectivenessLevel}
+                        options={getEffectivenessLevels().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: number | string | null) =>
+                            formik.setFieldValue(
+                                "effectivenessLevel",
+                                value,
+                                true
+                            )
+                        }
+                        placeholder=""
+                    />
+                </GridItem>
+
                 <GridItem colSpan={1}>
                     <TrainingUserField
                         setter={(value: number | null) =>
@@ -250,6 +295,63 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         }
                     />
                 </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="Points"
+                        name={"points"}
+                        id={"points"}
+                        value={formik.values.points}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.points}
+                        error={formik.errors.points}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="SEPYME"
+                        name={"sepyme"}
+                        id={"sepyme"}
+                        value={formik.values.sepyme}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.sepyme}
+                        error={formik.errors.sepyme}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="Course Cost"
+                        name={"courseCost"}
+                        isRequired={true}
+                        id={"courseCost"}
+                        value={formik.values.courseCost}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.courseCost}
+                        error={formik.errors.courseCost}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="Type of Request"
+                        name={"typeOfRequest"}
+                        id={"typeOfRequest"}
+                        value={formik.values.typeOfRequest}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.typeOfRequest}
+                        error={formik.errors.typeOfRequest}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="Attendance"
+                        name={"attendance"}
+                        id={"attendance"}
+                        value={formik.values.attendance}
+                        onChange={formik.handleChange}
+                        touched={formik.touched.attendance}
+                        error={formik.errors.attendance}
+                    />
+                </GridItem>
+
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"

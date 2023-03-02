@@ -327,6 +327,13 @@ export interface Training {
     satisfactionLevel: SatisfactionLevel;
     legacyUser: LegacyUserPublic;
     legacyUserId: number;
+    typeOfTraining: string;
+    points: number;
+    sepyme: string;
+    courseCost: number;
+    attendance: string;
+    typeOfRequest: string;
+    effectivenessLevel: EffectivenessLevel;
 }
 
 export enum MaritalStatus {
@@ -351,4 +358,10 @@ export enum SatisfactionLevel {
     Satisfied,
     MoreThanSatisfied,
     VerySatisfied,
+}
+
+export enum EffectivenessLevel {
+    Low,
+    Meduim,
+    High,
 }

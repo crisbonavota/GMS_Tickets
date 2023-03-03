@@ -316,21 +316,17 @@ const CreateEditJobForm = ({
                 </GridItem>
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
-                              label="Currency"
-                              name="currencyId"
-                              value={formik.values.currencyId}
-                              error={formik.errors.currencyId}
-                              touched={formik.touched.currencyId}
+                        label="Currency"
+                        name="currencyId"
+                        value={formik.values.currencyId}
+                        error={formik.errors.currencyId}
+                        touched={formik.touched.currencyId}
                         options={getCurrencies().map((c) => ({
                             value: c.id,
                             label: c.code,
                         }))}
-                        setter={(value: number | string | null) =>
-                            formik.setFieldValue(
-                                "currencyId",
-                                value,
-                                true
-                            )
+                        setter={(value: any) =>
+                            formik.setFieldValue("currencyId", value, true)
                         }
                         placeholder=""
                     />

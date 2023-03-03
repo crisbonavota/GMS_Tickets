@@ -89,17 +89,17 @@ const CrtEditEmployeeFormPersonalInfo = ({
                 </GridItem>
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
-                    label="Status"
-                    isRequired={true}
-                    name="status"
-                    value={formikPersonalInfo.values.active.toString()}
-                    touched={formikPersonalInfo.touched.active}
-                    error={formikPersonalInfo.errors.active}
+                        label="Status"
+                        isRequired={true}
+                        name="status"
+                        value={formikPersonalInfo.values.active.toString()}
+                        touched={formikPersonalInfo.touched.active}
+                        error={formikPersonalInfo.errors.active}
                         options={getStatus().map((c) => ({
                             value: c.value.toString(),
                             label: c.label,
                         }))}
-                        setter={(value: number | string | null) =>
+                        setter={(value: any) =>
                             formikPersonalInfo.setFieldValue(
                                 "status",
                                 value,
@@ -123,17 +123,17 @@ const CrtEditEmployeeFormPersonalInfo = ({
                 </GridItem>
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
-                       label="Gender"
-                       isRequired={true}
-                       name="gender"
-                       value={formikPersonalInfo.values.gender.toString()}
-                       touched={formikPersonalInfo.touched.gender}
-                       error={formikPersonalInfo.errors.gender}
+                        label="Gender"
+                        isRequired={true}
+                        name="gender"
+                        value={formikPersonalInfo.values.gender.toString()}
+                        touched={formikPersonalInfo.touched.gender}
+                        error={formikPersonalInfo.errors.gender}
                         options={getGenders().map((c) => ({
                             value: c.value.toString(),
                             label: c.label,
                         }))}
-                        setter={(value: number | string | null) =>
+                        setter={(value: any) =>
                             formikPersonalInfo.setFieldValue(
                                 "gender",
                                 value,

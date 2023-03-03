@@ -45,7 +45,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
                             value: c.value,
                             label: c.label,
                         }))}
-                        setter={(value: number | string | null) =>
+                        setter={(value: any) =>
                             formikFamilyInfo.setFieldValue(
                                 "maritalStatus",
                                 value,

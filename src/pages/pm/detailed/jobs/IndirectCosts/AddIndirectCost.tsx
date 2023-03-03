@@ -133,7 +133,7 @@ const AddIndirectCost = ({ projectId }: Props) => {
                                     value: c.id,
                                     label: c.code,
                                 }))}
-                                setter={(value: number | string | null) =>
+                                setter={(value: any) =>
                                     formik.setFieldValue(
                                         "currencyId",
                                         value,

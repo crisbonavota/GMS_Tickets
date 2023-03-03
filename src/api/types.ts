@@ -362,6 +362,6 @@ export enum SatisfactionLevel {
 
 export enum EffectivenessLevel {
     Low,
-    Meduim,
+    Medium,
     High,
 }

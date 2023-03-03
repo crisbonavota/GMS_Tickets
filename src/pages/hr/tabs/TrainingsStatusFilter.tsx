@@ -6,13 +6,12 @@ interface Props {
 }
 
 const TrainingsStatusFilter = ({ setter }: Props) => {
-    const states = getTrainingsStates;
 
     return (
         <SyncSingleValueSelector
             setter={setter}
             label={"Status"}
-            data={states}
+            data={getTrainingsStates()}
             labelProp={"label"}
             valueProp={"value"}
         />

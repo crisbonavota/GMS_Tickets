@@ -223,10 +223,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.status}
                         error={formik.errors.status}
                         touched={formik.touched.status}
-                        options={getTrainingsStates().map((c) => ({
-                            value: c.value,
-                            label: c.label,
-                        }))}
+                        options={getTrainingsStates().map((elem) => elem)}
                         setter={(value: number | string | null) =>
                             formik.setFieldValue("status", value, true)
                         }
@@ -240,10 +237,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.satisfactionLevel}
                         error={formik.errors.satisfactionLevel}
                         touched={formik.touched.satisfactionLevel}
-                        options={getSatisfactionLevels().map((c) => ({
-                            value: c.value,
-                            label: c.label,
-                        }))}
+                        options={getSatisfactionLevels().map((elem) => elem)}
                         setter={(value: number | string | null) =>
                             formik.setFieldValue(
                                 "satisfactionLevel",
@@ -261,10 +255,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.effectivenessLevel}
                         error={formik.errors.effectivenessLevel}
                         touched={formik.touched.effectivenessLevel}
-                        options={getEffectivenessLevels().map((c) => ({
-                            value: c.value,
-                            label: c.label,
-                        }))}
+                        options={getEffectivenessLevels().map((elem) => elem)}
                         setter={(value: number | string | null) =>
                             formik.setFieldValue(
                                 "effectivenessLevel",

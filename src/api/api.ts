@@ -235,7 +235,7 @@ export const getTrainingsStates = () => [
 
 export const getEffectivenessLevels = () => [
     { value: EffectivenessLevel.Low, label: "Low" },
-    { value: EffectivenessLevel.Meduim, label: "Medium" },
+    { value: EffectivenessLevel.Medium, label: "Medium" },
     { value: EffectivenessLevel.High, label: "High" },
 ];
 

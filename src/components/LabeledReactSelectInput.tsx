@@ -2,9 +2,9 @@ import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/react";
 import ReactSelect from "react-select";
 
 interface Props {
-    value: number | string | null;
-    options: { value: number | string; label: string }[];
-    setter: (value: number | string | null) => void;
+    value: any;
+    options: { value: any; label: string }[];
+    setter: (value: any) => void;
     label: string;
     error?: string;
     touched?: boolean;

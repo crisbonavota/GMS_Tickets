@@ -1,6 +1,11 @@
 import { SimpleGrid, HStack } from "@chakra-ui/react";
 import moment from "moment";
-import { SatisfactionLevel, Training } from "../../../../api/types";
+import {
+    EffectivenessLevel,
+    SatisfactionLevel,
+    StatusTraining,
+    Training,
+} from "../../../../api/types";
 import UserDetailedViewBodyComponent from "../UserDetailedViewBodyComponent";
 
 interface Props {
@@ -26,6 +31,10 @@ const TrainingInfo = ({ training }: Props) => {
                     label={"Name"}
                 />
                 <UserDetailedViewBodyComponent
+                    resource={training.typeOfTraining}
+                    label={"Type of Training"}
+                />
+                <UserDetailedViewBodyComponent
                     resource={training.companyName}
                     label={"Company Name"}
                 />
@@ -48,6 +57,10 @@ const TrainingInfo = ({ training }: Props) => {
                     label={"Number of Hours"}
                 />
                 <UserDetailedViewBodyComponent
+                    resource={StatusTraining[training.status]}
+                    label={"Status"}
+                />
+                <UserDetailedViewBodyComponent
                     resource={
                         training.satisfactionLevel
                             ? SatisfactionLevel[training.satisfactionLevel]
@@ -56,8 +69,37 @@ const TrainingInfo = ({ training }: Props) => {
                     label={"Satisfaction Level"}
                 />
                 <UserDetailedViewBodyComponent
+                    resource={
+                        training.effectivenessLevel
+                            ? EffectivenessLevel[training.effectivenessLevel]
+                            : "N/A"
+                    }
+                    label={"Effectiveness Level"}
+                />
+                <UserDetailedViewBodyComponent
                     resource={training.legacyUser.fullName}
                     label={"Full Name"}
+                />
+
+                <UserDetailedViewBodyComponent
+                    resource={training.points.toString()}
+                    label={"Points"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={training.sepyme}
+                    label={"SEPYME"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={`$ ${training.courseCost.toString()}`}
+                    label={"Course Cost"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={training.typeOfRequest}
+                    label={"Type of Request"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={training.attendance}
+                    label={"Attendance"}
                 />
             </SimpleGrid>
         </HStack>

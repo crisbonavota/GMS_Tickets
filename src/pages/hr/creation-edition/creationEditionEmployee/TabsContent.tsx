@@ -1,5 +1,5 @@
 import { Tabs, TabPanels, TabPanel } from "@chakra-ui/react";
-import { Employee, MaritalStatus } from "../../../../api/types";
+import { Employee } from "../../../../api/types";
 import CreateEditEmployeeFormEmploymentInfo from "./CreateEditEmployeeFormEmploymentInfo";
 import CreateEditEmployeeFormFamilyInfo from "./CreateEditEmployeeFormFamilyInfo";
 import CreateEditEmployeeFormLocationInfo from "./CreateEditEmployeeFormLocationInfo";
@@ -30,12 +30,12 @@ const editInitialValuesToFormikPersonalInfoValues = (
                   ` (${editInitialValues.id})`,
                   ""
               ),
-              entryDate: moment.utc(editInitialValues.entryDate).format(
-                  "yyyy-MM-DD"
-              ),
-              birthDate: moment.utc(editInitialValues.birthDate).format(
-                  "yyyy-MM-DD"
-              ),
+              entryDate: moment
+                  .utc(editInitialValues.entryDate)
+                  .format("yyyy-MM-DD"),
+              birthDate: moment
+                  .utc(editInitialValues.birthDate)
+                  .format("yyyy-MM-DD"),
               active: editInitialValues.active,
               email: editInitialValues.email,
               afipId: editInitialValues.afipId,

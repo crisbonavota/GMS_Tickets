@@ -31,6 +31,7 @@ import {
 } from "../../../api/api";
 import moment from "moment";
 import FormikInput from "../../../components/FormikInput";
+import LabeledReactSelectInput from "../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
@@ -314,28 +315,21 @@ const CreateEditJobForm = ({
                     </VStack>
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <HStack alignItems={"center"} spacing={5}>
-                        <FormikSelectInput
-                            name="currencyId"
-                            id="currencyId"
-                            value={formik.values.currencyId}
-                            onChange={formik.handleChange}
-                            error={formik.errors.currencyId}
-                            touched={formik.touched.currencyId}
-                            label="Currency"
-                            children={getCurrencies().map((ct) => (
-                                <option key={ct.id} value={ct.id}>
-                                    {ct.code}
-                                </option>
-                            ))}
-                        />
-                        <SoldField
-                            value={formik.values.sold}
-                            setter={(value: boolean) =>
-                                formik.setFieldValue("sold", value, true)
-                            }
-                        />
-                    </HStack>
+                    <LabeledReactSelectInput
+                        label="Currency"
+                        name="currencyId"
+                        value={formik.values.currencyId}
+                        error={formik.errors.currencyId}
+                        touched={formik.touched.currencyId}
+                        options={getCurrencies().map((c) => ({
+                            value: c.id,
+                            label: c.code,
+                        }))}
+                        setter={(value: any) =>
+                            formik.setFieldValue("currencyId", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <FormikInput

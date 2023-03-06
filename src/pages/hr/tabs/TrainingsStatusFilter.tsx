@@ -1,4 +1,4 @@
-import { trainingsStatesValues } from "../../../api/api";
+import { getTrainingsStates } from "../../../api/api";
 import SyncSingleValueSelector from "./trainings/SyncSingleValueSelector";
 
 interface Props {
@@ -6,13 +6,12 @@ interface Props {
 }
 
 const TrainingsStatusFilter = ({ setter }: Props) => {
-    const states = trainingsStatesValues;
 
     return (
         <SyncSingleValueSelector
             setter={setter}
             label={"Status"}
-            data={states}
+            data={getTrainingsStates()}
             labelProp={"label"}
             valueProp={"value"}
         />

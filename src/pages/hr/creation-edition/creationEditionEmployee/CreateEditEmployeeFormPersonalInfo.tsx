@@ -3,7 +3,7 @@ import { getGenders, getStatus } from "../../../../api/api";
 import FormikInput from "../../../../components/FormikInput";
 import { FormikProps } from "formik";
 import { EmployeePersonalInfoValues } from "../../../../redux/slices/hr";
-import FormikSelectInput from "../../../pm/creation-edition/FormikSelectInput";
+import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
@@ -19,9 +19,6 @@ const CrtEditEmployeeFormPersonalInfo = ({
     formik,
 }: Props) => {
     const formikPersonalInfo = formik;
-
-    const genders = getGenders();
-    const status = getStatus();
 
     return (
         <chakra.form w={"full"} onSubmit={formikPersonalInfo.handleSubmit}>
@@ -91,22 +88,25 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikSelectInput
-                        label={"Status"}
+                    <LabeledReactSelectInput
+                        label="Status"
                         isRequired={true}
                         name="status"
-                        id="status"
                         value={formikPersonalInfo.values.active.toString()}
                         touched={formikPersonalInfo.touched.active}
                         error={formikPersonalInfo.errors.active}
-                        onChange={(v) =>
-                            formik.setFieldValue("active", v.target.value)
+                        options={getStatus().map((c) => ({
+                            value: c.value.toString(),
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formikPersonalInfo.setFieldValue(
+                                "status",
+                                value,
+                                true
+                            )
                         }
-                        children={status.map((s) => (
-                            <option key={s.label} value={s.value.toString()}>
-                                {s.label}
-                            </option>
-                        ))}
+                        placeholder=""
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
@@ -122,22 +122,25 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikSelectInput
-                        label={"Gender"}
+                    <LabeledReactSelectInput
+                        label="Gender"
                         isRequired={true}
                         name="gender"
-                        id="gender"
                         value={formikPersonalInfo.values.gender.toString()}
                         touched={formikPersonalInfo.touched.gender}
                         error={formikPersonalInfo.errors.gender}
-                        onChange={(v) =>
-                            formik.setFieldValue("gender", v.target.value)
+                        options={getGenders().map((c) => ({
+                            value: c.value.toString(),
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formikPersonalInfo.setFieldValue(
+                                "gender",
+                                value,
+                                true
+                            )
                         }
-                        children={genders.map((s) => (
-                            <option key={s.label} value={s.value.toString()}>
-                                {s.label}
-                            </option>
-                        ))}
+                        placeholder=""
                     />
                 </GridItem>
                 <GridItem colSpan={1}>

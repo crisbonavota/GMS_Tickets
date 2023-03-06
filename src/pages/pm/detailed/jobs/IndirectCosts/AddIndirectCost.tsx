@@ -19,6 +19,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
 import moment from "moment";
 import { AxiosError } from "axios";
+import LabeledReactSelectInput from "../../../../../components/LabeledReactSelectInput";
 
 const validationSchema = Yup.object().shape({
     description: Yup.string().required("Description is required"),
@@ -122,19 +123,24 @@ const AddIndirectCost = ({ projectId }: Props) => {
                                 error={formik.errors.amount}
                                 touched={formik.touched.amount}
                             />
-                            <FormikSelectInput
+                            <LabeledReactSelectInput
+                                label="Currency"
                                 name="currencyId"
-                                id="currencyId"
                                 value={formik.values.currencyId}
-                                onChange={formik.handleChange}
                                 error={formik.errors.currencyId}
                                 touched={formik.touched.currencyId}
-                                label="Currency"
-                                children={getCurrencies().map((ct) => (
-                                    <option key={ct.id} value={ct.id}>
-                                        {ct.code}
-                                    </option>
-                                ))}
+                                options={getCurrencies().map((c) => ({
+                                    value: c.id,
+                                    label: c.code,
+                                }))}
+                                setter={(value: any) =>
+                                    formik.setFieldValue(
+                                        "currencyId",
+                                        value,
+                                        true
+                                    )
+                                }
+                                placeholder=""
                             />
                             <Button
                                 colorScheme="green"

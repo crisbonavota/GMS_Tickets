@@ -209,7 +209,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                             value: c.id,
                             label: c.code,
                         }))}
-                        setter={(value: number | null) =>
+                        setter={(value: any) =>
                             formikEmploymentInfo.setFieldValue(
                                 "salaryCurrencyId",
                                 value,
@@ -230,7 +230,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                             value: c.id,
                             label: c.name,
                         }))}
-                        setter={(value: number | null) =>
+                        setter={(value: any) =>
                             formikEmploymentInfo.setFieldValue(
                                 "medicalCoverageId",
                                 value,

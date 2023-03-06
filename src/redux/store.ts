@@ -4,6 +4,7 @@ import timetrackerReportsReducer from "./slices/tt-reports";
 import humanResourcesUpdatesReducer from "./slices/hr-updates";
 import humanResourcesReducer from "./slices/hr";
 import timetrackReducer from "./slices/timetrackSlice";
+import providersReducer from "./slices/providers";
 
 const store = configureStore({
     reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
         humanResources: humanResourcesReducer,
         hrUpdates: humanResourcesUpdatesReducer,
         timetrack: timetrackReducer,
+        providers: providersReducer,
     },
     devTools: {
         serialize: true,

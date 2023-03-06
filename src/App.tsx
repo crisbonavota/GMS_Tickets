@@ -12,10 +12,11 @@ import Reports from "./pages/reports/Reports";
 import Updates from "./pages/updates/Updates";
 import Timetracker from "./pages/timetracker/Timetracker";
 import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
-import ProviderDetailedView from "./pages/hr/detailed/providers/ProviderDetailedView";
 import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
 import GoogleRedirect from "./pages/signin/GoogleRedirect";
 import TrainingDetailedView from "./pages/hr/detailed/trainings/TrainingDetailedView";
+import ProviderDetailedView from "./pages/providers/detailed/ProviderDetailedView";
+import ProvidersView from "./pages/providers/ProvidersView";
 
 const signInPath = "/sign-in";
 
@@ -120,18 +121,26 @@ const App = () => {
                         }
                     />
                     <Route
-                        path={"/human-resources/providers/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <ProviderDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
                         path={"/human-resources/trainings/:id"}
                         element={
                             <RequireAuth loginPath={signInPath}>
                                 <TrainingDetailedView />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"/providers"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <ProvidersView />
+                            </RequireAuth>
+                        }
+                    />
+                    <Route
+                        path={"/providers/:id"}
+                        element={
+                            <RequireAuth loginPath={signInPath}>
+                                <ProviderDetailedView />
                             </RequireAuth>
                         }
                     />

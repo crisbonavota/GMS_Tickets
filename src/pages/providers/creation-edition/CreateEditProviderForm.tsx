@@ -14,9 +14,9 @@ import { Provider } from "../../../api/types";
 import { patchResource } from "../../../api/api";
 import { postResource } from "../../../api/api";
 import StatusField from "../../pm/creation-edition/StatusField";
-import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
 import FormikInput from "../../../components/FormikInput";
 import { AxiosError } from "axios";
+import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
 
 interface Props {
     onClose: () => void;

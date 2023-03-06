@@ -13,7 +13,6 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import FormikInput from "../../../../../components/FormikInput";
 import { getCurrencies, postResource } from "../../../../../api/api";
-import FormikSelectInput from "../../../creation-edition/FormikSelectInput";
 import { VStack, useToast } from "@chakra-ui/react";
 import { useMutation, useQueryClient } from "react-query";
 import { useAuthHeader } from "react-auth-kit";

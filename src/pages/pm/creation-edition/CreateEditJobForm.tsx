@@ -18,7 +18,6 @@ import { RiSendBackward } from "react-icons/ri";
 import { Tooltip } from "@chakra-ui/react";
 import AccountField from "./AccountField";
 import LeadField from "./LeadField";
-import FormikSelectInput from "./FormikSelectInput";
 import StatusField from "./StatusField";
 import SoldField from "./SoldField";
 import BusinessUnitField from "./BusinessUnitField";
@@ -282,20 +281,21 @@ const CreateEditJobForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <FormikSelectInput
-                        name="contractType"
-                        id="contractType"
-                        value={formik.values.contractType}
-                        onChange={formik.handleChange}
-                        error={formik.errors.contractType}
-                        touched={formik.touched.contractType}
-                        label="Contract type"
-                        children={getContractTypes().map((ct) => (
-                            <option key={ct.value} value={ct.value}>
-                                {ct.label}
-                            </option>
-                        ))}
-                    />
+                        <LabeledReactSelectInput
+                            label="Contract Type"
+                            name="contractType"
+                            value={formik.values.contractType}
+                            error={formik.errors.contractType}
+                            touched={formik.touched.contractType}
+                            options={getContractTypes().map((c) => ({
+                                value: c.value,
+                                label: c.label,
+                            }))}
+                            setter={(value: any) =>
+                                formik.setFieldValue("contractType", value, true)
+                            }
+                            placeholder=""
+                        />          
                 </GridItem>
                 <GridItem colSpan={1}>
                     <VStack alignItems={"flex-start"}>
@@ -368,6 +368,7 @@ const CreateEditJobForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
+                <HStack alignItems={"flex-end"} spacing={5}> 
                     <StatusField
                         setter={(value: boolean) =>
                             formik.setFieldValue("active", value, true)
@@ -378,6 +379,13 @@ const CreateEditJobForm = ({
                                 : "inactive"
                         }
                     />
+                    <SoldField
+                            value={formik.values.sold}
+                            setter={(value: boolean) =>
+                                formik.setFieldValue("sold", value, true)
+                            }
+                        />
+                </HStack>
                 </GridItem>
 
                 <GridItem colSpan={{ base: 1, md: 2 }}>

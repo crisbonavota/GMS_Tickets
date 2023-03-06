@@ -6,6 +6,7 @@ interface Props {
     medicalCoverage: string;
     businessUnit: string;
     position: string;
+    salaryAmount: string;
 }
 
 const EmploymentInfoDetailedView = ({
@@ -13,6 +14,7 @@ const EmploymentInfoDetailedView = ({
     medicalCoverage,
     businessUnit,
     position,
+    salaryAmount,
 }: Props) => {
     return (
         <HStack
@@ -40,6 +42,10 @@ const EmploymentInfoDetailedView = ({
                 <UserDetailedViewBodyComponent
                     resource={position}
                     label={"Position"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={salaryAmount}
+                    label={"Salary Amount"}
                 />
             </SimpleGrid>
         </HStack>

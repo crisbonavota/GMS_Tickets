@@ -17,8 +17,8 @@ import { useAuthHeader } from "react-auth-kit";
 import moment from "moment";
 import { AxiosError } from "axios";
 import { getCurrencies, postResource } from "../../../api/api";
-import FormikSelectInput from "../../../pages/pm/creation-edition/FormikSelectInput";
 import FormikInput from "../../FormikInput";
+import LabeledReactSelectInput from "../../LabeledReactSelectInput";
 
 const validationSchema = Yup.object().shape({
     price: Yup.number()
@@ -108,21 +108,23 @@ const AddCurrencyExchangeRate = () => {
                                 error={formik.errors.date}
                                 touched={formik.touched.date}
                             />
-                            <FormikSelectInput
+                            <LabeledReactSelectInput
                                 name="targetCurrencyId"
-                                id="targetCurrencyId"
                                 value={formik.values.targetCurrencyId}
-                                onChange={formik.handleChange}
                                 error={formik.errors.targetCurrencyId}
                                 touched={formik.touched.targetCurrencyId}
                                 label="Target currency"
-                                children={getCurrencies()
+                                options={getCurrencies()
                                     .filter((c) => c.code !== "USD")
-                                    .map((ct) => (
-                                        <option key={ct.id} value={ct.id}>
-                                            {ct.code}
-                                        </option>
+                                    .map((ct) => ({
+                                        value: ct.id,
+                                        label: ct.code,
+                                    }
                                     ))}
+                                setter={(value: any) =>
+                                    formik.setFieldValue("targetCurrencyId", value, true)
+                                }
+                                placeholder=""
                             />
                             <Button
                                 colorScheme="green"

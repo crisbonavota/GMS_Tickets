@@ -1,10 +1,10 @@
 import { HStack, Box, Avatar } from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import { useAuthHeader } from "react-auth-kit";
-import { Provider } from "../../../../api/types";
-import { getResource } from "../../../../api/api";
-import { InfoTitle } from "../../../pm/detailed/InfoBox";
 import ProviderDetailedEditButton from "./ProviderDetailedEditButton";
+import { Provider } from "../../../api/types";
+import { getResource } from "../../../api/api";
+import { InfoTitle } from "../../pm/detailed/InfoBox";
 
 type Props = {
   provider: Provider;

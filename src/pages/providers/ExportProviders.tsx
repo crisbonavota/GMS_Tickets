@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
-import { getReportFiltered } from "../../../../api/api";
-import { useAppSelector } from "../../../../redux/hooks";
-import { downloadFile, generateExcelFileURL } from "../../../../utils/files";
+import { getReportFiltered } from "../../api/api";
+import { useAppSelector } from "../../redux/hooks";
+import { downloadFile, generateExcelFileURL } from "../../utils/files";
 import { BiExport } from "react-icons/bi";
 
 const onExport = (base64?: string) => {
@@ -16,7 +16,7 @@ const onExport = (base64?: string) => {
 
 const ExportProviders = () => {
   const getAuthHeader = useAuthHeader();
-  const state = useAppSelector((s) => s.humanResources.providers);
+  const state = useAppSelector((s) => s.providers);
   const reportQuery = useQuery(
     ["providerReport", state.filters, state.sort, state.search],
     () =>
@@ -24,10 +24,10 @@ const ExportProviders = () => {
         "providers/report",
         getAuthHeader(),
         [
-          { field: "firstName", value: state.search },
           { field: "active", value: state.filters.active },
+          { field: "legacyUser.businessUnit.id", value: state.filters.businessUnit },
         ],
-        [],
+        [{ name: "fullName", value: state.search }],
         state.sort
       )
   );

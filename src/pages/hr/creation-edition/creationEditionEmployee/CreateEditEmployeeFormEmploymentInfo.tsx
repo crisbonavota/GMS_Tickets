@@ -27,6 +27,7 @@ import {
     EmployeeFamilyValues,
 } from "../../../../redux/slices/hr";
 import LabeledReactSelectInput from "../../../../components/LabeledReactSelectInput";
+import FormikInput from "../../../../components/FormikInput";
 
 interface Props {
     onClose: () => void;
@@ -55,6 +56,7 @@ const validationSchema = Yup.object().shape({
         .nullable()
         .required("Business unit is required"),
     positionId: Yup.number().nullable(),
+    salaryAmount: Yup.number().min(0, "Salary amount must be greater than 0").nullable(),
 });
 
 const initialValues = {
@@ -62,6 +64,7 @@ const initialValues = {
     medicalCoverageId: 0,
     businessUnitId: null,
     positionId: null,
+    salaryAmount: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -71,6 +74,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
               medicalCoverageId: editInitialValues?.medicalCoverage?.id,
               businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
               positionId: editInitialValues?.position?.id,
+              salaryAmount: editInitialValues?.salaryAmount,
           }
         : undefined;
 
@@ -283,6 +287,18 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                                   }
                                 : undefined
                         }
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <FormikInput
+                        label="Salary Amount"
+                        isRequired={false}
+                        name={"salaryAmount"}
+                        id={"salaryAmount"}
+                        value={formikEmploymentInfo.values.salaryAmount}
+                        onChange={formikEmploymentInfo.handleChange}
+                        touched={formikEmploymentInfo.touched.salaryAmount}
+                        error={formikEmploymentInfo.errors.salaryAmount}
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

@@ -17,11 +17,6 @@ interface EmployeesFilter {
     businessUnit: number | null;
 }
 
-interface ProvidersFilter {
-    active: boolean;
-    businessUnit: number | null;
-}
-
 interface BusinessUnitsFilter {
     active: boolean;
 }
@@ -62,7 +57,6 @@ export interface EmployeeFamilyValues {
 
 interface HumanResourcesState {
     employees: BasicModuleProps<EmployeesFilter>;
-    providers: BasicModuleProps<ProvidersFilter>;
     businessUnits: BasicModuleProps<BusinessUnitsFilter>;
     trainings: BasicModuleProps<TrainingsFilter>;
     crtEmployeePersonalInfo: EmployeePersonalInfoValues;
@@ -72,21 +66,6 @@ interface HumanResourcesState {
 
 const initialState: HumanResourcesState = {
     employees: {
-        pagination: {
-            currentPage: 0,
-            totalPages: null,
-        },
-        sort: {
-            field: "fileNumber",
-            isAscending: false,
-        },
-        search: "",
-        filters: {
-            active: true,
-            businessUnit: null,
-        },
-    },
-    providers: {
         pagination: {
             currentPage: 0,
             totalPages: null,
@@ -165,7 +144,7 @@ const initialState: HumanResourcesState = {
 };
 
 interface Action<T> {
-    module: "employees" | "providers" | "businessUnits" | "trainings";
+    module: "employees" | "businessUnits" | "trainings";
     value: T;
 }
 

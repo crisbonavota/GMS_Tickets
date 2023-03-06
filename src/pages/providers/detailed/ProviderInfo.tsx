@@ -1,6 +1,6 @@
 import { SimpleGrid, HStack } from "@chakra-ui/react";
-import { Provider } from "../../../../api/types";
-import UserDetailedViewBodyComponent from "../UserDetailedViewBodyComponent";
+import { Provider } from "../../../api/types";
+import UserDetailedViewBodyComponent from "../../hr/detailed/UserDetailedViewBodyComponent";
 
 interface Props {
     provider: Provider;

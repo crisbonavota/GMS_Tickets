@@ -8,8 +8,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
-import { Provider } from "../../../../api/types";
-import CreateEditProviderForm from "../../creation-edition/CreateEditProviderForm";
+import { Provider } from "../../../api/types";
+import CreateEditProviderForm from "../creation-edition/CreateEditProviderForm";
 
 interface Props {
   provider: Provider;

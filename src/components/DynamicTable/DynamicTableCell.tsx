@@ -18,8 +18,8 @@ const DynamicTableCell = ({ item, format }: Props) => {
         <Td
             overflow={"hidden"}
             textOverflow={"ellipsis"}
-            whiteSpace={"nowrap"}
-            maxWidth={"7rem"}
+            whiteSpace={format.withTooltip ? "nowrap" : "normal"}
+            maxWidth={format.withTooltip ? "7rem" : "none"}
         >
             {format.withTooltip ? (
                 <Tooltip hasArrow label={nestedProp} bg={"teal.500"}>

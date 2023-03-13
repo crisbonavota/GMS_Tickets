@@ -368,26 +368,25 @@ const CreateEditJobForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                <HStack alignItems={"flex-end"} spacing={5}> 
-                    <StatusField
-                        setter={(value: boolean) =>
-                            formik.setFieldValue("active", value, true)
-                        }
-                        value={
-                            formik.values.active === true
-                                ? "active"
-                                : "inactive"
-                        }
-                    />
-                    <SoldField
-                            value={formik.values.sold}
+                    <HStack alignItems={"flex-end"} spacing={5}> 
+                        <StatusField
                             setter={(value: boolean) =>
-                                formik.setFieldValue("sold", value, true)
+                                formik.setFieldValue("active", value, true)
+                            }
+                            value={
+                                formik.values.active === true
+                                    ? "active"
+                                    : "inactive"
                             }
                         />
-                </HStack>
+                        <SoldField
+                                value={formik.values.sold}
+                                setter={(value: boolean) =>
+                                    formik.setFieldValue("sold", value, true)
+                                }
+                            />
+                    </HStack>
                 </GridItem>
-
                 <GridItem colSpan={{ base: 1, md: 2 }}>
                     <HStack
                         w="full"

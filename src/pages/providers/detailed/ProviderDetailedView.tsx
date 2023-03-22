@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
-import { getResource } from "../../../../api/api";
-import { Provider } from "../../../../api/types";
 import { useAuthHeader } from "react-auth-kit";
 import { VStack, Text, HStack, Box } from "@chakra-ui/react";
 import { BsFillPersonFill } from "react-icons/bs";
 import ProviderInfo from "./ProviderInfo";
 import ProviderHeader from "./ProviderHeader";
+import { getResource } from "../../../api/api";
+import { Provider } from "../../../api/types";
 
 const ProviderDetailedView = () => {
   const { id } = useParams();

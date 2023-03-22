@@ -22,10 +22,13 @@ const ExportEmployees = () => {
     ["employeeReport", state.filters, state.sort, state.search],
     () => getReportFiltered("employees/report", getAuthHeader(), 
     [
-        {field: "firstName", value: state.search},
-        {field: "active", value: state.filters.active}
+      { field: "active", value: state.filters.active },
+      {
+          field: "legacyUser.businessUnit.id",
+          value: state.filters.businessUnit,
+      },
     ],
-    [],
+    [{ name: "fullName", value: state.search }],
     state.sort
     )
   );

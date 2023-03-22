@@ -1,6 +1,5 @@
 import { Tabs, TabPanels, TabPanel } from '@chakra-ui/react';
 import Employees from './employees/Employees';
-import Providers from './providers/Providers';
 import BusinessUnits from './businessunits/BusinessUnits';
 import Trainings from './trainings/Trainings';
 
@@ -28,9 +27,6 @@ const TabsContent = ({ tabIndex, setTabIndex }: Props) => {
             >
                 <TabPanel w={'full'}>
                     <Employees />
-                </TabPanel>
-                <TabPanel>
-                    <Providers />{' '}
                 </TabPanel>
                 <TabPanel>
                     <BusinessUnits />

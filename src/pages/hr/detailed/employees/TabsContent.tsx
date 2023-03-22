@@ -64,6 +64,7 @@ const TabsContent = ({ tabIndex, setTabIndex, employee }: Props) => {
                         medicalCoverage={employee.medicalCoverage?.name}
                         businessUnit={employee.legacyUser.businessUnit.name}
                         position={employee.position?.name}
+                        salaryAmount={employee.salaryAmount?.toString()}
                     />
                 </TabPanel>
             </TabPanels>

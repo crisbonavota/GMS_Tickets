@@ -26,7 +26,6 @@ const format: DynamicTableFormat[] = [
     {
         header: "job",
         accessor: "name",
-        withTooltip: true,
     },
     {
         header: "account",

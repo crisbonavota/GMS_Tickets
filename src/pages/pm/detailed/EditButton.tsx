@@ -31,10 +31,10 @@ const EditButton = ({ modalBody, onOpen, onClose, isOpen }: Props) => {
             </Tooltip>
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
-                <ModalContent minW={"40vw"}>
+                <ModalContent minW={"fit-content"}>
                     <ModalHeader>Edit</ModalHeader>
                     <ModalCloseButton />
-                    <ModalBody>{modalBody}</ModalBody>
+                    <ModalBody w={"fit-content"}>{modalBody}</ModalBody>
                 </ModalContent>
             </Modal>
         </Box>

@@ -1,38 +1,35 @@
-import { Text, Tooltip } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { GroupLegacyUser, Provider, Sort } from "../../../../api/types";
-import {
-    DynamicTableFormat,
-    DynamicTable,
-} from "../../../../components/DynamicTable/DynamicTable";
-import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import { changeSort, changePage } from "../../../../redux/slices/hr";
-import DetailsCell from "../../../pm/tabs/DetailsCell";
-import EditProviderButton from "../../creation-edition/EditProviderButton";
-import EmployeePermissions from "../employees/permissions/EmployeePermissions";
+import { Sort, GroupLegacyUser, Provider } from "../../api/types";
+import { DynamicTableFormat, DynamicTable } from "../../components/DynamicTable/DynamicTable";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { changePage, changeSort } from "../../redux/slices/providers";
+import EmployeePermissions from "../hr/tabs/employees/permissions/EmployeePermissions";
+import DetailsCell from "../pm/tabs/DetailsCell";
+import EditProviderButton from "./creation-edition/EditProviderButton";
 
 interface Props {
     providers: Provider[];
 }
 
 const ProvidersTable = ({ providers }: Props) => {
-    const state = useAppSelector((s) => s.humanResources.providers);
+    const state = useAppSelector((s) => s.providers);
     const dispatch = useAppDispatch();
 
     const setSort = useCallback(
-        (s: Sort) =>
+        (value: Sort) =>
             dispatch({
                 type: changeSort,
-                payload: { module: "providers", value: s },
+                payload: value,
             }),
         [changeSort, useAppDispatch]
     );
 
     const setPage = useCallback(
-        (p: number) =>
+        (value: number) =>
             dispatch({
                 type: changePage,
-                payload: { module: "providers", value: p },
+                payload: value,
             }),
         [changePage, useAppDispatch]
     );
@@ -75,7 +72,7 @@ const ProvidersTable = ({ providers }: Props) => {
             header: "Details",
             accessor: "id",
             accessorFn: (id: number) => (
-                <DetailsCell resource="providers" id={id} />
+                <DetailsCell resource="/providers" id={id} />
             ),
             disableSort: true,
         },

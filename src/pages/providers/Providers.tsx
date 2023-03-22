@@ -4,29 +4,26 @@ import { Flex, VStack } from "@chakra-ui/react";
 import { RiBuilding4Fill } from "react-icons/ri";
 import ProvidersTable from "./ProvidersTable";
 import { useCallback } from "react";
-import FiltersBar from "../FiltersBar";
 import ProvidersFilters from "./ProvidersFilters";
-import { getResourceListFilteredAndPaginated } from "../../../../api/api";
-import { Provider } from "../../../../api/types";
-import { useAppSelector, useAppDispatch } from "../../../../redux/hooks";
-import { changeTotalPages, changeSearch } from "../../../../redux/slices/hr";
-import { parseTotalPagesHeader } from "../../../../utils/query";
-import TabHeader from "../../../pm/tabs/TabHeader";
-import Loading from "../../../pm/tabs/Loading";
 import ExportProviders from "./ExportProviders";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { changeSearch, changeTotalPages } from "../../redux/slices/providers";
+import { getResourceListFilteredAndPaginated } from "../../api/api";
+import { Provider } from "../../api/types";
+import { parseTotalPagesHeader } from "../../utils/query";
+import TabHeader from "../pm/tabs/TabHeader";
+import FiltersBar from "../hr/tabs/FiltersBar";
+import Loading from "../pm/tabs/Loading";
 
 const Providers = () => {
-  const state = useAppSelector((s) => s.humanResources.providers);
+  const state = useAppSelector((s) => s.providers);
   const getAuthHeader = useAuthHeader();
   const dispatch = useAppDispatch();
 
   const setTotalPages = (value: number | null) =>
     dispatch({
       type: changeTotalPages,
-      payload: {
-        module: "providers",
-        value,
-      },
+      payload: value,
     });
 
   const {
@@ -58,13 +55,10 @@ const Providers = () => {
   const providers = axiosRes?.data;
 
   const onSearch = useCallback(
-    (s: string) => {
+    (value: string) => {
       dispatch({
         type: changeSearch,
-        payload: {
-          module: "providers",
-          value: s,
-        },
+        payload: value,
       });
     },
     [dispatch, changeSearch]

@@ -1,9 +1,9 @@
 import { VStack } from "@chakra-ui/react";
-import StatusFilter from "../StatusFilter";
 import { useCallback } from "react";
-import { useAppDispatch } from "../../../../redux/hooks";
-import { changeFilter } from "../../../../redux/slices/hr";
-import BusinessUnitFilter from "../BusinessUnitFilter";
+import { useAppDispatch } from "../../redux/hooks";
+import { changeFilter } from "../../redux/slices/providers";
+import BusinessUnitFilter from "../hr/tabs/BusinessUnitFilter";
+import StatusFilter from "../hr/tabs/StatusFilter";
 
 const ProvidersFilters = () => {
     const dispatch = useAppDispatch();
@@ -13,11 +13,8 @@ const ProvidersFilters = () => {
             dispatch({
                 type: changeFilter,
                 payload: {
-                    module: "providers",
-                    value: {
-                        key: "active",
-                        value: val,
-                    },
+                    key: "active",
+                    value: val,
                 },
             });
         },
@@ -29,11 +26,8 @@ const ProvidersFilters = () => {
             dispatch({
                 type: changeFilter,
                 payload: {
-                    module: "providers",
-                    value: {
-                        key: "businessUnit",
-                        value: val,
-                    },
+                    key: "businessUnit",
+                    value: val,
                 },
             });
         },

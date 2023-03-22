@@ -10,8 +10,8 @@ Welcome to GMS 2022, React client for the internal management tool of Tonic3. Th
 
 ### Installation
 
--   Clone this repository: `git clone https://github.com/Tonic3Dev/gms-2022-api.git`
--   Navigate to the project directory: `cd gms-2022`
+-   Clone this repository: `git clone https://github.com/Tonic3Dev/gms-2022-client.git`
+-   Navigate to the project directory: `cd gms-2022-client`
 -   Install dependencies: `npm install`
 
 ### Configuration
@@ -45,7 +45,7 @@ Deployed from `develop` branch to [https://gms.devw3americas.com](https://gms.de
 
 ### Bugs and Feature Requests
 
-Requests for new features and bug reports can be submitted both on the [issues page](https://github.com/Tonic3Dev/gms-2022-api/issues) or the [VivifyScrum board](https://app.vivifyscrum.com/boards/114315) (you'll have to ask for access to the board).
+Requests for new features and bug reports can be submitted both on the [issues page](https://github.com/Tonic3Dev/gms-2022-client/issues) or the [VivifyScrum board](https://app.vivifyscrum.com/boards/114315) (you'll have to ask for access to the board).
 
 ### Pull Requests
 

@@ -12,7 +12,7 @@ Welcome to GMS 2022, React client for the internal management tool of Tonic3. Th
 
 -   Clone this repository: `git clone https://github.com/Tonic3Dev/gms-2022-client.git`
 -   Navigate to the project directory: `cd gms-2022-client`
--   Install dependencies: `npm install`
+-   Install dependencies: `yarn install`
 
 ### Configuration
 
@@ -25,7 +25,7 @@ Welcome to GMS 2022, React client for the internal management tool of Tonic3. Th
 
 To start the application locally, run the following command in the project directory:
 
-`npm start`
+`yarn start`
 
 This will start the development server and open the application in your default web browser at http://localhost:3000.
 

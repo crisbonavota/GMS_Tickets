@@ -35,7 +35,7 @@ The application is automatically deployed on Render.com using a CI/CD pipeline.
 
 ### Production
 
-Deployed from `main` branch to [https://gms.tonic3.com](https://gms.tonic3.com)
+Deployed from `master` branch to [https://gms.tonic3.com](https://gms.tonic3.com)
 
 ### Development
 

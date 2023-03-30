@@ -15,54 +15,49 @@ import { AxiosResponse } from "axios";
 import { UseQueryResult } from "react-query";
 import { downloadFile, generateExcelFileURL } from "../../utils/files";
 import { exportModuleCheckBoxOptions } from "../../api/api";
-import { useAppDispatch } from "../../redux/hooks";
-import { useEffect, useState } from "react";
-import { changeFilter } from "../../redux/slices/tt-reports";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+// import { useEffect } from "react";
+import { changeFilter, checkAllColumns } from "../../redux/slices/tt-reports";
+import { useQueryClient } from "react-query";
 
 interface Props {
     reportQuery: UseQueryResult<AxiosResponse<string, any>, unknown>;
-    // checkedItems: Map<string, boolean>;
-    // setCheckedItems: (checkedItems: Map<string, boolean>) => void;
 }
 
-const PopoverExportButton = ({
-    reportQuery,
-    // checkedItems,
-    // setCheckedItems,
-}: Props) => {
+const PopoverExportButton = ({ reportQuery }: Props) => {
     const dispatch = useAppDispatch();
-    const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
-        new Map()
-    );
+    const state = useAppSelector((col) => col.ttReports.filters.columns);
+    const queryClient = useQueryClient();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const item = event.target.name;
         const isChecked = event.target.checked;
-        const newCheckedItems = new Map(checkedItems).set(item, isChecked);
-        setCheckedItems(newCheckedItems);
+        let newCheckedItems = { ...state, [item]: isChecked };
+        dispatch({
+            type: changeFilter,
+            payload: {
+                key: "columns",
+                value: newCheckedItems,
+            },
+        });
     };
 
     const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const isChecked = event.target.checked;
-        const newCheckedItems = new Map<string, boolean>();
-        exportModuleCheckBoxOptions.forEach((item) =>
-            newCheckedItems.set(item, isChecked)
-        );
-        setCheckedItems(newCheckedItems);
+        dispatch({
+            type: checkAllColumns,
+        });
     };
 
     const isChecked = (item: string) => {
-        return checkedItems.get(item) || false;
+        return state[item];
     };
 
     const isAllChecked = () => {
-        return exportModuleCheckBoxOptions.every((item) =>
-            checkedItems.get(item)
-        );
+        return Object.values(state).every((el) => el === true);
     };
 
     const isAtLeastOneChecked = () => {
-        return Array.from(checkedItems.values()).some((item) => item);
+        return Object.values(state).some((el) => el === true);
     };
 
     const onExport = (base64?: string) => {
@@ -75,15 +70,16 @@ const PopoverExportButton = ({
             );
     };
 
-    useEffect(() => {
-        dispatch({
-            type: changeFilter,
-            payload: {
-                key: "columns",
-                value: checkedItems,
-            },
-        });
-    }, [checkedItems]);
+    // useEffect(() => {
+    //     dispatch({
+    //         type: changeFilter,
+    //         payload: {
+    //             key: "columns",
+    //             value: checkedItems,
+    //         },
+    //     });
+    //     // queryClient.resetQueries("timetrackReport");
+    // }, [checkedItems]);
 
     return (
         <Popover>

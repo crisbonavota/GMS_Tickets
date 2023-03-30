@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
 import { Sort } from "../../api/types";
+import { exportModuleCheckBoxOptions } from "../../api/api";
 
 interface TTReportsState {
     pagination: {
@@ -16,10 +17,16 @@ interface TTReportsState {
         accounts: number[];
         generalSearch: string;
         borrowed: boolean;
-        columns: string[];
+        columns: { [key: string]: boolean };
     };
     sort: Sort;
 }
+
+const getColumns = () => {
+    let newObject: { [key: string]: boolean } = {};
+    exportModuleCheckBoxOptions.forEach((el) => (newObject[el] = true));
+    return newObject;
+};
 
 const initialState: TTReportsState = {
     pagination: {
@@ -39,7 +46,7 @@ const initialState: TTReportsState = {
         accounts: [],
         generalSearch: "",
         borrowed: false,
-        columns: [],
+        columns: getColumns(),
     },
 };
 
@@ -68,10 +75,13 @@ const slice = createSlice({
             state.filters[action.payload.key] = action.payload.value;
             state.pagination.currentPage = 0;
         },
+        checkAllColumns: (state: TTReportsState) => {
+            state.filters.columns = initialState.filters.columns;
+        },
     },
 });
 
-export const { changePage, changeTotalPages, changeFilter, changeSort } =
+export const { changePage, changeTotalPages, changeFilter, changeSort, checkAllColumns } =
     slice.actions;
 
 export default slice.reducer;

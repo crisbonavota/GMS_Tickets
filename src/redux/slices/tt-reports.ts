@@ -16,6 +16,7 @@ interface TTReportsState {
         accounts: number[];
         generalSearch: string;
         borrowed: boolean;
+        columns: string[];
     };
     sort: Sort;
 }
@@ -38,6 +39,7 @@ const initialState: TTReportsState = {
         accounts: [],
         generalSearch: "",
         borrowed: false,
+        columns: [],
     },
 };
 
@@ -60,7 +62,7 @@ const slice = createSlice({
         },
         changeFilter: (
             state: TTReportsState,
-            action: PayloadAction<{ key: string; value: number | null }>
+            action: PayloadAction<{ key: string; value: any }>
         ) => {
             // @ts-ignore
             state.filters[action.payload.key] = action.payload.value;

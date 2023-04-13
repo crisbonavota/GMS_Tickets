@@ -123,6 +123,7 @@ const TabsContent = ({
             lastName: Yup.string().required("Last name is required"),
             birthDate: Yup.date().required("Date of Birth is required"),
             gender: Yup.string().required("Gender is required"),
+            active: Yup.string().required("Status is required"),
             email: Yup.string()
                 .nullable()
                 .required("Email is required")

@@ -43,6 +43,7 @@ const validationSchema = Yup.object().shape({
         .nullable()
         .required("Employee/Provider is required"),
     courseCost: Yup.number().nullable().required("Course cost is required"),
+    effectivenessLevel: Yup.string().nullable(),
 });
 
 const initialValues = {
@@ -232,7 +233,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                 </GridItem>
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
-                        label="Stisfaction Level"
+                        label="Satisfaction Level"
                         name="satisfactionLevel"
                         value={formik.values.satisfactionLevel}
                         error={formik.errors.satisfactionLevel}

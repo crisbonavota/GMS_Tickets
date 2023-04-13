@@ -91,7 +91,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                     <LabeledReactSelectInput
                         label="Status"
                         isRequired={true}
-                        name="status"
+                        name="active"
                         value={formikPersonalInfo.values.active.toString()}
                         touched={formikPersonalInfo.touched.active}
                         error={formikPersonalInfo.errors.active}
@@ -101,7 +101,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         }))}
                         setter={(value: any) =>
                             formikPersonalInfo.setFieldValue(
-                                "status",
+                                "active",
                                 value,
                                 true
                             )

@@ -16,9 +16,7 @@ import { UseQueryResult } from "react-query";
 import { downloadFile, generateExcelFileURL } from "../../utils/files";
 import { exportModuleCheckBoxOptions } from "../../api/api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-// import { useEffect } from "react";
 import { changeFilter, checkAllColumns } from "../../redux/slices/tt-reports";
-import { useQueryClient } from "react-query";
 
 interface Props {
     reportQuery: UseQueryResult<AxiosResponse<string, any>, unknown>;
@@ -27,7 +25,6 @@ interface Props {
 const PopoverExportButton = ({ reportQuery }: Props) => {
     const dispatch = useAppDispatch();
     const state = useAppSelector((col) => col.ttReports.filters.columns);
-    const queryClient = useQueryClient();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const item = event.target.name;
@@ -69,17 +66,6 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
                 ).toISOString()}.xlsx`
             );
     };
-
-    // useEffect(() => {
-    //     dispatch({
-    //         type: changeFilter,
-    //         payload: {
-    //             key: "columns",
-    //             value: checkedItems,
-    //         },
-    //     });
-    //     // queryClient.resetQueries("timetrackReport");
-    // }, [checkedItems]);
 
     return (
         <Popover>

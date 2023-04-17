@@ -122,8 +122,8 @@ const TabsContent = ({
             firstName: Yup.string().required("First name is required"),
             lastName: Yup.string().required("Last name is required"),
             birthDate: Yup.date().required("Date of Birth is required"),
-            gender: Yup.string().required("Gender is required"),
-            active: Yup.string().required("Status is required"),
+            gender: Yup.string().nullable().required("Gender is required"),
+            active: Yup.string().nullable().required("Status is required"),
             email: Yup.string()
                 .nullable()
                 .required("Email is required")

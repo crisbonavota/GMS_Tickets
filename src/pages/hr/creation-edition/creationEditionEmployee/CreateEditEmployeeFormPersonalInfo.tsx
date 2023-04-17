@@ -92,11 +92,11 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         label="Status"
                         isRequired={true}
                         name="active"
-                        value={formikPersonalInfo.values.active.toString()}
+                        value={formikPersonalInfo.values.active?.toString()}
                         touched={formikPersonalInfo.touched.active}
                         error={formikPersonalInfo.errors.active}
                         options={getStatus().map((c) => ({
-                            value: c.value.toString(),
+                            value: c.value?.toString(),
                             label: c.label,
                         }))}
                         setter={(value: any) =>
@@ -126,11 +126,11 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         label="Gender"
                         isRequired={true}
                         name="gender"
-                        value={formikPersonalInfo.values.gender.toString()}
+                        value={formikPersonalInfo.values.gender?.toString()}
                         touched={formikPersonalInfo.touched.gender}
                         error={formikPersonalInfo.errors.gender}
                         options={getGenders().map((c) => ({
-                            value: c.value.toString(),
+                            value: c.value?.toString(),
                             label: c.label,
                         }))}
                         setter={(value: any) =>

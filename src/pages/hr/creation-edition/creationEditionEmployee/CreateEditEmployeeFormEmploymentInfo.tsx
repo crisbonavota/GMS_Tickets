@@ -8,12 +8,13 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
-import { FormikErrors, useFormik } from "formik";
+import { Formik, FormikErrors, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import {
     getCurrencies,
     getMedicalCoverages,
+    getWorkTime,
     patchResource,
 } from "../../../../api/api";
 import { postResource } from "../../../../api/api";
@@ -56,7 +57,10 @@ const validationSchema = Yup.object().shape({
         .nullable()
         .required("Business unit is required"),
     positionId: Yup.number().nullable(),
-    salaryAmount: Yup.number().min(0, "Salary amount must be greater than 0").nullable(),
+    salaryAmount: Yup.number()
+        .min(0, "Salary amount must be greater than 0")
+        .nullable(),
+    workTime: Yup.number().nullable().required("Work time is required"),
 });
 
 const initialValues = {
@@ -65,6 +69,7 @@ const initialValues = {
     businessUnitId: null,
     positionId: null,
     salaryAmount: 0,
+    workTime: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -75,6 +80,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
               businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
               positionId: editInitialValues?.position?.id,
               salaryAmount: editInitialValues?.salaryAmount,
+              workTime: editInitialValues?.workTime || 0,
           }
         : undefined;
 
@@ -299,6 +305,27 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         onChange={formikEmploymentInfo.handleChange}
                         touched={formikEmploymentInfo.touched.salaryAmount}
                         error={formikEmploymentInfo.errors.salaryAmount}
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <LabeledReactSelectInput
+                        label="WorkTime"
+                        name="maritalStatus"
+                        value={formikEmploymentInfo.values.workTime}
+                        error={formikEmploymentInfo.errors.workTime}
+                        touched={formikEmploymentInfo.touched.workTime}
+                        options={getWorkTime().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formikEmploymentInfo.setFieldValue(
+                                "workTime",
+                                value,
+                                true
+                            )
+                        }
+                        placeholder=""
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

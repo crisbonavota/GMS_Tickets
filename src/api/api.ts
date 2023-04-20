@@ -11,6 +11,7 @@ import {
     StatusTraining,
     SatisfactionLevel,
     EffectivenessLevel,
+    WorkTime,
 } from "./types";
 import {
     insertStandardFilters,
@@ -250,6 +251,11 @@ export const getSatisfactionLevels = () => [
         label: "More then Satisfied",
     },
     { value: SatisfactionLevel.VerySatisfied, label: "Very Satisfied" },
+];
+
+export const getWorkTime = () => [
+    { value: WorkTime.FullTime, label: "FullTime" },
+    { value: WorkTime.PartTime, label: "PartTime" },
 ];
 
 export const getCurrencies: () => Currency[] = () => {

@@ -273,6 +273,7 @@ export interface Employee {
     active: boolean;
     postalCode: string;
     salaryAmount: number;
+    workTime: WorkTime;
 }
 export interface Provider {
     id: number;
@@ -365,4 +366,9 @@ export enum EffectivenessLevel {
     Low,
     Medium,
     High,
+}
+
+export enum WorkTime {
+    FullTime,
+    PartTime,
 }

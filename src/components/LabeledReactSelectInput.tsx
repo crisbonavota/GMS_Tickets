@@ -11,6 +11,7 @@ interface Props {
     name: string;
     placeholder?: string;
     isRequired?: boolean;
+    isClearable: boolean;
 }
 
 const LabeledReactSelectInput = ({
@@ -23,6 +24,7 @@ const LabeledReactSelectInput = ({
     name,
     placeholder,
     isRequired,
+    isClearable,
 }: Props) => {
     return (
         <FormControl isRequired={isRequired} isInvalid={Boolean(error) && touched}>
@@ -31,7 +33,7 @@ const LabeledReactSelectInput = ({
                 value={options.find((option) => option.value === value)}
                 onChange={(option) => setter(option?.value ?? null)}
                 options={options}
-                isClearable
+                isClearable={isClearable}
                 name={name}
                 id={name}
                 placeholder={placeholder}

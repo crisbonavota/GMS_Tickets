@@ -1,5 +1,6 @@
 import { SimpleGrid, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
+import { WorkTime } from "../../../../../api/types";
 
 interface Props {
     salaryCurrency: string;
@@ -7,6 +8,7 @@ interface Props {
     businessUnit: string;
     position: string;
     salaryAmount: string;
+    workTime: WorkTime;
 }
 
 const EmploymentInfoDetailedView = ({
@@ -15,6 +17,7 @@ const EmploymentInfoDetailedView = ({
     businessUnit,
     position,
     salaryAmount,
+    workTime,
 }: Props) => {
     return (
         <HStack
@@ -46,6 +49,10 @@ const EmploymentInfoDetailedView = ({
                 <UserDetailedViewBodyComponent
                     resource={salaryAmount}
                     label={"Salary Amount"}
+                />
+                <UserDetailedViewBodyComponent
+                    resource={WorkTime[workTime]}
+                    label={"Work Time"}
                 />
             </SimpleGrid>
         </HStack>

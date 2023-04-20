@@ -184,6 +184,7 @@ const CreateEditClientForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.ivaType}
                         error={formik.errors.ivaType}
                         touched={formik.touched.ivaType}
+                        isClearable={true}
                         options={[
                             { value: 1, label: "Responsable Inscripto" },
                             { value: 2, label: "Reponsable No Inscripto" },

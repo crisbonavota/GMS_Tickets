@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import * as Yup from "yup";
 import { useAuthHeader } from "react-auth-kit";
-import { Formik, FormikErrors, useFormik } from "formik";
+import { FormikErrors, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import {
@@ -215,6 +215,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         value={formikEmploymentInfo.values.salaryCurrencyId}
                         error={formikEmploymentInfo.errors.salaryCurrencyId}
                         touched={formikEmploymentInfo.touched.salaryCurrencyId}
+                        isClearable={true}
                         options={getCurrencies().map((c) => ({
                             value: c.id,
                             label: c.code,
@@ -236,6 +237,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         value={formikEmploymentInfo.values.medicalCoverageId}
                         error={formikEmploymentInfo.errors.medicalCoverageId}
                         touched={formikEmploymentInfo.touched.medicalCoverageId}
+                        isClearable={true}
                         options={getMedicalCoverages().map((c) => ({
                             value: c.id,
                             label: c.name,
@@ -310,10 +312,11 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
                         label="WorkTime"
-                        name="maritalStatus"
+                        name="workTime"
                         value={formikEmploymentInfo.values.workTime}
                         error={formikEmploymentInfo.errors.workTime}
                         touched={formikEmploymentInfo.touched.workTime}
+                        isClearable={false}
                         options={getWorkTime().map((c) => ({
                             value: c.value,
                             label: c.label,

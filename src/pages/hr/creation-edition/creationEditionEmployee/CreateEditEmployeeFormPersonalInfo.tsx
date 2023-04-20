@@ -95,6 +95,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         value={formikPersonalInfo.values.active?.toString()}
                         touched={formikPersonalInfo.touched.active}
                         error={formikPersonalInfo.errors.active}
+                        isClearable={false}
                         options={getStatus().map((c) => ({
                             value: c.value?.toString(),
                             label: c.label,
@@ -129,6 +130,7 @@ const CrtEditEmployeeFormPersonalInfo = ({
                         value={formikPersonalInfo.values.gender?.toString()}
                         touched={formikPersonalInfo.touched.gender}
                         error={formikPersonalInfo.errors.gender}
+                        isClearable={false}
                         options={getGenders().map((c) => ({
                             value: c.value?.toString(),
                             label: c.label,

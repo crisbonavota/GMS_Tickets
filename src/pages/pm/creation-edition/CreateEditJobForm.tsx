@@ -281,21 +281,22 @@ const CreateEditJobForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                        <LabeledReactSelectInput
-                            label="Contract Type"
-                            name="contractType"
-                            value={formik.values.contractType}
-                            error={formik.errors.contractType}
-                            touched={formik.touched.contractType}
-                            options={getContractTypes().map((c) => ({
-                                value: c.value,
-                                label: c.label,
-                            }))}
-                            setter={(value: any) =>
-                                formik.setFieldValue("contractType", value, true)
-                            }
-                            placeholder=""
-                        />          
+                    <LabeledReactSelectInput
+                        label="Contract Type"
+                        name="contractType"
+                        value={formik.values.contractType}
+                        error={formik.errors.contractType}
+                        touched={formik.touched.contractType}
+                        isClearable={true}
+                        options={getContractTypes().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formik.setFieldValue("contractType", value, true)
+                        }
+                        placeholder=""
+                    />
                 </GridItem>
                 <GridItem colSpan={1}>
                     <VStack alignItems={"flex-start"}>
@@ -321,6 +322,7 @@ const CreateEditJobForm = ({
                         value={formik.values.currencyId}
                         error={formik.errors.currencyId}
                         touched={formik.touched.currencyId}
+                        isClearable={true}
                         options={getCurrencies().map((c) => ({
                             value: c.id,
                             label: c.code,
@@ -368,7 +370,7 @@ const CreateEditJobForm = ({
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <HStack alignItems={"flex-end"} spacing={5}> 
+                    <HStack alignItems={"flex-end"} spacing={5}>
                         <StatusField
                             setter={(value: boolean) =>
                                 formik.setFieldValue("active", value, true)
@@ -380,11 +382,11 @@ const CreateEditJobForm = ({
                             }
                         />
                         <SoldField
-                                value={formik.values.sold}
-                                setter={(value: boolean) =>
-                                    formik.setFieldValue("sold", value, true)
-                                }
-                            />
+                            value={formik.values.sold}
+                            setter={(value: boolean) =>
+                                formik.setFieldValue("sold", value, true)
+                            }
+                        />
                     </HStack>
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

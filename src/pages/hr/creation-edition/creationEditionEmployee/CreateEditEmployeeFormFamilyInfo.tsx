@@ -41,6 +41,7 @@ const CrtEditEmployeeFormFamilyInfo = ({
                         value={formikFamilyInfo.values.maritalStatus}
                         error={formikFamilyInfo.errors.maritalStatus}
                         touched={formikFamilyInfo.touched.maritalStatus}
+                        isClearable={true}
                         options={getMaritalStatus().map((c) => ({
                             value: c.value,
                             label: c.label,

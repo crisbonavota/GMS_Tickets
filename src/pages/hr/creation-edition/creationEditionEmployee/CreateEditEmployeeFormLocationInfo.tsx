@@ -40,6 +40,7 @@ const CrtEditEmployeeFormLocationInfo = ({
                         value={formikLocationInfo.values.birthCountryId}
                         error={formikLocationInfo.errors.birthCountryId}
                         touched={formikLocationInfo.touched.birthCountryId}
+                        isClearable={true}
                         options={
                             isSuccess
                                 ? countries.map((c) => ({
@@ -65,6 +66,7 @@ const CrtEditEmployeeFormLocationInfo = ({
                         value={formikLocationInfo.values.countryId}
                         error={formikLocationInfo.errors.countryId}
                         touched={formikLocationInfo.touched.countryId}
+                        isClearable={true}
                         options={
                             isSuccess
                                 ? countries.map((c) => ({

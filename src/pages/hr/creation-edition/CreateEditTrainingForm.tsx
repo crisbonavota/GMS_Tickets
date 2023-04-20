@@ -224,6 +224,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.status}
                         error={formik.errors.status}
                         touched={formik.touched.status}
+                        isClearable={false}
                         options={getTrainingsStates().map((elem) => elem)}
                         setter={(value: any) =>
                             formik.setFieldValue("status", value, true)
@@ -238,6 +239,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.satisfactionLevel}
                         error={formik.errors.satisfactionLevel}
                         touched={formik.touched.satisfactionLevel}
+                        isClearable={true}
                         options={getSatisfactionLevels().map((elem) => elem)}
                         setter={(value: any) =>
                             formik.setFieldValue(
@@ -256,6 +258,7 @@ const CreateEditTrainingForm = ({ onClose, editInitialValues, id }: Props) => {
                         value={formik.values.effectivenessLevel}
                         error={formik.errors.effectivenessLevel}
                         touched={formik.touched.effectivenessLevel}
+                        isClearable={true}
                         options={getEffectivenessLevels().map((elem) => elem)}
                         setter={(value: any) =>
                             formik.setFieldValue(

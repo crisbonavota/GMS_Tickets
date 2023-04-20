@@ -128,6 +128,7 @@ const AddIndirectCost = ({ projectId }: Props) => {
                                 value={formik.values.currencyId}
                                 error={formik.errors.currencyId}
                                 touched={formik.touched.currencyId}
+                                isClearable={false}
                                 options={getCurrencies().map((c) => ({
                                     value: c.id,
                                     label: c.code,

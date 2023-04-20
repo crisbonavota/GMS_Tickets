@@ -113,6 +113,7 @@ const AddCurrencyExchangeRate = () => {
                                 value={formik.values.targetCurrencyId}
                                 error={formik.errors.targetCurrencyId}
                                 touched={formik.touched.targetCurrencyId}
+                                isClearable={false}
                                 label="Target currency"
                                 options={getCurrencies()
                                     .filter((c) => c.code !== "USD")

@@ -30,10 +30,10 @@ interface Props {
         const item = event.target.name;
         const isChecked = event.target.checked;
         let newCheckedItems = [...state];
-        if (isChecked && !newCheckedItems.includes(item)) {
+        if (isChecked) {
           newCheckedItems.push(item);
         } else {
-          newCheckedItems = newCheckedItems.filter((val) => val !== item);
+          newCheckedItems = newCheckedItems.filter(val => val !== item);
         }
         dispatch({
           type: changeColumnsFilter,
@@ -42,7 +42,7 @@ interface Props {
             value: newCheckedItems,
           },
         });
-    };
+      };
   
     const isChecked = (item: string) => {
       return state.includes(item);

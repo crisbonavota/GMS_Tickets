@@ -17,16 +17,10 @@ interface TTReportsState {
         accounts: number[];
         generalSearch: string;
         borrowed: boolean;
-        columns: { [key: string]: boolean };
+        columns: string[];
     };
     sort: Sort;
 }
-
-const getColumns = () => {
-    let newObject: { [key: string]: boolean } = {};
-    exportModuleCheckBoxOptions.forEach((el) => (newObject[el] = true));
-    return newObject;
-};
 
 const initialState: TTReportsState = {
     pagination: {
@@ -46,7 +40,7 @@ const initialState: TTReportsState = {
         accounts: [],
         generalSearch: "",
         borrowed: false,
-        columns: getColumns(),
+        columns: exportModuleCheckBoxOptions,
     },
 };
 
@@ -75,13 +69,17 @@ const slice = createSlice({
             state.filters[action.payload.key] = action.payload.value;
             state.pagination.currentPage = 0;
         },
-        checkAllColumns: (state: TTReportsState) => {
-            state.filters.columns = initialState.filters.columns;
-        },
+        changeColumnsFilter: (
+            state: TTReportsState,
+            action: PayloadAction<{value: any}>
+        ) => {
+            state.filters.columns = action.payload.value;
+            state.pagination.currentPage = 0;
+        }
     },
 });
 
-export const { changePage, changeTotalPages, changeFilter, changeSort, checkAllColumns } =
+export const { changePage, changeTotalPages, changeFilter, changeSort, changeColumnsFilter } =
     slice.actions;
 
 export default slice.reducer;

@@ -62,7 +62,7 @@ const ExportModule = () => {
                         value: state.filters.generalSearch,
                     },
                     { name: "isGiven", value: state.filters.borrowed },
-                    { name: "columns", value: state.filters.columns },
+                    { name: "columns", value: JSON.stringify(state.filters.columns) },
                 ],
                 state.sort
             )

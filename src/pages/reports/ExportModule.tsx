@@ -1,22 +1,14 @@
-import { Button } from "@chakra-ui/react";
 import { useAuthHeader } from "react-auth-kit";
 import { useQuery } from "react-query";
 import { getReportFiltered } from "../../api/api";
 import { useAppSelector } from "../../redux/hooks";
-import { downloadFile, generateExcelFileURL } from "../../utils/files";
 import ExportStats from "./ExportStats";
-
-const onExport = (base64?: string) => {
-    base64 &&
-        downloadFile(
-            generateExcelFileURL(base64),
-            `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`
-        );
-};
+import PopoverExportButton from "./PopoverExportButton";
 
 const ExportModule = () => {
     const getAuthHeader = useAuthHeader();
     const state = useAppSelector((s) => s.ttReports);
+
     const reportQuery = useQuery(
         ["timetrackReport", state.filters, state.sort],
         () =>
@@ -70,6 +62,7 @@ const ExportModule = () => {
                         value: state.filters.generalSearch,
                     },
                     { name: "isGiven", value: state.filters.borrowed },
+                    { name: "columns", value: JSON.stringify(state.filters.columns) },
                 ],
                 state.sort
             )
@@ -78,15 +71,9 @@ const ExportModule = () => {
     return (
         <>
             <ExportStats query={reportQuery} />
-            <Button
-                colorScheme={"green"}
-                w={"full"}
-                isLoading={reportQuery.isLoading}
-                disabled={reportQuery.isError}
-                onClick={() => onExport(reportQuery.data?.data)}
-            >
-                Export
-            </Button>
+            <PopoverExportButton
+                reportQuery={reportQuery}
+            />
         </>
     );
 };

@@ -304,6 +304,21 @@ export const getContractTypes = () => {
     ];
 };
 
+export const exportModuleCheckBoxOptions =  [
+    "File number",
+    "Employee",
+    "Business Unit",
+    "Project",
+    "Project ID",
+    "Proposal",
+    "Proposal ID",
+    "Task Type",
+    "Task",
+    "Date",
+    "Hours",
+    "Employee type",
+];
+
 const keyValueToPatchDocumentItem = (
     key: string,
     value: any

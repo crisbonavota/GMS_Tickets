@@ -290,6 +290,7 @@ export interface Provider {
     creationDate: Date;
     active: boolean;
     fileNumber: number;
+    providerType: ProviderType;
 }
 
 export interface Group {
@@ -372,3 +373,9 @@ export enum WorkTime {
     FullTime,
     PartTime,
 }
+
+export enum ProviderType {
+    OnDemand,
+    Dedicated,
+}
+

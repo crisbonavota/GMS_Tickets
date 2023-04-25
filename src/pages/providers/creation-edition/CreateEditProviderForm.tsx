@@ -11,12 +11,12 @@ import { useAuthHeader } from "react-auth-kit";
 import { useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
 import { Provider } from "../../../api/types";
-import { patchResource } from "../../../api/api";
+import { getProviderType, getStatus, patchResource } from "../../../api/api";
 import { postResource } from "../../../api/api";
-import StatusField from "../../pm/creation-edition/StatusField";
 import FormikInput from "../../../components/FormikInput";
 import { AxiosError } from "axios";
 import BusinessUnitField from "../../pm/creation-edition/BusinessUnitField";
+import LabeledReactSelectInput from "../../../components/LabeledReactSelectInput";
 
 interface Props {
     onClose: () => void;
@@ -44,6 +44,7 @@ const validationSchema = Yup.object().shape({
     address: Yup.string().nullable(),
     city: Yup.string().nullable(),
     active: Yup.bool(),
+    providerType: Yup.number().required("Provider type is required"),
 });
 
 const initialValues = {
@@ -58,6 +59,7 @@ const initialValues = {
     city: "",
     businessUnitId: null,
     active: true,
+    providerType: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Provider) =>
@@ -70,6 +72,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Provider) =>
               ),
               businessUnitId: editInitialValues?.legacyUser?.businessUnit?.id,
               active: editInitialValues?.active,
+              providerType: editInitialValues?.providerType,
           }
         : undefined;
 
@@ -260,15 +263,48 @@ const CreateEditProviderForm = ({ onClose, editInitialValues, id }: Props) => {
                     />
                 </GridItem>
                 <GridItem colSpan={1}>
-                    <StatusField
-                        setter={(value: boolean) =>
-                            formik.setFieldValue("active", value, true)
+                    <LabeledReactSelectInput
+                        label="Type"
+                        name="providerType"
+                        value={formik.values.providerType}
+                        error={formik.errors.providerType}
+                        touched={formik.touched.providerType}
+                        isClearable={false}
+                        options={getProviderType().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formik.setFieldValue(
+                                "providerType",
+                                value,
+                                true
+                            )
                         }
-                        value={
-                            formik.values.active === true
-                                ? "active"
-                                : "inactive"
+                        placeholder=""
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <LabeledReactSelectInput
+                        label="Status"
+                        isRequired={true}
+                        name="active"
+                        value={formik.values.active.toString()}
+                        touched={formik.touched.active}
+                        error={formik.errors.active}
+                        isClearable={false}
+                        options={getStatus().map((c) => ({
+                            value: c.value?.toString(),
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formik.setFieldValue(
+                                "active",
+                                value,
+                                true
+                            )
                         }
+                        placeholder=""
                     />
                 </GridItem>
                 <GridItem colSpan={{ base: 1, md: 2 }}>

@@ -12,6 +12,7 @@ import {
     SatisfactionLevel,
     EffectivenessLevel,
     WorkTime,
+    ProviderType,
 } from "./types";
 import {
     insertStandardFilters,
@@ -256,6 +257,11 @@ export const getSatisfactionLevels = () => [
 export const getWorkTime = () => [
     { value: WorkTime.FullTime, label: "FullTime" },
     { value: WorkTime.PartTime, label: "PartTime" },
+];
+
+export const getProviderType = () => [
+    { value: ProviderType.OnDemand, label: "On Demand" },
+    { value: ProviderType.Dedicated, label: "Dedicated" },
 ];
 
 export const getCurrencies: () => Currency[] = () => {

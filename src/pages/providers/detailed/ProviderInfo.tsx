@@ -33,8 +33,8 @@ const ProviderInfo = ({ provider }: Props) => {
             label={"Email"} 
         />
         <UserDetailedViewBodyComponent
-          resource={provider.active === true ? "Active" : "Inactive"}
-          label={"Status"}
+          resource={provider.providerType === 0 ? "On Demand" : "Dedicated"}
+          label={"Type"}
         />
         <UserDetailedViewBodyComponent
           resource={provider.afipId}

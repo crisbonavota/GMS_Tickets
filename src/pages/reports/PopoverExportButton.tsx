@@ -10,6 +10,7 @@ import {
     PopoverTrigger,
     Portal,
     Stack,
+    useToast,
 } from "@chakra-ui/react";
 import { AxiosResponse } from "axios";
 import { UseQueryResult } from "react-query";
@@ -27,6 +28,8 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
   const dispatch = useAppDispatch();
   const state = useAppSelector((col) => col.ttReports.filters.columns);
   const [options, setOptions] = useState<string[]>(exportModuleCheckBoxOptions);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const toast = useToast();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const item = event.target.name;
@@ -80,12 +83,19 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
         generateExcelFileURL(base64),
         `gms_timetrack_report_${new Date(Date.now()).toISOString()}.xlsx`
       );
+    setIsPopoverOpen(false);
+    toast({
+      title: "Report exported",
+      status: "success",
+      duration: 5000,
+      isClosable: true,
+    });
   };
 
   return (
-    <Popover>
+    <Popover isOpen={isPopoverOpen} onClose={() => setIsPopoverOpen(false)}>
       <PopoverTrigger>
-        <Button colorScheme={"green"} w={"full"} disabled={reportQuery.isError}>
+        <Button colorScheme={"green"} w={"full"} disabled={reportQuery.isError} onClick={() => setIsPopoverOpen(true)}>
           Export
         </Button>
       </PopoverTrigger>

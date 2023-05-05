@@ -13,6 +13,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { Employee } from "../../../../api/types";
 import {
     getCurrencies,
+    getEmployers,
     getMedicalCoverages,
     getWorkTime,
     patchResource,
@@ -61,6 +62,7 @@ const validationSchema = Yup.object().shape({
         .min(0, "Salary amount must be greater than 0")
         .nullable(),
     workTime: Yup.number().nullable().required("Work time is required"),
+    employer: Yup.number().nullable().required("Employer is required"),
 });
 
 const initialValues = {
@@ -70,6 +72,7 @@ const initialValues = {
     positionId: null,
     salaryAmount: 0,
     workTime: 0,
+    employer: 0,
 };
 
 const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
@@ -81,6 +84,7 @@ const editInitialValuesToFormikValues = (editInitialValues?: Employee) =>
               positionId: editInitialValues?.position?.id,
               salaryAmount: editInitialValues?.salaryAmount,
               workTime: editInitialValues?.workTime || 0,
+              employer: editInitialValues?.employer || 0,
           }
         : undefined;
 
@@ -324,6 +328,28 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         setter={(value: any) =>
                             formikEmploymentInfo.setFieldValue(
                                 "workTime",
+                                value,
+                                true
+                            )
+                        }
+                        placeholder=""
+                    />
+                </GridItem>
+                <GridItem colSpan={1}>
+                    <LabeledReactSelectInput
+                        label="Employer"
+                        name="employer"
+                        value={formikEmploymentInfo.values.employer}
+                        error={formikEmploymentInfo.errors.employer}
+                        touched={formikEmploymentInfo.touched.employer}
+                        isClearable={false}
+                        options={getEmployers().map((c) => ({
+                            value: c.value,
+                            label: c.label,
+                        }))}
+                        setter={(value: any) =>
+                            formikEmploymentInfo.setFieldValue(
+                                "employer",
                                 value,
                                 true
                             )

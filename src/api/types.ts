@@ -274,6 +274,7 @@ export interface Employee {
     postalCode: string;
     salaryAmount: number;
     workTime: WorkTime;
+    employer: Employer;
 }
 export interface Provider {
     id: number;
@@ -377,5 +378,10 @@ export enum WorkTime {
 export enum ProviderType {
     OnDemand,
     Dedicated,
+}
+
+export enum Employer {
+    W3AR,
+    T3
 }
 

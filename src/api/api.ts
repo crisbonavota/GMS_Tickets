@@ -13,6 +13,7 @@ import {
     EffectivenessLevel,
     WorkTime,
     ProviderType,
+    Employer,
 } from "./types";
 import {
     insertStandardFilters,
@@ -262,6 +263,11 @@ export const getWorkTime = () => [
 export const getProviderType = () => [
     { value: ProviderType.OnDemand, label: "On Demand" },
     { value: ProviderType.Dedicated, label: "Dedicated" },
+];
+
+export const getEmployers = () => [
+    { value: Employer.W3AR, label: "W3AR" },
+    { value: Employer.T3, label: "T3" },
 ];
 
 export const getCurrencies: () => Currency[] = () => {

@@ -329,6 +329,8 @@ export const exportModuleCheckBoxOptions =  [
     "Date",
     "Hours",
     "Employee type",
+    "Submission date",
+    "Updated at",
 ];
 
 const keyValueToPatchDocumentItem = (

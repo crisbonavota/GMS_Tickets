@@ -1,6 +1,7 @@
 import {
     Button,
     Checkbox,
+    HStack,
     Popover,
     PopoverArrow,
     PopoverBody,
@@ -94,38 +95,68 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
 
   return (
     <Popover isOpen={isPopoverOpen} onClose={() => setIsPopoverOpen(false)}>
-      <PopoverTrigger>
+      <PopoverTrigger >
         <Button colorScheme={"green"} w={"full"} disabled={reportQuery.isError} onClick={() => setIsPopoverOpen(true)}>
           Export
         </Button>
       </PopoverTrigger>
       <Portal>
-        <PopoverContent>
+        <PopoverContent width={"full"} backgroundColor={"white"}>
           <PopoverArrow />
           <PopoverHeader>Select columns to include</PopoverHeader>
           <PopoverCloseButton />
           <PopoverBody>
-            <Stack pl={6} mt={1} spacing={1}>
-              {exportModuleCheckBoxOptions.map((item) => (
-                <Checkbox
-                  name={item}
-                  key={item}
-                  isChecked={isChecked(item)}
-                  onChange={handleChange}
-                  defaultChecked={true}
-                >
-                  {item}
-                </Checkbox>
-              ))}
-            </Stack>
-            <Button
-              colorScheme="green"
-              isLoading={reportQuery.isLoading}
-              onClick={() => onExport(reportQuery.data?.data)}
-              isDisabled={!isAtLeastOneChecked()}
-            >
-              Export
-            </Button>
+            <HStack>
+              <Stack pl={6} mt={1} spacing={2}>
+                {exportModuleCheckBoxOptions.slice(0, Math.ceil(exportModuleCheckBoxOptions.length / 3)).map((item) => (
+                  <Checkbox
+                    name={item}
+                    key={item}
+                    isChecked={isChecked(item)}
+                    onChange={handleChange}
+                    defaultChecked={true}
+                  >
+                    {item}
+                  </Checkbox>
+                ))}
+              </Stack>
+              <Stack pl={6} pt={1} mt={1} spacing={2}>
+                {exportModuleCheckBoxOptions.slice(Math.ceil(exportModuleCheckBoxOptions.length / 3), Math.ceil((exportModuleCheckBoxOptions.length / 3) * 2)).map((item) => (
+                  <Checkbox
+                    name={item}
+                    key={item}
+                    isChecked={isChecked(item)}
+                    onChange={handleChange}
+                    defaultChecked={true}
+                  >
+                    {item}
+                  </Checkbox>
+                ))}
+              </Stack>
+              <Stack pl={6} mt={1} spacing={2}>
+                {exportModuleCheckBoxOptions.slice(Math.ceil((exportModuleCheckBoxOptions.length / 3) * 2)).map((item) => (
+                  <Checkbox
+                    name={item}
+                    key={item}
+                    isChecked={isChecked(item)}
+                    onChange={handleChange}
+                    defaultChecked={true}
+                  >
+                    {item}
+                  </Checkbox>
+                ))}
+              </Stack>
+            </HStack>
+            <HStack pt={3}>
+              <Button
+                colorScheme="green"
+                isLoading={reportQuery.isLoading}
+                onClick={() => onExport(reportQuery.data?.data)}
+                isDisabled={!isAtLeastOneChecked()}
+              >
+                Export
+              </Button>
+            </HStack>
           </PopoverBody>
         </PopoverContent>
       </Portal>

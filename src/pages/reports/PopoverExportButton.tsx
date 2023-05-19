@@ -19,7 +19,8 @@ import { downloadFile, generateExcelFileURL } from "../../utils/files";
 import { exportModuleCheckBoxOptions } from "../../api/api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { changeColumnsFilter } from "../../redux/slices/tt-reports";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { MdFileDownload } from "react-icons/md";
 
 interface Props {
   reportQuery: UseQueryResult<AxiosResponse<string, any>, unknown>;
@@ -30,8 +31,9 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
   const state = useAppSelector((col) => col.ttReports.filters.columns);
   const [options, setOptions] = useState<string[]>(exportModuleCheckBoxOptions);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-
+  
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const item = event.target.name;
     const isChecked = event.target.checked;
@@ -93,10 +95,20 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
     });
   };
 
+  const handleGenerateReport = async () => {
+    setIsLoading(true);
+    await reportQuery.refetch();
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    setIsLoading(reportQuery.isLoading);
+  }, [reportQuery.isLoading]);
+
   return (
     <Popover isOpen={isPopoverOpen} onClose={() => setIsPopoverOpen(false)}>
       <PopoverTrigger >
-        <Button colorScheme={"green"} w={"full"} disabled={reportQuery.isError} onClick={() => setIsPopoverOpen(true)}>
+        <Button colorScheme={"orange"} w={"full"} disabled={reportQuery.isError} onClick={() => setIsPopoverOpen(true)}>
           Export
         </Button>
       </PopoverTrigger>
@@ -149,13 +161,24 @@ const PopoverExportButton = ({ reportQuery }: Props) => {
             </HStack>
             <HStack pt={3}>
               <Button
-                colorScheme="green"
-                isLoading={reportQuery.isLoading}
-                onClick={() => onExport(reportQuery.data?.data)}
+                minW={"50%"}
+                colorScheme="orange"
+                isLoading={isLoading}
+                onClick={() => handleGenerateReport()}
                 isDisabled={!isAtLeastOneChecked()}
               >
-                Export
+                Generate report
               </Button>
+              {reportQuery.isSuccess && isLoading === false &&
+                <Button
+                  minW={"50%"}
+                  colorScheme="green"
+                  onClick={() => onExport(reportQuery.data?.data)}
+                  rightIcon={<MdFileDownload size={"1.3rem"} />}
+                >
+                  Download
+                </Button>
+              }
             </HStack>
           </PopoverBody>
         </PopoverContent>

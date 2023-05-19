@@ -10,7 +10,7 @@ const ExportModule = () => {
     const state = useAppSelector((s) => s.ttReports);
 
     const reportQuery = useQuery(
-        ["timetrackReport", state.filters, state.sort],
+        ["timetrackReport"],
         () =>
             getReportFiltered(
                 "timetrack/report",
@@ -64,16 +64,19 @@ const ExportModule = () => {
                     { name: "isGiven", value: state.filters.borrowed },
                     { name: "columns", value: JSON.stringify(state.filters.columns) },
                 ],
-                state.sort
-            )
+                state.sort,
+            ),
+            {
+                refetchOnWindowFocus: false,
+                enabled: false
+            }
     );
+
 
     return (
         <>
             <ExportStats query={reportQuery} />
-            <PopoverExportButton
-                reportQuery={reportQuery}
-            />
+            <PopoverExportButton reportQuery={reportQuery} />
         </>
     );
 };

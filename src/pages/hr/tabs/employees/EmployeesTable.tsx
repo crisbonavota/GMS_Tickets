@@ -1,7 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import moment from "moment";
 import { useCallback, useState } from "react";
-import { Employee, Sort, GroupLegacyUser } from "../../../../api/types";
+import { Employee, Sort, GroupLegacyUser, ApplicationUserPrivate } from "../../../../api/types";
 import {
     DynamicTableFormat,
     DynamicTable,
@@ -12,12 +12,14 @@ import DetailsCell from "../../../pm/tabs/DetailsCell";
 import EditEmployeeButton from "../../creation-edition/EditEmployeeButton";
 // import DeleteEmployeeButton from "../../detailed/employees/DeleteEmployeeButton";
 import EmployeePermissions from "./permissions/EmployeePermissions";
+import { useAuthUser } from "react-auth-kit";
 
 interface Props {
     employees: Employee[];
 }
 
 const EmployeesTable = ({ employees }: Props) => {
+    const authUser = useAuthUser()() as ApplicationUserPrivate;
     const [tabIndex, setTabIndex] = useState(0);
     const state = useAppSelector((s) => s.humanResources.employees);
     const dispatch = useAppDispatch();
@@ -117,15 +119,21 @@ const EmployeesTable = ({ employees }: Props) => {
         //     ),
         //     disableSort: true,
         // },
-        {
-            header: "Permissions",
-            accessor: "",
-            accessorFn: (group: GroupLegacyUser) => (
-                <EmployeePermissions group={group} />
-            ),
-            rawObject: true,
-            disableSort: true,
-        },
+        ...(!authUser.roles.includes("hr-limited") ?
+            [
+                {
+                    header: "Permissions",
+                    accessor: "",
+                    accessorFn: (group: GroupLegacyUser) => (
+                        <EmployeePermissions group={group} />
+                    ),
+                    rawObject: true,
+                    disableSort: true,
+                },
+            ]
+            :
+            []
+        ),
     ];
 
     return (

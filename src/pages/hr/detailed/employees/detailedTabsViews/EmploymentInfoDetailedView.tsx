@@ -1,6 +1,7 @@
 import { SimpleGrid, HStack } from "@chakra-ui/react";
 import UserDetailedViewBodyComponent from "../../UserDetailedViewBodyComponent";
-import { Employer, WorkTime } from "../../../../../api/types";
+import { ApplicationUserPrivate, Employer, WorkTime } from "../../../../../api/types";
+import { useAuthUser } from "react-auth-kit";
 
 interface Props {
     salaryCurrency: string;
@@ -21,6 +22,7 @@ const EmploymentInfoDetailedView = ({
     workTime,
     employer
 }: Props) => {
+    const authUser = useAuthUser()() as ApplicationUserPrivate;
     return (
         <HStack
             align={"center"}
@@ -48,10 +50,12 @@ const EmploymentInfoDetailedView = ({
                     resource={position}
                     label={"Position"}
                 />
-                <UserDetailedViewBodyComponent
-                    resource={salaryAmount}
-                    label={"Salary Amount"}
-                />
+                {!authUser.roles.includes("hr-limited") &&
+                    <UserDetailedViewBodyComponent
+                        resource={salaryAmount}
+                        label={"Salary Amount"}
+                    />
+                }
                 <UserDetailedViewBodyComponent
                     resource={WorkTime[workTime]}
                     label={"Work Time"}

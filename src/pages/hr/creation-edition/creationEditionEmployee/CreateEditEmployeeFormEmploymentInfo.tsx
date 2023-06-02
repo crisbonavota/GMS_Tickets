@@ -7,10 +7,10 @@ import {
     Button,
 } from "@chakra-ui/react";
 import * as Yup from "yup";
-import { useAuthHeader } from "react-auth-kit";
+import { useAuthHeader, useAuthUser } from "react-auth-kit";
 import { FormikErrors, useFormik } from "formik";
 import { useMutation, useQueryClient } from "react-query";
-import { Employee } from "../../../../api/types";
+import { ApplicationUserPrivate, Employee } from "../../../../api/types";
 import {
     getCurrencies,
     getEmployers,
@@ -98,6 +98,7 @@ const CrtEditEmployeeFormEmploymentInfo = ({
     locationInfoForm,
     familyInfoForm,
 }: Props) => {
+    const authUser = useAuthUser()() as ApplicationUserPrivate;
     const getAuthHeader = useAuthHeader();
     const queryClient = useQueryClient();
     const toast = useToast();
@@ -301,18 +302,20 @@ const CrtEditEmployeeFormEmploymentInfo = ({
                         }
                     />
                 </GridItem>
-                <GridItem colSpan={1}>
-                    <FormikInput
-                        label="Salary Amount"
-                        isRequired={false}
-                        name={"salaryAmount"}
-                        id={"salaryAmount"}
-                        value={formikEmploymentInfo.values.salaryAmount}
-                        onChange={formikEmploymentInfo.handleChange}
-                        touched={formikEmploymentInfo.touched.salaryAmount}
-                        error={formikEmploymentInfo.errors.salaryAmount}
-                    />
-                </GridItem>
+                {!authUser.roles.includes("hr-limited") &&
+                    <GridItem colSpan={1}>
+                        <FormikInput
+                            label="Salary Amount"
+                            isRequired={false}
+                            name={"salaryAmount"}
+                            id={"salaryAmount"}
+                            value={formikEmploymentInfo.values.salaryAmount}
+                            onChange={formikEmploymentInfo.handleChange}
+                            touched={formikEmploymentInfo.touched.salaryAmount}
+                            error={formikEmploymentInfo.errors.salaryAmount}
+                        />
+                    </GridItem>
+                }
                 <GridItem colSpan={1}>
                     <LabeledReactSelectInput
                         label="WorkTime"

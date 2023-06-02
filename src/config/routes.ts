@@ -21,7 +21,7 @@ export const routes = [
     },
     {
         label: "Human Resources",
-        allowedRoles: ["hr-employees"],
+        allowedRoles: ["hr-employees", "hr-limited"],
         description: "Manage users and teams",
         path: "/human-resources",
         logo: HrEmployees,

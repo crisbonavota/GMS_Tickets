@@ -74,7 +74,6 @@ const slice = createSlice({
             action: PayloadAction<{value: any}>
         ) => {
             state.filters.columns = action.payload.value;
-            state.pagination.currentPage = 0;
         }
     },
 });

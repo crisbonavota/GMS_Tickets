@@ -18,6 +18,7 @@ const Reports = () => {
     const getAuthHeader = useAuthHeader();
     const state = useAppSelector((s) => s.ttReports);
     const dispatch = useAppDispatch();
+    const filters = state.filters;
 
     const setTotalPages = (value: number | null) =>
         dispatch({
@@ -31,7 +32,18 @@ const Reports = () => {
         isError,
         data: axiosRes,
     } = useQuery(
-        ["timetrack", state],
+        ["timetrack", 
+            state.pagination, 
+            state.sort, 
+            filters.accounts, 
+            filters.borrowed, 
+            filters.businessUnits, 
+            filters.from, 
+            filters.generalSearch, 
+            filters.legacyUsers, 
+            filters.projects, 
+            filters.to
+        ],
         () =>
             getResourceListFilteredAndPaginated<TimetrackItem>(
                 "timetrack",

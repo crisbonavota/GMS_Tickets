@@ -322,8 +322,6 @@ export const exportModuleCheckBoxOptions =  [
     "Business Unit",
     "Project",
     "Project ID",
-    "Proposal",
-    "Proposal ID",
     "Task Type",
     "Task",
     "Date",

@@ -20,7 +20,7 @@ const RevenueCalculationsChart = ({ revenueValues }: Props) => {
         () => [
             {
                 label: "Sold for",
-                value: revenueValues.project.income,
+                value: revenueValues.income,
                 fill: "#4ebf2c",
             },
             {
@@ -60,7 +60,7 @@ const RevenueCalculationsChart = ({ revenueValues }: Props) => {
 
                             const percentage = Math.round(
                                 (dataItem.value /
-                                    revenueValues.project.income) *
+                                    revenueValues.income) *
                                     100
                             );
 

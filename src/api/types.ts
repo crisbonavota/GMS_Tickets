@@ -129,6 +129,7 @@ export interface ProjectRevenueValues {
     hoursReported: number;
     indirectCost: number;
     profit: number;
+    income: number;
 }
 
 export interface ProjectCreation {

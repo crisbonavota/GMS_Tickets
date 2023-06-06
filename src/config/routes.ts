@@ -28,7 +28,7 @@ export const routes = [
     },
     {
         label: "Providers",
-        allowedRoles: ["admin"],
+        allowedRoles: ["admin", "admin-limited"],
         description: "Manage providers",
         path: "/providers",
         logo: HrEmployees,

@@ -1,18 +1,20 @@
 import { Text } from "@chakra-ui/react";
 import { useCallback } from "react";
-import { Sort, GroupLegacyUser, Provider } from "../../api/types";
+import { Sort, GroupLegacyUser, Provider, ApplicationUserPrivate } from "../../api/types";
 import { DynamicTableFormat, DynamicTable } from "../../components/DynamicTable/DynamicTable";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import { changePage, changeSort } from "../../redux/slices/providers";
 import EmployeePermissions from "../hr/tabs/employees/permissions/EmployeePermissions";
 import DetailsCell from "../pm/tabs/DetailsCell";
 import EditProviderButton from "./creation-edition/EditProviderButton";
+import { useAuthUser } from "react-auth-kit";
 
 interface Props {
     providers: Provider[];
 }
 
 const ProvidersTable = ({ providers }: Props) => {
+    const authUser = useAuthUser()() as ApplicationUserPrivate;
     const state = useAppSelector((s) => s.providers);
     const dispatch = useAppDispatch();
 
@@ -86,15 +88,21 @@ const ProvidersTable = ({ providers }: Props) => {
             ),
             disableSort: true,
         },
-        {
-            header: "permissions",
-            accessor: "",
-            accessorFn: (group: GroupLegacyUser) => (
-                <EmployeePermissions group={group} />
-            ),
-            rawObject: true,
-            disableSort: true,
-        },
+        ...(!authUser.roles.includes("admin-limited") ?
+            [
+                {
+                    header: "Permissions",
+                    accessor: "",
+                    accessorFn: (group: GroupLegacyUser) => (
+                        <EmployeePermissions group={group} />
+                    ),
+                    rawObject: true,
+                    disableSort: true,
+                },
+            ]
+            :
+            []
+        ),
     ];
 
     return (

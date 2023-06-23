@@ -29,7 +29,11 @@ interface JobsFilters {
         project: boolean;
         proposal: boolean;
     };
-    active: boolean;
+    active: {
+        active: boolean;
+        inactive: boolean;
+    }
+    businessUnit: number | null;
 }
 
 interface ProjectManagementState {
@@ -87,7 +91,11 @@ const initialState: ProjectManagementState = {
                 project: true,
                 proposal: true,
             },
-            active: true,
+            active: {
+                active: true,
+                inactive: true,
+            },
+            businessUnit: null,
         },
     },
 };

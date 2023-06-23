@@ -21,6 +21,12 @@ const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
     return false;
 };
 
+const translateActiveFilter = (type: { active: boolean; inactive: boolean }) => {
+    if (type.active && type.inactive) return undefined;
+    if (type.active) return true;
+    return false;
+};
+
 const Jobs = () => {
     const state = useAppSelector((s) => s.projectManagement.jobs);
     const getAuthHeader = useAuthHeader();
@@ -47,7 +53,7 @@ const Jobs = () => {
                 "projects",
                 getAuthHeader(),
                 [
-                    { field: "active", value: state.filters.active },
+                    { field: "active", value: translateActiveFilter(state.filters.active) },
                     { field: "client", value: state.filters.client },
                     {
                         field: "proposal.accountId",
@@ -57,6 +63,7 @@ const Jobs = () => {
                         field: "sold",
                         value: translateTypeFilter(state.filters.type),
                     },
+                    { field: "businessUnit.id", value: state.filters.businessUnit },
                 ],
                 [
                     { name: "search", value: state.search },

@@ -12,6 +12,12 @@ const translateTypeFilter = (type: { project: boolean; proposal: boolean }) => {
     return false;
 };
 
+const translateActiveFilter = (type: { active: boolean; inactive: boolean }) => {
+    if (type.active && type.inactive) return undefined;
+    if (type.active) return true;
+    return false;
+};
+
 const onExport = (base64?: string) => {
     base64 &&
         downloadFile(
@@ -45,7 +51,7 @@ const ExportJobs = () => {
                     },
                     { 
                         field: "active", 
-                        value: state.filters.active 
+                        value: translateActiveFilter(state.filters.active) 
                     },
                 ],
                 [],

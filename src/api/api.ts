@@ -319,9 +319,10 @@ export const getContractTypes = () => {
 export const exportModuleCheckBoxOptions =  [
     "File number",
     "Employee",
-    "Business Unit",
+    "Collaborator BU",
     "Project",
     "Project ID",
+    "Project BU",
     "Task Type",
     "Task",
     "Date",

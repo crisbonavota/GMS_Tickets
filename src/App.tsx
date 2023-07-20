@@ -1,153 +1,46 @@
-import { Routes, Route, useLocation } from "react-router-dom";
-import AccountDetailedView from "./pages/pm/detailed/accounts/AccountDetailedView";
-import ClientDetailedView from "./pages/pm/detailed/clients/ClientDetailedView";
-import JobDetailedView from "./pages/pm/detailed/jobs/JobDetailedView";
-import TabsView from "./pages/pm/tabs/TabsView";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { RequireAuth } from "react-auth-kit";
-import SignIn from "./pages/signin/SignIn";
 import { Box, VStack } from "@chakra-ui/react";
 import Navbar from "./components/Navbar/Navbar";
 import Home from "./pages/home/Home";
-import Reports from "./pages/reports/Reports";
-import Updates from "./pages/updates/Updates";
-import Timetracker from "./pages/timetracker/Timetracker";
-import HumanResourcesTabView from "./pages/hr/tabs/HumanResourcesTabsView";
-import EmployeeDetailedView from "./pages/hr/detailed/employees/EmployeeDetailedView";
-import GoogleRedirect from "./pages/signin/GoogleRedirect";
-import TrainingDetailedView from "./pages/hr/detailed/trainings/TrainingDetailedView";
-import ProviderDetailedView from "./pages/providers/detailed/ProviderDetailedView";
-import ProvidersView from "./pages/providers/ProvidersView";
-
-const signInPath = "/sign-in";
+import SigninPage from "./pages/ticketsmodule/SigninPage";
+import Tickets from "./redux/slices/tickets";
+import TicketsDetailedView from "./pages/ticketsmodule/detailed/TicketsDetailedView";
+import TicketingTabsView from "./pages/ticketsmodule/TicketingTabsView";
 
 const App = () => {
-    const location = useLocation();
-    return (
-        <VStack w={"full"} minH={"100vh"} spacing={0}>
-            {!location.pathname.toLowerCase().includes("/sign-in") && (
-                <Navbar />
-            )}
-            <Box w={"full"} flex={1} bgColor={"whitesmoke"}>
-                <Routes>
-                    <Route path={signInPath} element={<SignIn />} />
-                    <Route
-                        path={`${signInPath}/redirect`}
-                        element={<GoogleRedirect />}
-                    />
+  const location = useLocation();
+  return (
+    <VStack w={"full"} minH={"100vh"} spacing={0}>
+      {!location.pathname.toLowerCase().includes("/signin") && <Navbar />}
 
-                    <Route
-                        path={"/"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Home />
-                            </RequireAuth>
-                        }
-                    />
+      <Box w={"full"} flex={1} bgColor={"whitesmoke"}>
+        <Routes>
+          <Route path="/signin" element={<SigninPage />} />
 
-                    <Route
-                        path="/timetrack/reports"
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Reports />
-                            </RequireAuth>
-                        }
-                    />
+          <Route path="/" element={<Home />} />
 
-                    <Route
-                        path="/timetrack/load"
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Timetracker />
-                            </RequireAuth>
-                        }
-                    />
+          <Route
+            path="/tickets"
+            element={
+              <RequireAuth loginPath={"/signin"}>
+                <TicketingTabsView />
+              </RequireAuth>
+            }
+          />
 
-                    <Route
-                        path="/human-resources/updates"
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <Updates />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route
-                        path={"/project-management"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <TabsView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/project-management/clients/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <ClientDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/project-management/accounts/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <AccountDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/project-management/jobs/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <JobDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-
-                    <Route
-                        path={"/human-resources"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <HumanResourcesTabView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/human-resources/employees/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <EmployeeDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/human-resources/trainings/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <TrainingDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/providers"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <ProvidersView />
-                            </RequireAuth>
-                        }
-                    />
-                    <Route
-                        path={"/providers/:id"}
-                        element={
-                            <RequireAuth loginPath={signInPath}>
-                                <ProviderDetailedView />
-                            </RequireAuth>
-                        }
-                    />
-                </Routes>
-            </Box>
-        </VStack>
-    );
+          <Route
+            path="/ticket/:id"
+            element={
+              <RequireAuth loginPath={"/signin"}>
+                <TicketsDetailedView />
+              </RequireAuth>
+            }
+          />
+        </Routes>
+      </Box>
+    </VStack>
+  );
 };
 
 export default App;

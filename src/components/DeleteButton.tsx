@@ -22,7 +22,7 @@ type Props = {
     resource: string;
 };
 
-const DeleteButton = ({ id, resetQueries, resource }: Props) => {
+const  = ({ id, resetQueries, resource }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const cancelRef = useRef<any>();
     const toast = useToast();
@@ -97,4 +97,4 @@ const DeleteButton = ({ id, resetQueries, resource }: Props) => {
     );
 };
 
-export default DeleteButton;
+export default ;

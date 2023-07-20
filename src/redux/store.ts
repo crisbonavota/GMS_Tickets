@@ -5,6 +5,7 @@ import humanResourcesUpdatesReducer from "./slices/hr-updates";
 import humanResourcesReducer from "./slices/hr";
 import timetrackReducer from "./slices/timetrackSlice";
 import providersReducer from "./slices/providers";
+import ticketsReducer from "./slices/tickets";
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
         hrUpdates: humanResourcesUpdatesReducer,
         timetrack: timetrackReducer,
         providers: providersReducer,
+        tickets: ticketsReducer,
     },
     devTools: {
         serialize: true,

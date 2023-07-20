@@ -24,9 +24,9 @@ const TabsSelector = ({ tabIndex, setTabIndex }: Props) => {
       w={{ base: "full", md: "fit-content" }}
     >
       <TabList>
-        <Tab {...commonTabProps}>Employees</Tab>
-        <Tab {...commonTabProps}>Business Units</Tab>
-        <Tab {...commonTabProps}>Trainings</Tab>
+        <Tab {...commonTabProps}>Requested</Tab>
+        <Tab {...commonTabProps}>Assigned</Tab>
+        <Tab {...commonTabProps}>Followed</Tab>
       </TabList>
     </Tabs>
   );

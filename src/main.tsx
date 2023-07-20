@@ -16,17 +16,17 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <ReduxProvider store={store}>
       <AuthProvider
         authType={navigator.cookieEnabled ? "cookie" : "localstorage"}
-        authName={"_gms_auth"}
+        authName={"_Tickets_AUTH_"}
         cookieDomain={window.location.hostname}
         cookieSecure={window.location.protocol === "https:"}
       >
-          <ChakraProvider theme={getTheme()}>
-            <QueryClientProvider client={queryClient}>
-              <BrowserRouter>
-                <App />
-              </BrowserRouter>
-            </QueryClientProvider>
-          </ChakraProvider>
+        <ChakraProvider theme={getTheme()}>
+          <QueryClientProvider client={queryClient}>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </QueryClientProvider>
+        </ChakraProvider>
       </AuthProvider>
     </ReduxProvider>
   </React.StrictMode>
